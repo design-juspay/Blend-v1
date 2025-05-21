@@ -1,66 +1,62 @@
+import { foundationToken } from "../foundationToken";
+
 const buttonTokens = {
   background: {
     primary: {
-      default:
-        "linear-gradient(180deg, var(--color-primary-600, #0561E2) -5%, var(--color-primary-500, #2B7FFF) 107.5%)",
-      hover:
-        "linear-gradient(180deg, var(--color-primary-700, #0454C4) -5%, var(--color-primary-600, #0561E2) 107.5%)",
-      disabled: "#a4ceff",
+      default: `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
+      hover: `linear-gradient(180deg, ${foundationToken.colors.primary[700]} -5%, ${foundationToken.colors.primary[600]} 107.5%)`,
+      disabled: foundationToken.colors.primary[300],
     },
     secondary: {
-      default: "#ffffff",
-      hover: "#f5f7fa",
-      disabled: "#ffffff",
+      default: foundationToken.colors.gray[0],
+      hover: foundationToken.colors.gray[50],
+      disabled: foundationToken.colors.gray[0],
     },
     danger: {
-      default:
-        "linear-gradient(180deg, var(--color-red-600, #E7000B) 0%, var(--color-red-500, #FB2C36) 93.75%)",
-      hover:
-        "linear-gradient(180deg, var(--color-red-700, #D10009) 0%, var(--color-red-600, #E7000B) 93.75%)",
-      disabled: "#ffa2a2",
+      default: `linear-gradient(180deg, ${foundationToken.colors.red[600]} 0%, ${foundationToken.colors.red[500]} 93.75%)`,
+      hover: `linear-gradient(180deg, ${foundationToken.colors.red[700]} 0%, ${foundationToken.colors.red[600]} 93.75%)`,
+      disabled: foundationToken.colors.red[300],
     },
     success: {
-      default:
-        "linear-gradient(180deg, var(--color-green-600, #00A63E) 0%, var(--color-green-500, #00C951) 100%)",
-      hover:
-        "linear-gradient(180deg, var(--color-green-700, #008F36) 0%, var(--color-green-600, #00A63E) 100%)",
-      disabled: "#b9f8cf",
+      default: `linear-gradient(180deg, ${foundationToken.colors.green[600]} 0%, ${foundationToken.colors.green[500]} 100%)`,
+      hover: `linear-gradient(180deg, ${foundationToken.colors.green[700]} 0%, ${foundationToken.colors.green[600]} 100%)`,
+      disabled: foundationToken.colors.green[300],
     },
   },
   text: {
     primary: {
-      default: "#ffffff",
-      disabled: "#ffffff",
+      default: foundationToken.colors.gray[0],
+      disabled: foundationToken.colors.gray[0],
     },
     secondary: {
-      default: "var(--color-primary-500, #2B7FFF)",
-      disabled: "var(--color-primary-300, #a4ceff)",
+      default: foundationToken.colors.primary[500],
+      disabled: foundationToken.colors.primary[300],
     },
     danger: {
-      default: "#ffffff",
-      disabled: "#ffffff",
+      default: foundationToken.colors.gray[0],
+      disabled: foundationToken.colors.gray[0],
     },
     success: {
-      default: "#ffffff",
-      disabled: "#ffffff",
+      default: foundationToken.colors.gray[0],
+      disabled: foundationToken.colors.gray[0],
     },
   },
   border: {
     primary: {
-      default: "var(--color-primary-500, #2B7FFF)",
-      disabled: "var(--color-primary-300, #a4ceff)",
+      default: foundationToken.colors.primary[500],
+      disabled: foundationToken.colors.primary[300],
     },
     secondary: {
-      default: "var(--color-gray-300, #e1e4ea)",
-      disabled: "var(--color-gray-200, #f5f7fa)",
+      default: foundationToken.colors.gray[300],
+      disabled: foundationToken.colors.gray[200],
     },
     danger: {
-      default: "var(--color-red-600, #E7000B)",
-      disabled: "var(--color-red-300, #ffa2a2)",
+      default: foundationToken.colors.red[600],
+      disabled: foundationToken.colors.red[300],
     },
     success: {
-      default: "var(--color-green-600, #00A63E)",
-      disabled: "var(--color-green-300, #b9f8cf)",
+      default: foundationToken.colors.green[600],
+      disabled: foundationToken.colors.green[300],
     },
   },
   borderWidth: {
@@ -72,16 +68,16 @@ const buttonTokens = {
     success: "10px",
   },
   lightBg: {
-    primary: "#eff6ff",
-    secondary: "#f5f7fa",
-    danger: "#fff1f1",
-    success: "#f0fff5",
+    primary: foundationToken.colors.primary[50],
+    secondary: foundationToken.colors.gray[50],
+    danger: foundationToken.colors.red[50],
+    success: foundationToken.colors.green[50],
   },
   link: {
-    primary: "var(--color-primary-500, #2B7FFF)",
-    secondary: "var(--color-gray-700, #4a5568)",
-    danger: "var(--color-red-500, #FB2C36)",
-    success: "var(--color-green-500, #00C951)",
+    primary: foundationToken.colors.primary[500],
+    secondary: foundationToken.colors.gray[700],
+    danger: foundationToken.colors.red[500],
+    success: foundationToken.colors.green[500],
   },
 };
 

@@ -25,7 +25,7 @@ const StyledButton = styled.button<{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   border-radius: 10px;
   font-weight: 500;
   transition: all 0.2s ease-in-out;

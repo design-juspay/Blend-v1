@@ -97,3 +97,5 @@ const foundationToken = {
     },
   },
 };
+
+export { foundationToken };
