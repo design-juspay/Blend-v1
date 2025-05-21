@@ -8,66 +8,7 @@ import {
   ButtonSubType,
   type ButtonProps,
 } from "./types";
-
-// Define color palette based on the reference image
-const colors = {
-  [ButtonType.PRIMARY]: {
-    background: "linear-gradient(180deg, #0561E2 -5%, #2B7FFF 107.5%)",
-    hover: "linear-gradient(180deg, #0454C4 -5%, #0561E2 107.5%)",
-    text: "#ffffff",
-    border: "#1b85ff",
-    light: "#a4ceff",
-    lightBg: "#eff6ff",
-  },
-  [ButtonType.SECONDARY]: {
-    background: "#ffffff",
-    hover: "#f5f7fa",
-    text: "#1b85ff",
-    border: "#e1e4ea",
-    light: "#e1e4ea",
-    lightBg: "#f5f7fa",
-  },
-  [ButtonType.DANGER]: {
-    background: "#fb2c36",
-    hover: "#e7000b",
-    text: "#ffffff",
-    border: "#fb2c36",
-    light: "#ffa2a2",
-    lightBg: "#fff1f1",
-  },
-  [ButtonType.SUCCESS]: {
-    background: "linear-gradient(180deg, #00A63E 0%, #00C951 100%)",
-    hover: "linear-gradient(180deg, #008F36 0%, #00A63E 100%)",
-    text: "#ffffff",
-    border: "#00A63E",
-    borderWidth: "1.5px",
-    borderRadius: "10px",
-    light: "#b9f8cf",
-    lightBg: "#f0fff5",
-  },
-};
-
-// Define size configurations based on the reference image
-const sizes = {
-  [ButtonSize.SMALL]: {
-    padding: "6px 12px",
-    fontSize: "14px",
-    height: "32px",
-    iconSize: "16px",
-  },
-  [ButtonSize.MEDIUM]: {
-    padding: "8px 16px",
-    fontSize: "14px",
-    height: "40px",
-    iconSize: "18px",
-  },
-  [ButtonSize.LARGE]: {
-    padding: "10px 20px",
-    fontSize: "16px",
-    height: "48px",
-    iconSize: "20px",
-  },
-};
+import buttonTokens from "./token";
 
 // Styled button component
 const StyledButton = styled.button<{
@@ -78,14 +19,14 @@ const StyledButton = styled.button<{
   $hasTrailingIcon: boolean;
   $isLoading: boolean;
 }>`
+  /* ------------------------------------------------------------
+    Button Layout
+  ------------------------------------------------------------ */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: ${({ $buttonType }) =>
-    $buttonType === ButtonType.SUCCESS
-      ? colors[ButtonType.SUCCESS].borderRadius || "8px"
-      : "8px"};
+  border-radius: 10px;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
@@ -97,6 +38,27 @@ const StyledButton = styled.button<{
 
   /* Size styles */
   ${({ $size, $subType }) => {
+    const sizes = {
+      [ButtonSize.SMALL]: {
+        padding: "6px 16px",
+        fontSize: "14px",
+        height: "32px",
+        iconSize: "16px",
+      },
+      [ButtonSize.MEDIUM]: {
+        padding: "8px 16px",
+        fontSize: "14px",
+        height: "40px",
+        iconSize: "18px",
+      },
+      [ButtonSize.LARGE]: {
+        padding: "10px 20px",
+        fontSize: "16px",
+        height: "48px",
+        iconSize: "20px",
+      },
+    };
+
     if ($subType === ButtonSubType.ICON_ONLY) {
       return css`
         width: ${sizes[$size].height};
@@ -113,16 +75,29 @@ const StyledButton = styled.button<{
 
   /* Button type styles */
   ${({ $buttonType, $subType }) => {
-    const typeColors = colors[$buttonType];
+    const getButtonTypeKey = (
+      type: ButtonType
+    ): "primary" | "secondary" | "danger" | "success" => {
+      switch (type) {
+        case ButtonType.PRIMARY:
+          return "primary";
+        case ButtonType.SECONDARY:
+          return "secondary";
+        case ButtonType.DANGER:
+          return "danger";
+        case ButtonType.SUCCESS:
+          return "success";
+        default:
+          return "primary";
+      }
+    };
+
+    const typeKey = getButtonTypeKey($buttonType);
 
     if ($subType === ButtonSubType.LINK) {
       return css`
         background-color: transparent;
-        color: ${typeColors.background.includes("linear-gradient")
-          ? $buttonType === ButtonType.SUCCESS
-            ? "#00C951"
-            : "#2B7FFF"
-          : typeColors.background};
+        color: ${buttonTokens.link[typeKey]};
         border: none;
         padding-left: 0;
         padding-right: 0;
@@ -132,107 +107,31 @@ const StyledButton = styled.button<{
         }
 
         &:disabled {
-          color: ${typeColors.light};
+          color: ${buttonTokens.text[typeKey].disabled};
           opacity: 0.7;
         }
       `;
     }
 
-    switch ($buttonType) {
-      case ButtonType.PRIMARY:
-        return css`
-          background: ${typeColors.background};
-          color: ${typeColors.text};
-          border: 1px solid ${typeColors.border};
+    return css`
+      background: ${buttonTokens.background[typeKey].default};
+      color: ${buttonTokens.text[typeKey].default};
+      border: 1px solid ${buttonTokens.border[typeKey].default};
 
-          &:hover:not(:disabled) {
-            background: ${typeColors.hover};
-          }
+      &:hover:not(:disabled) {
+        background: ${buttonTokens.background[typeKey].hover};
+      }
 
-          &:disabled {
-            background: ${typeColors.light};
-            border-color: ${typeColors.light};
-            color: white;
-            opacity: 0.7;
-          }
-        `;
-      case ButtonType.SECONDARY:
-        return css`
-          background-color: ${typeColors.background};
-          color: ${colors[ButtonType.PRIMARY].background.includes(
-            "linear-gradient"
-          )
-            ? "#2B7FFF"
-            : colors[ButtonType.PRIMARY].background};
-          border: 1px solid ${typeColors.border};
-
-          &:hover:not(:disabled) {
-            background-color: ${typeColors.hover};
-          }
-
-          &:disabled {
-            color: ${colors[ButtonType.PRIMARY].light};
-            border-color: ${typeColors.light};
-            opacity: 0.7;
-          }
-        `;
-      case ButtonType.DANGER:
-        return css`
-          background-color: ${typeColors.background};
-          color: ${typeColors.text};
-          border: 1px solid ${typeColors.border};
-
-          &:hover:not(:disabled) {
-            background-color: ${typeColors.hover};
-          }
-
-          &:disabled {
-            background-color: ${typeColors.light};
-            border-color: ${typeColors.light};
-            color: white;
-            opacity: 0.7;
-          }
-        `;
-      case ButtonType.SUCCESS:
-        return css`
-          background: ${typeColors.background};
-          color: ${typeColors.text};
-          border: ${"1px"} solid ${typeColors.border};
-
-          &:hover:not(:disabled) {
-            background: ${typeColors.hover};
-          }
-
-          &:disabled {
-            background: ${typeColors.light};
-            border-color: ${typeColors.light};
-            color: white;
-            opacity: 0.7;
-          }
-        `;
-      default:
-        return css`
-          background: ${colors[ButtonType.PRIMARY].background};
-          color: ${colors[ButtonType.PRIMARY].text};
-          border: 1px solid ${colors[ButtonType.PRIMARY].border};
-
-          &:hover:not(:disabled) {
-            background: ${colors[ButtonType.PRIMARY].hover};
-          }
-
-          &:disabled {
-            background: ${colors[ButtonType.PRIMARY].light};
-            border-color: ${colors[ButtonType.PRIMARY].light};
-            color: white;
-            opacity: 0.7;
-          }
-        `;
-    }
+      &:disabled {
+        background: ${buttonTokens.background[typeKey].disabled};
+        border-color: ${buttonTokens.border[typeKey].disabled};
+        color: ${buttonTokens.text[typeKey].disabled};
+        opacity: 0.7;
+      }
+    `;
   }}
   
-  &:disabled {
-    cursor: not-allowed;
-  }
+
 
   ${({ $isLoading }) =>
     $isLoading &&
@@ -265,6 +164,28 @@ const IconContainer = styled.span`
   align-items: center;
   justify-content: center;
 `;
+
+// Define size configurations
+const sizes = {
+  [ButtonSize.SMALL]: {
+    padding: "6px 12px",
+    fontSize: "14px",
+    height: "32px",
+    iconSize: "16px",
+  },
+  [ButtonSize.MEDIUM]: {
+    padding: "8px 16px",
+    fontSize: "14px",
+    height: "40px",
+    iconSize: "18px",
+  },
+  [ButtonSize.LARGE]: {
+    padding: "10px 20px",
+    fontSize: "16px",
+    height: "48px",
+    iconSize: "20px",
+  },
+};
 
 // Button component
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
