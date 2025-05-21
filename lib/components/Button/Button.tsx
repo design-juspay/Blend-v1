@@ -6,43 +6,12 @@ import React, {
   forwardRef,
 } from "react";
 import styled, { css } from "styled-components";
-
-// Using the provided enums
-export enum ButtonType {
-  PRIMARY = "primary",
-  SECONDARY = "secondary",
-  DANGER = "danger",
-  SUCCESS = "success",
-}
-
-export enum ButtonSize {
-  SMALL = "sm",
-  MEDIUM = "md",
-  LARGE = "lg",
-}
-
-export enum ButtonSubType {
-  DEFAULT = "default",
-  ICON_ONLY = "iconOnly",
-  LINK = "link",
-}
-
-// Using the provided interface
-export interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
-  buttonType?: ButtonType;
-  size?: ButtonSize;
-  subType?: ButtonSubType;
-  text?: string;
-  leadingIcon?: ElementType;
-  trailingIcon?: ElementType;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  ariaLabel?: string;
-  ariaExpanded?: boolean;
-  ariaControls?: string;
-  ariaPressed?: boolean | "mixed";
-  ariaHasPopup?: boolean | "menu" | "listbox" | "tree" | "grid" | "dialog";
-}
+import {
+  ButtonType,
+  ButtonSize,
+  ButtonSubType,
+  type ButtonProps,
+} from "./types";
 
 // Define color palette based on the reference image
 const colors = {
@@ -122,8 +91,9 @@ const StyledButton = styled.button<{
   outline: none;
   white-space: nowrap;
   position: relative;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+
+
 
   /* Size styles */
   ${({ $size, $subType }) => {

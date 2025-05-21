@@ -2,9 +2,9 @@ import "./App.css";
 import { ArrowRight, Send } from "lucide-react";
 import {
   Button,
+  ButtonSubType,
   ButtonType,
   ButtonSize,
-  ButtonSubType,
 } from "../lib/components/Button";
 
 function App() {
