@@ -1,10 +1,6 @@
 "use client";
 
-import React, {
-  type ComponentPropsWithoutRef,
-  type ElementType,
-  forwardRef,
-} from "react";
+import { forwardRef } from "react";
 import styled, { css } from "styled-components";
 import {
   ButtonType,
@@ -16,8 +12,8 @@ import {
 // Define color palette based on the reference image
 const colors = {
   [ButtonType.PRIMARY]: {
-    background: "#1b85ff",
-    hover: "#166acc",
+    background: "linear-gradient(180deg, #0561E2 -5%, #2B7FFF 107.5%)",
+    hover: "linear-gradient(180deg, #0454C4 -5%, #0561E2 107.5%)",
     text: "#ffffff",
     border: "#1b85ff",
     light: "#a4ceff",
@@ -40,10 +36,12 @@ const colors = {
     lightBg: "#fff1f1",
   },
   [ButtonType.SUCCESS]: {
-    background: "#00c951",
-    hover: "#00a63e",
+    background: "linear-gradient(180deg, #00A63E 0%, #00C951 100%)",
+    hover: "linear-gradient(180deg, #008F36 0%, #00A63E 100%)",
     text: "#ffffff",
-    border: "#00c951",
+    border: "#00A63E",
+    borderWidth: "1.5px",
+    borderRadius: "10px",
     light: "#b9f8cf",
     lightBg: "#f0fff5",
   },
@@ -84,16 +82,18 @@ const StyledButton = styled.button<{
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: 8px;
+  border-radius: ${({ $buttonType }) =>
+    $buttonType === ButtonType.SUCCESS
+      ? colors[ButtonType.SUCCESS].borderRadius || "8px"
+      : "8px"};
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   outline: none;
   white-space: nowrap;
   position: relative;
-
-
-
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
   /* Size styles */
   ${({ $size, $subType }) => {
@@ -118,7 +118,11 @@ const StyledButton = styled.button<{
     if ($subType === ButtonSubType.LINK) {
       return css`
         background-color: transparent;
-        color: ${typeColors.background};
+        color: ${typeColors.background.includes("linear-gradient")
+          ? $buttonType === ButtonType.SUCCESS
+            ? "#00C951"
+            : "#2B7FFF"
+          : typeColors.background};
         border: none;
         padding-left: 0;
         padding-right: 0;
@@ -137,16 +141,16 @@ const StyledButton = styled.button<{
     switch ($buttonType) {
       case ButtonType.PRIMARY:
         return css`
-          background-color: ${typeColors.background};
+          background: ${typeColors.background};
           color: ${typeColors.text};
           border: 1px solid ${typeColors.border};
 
           &:hover:not(:disabled) {
-            background-color: ${typeColors.hover};
+            background: ${typeColors.hover};
           }
 
           &:disabled {
-            background-color: ${typeColors.light};
+            background: ${typeColors.light};
             border-color: ${typeColors.light};
             color: white;
             opacity: 0.7;
@@ -155,7 +159,11 @@ const StyledButton = styled.button<{
       case ButtonType.SECONDARY:
         return css`
           background-color: ${typeColors.background};
-          color: ${colors[ButtonType.PRIMARY].background};
+          color: ${colors[ButtonType.PRIMARY].background.includes(
+            "linear-gradient"
+          )
+            ? "#2B7FFF"
+            : colors[ButtonType.PRIMARY].background};
           border: 1px solid ${typeColors.border};
 
           &:hover:not(:disabled) {
@@ -187,16 +195,16 @@ const StyledButton = styled.button<{
         `;
       case ButtonType.SUCCESS:
         return css`
-          background-color: ${typeColors.background};
+          background: ${typeColors.background};
           color: ${typeColors.text};
-          border: 1px solid ${typeColors.border};
+          border: ${"1px"} solid ${typeColors.border};
 
           &:hover:not(:disabled) {
-            background-color: ${typeColors.hover};
+            background: ${typeColors.hover};
           }
 
           &:disabled {
-            background-color: ${typeColors.light};
+            background: ${typeColors.light};
             border-color: ${typeColors.light};
             color: white;
             opacity: 0.7;
@@ -204,16 +212,16 @@ const StyledButton = styled.button<{
         `;
       default:
         return css`
-          background-color: ${colors[ButtonType.PRIMARY].background};
+          background: ${colors[ButtonType.PRIMARY].background};
           color: ${colors[ButtonType.PRIMARY].text};
           border: 1px solid ${colors[ButtonType.PRIMARY].border};
 
           &:hover:not(:disabled) {
-            background-color: ${colors[ButtonType.PRIMARY].hover};
+            background: ${colors[ButtonType.PRIMARY].hover};
           }
 
           &:disabled {
-            background-color: ${colors[ButtonType.PRIMARY].light};
+            background: ${colors[ButtonType.PRIMARY].light};
             border-color: ${colors[ButtonType.PRIMARY].light};
             color: white;
             opacity: 0.7;
