@@ -18,8 +18,6 @@ export const getTagVariantStyles = (
   variant: TagVariant = TagVariant.SUBTLE,
   status: TagStatus = TagStatus.NEUTRAL
 ) => {
-  const statusKey = getTagStatusKey(status);
-  
   return css`
     background-color: ${tagTokens.getBackgroundColor(variant, status)};
     color: ${tagTokens.getTextColor(variant, status)};
