@@ -94,3 +94,8 @@ body {
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
+
+
+.debug{
+  outline: 1px solid red;
+}
