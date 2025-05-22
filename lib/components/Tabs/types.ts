@@ -33,7 +33,6 @@ export interface TabsTriggerProps extends ComponentPropsWithoutRef<typeof TabsPr
 }
 
 export type TabsContentProps = ComponentPropsWithoutRef<typeof TabsPrimitive.Content>;
-
 export type TabsStyles = {
   list: string;
   trigger: string;
