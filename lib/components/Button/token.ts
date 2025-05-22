@@ -80,16 +80,6 @@ const buttonTokens = {
       disabled: foundationToken.colors.green[300],
     },
   },
-  borderWidth: {
-    default: "1px",
-    primary: "1.5px",
-    danger: "1.5px",
-    success: "1.5px",
-  },
-  borderRadius: {
-    default: foundationToken.borderRadius[8],
-    success: foundationToken.borderRadius[10],
-  },
   boxShadow: {
     primary: {
       active: "0px 4px 4px 0px rgba(0, 0, 0, 0.15) inset",
@@ -108,12 +98,6 @@ const buttonTokens = {
       focused: "0px 0px 0px 3px #BCF5D1"
     }
   },
-  lightBg: {
-    primary: foundationToken.colors.primary[50],
-    secondary: foundationToken.colors.gray[50],
-    danger: foundationToken.colors.red[50],
-    success: foundationToken.colors.green[50],
-  },
   link: {
     primary: foundationToken.colors.primary[500],
     secondary: foundationToken.colors.gray[700],
@@ -126,7 +110,7 @@ const buttonTokens = {
       success: foundationToken.colors.green[700],
     }
   },
-  outline: {
+  outline: { 
     primary: foundationToken.colors.primary[300],
     secondary: foundationToken.colors.gray[300],
     danger: foundationToken.colors.red[300],
@@ -137,7 +121,7 @@ const buttonTokens = {
     timing: "ease",
   },
   opacity: {
-    disabled: 0.7,
+    disabled: foundationToken.opacity[70],
   },
   plainIcon: {
     background: "transparent",

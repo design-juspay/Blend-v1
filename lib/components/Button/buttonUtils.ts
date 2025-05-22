@@ -127,10 +127,10 @@ export const getButtonTypeStyles = (
   }
 
   const borderWidth = 
-    typeKey === "primary" ? buttonTokens.borderWidth.primary : 
-    typeKey === "danger" ? buttonTokens.borderWidth.danger :
-    typeKey === "success" ? buttonTokens.borderWidth.success :
-    buttonTokens.borderWidth.default;
+    typeKey === "primary" ? foundationToken.borderWidth[1.5] : 
+    typeKey === "danger" ? foundationToken.borderWidth[1.5] :
+    typeKey === "success" ? foundationToken.borderWidth[1.5] :
+    foundationToken.borderWidth[1];
 
   // Check if this button type uses gradient
   const hasGradient = typeKey === "primary" || typeKey === "danger" || typeKey === "success";
