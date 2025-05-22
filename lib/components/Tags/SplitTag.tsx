@@ -5,33 +5,21 @@ import {
   StyledSplitTagContainer,
   StyledSplitTagSection,
 } from "./StyledTag";
+import { useTagProps } from "./tagUtils";
 
-// Hook to extract common tag logic
-const useSplitTag = (props: SplitTagProps) => {
+// Helper for split tag specific logic
+const useSplitTagVariants = (props: SplitTagProps) => {
   const {
-    text,
-    secondaryText,
-    variant = TagVariant.SUBTLE,
-    status = TagStatus.NEUTRAL,
     secondaryVariant,
     secondaryStatus,
-    size = TagSize.MD,
-    shape = TagShape.ROUNDED,
+    variant = TagVariant.SUBTLE,
+    status = TagStatus.NEUTRAL,
   } = props;
   
   // Determine right section props
-  const rightVariant = secondaryVariant ?? variant;
-  const rightStatus = secondaryStatus ?? status;
-
   return {
-    shape,
-    rightVariant,
-    rightStatus,
-    text,
-    secondaryText,
-    variant,
-    status,
-    size
+    rightVariant: secondaryVariant ?? variant,
+    rightStatus: secondaryStatus ?? status,
   };
 };
 
@@ -58,12 +46,12 @@ export const SplitTag = memo(forwardRef<HTMLDivElement, SplitTagProps>(
 
     const {
       shape: computedShape,
-      rightVariant,
-      rightStatus,
       variant: computedVariant,
       status: computedStatus,
       size: computedSize
-    } = useSplitTag(props);
+    } = useTagProps(props);
+    
+    const { rightVariant, rightStatus } = useSplitTagVariants(props);
     
     // Memoize click handlers for better performance
     const handlePrimaryClick = useCallback((e: MouseEvent<HTMLDivElement>) => {

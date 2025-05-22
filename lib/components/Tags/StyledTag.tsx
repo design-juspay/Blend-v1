@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
 import {
   getBaseTagStyles,
@@ -7,27 +7,40 @@ import {
   getTagVariantStyles,
   getSplitTagStyles,
 } from "./tagUtils";
+import tagTokens from "./token";
 
-export const StyledTagContainer = styled.div<{
+// Common props interface for styled components
+interface TagStyledProps {
   $variant?: TagVariant;
   $status?: TagStatus;
   $size?: TagSize;
   $tagShape?: TagShape;
-}>`
+}
+
+// Common styles that apply to both regular tags and split tag sections
+const commonTagStyles = css<TagStyledProps>`
   ${getBaseTagStyles()}
   ${({ $size }) => getTagSizeStyles($size)}
-  ${({ $tagShape, $size }) => $tagShape && getTagShapeStyles($tagShape, $size)}
   ${({ $variant, $status }) => getTagVariantStyles($variant, $status)}
+`;
+
+// Common typography styles
+const commonTypographyStyles = css`
+  font-weight: 600;
+  letter-spacing: -0.01em;
+`;
+
+export const StyledTagContainer = styled.div<TagStyledProps>`
+  ${commonTagStyles}
+  ${({ $tagShape, $size }) => $tagShape && getTagShapeStyles($tagShape, $size)}
   width: fit-content;
-  font-family: var(--font-family-primary);
 `;
 
 export const StyledTagContent = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  ${commonTypographyStyles}
 `;
 
 export const StyledSplitTagContainer = styled.div`
@@ -36,28 +49,21 @@ export const StyledSplitTagContainer = styled.div`
   white-space: nowrap;
   cursor: pointer;
   width: fit-content;
-  font-family: var(--font-family-primary);
+  font-family: ${tagTokens.font.family};
   box-sizing: border-box;
   overflow: hidden; /* Ensures no overflow from inner elements */
 `;
 
-export const StyledSplitTagSection = styled.div<{
-  $variant?: TagVariant;
-  $status?: TagStatus;
-  $size?: TagSize;
-  $tagShape?: TagShape;
+export const StyledSplitTagSection = styled.div<TagStyledProps & {
   $position: 'left' | 'right';
 }>`
-  ${getBaseTagStyles()}
-  ${({ $size }) => getTagSizeStyles($size)}
-  ${({ $variant, $status }) => getTagVariantStyles($variant, $status)}
+  ${commonTagStyles}
   ${({ $tagShape, $position, $size }) => $tagShape && getSplitTagStyles($tagShape, $position, $size)}
   
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  ${commonTypographyStyles}
   
   /* Improved border handling */
   ${({ $position }) => $position === 'left' ? `

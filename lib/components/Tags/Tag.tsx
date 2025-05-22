@@ -1,24 +1,7 @@
 import { forwardRef, memo, useCallback, MouseEvent } from "react";
 import type { TagProps } from "./types";
-import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
 import { StyledTagContainer, StyledTagContent } from "./StyledTag";
-
-// Hook to extract common tag logic
-const useTag = (props: TagProps) => {
-  const {
-    variant = TagVariant.SUBTLE,
-    status = TagStatus.NEUTRAL,
-    size = TagSize.MD,
-    shape = TagShape.ROUNDED,
-  } = props;
-  
-  return {
-    shape,
-    variant,
-    status,
-    size
-  };
-};
+import { useTagProps } from "./tagUtils";
 
 export const Tag = memo(forwardRef<HTMLDivElement, TagProps>(
   (props, ref) => {
@@ -43,7 +26,7 @@ export const Tag = memo(forwardRef<HTMLDivElement, TagProps>(
       variant: computedVariant,
       status: computedStatus,
       size: computedSize
-    } = useTag(props);
+    } = useTagProps(props);
     
     // Memoize click handler for better performance
     const handleClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
