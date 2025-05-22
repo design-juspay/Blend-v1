@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import type { TagProps } from "./types";
 import { TagSize, TagStatus, TagStyle, TagVariant } from "./types";
 import { StyledTagContainer, StyledTagContent } from "./StyledTag";
