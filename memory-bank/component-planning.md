@@ -128,6 +128,58 @@ const componentNameTokens = {
 export default componentNameTokens;
 ```
 
+## 5. Slot-Based Component APIs
+
+Slot-based components provide a flexible way to customize component content while maintaining consistent styling and behavior.
+
+### Benefits of Slot-Based APIs
+- More flexible than icon-only props
+- Support for complex custom content
+- Better composition and reusability
+- Easier to extend with new features
+
+### Implementation Guidelines
+- Use ReactNode type for slot props
+- Maintain backward compatibility with existing APIs
+- Name slots descriptively (e.g., leadingSlot, trailingSlot, actionSlot)
+- Provide sensible defaults or fallbacks
+
+### Example
+```tsx
+// Component with slot-based API
+export const ComponentWithSlots = ({
+  leadingSlot,
+  trailingSlot,
+  children,
+  // Backward compatibility
+  leadingIcon: LeadingIcon,
+  trailingIcon: TrailingIcon,
+  ...props
+}) => {
+  // Fallback to icon if slot not provided
+  const leadingContent = leadingSlot || (LeadingIcon && <LeadingIcon />);
+  const trailingContent = trailingSlot || (TrailingIcon && <TrailingIcon />);
+  
+  return (
+    <StyledContainer {...props}>
+      {leadingContent}
+      <Content>{children}</Content>
+      {trailingContent}
+    </StyledContainer>
+  );
+};
+
+// Usage
+<ComponentWithSlots 
+  leadingSlot={<CustomComponent />}
+  trailingSlot={<Button variant="primary" />}
+>
+  Content
+</ComponentWithSlots>
+```
+
+This pattern enables advanced customization while maintaining the component's core functionality and styling.
+
 ---
 
 This planning document should be referenced before building any new component to ensure consistency, scalability, and maintainability across the library. 

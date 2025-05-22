@@ -18,8 +18,10 @@
 - Extensible enums and token structures for variants and states.
 - Consistent height handling across variants using transparent borders and box-sizing: border-box.
 - Size-specific styling for better visual consistency (e.g., border-radius scaled to component size).
+- Slot-based component API for flexible content customization, allowing both simple icon usage and complex custom content.
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.
 - Components are designed to be composed and extended as needed.
-- Split components (like SplitTag) support different variants while maintaining visual consistency. 
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout. 

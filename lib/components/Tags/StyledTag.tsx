@@ -8,7 +8,6 @@ import {
   getSplitTagStyles,
 } from "./tagUtils";
 
-// Base styled tag container
 export const StyledTagContainer = styled.div<{
   $variant?: TagVariant;
   $status?: TagStatus;
@@ -23,7 +22,6 @@ export const StyledTagContainer = styled.div<{
   font-family: var(--font-family-primary);
 `;
 
-// Base styled tag content
 export const StyledTagContent = styled.span`
   display: flex;
   align-items: center;
@@ -32,7 +30,6 @@ export const StyledTagContent = styled.span`
   letter-spacing: -0.01em;
 `;
 
-// Split tag container
 export const StyledSplitTagContainer = styled.div`
   display: inline-flex;
   align-items: stretch;
@@ -43,7 +40,6 @@ export const StyledSplitTagContainer = styled.div`
   box-sizing: border-box;
 `;
 
-// Split tag left section
 export const StyledSplitTagLeftSection = styled.div<{
   $variant?: TagVariant;
   $status?: TagStatus;
@@ -63,7 +59,6 @@ export const StyledSplitTagLeftSection = styled.div<{
   letter-spacing: -0.01em;
 `;
 
-// Split tag right section
 export const StyledSplitTagRightSection = styled.div<{
   $variant?: TagVariant;
   $status?: TagStatus;

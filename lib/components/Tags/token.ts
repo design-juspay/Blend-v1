@@ -1,7 +1,6 @@
 import { foundationToken } from '../foundationToken';
 import { TagSize } from './types';
 
-// Tag token definitions using foundationToken as the source of truth
 const tagTokens = {
   background: {
     noFill: {
@@ -107,7 +106,6 @@ const tagTokens = {
       purple: 'transparent'
     }
   },
-  // Updated sizes to match design specifications
   sizes: {
     xs: {
       height: '20px',
@@ -142,7 +140,6 @@ const tagTokens = {
       gap: '6px'
     }
   },
-  // Updated styles for tag shapes to match design specifications
   style: {
     squarical: {
       xs: '6px',
@@ -157,7 +154,6 @@ const tagTokens = {
       lg: '100px'
     }
   },
-  // Updated split tag specific styles
   splitStyle: {
     rounded: {
       left: (size: TagSize) => `${tagTokens.style.rounded[size]} 0 0 ${tagTokens.style.rounded[size]}`,
@@ -168,13 +164,11 @@ const tagTokens = {
       right: (size: TagSize) => `0 ${tagTokens.style.squarical[size]} ${tagTokens.style.squarical[size]} 0`
     }
   },
-  // Layout styles
   layout: {
     slot: 'flex items-center justify-center',
     container: 'inline-flex',
     base: 'inline-flex items-center justify-center transition-all duration-200'
   },
-  // Font styling
   font: {
     family: 'var(--font-family-primary)',
     letterSpacing: '-0.01em'

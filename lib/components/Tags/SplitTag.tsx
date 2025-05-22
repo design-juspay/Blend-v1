@@ -6,14 +6,7 @@ import {
   StyledSplitTagLeftSection,
   StyledSplitTagRightSection,
 } from "./StyledTag";
-import { getTagIconSize } from "./tagUtils";
 
-/**
- * SplitTag Component
- * 
- * A component for displaying a two-part tag with separate interactive sections
- * Can have different variants and statuses for each section
- */
 export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
   (
     {
@@ -25,8 +18,8 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
       secondaryStatus,
       size = TagSize.MD,
       style = TagStyle.ROUNDED,
-      leadingIcon: LeadingIcon,
-      trailingIcon: TrailingIcon,
+      leadingSlot,
+      trailingSlot,
       className = "",
       onClick,
       onSecondaryClick,
@@ -35,10 +28,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
     },
     ref
   ) => {
-    // Get icon size based on tag size
-    const iconSize = getTagIconSize(size);
-    
-    // Use primary variant/status for secondary section if not provided
     const rightVariant = secondaryVariant ?? variant;
     const rightStatus = secondaryStatus ?? status;
     
@@ -56,9 +45,7 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
           $tagStyle={style}
           onClick={onClick}
         >
-          {LeadingIcon && (
-            <LeadingIcon size={iconSize} />
-          )}
+          {leadingSlot}
           {text}
         </StyledSplitTagLeftSection>
         
@@ -70,9 +57,7 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
           onClick={onSecondaryClick}
         >
           {secondaryText}
-          {TrailingIcon && (
-            <TrailingIcon size={iconSize} />
-          )}
+          {trailingSlot}
         </StyledSplitTagRightSection>
       </StyledSplitTagContainer>
     );

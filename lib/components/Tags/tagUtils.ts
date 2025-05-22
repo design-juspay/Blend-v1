@@ -2,7 +2,6 @@ import { css } from "styled-components";
 import { TagSize, TagStatus, TagStyle, TagVariant } from "./types";
 import tagTokens from "./token";
 
-// Get tag size styles
 export const getTagSizeStyles = (size: TagSize = TagSize.MD) => {
   const sizeToken = tagTokens.sizes[size];
   
@@ -15,17 +14,10 @@ export const getTagSizeStyles = (size: TagSize = TagSize.MD) => {
   `;
 };
 
-// Get tag icon size
-export const getTagIconSize = (size: TagSize = TagSize.MD) => {
-  return tagTokens.sizes[size].iconSize;
-};
-
-// Get tag variant and status styles
 export const getTagVariantStyles = (
   variant: TagVariant = TagVariant.SUBTLE,
   status: TagStatus = TagStatus.NEUTRAL
 ) => {
-  // Make sure we're using a valid status key
   const statusKey = getTagStatusKey(status);
   
   return css`
@@ -41,50 +33,35 @@ export const getTagVariantStyles = (
   `;
 };
 
-// Get tag style (shape) styles
 export const getTagStyleStyles = (
   style: TagStyle = TagStyle.ROUNDED,
   size: TagSize = TagSize.MD
-) => {
-  return css`
-    border-radius: ${tagTokens.style[style][size]};
-  `;
-};
+) => css`
+  border-radius: ${tagTokens.style[style][size]};
+`;
 
-// Get split tag style
 export const getSplitTagStyles = (
   style: TagStyle = TagStyle.ROUNDED,
   position: 'left' | 'right',
   size: TagSize = TagSize.MD
-) => {
-  return css`
-    border-radius: ${tagTokens.splitStyle[style][position](size)};
-  `;
-};
+) => css`
+  border-radius: ${tagTokens.splitStyle[style][position](size)};
+`;
 
-// Helper function to get the correct status key
 export const getTagStatusKey = (
   status: TagStatus
 ): "neutral" | "primary" | "success" | "error" | "warning" | "purple" => {
   switch (status) {
-    case TagStatus.NEUTRAL:
-      return "neutral";
-    case TagStatus.PRIMARY:
-      return "primary";
-    case TagStatus.SUCCESS:
-      return "success";
-    case TagStatus.ERROR:
-      return "error";
-    case TagStatus.WARNING:
-      return "warning";
-    case TagStatus.PURPLE:
-      return "purple";
-    default:
-      return "neutral";
+    case TagStatus.NEUTRAL: return "neutral";
+    case TagStatus.PRIMARY: return "primary";
+    case TagStatus.SUCCESS: return "success";
+    case TagStatus.ERROR: return "error";
+    case TagStatus.WARNING: return "warning";
+    case TagStatus.PURPLE: return "purple";
+    default: return "neutral";
   }
 };
 
-// Get base tag styles
 export const getBaseTagStyles = () => css`
   display: inline-flex;
   align-items: center;
