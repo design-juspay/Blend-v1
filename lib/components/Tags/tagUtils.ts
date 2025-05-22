@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { TagSize, TagStatus, TagStyle, TagVariant } from "./types";
+import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
 import tagTokens from "./token";
 
 export const getTagSizeStyles = (size: TagSize = TagSize.MD) => {
@@ -21,31 +21,31 @@ export const getTagVariantStyles = (
   const statusKey = getTagStatusKey(status);
   
   return css`
-    background-color: ${tagTokens.background[variant][statusKey]};
-    color: ${tagTokens.text[variant][statusKey]};
+    background-color: ${tagTokens.getBackgroundColor(variant, status)};
+    color: ${tagTokens.getTextColor(variant, status)};
     
     /* Apply consistent border approach for all variants */
-    border: 1.5px solid ${tagTokens.border[variant][statusKey]};
+    border: 1.5px solid ${tagTokens.getBorderColor(variant, status)};
     
     svg {
-      color: ${tagTokens.icon[variant][statusKey]};
+      color: ${tagTokens.getIconColor(variant, status)};
     }
   `;
 };
 
-export const getTagStyleStyles = (
-  style: TagStyle = TagStyle.ROUNDED,
+export const getTagShapeStyles = (
+  shape: TagShape = TagShape.ROUNDED,
   size: TagSize = TagSize.MD
 ) => css`
-  border-radius: ${tagTokens.style[style][size]};
+  border-radius: ${tagTokens.getBorderRadius(shape, size)};
 `;
 
 export const getSplitTagStyles = (
-  style: TagStyle = TagStyle.ROUNDED,
+  shape: TagShape = TagShape.ROUNDED,
   position: 'left' | 'right',
   size: TagSize = TagSize.MD
 ) => css`
-  border-radius: ${tagTokens.splitStyle[style][position](size)};
+  border-radius: ${tagTokens.getSplitBorderRadius(shape, position, size)};
 `;
 
 export const getTagStatusKey = (

@@ -6,7 +6,7 @@ import {
   TagVariant,
   TagStatus,
   TagSize,
-  TagStyle
+  TagShape
 } from "../../../lib/components/Tags";
 
 const TagsDemo: React.FC = () => {
@@ -92,16 +92,16 @@ const TagsDemo: React.FC = () => {
         </div>
       </section>
 
-      {/* Tag Styles */}
+      {/* Tag Shapes */}
       <section className="showcase-section">
-        <h2 className="showcase-title">Tag Styles</h2>
+        <h2 className="showcase-title">Tag Shapes</h2>
         <div className="showcase-container">
           <div className="showcase-item">
-            <Tag text="Rounded" style={TagStyle.ROUNDED} leadingSlot={<Hash size={12} />} />
+            <Tag text="Rounded" shape={TagShape.ROUNDED} leadingSlot={<Hash size={12} />} />
             <span className="showcase-label">Rounded</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Squarical" style={TagStyle.SQUARICAL} leadingSlot={<Hash size={12} />} />
+            <Tag text="Squarical" shape={TagShape.SQUARICAL} leadingSlot={<Hash size={12} />} />
             <span className="showcase-label">Squarical</span>
           </div>
         </div>

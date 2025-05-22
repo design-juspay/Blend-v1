@@ -37,6 +37,7 @@
   - Implemented box-sizing fixes to ensure consistent dimensions
   - Enhanced token structure with more granular control over styling
   - Completely replaced icon-based props with a slot-based API for leading and trailing content, making the component more flexible and future-proof
+  - Improved token naming for better semantics (renamed 'style' to 'borderRadius' for clarity)
 - Refactored the Tags component to follow the modular component structure:
   - Created proper TypeScript types with enums for variants, statuses, sizes, and styles
   - Implemented token-based styling using foundationToken.ts as the source of truth
@@ -49,6 +50,7 @@
   - Added descriptive section headers and component descriptions
   - Improved visual styling with cards, proper spacing, and consistent typography
   - Demonstrated slot-based API usage with custom content examples
+- Created the foundationToken.ts file as the central design token system
 - Documented best practices for code quality and token management.
 
 ## Next Steps
@@ -84,4 +86,88 @@
 - Foundation tokens are the single source of truth for design primitives.
 - Consider adding specific hover/focus/active states to components for better interactivity.
 - Need to decide on a strategy for component variants vs. subcomponents (e.g., SplitTag).
-- All components should use box-sizing: border-box to ensure consistent dimensions. 
+- All components should use box-sizing: border-box to ensure consistent dimensions.
+
+## Active Development Focus
+
+### Current Focus Areas
+- Tag component refactoring and improvements
+- Demo system organization and aesthetics
+- Component structure alignment with best practices
+
+### Recent Changes
+
+#### Tags Component
+- Completed implementation of a pure slot-based API, removing the deprecated icon-specific props for more flexibility
+- Implemented a single Tag component with consistent styling for all variants
+- Added SplitTag component for dual-section tags with different styling/behavior
+- Simplified styling system with clear token structure
+- Fixed tag height inconsistencies across different sizes
+- Improved rendering performance with memo and useCallback
+- **Removed backward compatibility for the `style` prop in favor of the semantically clearer `shape` prop**
+- Added comprehensive type safety with proper TypeScript interfaces and enums
+- Enhanced documentation and examples
+
+#### Token System Improvement
+- **Implemented utility method pattern for token access**: Added getter functions in the token system that provide a standardized interface for accessing design values
+- This approach offers key advantages over direct object access:
+  - **Type Safety**: Ensures proper enum values with TypeScript validation
+  - **Abstraction**: Shields components from internal token structure changes
+  - **Normalization**: Handles data transformations consistently
+  - **Performance**: Reduces complex inline expressions in styled components
+  - **Maintainability**: Centralizes token access logic for easier updates
+- Pattern is demonstrated in the Tags component and will be adopted across all components
+
+#### Demo System
+- Improved organization of demos with consistent styling
+- Added comprehensive examples for each component variant
+- Created a more structured approach to component demonstrations
+- Enhanced visual clarity of the demo interface
+- Added clear labeling and section organization
+- Implemented a proper grid system for demo items
+
+### Upcoming Tasks
+- Continue refining component APIs for consistency
+- Implement remaining core components
+- Develop comprehensive documentation
+- Add accessibility improvements to all components
+- Create a unified system for component state management
+
+### Active Decisions
+
+#### Component Structure
+We've established a component architecture that separates concerns:
+
+1. **Main Component File (`Component.tsx`)**: Core component logic and rendering
+2. **Styled Component File (`StyledComponent.tsx`)**: All styled-components definitions
+3. **Types File (`types.ts`)**: TypeScript interfaces, types, and enums
+4. **Token File (`token.ts`)**: Design tokens specific to the component
+5. **Utils File (`utils.ts`)**: Utility functions for style computation, helpers, etc.
+
+This structure allows for better maintainability, clearer separation of concerns, and more modular code organization.
+
+#### API Design Principles
+- Favor composition over configuration when possible
+- Use slot-based APIs for flexible content insertion
+- Maintain consistent prop naming across components
+- Use enums for variant/size/status definitions
+- Ensure all components have proper TypeScript types
+- Design for extensibility with future requirements in mind
+
+#### Token Access Pattern
+- Use utility methods (`getBackgroundColor`, `getTextColor`, etc.) instead of direct object access
+- Centralize token structure knowledge within the token file itself
+- Keep styled components clean and focused on styling rather than token logic
+- Provide a consistent interface that shields components from token structure changes
+
+#### Migration and Backward Compatibility
+- **Complete migration from `style` to `shape` prop**: The legacy `style` prop has been removed, with `shape` being the standard prop for controlling tag appearance
+- As we refine components, we're documenting breaking changes and ensuring smooth migration paths
+- Breaking changes are isolated to specific components and carefully communicated
+
+#### Code Quality Standards
+- All components must have comprehensive TypeScript types
+- Styled components should use the proper typing for theme props
+- Use modern React patterns (hooks, functional components)
+- Maintain consistent code style throughout the codebase
+- Performance considerations should be documented 

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, MouseEventHandler } from "react";
 
 export enum TagVariant {
   NO_FILL = "noFill",
@@ -22,20 +22,21 @@ export enum TagSize {
   LG = "lg",
 }
 
-export enum TagStyle {
+export enum TagShape {
   ROUNDED = "rounded",
   SQUARICAL = "squarical",
 }
+
 export interface TagBaseProps {
   text: string;
   variant?: TagVariant;
   status?: TagStatus;
   size?: TagSize;
-  style?: TagStyle;
+  shape?: TagShape;
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLDivElement>;
   testId?: string;
 }
 
@@ -45,7 +46,7 @@ export interface TagProps extends TagBaseProps {
 
 export interface SplitTagProps extends TagBaseProps {
   secondaryText: string;
-  onSecondaryClick?: () => void;
+  onSecondaryClick?: MouseEventHandler<HTMLDivElement>;
   secondaryVariant?: TagVariant;
   secondaryStatus?: TagStatus;
 }

@@ -1,68 +1,113 @@
-import { forwardRef } from "react";
+import { forwardRef, memo, useCallback, MouseEvent } from "react";
 import type { SplitTagProps } from "./types";
-import { TagSize, TagStatus, TagStyle, TagVariant } from "./types";
+import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
 import {
   StyledSplitTagContainer,
-  StyledSplitTagLeftSection,
-  StyledSplitTagRightSection,
+  StyledSplitTagSection,
 } from "./StyledTag";
 
-export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
-  (
-    {
-      text,
-      secondaryText,
-      variant = TagVariant.SUBTLE,
-      status = TagStatus.NEUTRAL,
-      secondaryVariant,
-      secondaryStatus,
-      size = TagSize.MD,
-      style = TagStyle.ROUNDED,
+// Hook to extract common tag logic
+const useSplitTag = (props: SplitTagProps) => {
+  const {
+    text,
+    secondaryText,
+    variant = TagVariant.SUBTLE,
+    status = TagStatus.NEUTRAL,
+    secondaryVariant,
+    secondaryStatus,
+    size = TagSize.MD,
+    shape = TagShape.ROUNDED,
+  } = props;
+  
+  // Determine right section props
+  const rightVariant = secondaryVariant ?? variant;
+  const rightStatus = secondaryStatus ?? status;
+
+  return {
+    shape,
+    rightVariant,
+    rightStatus,
+    text,
+    secondaryText,
+    variant,
+    status,
+    size
+  };
+};
+
+export const SplitTag = memo(forwardRef<HTMLDivElement, SplitTagProps>(
+  (props, ref) => {
+    const {
       leadingSlot,
       trailingSlot,
       className = "",
       onClick,
       onSecondaryClick,
       testId,
-      ...rest
-    },
-    ref
-  ) => {
-    const rightVariant = secondaryVariant ?? variant;
-    const rightStatus = secondaryStatus ?? status;
+      // Explicitly extract props that shouldn't be passed to the DOM element
+      shape,
+      variant,
+      status,
+      size,
+      text,
+      secondaryText,
+      secondaryVariant,
+      secondaryStatus,
+      ...domProps
+    } = props;
+
+    const {
+      shape: computedShape,
+      rightVariant,
+      rightStatus,
+      variant: computedVariant,
+      status: computedStatus,
+      size: computedSize
+    } = useSplitTag(props);
+    
+    // Memoize click handlers for better performance
+    const handlePrimaryClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
+      onClick?.(e);
+    }, [onClick]);
+    
+    const handleSecondaryClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
+      onSecondaryClick?.(e);
+    }, [onSecondaryClick]);
     
     return (
       <StyledSplitTagContainer
         ref={ref}
         className={className}
         data-testid={testId}
-        {...rest}
+        {...domProps}
       >
-        <StyledSplitTagLeftSection
-          $variant={variant}
-          $status={status}
-          $size={size}
-          $tagStyle={style}
-          onClick={onClick}
+        <StyledSplitTagSection
+          $variant={computedVariant}
+          $status={computedStatus}
+          $size={computedSize}
+          $tagShape={computedShape}
+          $position="left"
+          onClick={handlePrimaryClick}
         >
           {leadingSlot}
           {text}
-        </StyledSplitTagLeftSection>
+        </StyledSplitTagSection>
         
-        <StyledSplitTagRightSection
+        <StyledSplitTagSection
           $variant={rightVariant}
           $status={rightStatus}
-          $size={size}
-          $tagStyle={style}
-          onClick={onSecondaryClick}
+          $size={computedSize}
+          $tagShape={computedShape}
+          $position="right"
+          onClick={handleSecondaryClick}
         >
           {secondaryText}
           {trailingSlot}
-        </StyledSplitTagRightSection>
+        </StyledSplitTagSection>
       </StyledSplitTagContainer>
     );
   }
-);
+));
 
 SplitTag.displayName = "SplitTag";
 

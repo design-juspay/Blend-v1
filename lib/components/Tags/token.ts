@@ -1,5 +1,8 @@
 import { foundationToken } from '../foundationToken';
-import { TagSize } from './types';
+import { TagSize, TagShape, TagVariant, TagStatus } from './types';
+
+// Type for the tag status values
+type TagStatusValue = 'neutral' | 'primary' | 'success' | 'error' | 'warning' | 'purple';
 
 const tagTokens = {
   background: {
@@ -140,7 +143,7 @@ const tagTokens = {
       gap: '6px'
     }
   },
-  style: {
+  borderRadius: {
     squarical: {
       xs: '6px',
       sm: '6px',
@@ -154,14 +157,14 @@ const tagTokens = {
       lg: '100px'
     }
   },
-  splitStyle: {
+  splitShape: {
     rounded: {
-      left: (size: TagSize) => `${tagTokens.style.rounded[size]} 0 0 ${tagTokens.style.rounded[size]}`,
-      right: (size: TagSize) => `0 ${tagTokens.style.rounded[size]} ${tagTokens.style.rounded[size]} 0`
+      left: (size: TagSize) => `${tagTokens.borderRadius.rounded[size]} 0 0 ${tagTokens.borderRadius.rounded[size]}`,
+      right: (size: TagSize) => `0 ${tagTokens.borderRadius.rounded[size]} ${tagTokens.borderRadius.rounded[size]} 0`
     },
     squarical: {
-      left: (size: TagSize) => `${tagTokens.style.squarical[size]} 0 0 ${tagTokens.style.squarical[size]}`,
-      right: (size: TagSize) => `0 ${tagTokens.style.squarical[size]} ${tagTokens.style.squarical[size]} 0`
+      left: (size: TagSize) => `${tagTokens.borderRadius.squarical[size]} 0 0 ${tagTokens.borderRadius.squarical[size]}`,
+      right: (size: TagSize) => `0 ${tagTokens.borderRadius.squarical[size]} ${tagTokens.borderRadius.squarical[size]} 0`
     }
   },
   layout: {
@@ -172,7 +175,42 @@ const tagTokens = {
   font: {
     family: 'var(--font-family-primary)',
     letterSpacing: '-0.01em'
-  }
+  },
+  
+  /**
+   * Token Utility Methods
+   * 
+   * These utility methods provide a standardized, type-safe interface for accessing 
+   * token values. They offer several key advantages over direct object access:
+   * 
+   * 1. Type Safety: Ensures proper enum values are used with TypeScript validation
+   * 2. Abstraction: Shields component implementation from token structure changes
+   * 3. Normalization: Handles any necessary data transformations consistently
+   * 4. Performance: Reduces potential for complex inline expressions in styled components
+   * 5. Maintainability: Centralizes token access logic for easier updates
+   * 
+   * Example usage in styled components:
+   * ${({$variant, $status}) => tagTokens.getBackgroundColor($variant, $status)}
+   */
+  
+  // Utility methods for normalized token access
+  getBackgroundColor: (variant: TagVariant, status: TagStatus): string => 
+    tagTokens.background[variant as keyof typeof tagTokens.background][status as TagStatusValue],
+  
+  getTextColor: (variant: TagVariant, status: TagStatus): string => 
+    tagTokens.text[variant as keyof typeof tagTokens.text][status as TagStatusValue],
+  
+  getIconColor: (variant: TagVariant, status: TagStatus): string => 
+    tagTokens.icon[variant as keyof typeof tagTokens.icon][status as TagStatusValue],
+  
+  getBorderColor: (variant: TagVariant, status: TagStatus): string => 
+    tagTokens.border[variant as keyof typeof tagTokens.border][status as TagStatusValue],
+  
+  getBorderRadius: (shape: TagShape, size: TagSize): string => 
+    tagTokens.borderRadius[shape][size],
+  
+  getSplitBorderRadius: (shape: TagShape, position: 'left' | 'right', size: TagSize): string => 
+    tagTokens.splitShape[shape][position](size)
 };
 
 export default tagTokens; 
