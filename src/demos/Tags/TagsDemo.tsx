@@ -156,58 +156,99 @@ const TagsDemo: React.FC = () => {
         <div className="showcase-container">
           <div className="showcase-item">
             <SplitTag 
-              text="New" 
-              secondaryText="2" 
-              variant={TagVariant.ATTENTIVE}
-              status={TagStatus.NEUTRAL}
-              secondaryVariant={TagVariant.NO_FILL}
-              secondaryStatus={TagStatus.NEUTRAL}
+              primaryTag={{
+                text: "New",
+                variant: TagVariant.ATTENTIVE,
+                status: TagStatus.NEUTRAL
+              }}
+              secondaryTag={{
+                text: "2",
+                variant: TagVariant.NO_FILL,
+                status: TagStatus.NEUTRAL
+              }}
             />
             <span className="showcase-label">Neutral</span>
           </div>
           <div className="showcase-item">
             <SplitTag 
-              text="Pending" 
-              secondaryText="5" 
-              variant={TagVariant.ATTENTIVE}
-              status={TagStatus.WARNING}
-              secondaryVariant={TagVariant.NO_FILL}
-              secondaryStatus={TagStatus.WARNING}
+              primaryTag={{
+                text: "Pending",
+                variant: TagVariant.ATTENTIVE,
+                status: TagStatus.WARNING
+              }}
+              secondaryTag={{
+                text: "5",
+                variant: TagVariant.NO_FILL,
+                status: TagStatus.WARNING
+              }}
             />
             <span className="showcase-label">Warning</span>
           </div>
           <div className="showcase-item">
             <SplitTag 
-              text="Completed" 
-              secondaryText="10" 
-              variant={TagVariant.ATTENTIVE}
-              status={TagStatus.SUCCESS}
-              secondaryVariant={TagVariant.NO_FILL}
-              secondaryStatus={TagStatus.SUCCESS}
+              primaryTag={{
+                text: "Completed",
+                variant: TagVariant.ATTENTIVE,
+                status: TagStatus.SUCCESS
+              }}
+              secondaryTag={{
+                text: "10",
+                variant: TagVariant.NO_FILL,
+                status: TagStatus.SUCCESS
+              }}
             />
             <span className="showcase-label">Success</span>
           </div>
           <div className="showcase-item">
             <SplitTag 
-              text="Failed" 
-              secondaryText="3" 
-              variant={TagVariant.ATTENTIVE}
-              status={TagStatus.ERROR}
-              secondaryVariant={TagVariant.NO_FILL}
-              secondaryStatus={TagStatus.ERROR}
+              primaryTag={{
+                text: "Failed",
+                variant: TagVariant.ATTENTIVE,
+                status: TagStatus.ERROR
+              }}
+              secondaryTag={{
+                text: "3",
+                variant: TagVariant.NO_FILL,
+                status: TagStatus.ERROR
+              }}
             />
             <span className="showcase-label">Error</span>
           </div>
           <div className="showcase-item">
             <SplitTag 
-              text="Key" 
-              secondaryText="Value" 
-              variant={TagVariant.NO_FILL}
-              status={TagStatus.NEUTRAL}
-              secondaryVariant={TagVariant.ATTENTIVE}
-              secondaryStatus={TagStatus.PRIMARY}
+              primaryTag={{
+                text: "Key",
+                variant: TagVariant.NO_FILL,
+                status: TagStatus.NEUTRAL
+              }}
+              secondaryTag={{
+                text: "Value",
+                variant: TagVariant.ATTENTIVE,
+                status: TagStatus.PRIMARY
+              }}
             />
             <span className="showcase-label">Mixed</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Single Tag Fallback */}
+      <section className="showcase-section">
+        <h2 className="showcase-title">Single Tag Fallback</h2>
+        <div className="showcase-container">
+          <div className="showcase-item">
+            <SplitTag 
+              primaryTag={{
+                text: "Single Tag",
+                variant: TagVariant.ATTENTIVE,
+                status: TagStatus.PRIMARY,
+                onClick: () => console.log('Tag clicked')
+              }}
+              // No secondaryTag = renders as regular Tag
+              size={TagSize.MD}
+              leadingSlot={<Hash size={12} />}
+            />
+            <span className="showcase-label">Single Tag Fallback</span>
           </div>
         </div>
       </section>

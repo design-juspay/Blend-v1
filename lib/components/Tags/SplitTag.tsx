@@ -1,66 +1,57 @@
-import { forwardRef, memo, useCallback, MouseEvent } from "react";
-import type { SplitTagProps } from "./types";
-import { TagVariant, TagStatus } from "./types";
+import { forwardRef, memo } from "react";
+import type { SplitTagProps, TagBaseProps } from "./types";
 import {
   StyledSplitTagContainer,
   StyledSplitTagSection,
 } from "./StyledTag";
 import { useTagProps } from "./tagUtils";
-
-// Helper for split tag specific logic
-const useSplitTagVariants = (props: SplitTagProps) => {
-  const {
-    secondaryVariant,
-    secondaryStatus,
-    variant = TagVariant.SUBTLE,
-    status = TagStatus.NEUTRAL,
-  } = props;
-  
-  // Determine right section props
-  return {
-    rightVariant: secondaryVariant ?? variant,
-    rightStatus: secondaryStatus ?? status,
-  };
-};
+import Tag from "./Tag";
 
 export const SplitTag = memo(forwardRef<HTMLDivElement, SplitTagProps>(
   (props, ref) => {
     const {
+      primaryTag,
+      secondaryTag,
+      size,
+      shape,
       leadingSlot,
       trailingSlot,
       className = "",
-      onClick,
-      onSecondaryClick,
       testId,
-      // Explicitly extract props that shouldn't be passed to the DOM element
-      shape,
-      variant,
-      status,
-      size,
-      text,
-      secondaryText,
-      secondaryVariant,
-      secondaryStatus,
       ...domProps
     } = props;
 
-    const {
-      shape: computedShape,
-      variant: computedVariant,
-      status: computedStatus,
-      size: computedSize
-    } = useTagProps(props);
+    // If no secondaryTag is provided, render a single Tag
+    if (!secondaryTag) {
+      return (
+        <Tag
+          ref={ref}
+          text={primaryTag.text}
+          variant={primaryTag.variant}
+          status={primaryTag.status}
+          size={size}
+          shape={shape}
+          leadingSlot={leadingSlot}
+          trailingSlot={trailingSlot}
+          className={className}
+          onClick={primaryTag.onClick}
+          testId={testId}
+          {...domProps}
+        />
+      );
+    }
+
+    // Create a TagBaseProps object for useTagProps
+    const tagBaseProps: TagBaseProps = {
+      text: primaryTag.text, // Required by TagBaseProps
+      variant: primaryTag.variant,
+      status: primaryTag.status,
+      size,
+      shape
+    };
     
-    const { rightVariant, rightStatus } = useSplitTagVariants(props);
-    
-    // Memoize click handlers for better performance
-    const handlePrimaryClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
-      onClick?.(e);
-    }, [onClick]);
-    
-    const handleSecondaryClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
-      onSecondaryClick?.(e);
-    }, [onSecondaryClick]);
+    // Determine computed properties for the primary and secondary sections
+    const computedProps = useTagProps(tagBaseProps);
     
     return (
       <StyledSplitTagContainer
@@ -70,26 +61,26 @@ export const SplitTag = memo(forwardRef<HTMLDivElement, SplitTagProps>(
         {...domProps}
       >
         <StyledSplitTagSection
-          $variant={computedVariant}
-          $status={computedStatus}
-          $size={computedSize}
-          $tagShape={computedShape}
+          $variant={computedProps.variant}
+          $status={computedProps.status}
+          $size={computedProps.size}
+          $tagShape={computedProps.shape}
           $position="left"
-          onClick={handlePrimaryClick}
+          onClick={primaryTag.onClick}
         >
           {leadingSlot}
-          {text}
+          {primaryTag.text}
         </StyledSplitTagSection>
         
         <StyledSplitTagSection
-          $variant={rightVariant}
-          $status={rightStatus}
-          $size={computedSize}
-          $tagShape={computedShape}
+          $variant={secondaryTag.variant || computedProps.variant}
+          $status={secondaryTag.status || computedProps.status}
+          $size={computedProps.size}
+          $tagShape={computedProps.shape}
           $position="right"
-          onClick={handleSecondaryClick}
+          onClick={secondaryTag.onClick}
         >
-          {secondaryText}
+          {secondaryTag.text}
           {trailingSlot}
         </StyledSplitTagSection>
       </StyledSplitTagContainer>

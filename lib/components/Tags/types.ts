@@ -44,9 +44,21 @@ export interface TagProps extends TagBaseProps {
   children?: ReactNode;
 }
 
-export interface SplitTagProps extends TagBaseProps {
-  secondaryText: string;
-  onSecondaryClick?: MouseEventHandler<HTMLDivElement>;
-  secondaryVariant?: TagVariant;
-  secondaryStatus?: TagStatus;
+export interface TagConfig {
+  text: string;
+  variant?: TagVariant;
+  status?: TagStatus;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+}
+
+// New SplitTagProps with improved structure
+export interface SplitTagProps {
+  primaryTag: TagConfig;
+  secondaryTag?: TagConfig;
+  size?: TagSize;
+  shape?: TagShape;
+  leadingSlot?: ReactNode;
+  trailingSlot?: ReactNode;
+  className?: string;
+  testId?: string;
 }

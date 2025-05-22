@@ -10,6 +10,7 @@ export {
   TagShape,
   type TagProps,
   type SplitTagProps,
+  type TagConfig,
   type TagBaseProps
 } from './types';
 
