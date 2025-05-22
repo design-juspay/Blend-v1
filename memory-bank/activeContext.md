@@ -38,11 +38,14 @@
   - Enhanced token structure with more granular control over styling
   - Completely replaced icon-based props with a slot-based API for leading and trailing content, making the component more flexible and future-proof
   - Improved token naming for better semantics (renamed 'style' to 'borderRadius' for clarity)
+  - **Removed font-family definitions to allow proper inheritance from parent elements**
 - Refactored the Tags component to follow the modular component structure:
   - Created proper TypeScript types with enums for variants, statuses, sizes, and styles
   - Implemented token-based styling using foundationToken.ts as the source of truth
   - Separated styled components, utils, and tokens into their own files
   - Developed both Tag and SplitTag components with consistent APIs
+  - Restructured SplitTag to use a more intuitive API with primaryTag and secondaryTag objects
+  - Added single Tag fallback functionality when secondaryTag is not provided
   - Added the components to the demo system with a simple navigation bar
 - Enhanced the demo system with a more organized and beautiful UI:
   - Implemented a vertical navigation sidebar for better component organization
@@ -153,6 +156,13 @@ This structure allows for better maintainability, clearer separation of concerns
 - Use enums for variant/size/status definitions
 - Ensure all components have proper TypeScript types
 - Design for extensibility with future requirements in mind
+
+#### Typography Inheritance
+- **Removed font-family definitions from all components**: Based on team discussion, we've determined that components should never define font-family properties, as this overrides project preferences.
+- Font-family should be inherited from parent elements to allow better integration with host applications
+- Components should only define typography properties like font-size, font-weight, line-height, and letter-spacing when necessary
+- This change allows projects to set their preferred fonts at the application level without fighting against component-level overrides
+- All components need to be audited to remove any font-family definitions
 
 #### Token Access Pattern
 - Use utility methods (`getBackgroundColor`, `getTextColor`, etc.) instead of direct object access

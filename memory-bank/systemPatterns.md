@@ -11,6 +11,7 @@
 - Reference foundation tokens in all component tokens.
 - Implement consistent box-sizing and border handling for predictable layouts.
 - Use system fonts with custom font integration for typography.
+- Never define font-family at the component level, allowing proper inheritance from the application.
 
 ## Design Patterns
 - Separation of concerns: logic, styles, tokens, types, and utilities in separate files.
@@ -19,6 +20,7 @@
 - Consistent height handling across variants using transparent borders and box-sizing: border-box.
 - Size-specific styling for better visual consistency (e.g., border-radius scaled to component size).
 - Slot-based component API for flexible content customization, allowing both simple icon usage and complex custom content.
+- Typography inheritance: Components should never override font-family, allowing it to be inherited from parent elements for better integration with host applications.
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.
