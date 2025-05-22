@@ -18,6 +18,7 @@ export enum ButtonSubType {
   DEFAULT = "default",
   ICON_ONLY = "iconOnly",
   LINK = "link",
+  PLAIN_ICON = "plainIcon",
 }
 
 // Using the provided interface
