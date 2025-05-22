@@ -7,7 +7,6 @@ import {
   getTagVariantStyles,
   getSplitTagStyles,
 } from "./tagUtils";
-import tagTokens from "./token";
 
 // Common props interface for styled components
 interface TagStyledProps {
