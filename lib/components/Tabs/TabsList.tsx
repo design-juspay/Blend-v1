@@ -16,7 +16,6 @@ const StyledTabsList = styled(TabsPrimitive.List)<StyledTabsListProps>`
   width: ${tabsTokens.layout.list.width};
   align-items: ${tabsTokens.layout.list.alignItems};
   gap: ${tabsTokens.layout.list.gap};
-  height: ${props => tabsTokens.sizes[props.$size].listHeight};
   border: none;
   position: relative;
 

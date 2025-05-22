@@ -60,7 +60,7 @@ const TabsDemo = () => {
       <div>
         <h2 style={{ marginBottom: '16px', fontSize: '18px', fontWeight: 600 }}>Boxed Tabs (Medium)</h2>
         <Tabs defaultValue="box1" style={{ width: '400px' }}>
-          <TabsList variant={TabsVariant.BOXED} size={TabsSize.MD}>
+          <TabsList variant={TabsVariant.BOXED} size={TabsSize.LG}>
             <TabsTrigger 
               value="box1" 
               variant={TabsVariant.BOXED}

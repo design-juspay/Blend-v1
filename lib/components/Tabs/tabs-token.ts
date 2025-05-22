@@ -17,7 +17,6 @@ const tabsTokens = {
   },
   sizes: {
     md: {
-      listHeight: "44px",
       triggerHeight: "36px",
       underlineOffset: "0px",
     },
@@ -30,27 +29,21 @@ const tabsTokens = {
   background: {
     boxed: {
       list: foundationToken.colors.gray[50],
-      trigger: {
-        default: "transparent",
-        hover: foundationToken.colors.gray[0],
-        active: foundationToken.colors.gray[0],
-      }
+      default: "transparent",
+      hover: foundationToken.colors.gray[0],
+      active: foundationToken.colors.gray[0],
     },
     floating: {
       list: "transparent",
-      trigger: {
-        default: "transparent",
-        hover: "transparent",
-        active: foundationToken.colors.gray[100],
-      }
+      default: "transparent",
+      hover: "transparent",
+      active: foundationToken.colors.gray[100],
     },
     underline: {
       list: "transparent",
-      trigger: {
-        default: "transparent",
-        hover: "transparent",
-        active: "transparent",
-      }
+      default: "transparent",
+      hover: "transparent",
+      active: "transparent",
     }
   },
   text: {

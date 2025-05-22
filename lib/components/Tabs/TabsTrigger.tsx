@@ -55,12 +55,12 @@ const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<StyledTabsTriggerProps>`
           border: none;
           
           &:hover:not([data-state="active"]) {
-            background-color: ${tabsTokens.background.boxed.trigger.hover};
+            background-color: ${tabsTokens.background.boxed.hover};
             color: ${tabsTokens.text.boxed.hover};
           }
           
           &[data-state="active"] {
-            background-color: ${tabsTokens.background.boxed.trigger.active};
+            background-color: ${tabsTokens.background.boxed.active};
             color: ${tabsTokens.text.boxed.active};
             font-weight: ${tabsTokens.font.weight.active};
             box-shadow: ${tabsTokens.shadow.boxed};
@@ -77,7 +77,7 @@ const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<StyledTabsTriggerProps>`
           }
           
           &[data-state="active"] {
-            background-color: ${tabsTokens.background.floating.trigger.active};
+            background-color: ${tabsTokens.background.floating.active};
             color: ${tabsTokens.text.floating.active};
             font-weight: ${tabsTokens.font.weight.active};
           }
@@ -104,7 +104,7 @@ const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<StyledTabsTriggerProps>`
               position: absolute;
               left: 0;
               right: 0;
-              bottom: -5px;
+              bottom: -1px;
               height: ${tabsTokens.border.underline.width};
               background-color: ${tabsTokens.border.underline.active};
               z-index: 2;
