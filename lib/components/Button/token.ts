@@ -1,4 +1,5 @@
-import { foundationToken } from "../foundationToken";
+import { foundationToken } from "../../foundationToken";
+
 
 const buttonTokens = {
   background: {
