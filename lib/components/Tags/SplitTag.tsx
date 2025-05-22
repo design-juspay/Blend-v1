@@ -1,6 +1,6 @@
 import { forwardRef, memo, useCallback, MouseEvent } from "react";
 import type { SplitTagProps } from "./types";
-import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
+import { TagVariant, TagStatus } from "./types";
 import {
   StyledSplitTagContainer,
   StyledSplitTagSection,
