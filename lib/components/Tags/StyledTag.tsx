@@ -49,7 +49,6 @@ export const StyledSplitTagContainer = styled.div`
   white-space: nowrap;
   cursor: pointer;
   width: fit-content;
-  font-family: ${tagTokens.font.family};
   box-sizing: border-box;
   overflow: hidden; /* Ensures no overflow from inner elements */
 `;

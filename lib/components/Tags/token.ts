@@ -173,7 +173,6 @@ const tagTokens = {
     base: 'inline-flex items-center justify-center transition-all duration-200'
   },
   font: {
-    family: 'var(--font-family-primary)',
     letterSpacing: '-0.01em'
   },
   

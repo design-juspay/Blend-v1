@@ -73,7 +73,6 @@ export const getBaseTagStyles = () => css`
   white-space: nowrap;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  font-family: ${tagTokens.font.family};
   letter-spacing: ${tagTokens.font.letterSpacing};
   box-sizing: border-box;
 `; 
