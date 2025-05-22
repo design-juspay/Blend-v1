@@ -6,6 +6,7 @@ import {
   ButtonType,
   ButtonSize,
 } from "../lib/components/Button";
+import TabsDemo from "./Demo/TabsDemo";
 
 function App() {
   return (
@@ -224,6 +225,7 @@ function App() {
           </div>
         </div>
       </section>
+      <TabsDemo />
     </div>
   );
 }
