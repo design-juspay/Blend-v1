@@ -1,5 +1,6 @@
 import { foundationToken } from "../../foundationToken";
 
+
 const tabsTokens = {
   layout: {
     root: {
@@ -9,7 +10,7 @@ const tabsTokens = {
       display: "flex",
       width: "100%",
       alignItems: "center",
-      gap: "12px",
+      gap: foundationToken.spacing[12],
     },
     expanded: {
       justifyContent: "space-between",
@@ -17,13 +18,13 @@ const tabsTokens = {
   },
   sizes: {
     md: {
-      triggerHeight: "36px",
-      underlineOffset: "0px",
+      triggerHeight: foundationToken.spacing[36],
+      underlineOffset: foundationToken.spacing[0],
     },
     lg: {
-      listHeight: "48px", 
-      triggerHeight: "40px",
-      underlineOffset: "0px",
+      listHeight: foundationToken.spacing[48], 
+      triggerHeight: foundationToken.spacing[40],
+      underlineOffset: foundationToken.spacing[0],
     }
   },
   background: {
@@ -65,22 +66,22 @@ const tabsTokens = {
   },
   border: {
     boxed: {
-      radius: "8px"
+      radius: foundationToken.borderRadius[8]
     },
     floating: {
-      radius: "8px",
+      radius: foundationToken.borderRadius[8],
     },
     underline: {
       default: "transparent",
       active: foundationToken.colors.gray[700],
-      width: "2px",
+      width: foundationToken.borderWidth[2],
     },
     list: {
       bottom: foundationToken.colors.gray[200],
     }
   },
   shadow: {
-    boxed: "0px 2px 3px 0px rgba(5, 5, 6, 0.05)",
+    boxed: foundationToken.boxShadow.sm,
   },
   content: {
     animation: {
@@ -90,13 +91,13 @@ const tabsTokens = {
   },
   font: {
     weight: {
-      default: "500",
-      active: "600",
+      default: foundationToken.fontWeight[500],
+      active: foundationToken.fontWeight[600],
     },
-    size: "14px"
+    size: foundationToken.fontSize.bodyMD
   },
   spacing: {
-    icon: "8px"
+    icon: foundationToken.spacing[8]
   }
 };
 

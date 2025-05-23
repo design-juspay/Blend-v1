@@ -5,7 +5,7 @@ import { TabsTriggerProps, TabsVariant, TabsSize } from './types';
 import tabsTokens from './tabs-token';
 import { foundationToken } from '../../foundationToken';
 
-interface StyledTabsTriggerProps {
+type StyledTabsTriggerProps = {
   $variant: TabsVariant;
   $size: TabsSize;
 }
@@ -22,7 +22,7 @@ const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<StyledTabsTriggerProps>`
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  padding: 0 12px; /* px-3 */
+  padding: 0 ${foundationToken.spacing[12]};
   font-size: ${tabsTokens.font.size};
   font-weight: ${tabsTokens.font.weight.default};
   transition: all 0.2s ease-in-out;
@@ -35,13 +35,13 @@ const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<StyledTabsTriggerProps>`
   /* Focus styles */
   &:focus-visible {
     outline: none;
-    ring: 2px solid ${foundationToken.colors.primary[500]};
-    ring-offset: 2px;
+    ring: ${foundationToken.borderWidth[2]} solid ${foundationToken.colors.primary[500]};
+    ring-offset: ${foundationToken.spacing[2]};
   }
 
   /* Disabled styles */
   &:disabled {
-    opacity: 0.5;
+    opacity: ${foundationToken.opacity[50]};
     pointer-events: none;
   }
 

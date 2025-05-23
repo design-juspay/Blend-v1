@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from './index';
 import { User, Settings, Lock } from 'lucide-react';
 import { TabsVariant, TabsSize } from './types';
 
-interface TabsStoryControls {
+type TabsStoryControls = {
   expanded?: boolean;
   showLeftSlot?: boolean;
   showRightSlot?: boolean;

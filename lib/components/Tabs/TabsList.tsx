@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { TabsListProps, TabsSize, TabsVariant } from './types';
 import tabsTokens from './tabs-token';
 
-interface StyledTabsListProps {
+type StyledTabsListProps = {
   $variant: TabsVariant;
   $size: TabsSize;
   $expanded: boolean;

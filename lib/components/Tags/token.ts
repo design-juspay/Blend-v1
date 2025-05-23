@@ -1,4 +1,4 @@
-import { foundationToken } from '../foundationToken';
+import { foundationToken } from '../../foundationToken';
 import { TagSize, TagShape, TagVariant, TagStatus } from './types';
 
 // Type for the tag status values
