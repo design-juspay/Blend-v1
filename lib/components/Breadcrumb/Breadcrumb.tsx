@@ -20,7 +20,7 @@ import {
   shouldTruncateBreadcrumb
 } from './breadcrumbUtils';
 
-const MAX_ITEMS = 4; // Maximum items before truncation
+const MAX_ITEMS = 4;
 
 const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
   ({ 

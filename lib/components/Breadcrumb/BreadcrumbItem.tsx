@@ -6,11 +6,6 @@ import {
   StyledIconSlot
 } from './StyledBreadcrumb';
 
-/**
- * BreadcrumbItem component renders individual items in a breadcrumb trail
- * It renders as a link when href is provided, a button when onClick is provided,
- * or a plain span when it's the last/active item
- */
 export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProps>(
   (
     {
