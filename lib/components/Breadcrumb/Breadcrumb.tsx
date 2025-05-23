@@ -1,4 +1,5 @@
-import { forwardRef, useState, useRef, useEffect } from 'react';
+import React, { forwardRef, useState, useRef } from 'react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
 import {
   BreadcrumbProps,
   BreadcrumbVariant,
@@ -12,13 +13,15 @@ import {
   StyledDivider,
   StyledMoreButton,
   StyledDropdown,
-  StyledDropdownItem
+  StyledDropdownItem,
+  StyledBreadcrumbDropdown
 } from './StyledBreadcrumb';
 import {
   processBreadcrumbItems,
   splitBreadcrumbItems,
   shouldTruncateBreadcrumb
 } from './breadcrumbUtils';
+import { useClickOutside } from '../../hooks';
 
 const MAX_ITEMS = 4;
 
@@ -34,24 +37,10 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     // Process items to add isActive and other properties
     const processedItems = processBreadcrumbItems(items);
 
-    // Handle clicks outside the dropdown to close it
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          dropdownRef.current &&
-          buttonRef.current &&
-          !dropdownRef.current.contains(event.target as Node) &&
-          !buttonRef.current.contains(event.target as Node)
-        ) {
-          setShowDropdown(false);
-        }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
+    // Use the useClickOutside hook to handle closing the dropdown
+    useClickOutside([dropdownRef, buttonRef], () => {
+      setShowDropdown(false);
+    });
 
     // Render a single breadcrumb item with divider
     const renderBreadcrumbItem = (
@@ -113,7 +102,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
 
               {/* Dropdown menu */}
               {showDropdown && (
-                <StyledDropdown ref={dropdownRef} role="menu">
+                <StyledBreadcrumbDropdown ref={dropdownRef} role="menu">
                   {moreItems.map((item, index) => (
                     <StyledDropdownItem key={index} role="menuitem">
                       <BreadcrumbItem
@@ -126,7 +115,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
                       />
                     </StyledDropdownItem>
                   ))}
-                </StyledDropdown>
+                </StyledBreadcrumbDropdown>
               )}
 
               <StyledDivider>/</StyledDivider>

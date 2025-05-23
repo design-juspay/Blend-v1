@@ -97,6 +97,8 @@ export const StyledDropdown = styled.div`
   box-shadow: ${breadcrumbTokens.shadow.dropdown};
 `;
 
+export const StyledBreadcrumbDropdown = StyledDropdown;
+
 export const StyledDropdownItem = styled.div`
   padding: ${breadcrumbTokens.spacing.itemPadding};
   
@@ -111,4 +113,4 @@ export const StyledIconSlot = styled.span<{ $position: 'left' | 'right' }>`
   justify-content: center;
   width: ${breadcrumbTokens.spacing.iconSlotSize};
   height: ${breadcrumbTokens.spacing.iconSlotSize};
-`; 
+`;

@@ -31,6 +31,7 @@
 - **Type aliases over interfaces: Use `type` instead of `interface` for component props and other type definitions to prevent accidental declaration merging and maintain clearer intent.**
 - Accessibility-first approach: All components include proper ARIA attributes and follow semantic markup patterns.
 - DRY code implementation: Extract repetitive code into reusable functions and shared types.
+- **Flexible hook design: Hooks are designed to be reusable across components with flexible typing and consistent API patterns.**
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.
@@ -57,6 +58,16 @@
 - **Utility Functions Over Inline Logic**: Extract complex transformations into utility functions for better testability and reuse.
 - **Consistent Token Structure**: Maintain similar token structure across components for better readability and familiarity.
 - **Getter Functions for Token Access**: Use utility methods to access token values rather than direct object access.
+
+## Hook Patterns
+- **Flexible Type Parameters**: Hooks use TypeScript generics or union types to support various element types.
+- **Array or Single Input Support**: Where appropriate, hooks accept either arrays or single items (e.g., useClickOutside accepting a single ref or array of refs).
+- **Proper Cleanup**: All hooks with event listeners or subscriptions include proper cleanup in their useEffect return function.
+- **Consistent Parameter Order**: Maintain consistent parameter ordering across hooks (refs first, then callbacks, then options).
+- **Comprehensive Documentation**: All hooks include JSDoc comments explaining their purpose, parameters, and usage patterns.
+- **Single Responsibility**: Each hook focuses on one specific functionality rather than combining multiple concerns.
+- **Centralized Exports**: All hooks are exported through an index file for clean imports.
+- **Dependency Memoization**: Properly memoize dependencies in useEffect to prevent unnecessary re-renders.
 
 ## Demo Patterns
 - **Component Isolation**: Each component has its own dedicated demo file for better maintainability.
