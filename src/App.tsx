@@ -5,6 +5,7 @@ import { Button, ButtonSubType } from "../lib/components/Button";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
+import TabsDemo from "./Demo/TabsDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -35,9 +36,9 @@ function App() {
       component: <SplitTagDemo />,
     },
     {
-      id: "navigation",
-      name: "Navigation Components",
-      component: <ComingSoon name="Navigation Components" />,
+      id: "tabs",
+      name: "Tabs",
+      component: <TabsDemo />,
     },
     {
       id: "data-display",

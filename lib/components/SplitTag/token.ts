@@ -1,4 +1,4 @@
-import { TagSize, TagShape, TagVariant, TagStatus } from './types';
+import { TagSize, TagShape } from './types';
 import tagTokens from '../Tags/token';
 
 // Reuse most of the token structure from Tags component

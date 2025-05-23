@@ -1,4 +1,4 @@
-import { forwardRef, MouseEvent } from "react";
+import { forwardRef } from "react";
 import type { TagProps } from "./types";
 import { StyledTagContainer, StyledTagContent } from "./StyledTag";
 import { TagVariant, TagStatus, TagSize, TagShape } from "./types";
