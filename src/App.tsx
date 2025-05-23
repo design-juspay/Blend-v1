@@ -51,17 +51,7 @@ function App() {
       id: "tabs",
       name: "Tabs",
       component: <TabsDemo />,
-    },
-    {
-      id: "data-display",
-      name: "Data Display",
-      component: <ComingSoon name="Data Display Components" />,
-    },
-    {
-      id: "feedback",
-      name: "Feedback Components",
-      component: <ComingSoon name="Feedback Components" />,
-    },
+    }
   ];
 
   // Get the current component to display
