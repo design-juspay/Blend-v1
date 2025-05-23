@@ -13,14 +13,14 @@ export {
   TagShape 
 };
 
-export interface TagConfig {
+export type TagConfig = {
   text: string;
   variant?: TagVariant;
   status?: TagStatus;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-export interface SplitTagProps {
+export type SplitTagProps = {
   primaryTag: TagConfig;
   secondaryTag?: TagConfig;
   size?: TagSize;

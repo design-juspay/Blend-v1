@@ -27,7 +27,7 @@ export enum TagShape {
   SQUARICAL = "squarical",
 }
 
-export interface TagBaseProps {
+export type TagBaseProps = {
   text: string;
   variant?: TagVariant;
   status?: TagStatus;
@@ -39,6 +39,6 @@ export interface TagBaseProps {
   testId?: string;
 }
 
-export interface TagProps extends TagBaseProps {
+export type TagProps = TagBaseProps & {
   children?: ReactNode;
 }

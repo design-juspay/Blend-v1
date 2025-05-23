@@ -72,6 +72,7 @@
 - Created the foundationToken.ts file as the central design token system
 - Documented best practices for code quality and token management.
 - **Removed className props from all components (Button, Tag, SplitTag) to prevent custom styling that could break component UI consistency**
+- **Converted interfaces to type aliases in all component type definitions for better consistency and to prevent accidental declaration merging**
 
 ## Next Steps
 

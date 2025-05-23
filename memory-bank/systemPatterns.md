@@ -24,6 +24,7 @@
 - Typography inheritance: Components should never override font-family, allowing it to be inherited from parent elements for better integration with host applications.
 - Component reuse and extension: Reuse existing components when appropriate (e.g., SplitTag using Tag for single tag fallback).
 - **Style encapsulation: Components do not accept className props to prevent custom styling that could break component UI consistency and design system integrity.**
+- **Type aliases over interfaces: Use `type` instead of `interface` for component props and other type definitions to prevent accidental declaration merging and maintain clearer intent.**
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.
