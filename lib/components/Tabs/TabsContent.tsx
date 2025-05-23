@@ -1,14 +1,6 @@
 import { forwardRef } from 'react';
-import * as TabsPrimitive from '@radix-ui/react-tabs';
-import styled from 'styled-components';
 import { TabsContentProps } from './types';
-
-const StyledTabsContent = styled(TabsPrimitive.Content)`
-  width: 100%;
-  outline: none;
-  will-change: none;
-  position: relative;
-`;
+import { StyledTabsContent } from './StyledTabs';
 
 const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
   ({ className, children, ...props }, ref) => (
