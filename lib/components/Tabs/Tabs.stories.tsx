@@ -3,15 +3,16 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from './index';
 import { User, Settings, Lock } from 'lucide-react';
 import { TabsVariant, TabsSize } from './types';
 
-type TabsStoryControls = {
-  expanded?: boolean;
-  showLeftSlot?: boolean;
-  showRightSlot?: boolean;
-  variant?: TabsVariant;
-  size?: TabsSize;
-}
+// Define the story args type explicitly
+type TabsStoryArgs = {
+  variant: TabsVariant;
+  size: TabsSize;
+  expanded: boolean;
+  showLeftSlot: boolean;
+  showRightSlot: boolean;
+};
 
-const meta = {
+const meta: Meta<TabsStoryArgs> = {
   title: 'Components/Tabs',
   component: Tabs,
   parameters: {
@@ -39,7 +40,7 @@ const meta = {
       control: 'boolean',
       description: 'Whether tabs should expand to fill the container width',
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     showLeftSlot: {
@@ -52,21 +53,19 @@ const meta = {
       description: 'Show right slot icon',
       table: { category: 'Icons' },
     },
-    leftSlot: { control: false, table: { disable: true } },
-    rightSlot: { control: false, table: { disable: true } },
   },
-} satisfies Meta<typeof Tabs>;
+};
 
 export default meta;
-type Story = StoryObj<typeof Tabs & TabsStoryControls>;
+type Story = StoryObj<TabsStoryArgs>;
 
 export const Default: Story = {
   render: (args) => {
-    const { expanded, showLeftSlot, showRightSlot, variant, size, ...tabsProps } = args as TabsStoryControls &
+    const { expanded, showLeftSlot, showRightSlot, variant, size, ...tabsProps } = args as TabsStoryArgs &
       typeof args;
 
     return (
-      <Tabs defaultValue="tab1" style={{ width: '400px' }} {...tabsProps}>
+      <Tabs defaultValue="tab1" style={{ width: '500px' }} {...tabsProps}>
         <TabsList variant={variant} size={size} expanded={expanded}>
           <TabsTrigger
             value="tab1"
@@ -147,6 +146,24 @@ export const Expanded: Story = {
     ...Default.args,
     expanded: true,
     variant: TabsVariant.BOXED,
+  },
+};
+
+export const ExpandedUnderline: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    expanded: true,
+    variant: TabsVariant.UNDERLINE,
+  },
+};
+
+export const ExpandedFloating: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    expanded: true,
+    variant: TabsVariant.FLOATING,
   },
 };
 

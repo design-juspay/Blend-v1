@@ -76,6 +76,9 @@ export const getBaseTabsTriggerStyles = () => css`
 
 export const getTabsTriggerSizeStyles = (size: TabsSize) => css`
   height: ${tabsTokens.sizes[size].triggerHeight};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const getTabsTriggerFocusStyles = () => css`
