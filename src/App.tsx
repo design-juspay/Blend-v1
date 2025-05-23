@@ -7,6 +7,7 @@ import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import TabsDemo from "./Demo/TabsDemo";
+import ButtonGroupDemo from "./demos/ButtonGroup/ButtonGroupDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -25,6 +26,11 @@ function App() {
       id: "buttons",
       name: "Buttons",
       component: <ButtonDemo />,
+    },
+    {
+      id: "button-group",
+      name: "Button Group",
+      component: <ButtonGroupDemo />,
     },
     {
       id: "tags",

@@ -1,5 +1,4 @@
-import React, { forwardRef, useState, useRef } from 'react';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { forwardRef, useState, useRef } from 'react';
 import {
   BreadcrumbProps,
   BreadcrumbVariant,
@@ -12,9 +11,8 @@ import {
   StyledBreadcrumbItem,
   StyledDivider,
   StyledMoreButton,
-  StyledDropdown,
-  StyledDropdownItem,
-  StyledBreadcrumbDropdown
+  StyledBreadcrumbDropdown,
+  StyledDropdownItem
 } from './StyledBreadcrumb';
 import {
   processBreadcrumbItems,
