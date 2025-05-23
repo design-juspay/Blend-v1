@@ -35,7 +35,6 @@ export interface TagBaseProps {
   shape?: TagShape;
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
-  className?: string;
   onClick?: MouseEventHandler<HTMLDivElement>;
   testId?: string;
 }

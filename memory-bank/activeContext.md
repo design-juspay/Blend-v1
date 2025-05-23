@@ -71,6 +71,7 @@
   - Demonstrated slot-based API usage with custom content examples
 - Created the foundationToken.ts file as the central design token system
 - Documented best practices for code quality and token management.
+- **Removed className props from all components (Button, Tag, SplitTag) to prevent custom styling that could break component UI consistency**
 
 ## Next Steps
 

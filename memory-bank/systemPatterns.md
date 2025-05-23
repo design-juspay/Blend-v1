@@ -23,6 +23,7 @@
 - Slot-based component API for flexible content customization, allowing both simple icon usage and complex custom content.
 - Typography inheritance: Components should never override font-family, allowing it to be inherited from parent elements for better integration with host applications.
 - Component reuse and extension: Reuse existing components when appropriate (e.g., SplitTag using Tag for single tag fallback).
+- **Style encapsulation: Components do not accept className props to prevent custom styling that could break component UI consistency and design system integrity.**
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.

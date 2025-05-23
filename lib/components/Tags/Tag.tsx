@@ -9,7 +9,6 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(
       text,
       leadingSlot,
       trailingSlot,
-      className = "",
       onClick,
       testId,
       children,
@@ -28,7 +27,6 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(
         $status={status}
         $size={size}
         $tagShape={shape}
-        className={className}
         onClick={onClick}
         data-testid={testId}
         {...domProps}

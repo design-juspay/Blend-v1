@@ -16,7 +16,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
       shape = TagShape.ROUNDED,
       leadingSlot,
       trailingSlot,
-      className = "",
       testId,
       ...domProps
     } = props;
@@ -33,7 +32,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
           shape={shape}
           leadingSlot={leadingSlot}
           trailingSlot={trailingSlot}
-          className={className}
           onClick={primaryTag.onClick}
           testId={testId}
           {...domProps}
@@ -52,7 +50,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
     return (
       <StyledSplitTagContainer
         ref={ref}
-        className={className}
         data-testid={testId}
         {...domProps}
       >

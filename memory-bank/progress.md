@@ -12,6 +12,7 @@
 - ✅ Utility functions for component styling
 - ✅ Component demos with examples
 - ✅ Component reusability patterns (SplitTag reusing Tag functionality)
+- ✅ Style encapsulation (no className props to maintain design system integrity)
 
 #### Specific Components
 - ✅ Button component with variants, sizes, and states
