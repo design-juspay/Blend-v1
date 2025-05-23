@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import { Menu, X } from "lucide-react";
 import { Button, ButtonSubType } from "../lib/components/Button";
-import ButtonDemo from "./demo/ButtonDemo";
+import ButtonDemo from "./demos/Button/ButtonDemo";
+import TagsDemo from "./demos/Tags/TagsDemo";
+import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -23,14 +25,14 @@ function App() {
       component: <ButtonDemo />,
     },
     {
-      id: "forms",
-      name: "Form Components",
-      component: <ComingSoon name="Form Components" />,
+      id: "tags",
+      name: "Tags",
+      component: <TagsDemo />,
     },
     {
-      id: "layout",
-      name: "Layout Components",
-      component: <ComingSoon name="Layout Components" />,
+      id: "split-tags",
+      name: "Split Tags",
+      component: <SplitTagDemo />,
     },
     {
       id: "navigation",

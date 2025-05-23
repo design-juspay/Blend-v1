@@ -1,7 +1,7 @@
 import { ButtonType, ButtonSize, ButtonSubType } from "./types";
 import buttonTokens from "./token";
 import { css } from "styled-components";
-import { foundationToken } from "../../foundationToken";
+import { foundationToken } from "../foundationToken";
 
 // Size configurations for button and icons
 export const buttonSizes = {

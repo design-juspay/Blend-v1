@@ -1,10 +1,10 @@
 import React from "react";
-import { Button } from "../../lib/components/Button";
+import { Button } from "../../../lib/components/Button";
 import {
   ButtonType,
   ButtonSize,
   ButtonSubType,
-} from "../../lib/components/Button/types";
+} from "../../../lib/components/Button/types";
 import {
   Send,
   Mail,

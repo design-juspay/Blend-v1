@@ -153,6 +153,9 @@ const foundationToken = {
     '2xl': '0px 12px 24px 4px rgba(5, 5, 6, 0.07)',
     full: '0px 24px 48px 8px rgba(5, 5, 6, 0.07)',
   },
+  wordBreak: {
+    wordBreak: 'break-word',
+  },
   borderRadius: {
     0: '0px',
     2: '2px',
@@ -174,7 +177,6 @@ const foundationToken = {
     10: '10px',
     12: '12px',
     16: '16px',
-    18: '18px',
     20: '20px',
     24: '24px',
     28: '28px',
