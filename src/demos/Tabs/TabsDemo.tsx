@@ -1,6 +1,6 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../lib/components/Tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../../lib/components/Tabs';
 import { User, Settings, Lock, Home, Bell, Mail } from 'lucide-react';
-import { TabsVariant, TabsSize } from '../../lib/components/Tabs/types';
+import { TabsVariant, TabsSize } from '../../../lib/components/Tabs/types';
 
 const TabsDemo = () => {
   return (
@@ -326,4 +326,4 @@ const TabsDemo = () => {
   );
 };
 
-export default TabsDemo;
+export default TabsDemo; 

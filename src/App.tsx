@@ -6,7 +6,7 @@ import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
-import TabsDemo from "./Demo/TabsDemo";
+import TabsDemo from "./demos/Tabs/TabsDemo";
 import ButtonGroupDemo from "./demos/ButtonGroup/ButtonGroupDemo";
 
 // Component categories

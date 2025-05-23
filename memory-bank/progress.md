@@ -18,6 +18,13 @@
 
 #### Specific Components
 - ✅ Button component with variants, sizes, and states
+- ✅ ButtonGroup component for combining related buttons
+  - ✅ Support for different button group sizes (small, medium, large)
+  - ✅ Stacked and non-stacked layout options
+  - ✅ Three modes for button type handling (singlePrimary, allSecondary, noTransform)
+  - ✅ Proper styling for connected buttons with correct border radius
+  - ✅ Utility functions for button position and type transformation
+  - ✅ Comprehensive demo with examples of all variants and modes
 - ✅ Tag component with variants, statuses, sizes, and shapes
   - ✅ Refactored to use slot-based API for flexible content
   - ✅ Completed removal of deprecated icon-specific props
@@ -41,10 +48,11 @@
 - ✅ Basic demo layout
 - ✅ Component showcase sections
 - ✅ Example variety covering component features
-- ✅ Dedicated demo pages for each component (Button, Tag, SplitTag, Breadcrumb)
+- ✅ Dedicated demo pages for each component (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Tabs)
 - ✅ Navigation sidebar for component selection
 - ✅ Beautified demos with consistent headers and explanatory text
 - ✅ Improved visual hierarchy with section dividers and better spacing
+- ✅ Consistent directory structure with all demos in src/demos/{ComponentName} folders
 
 #### Code Quality
 - ✅ Applied DRY principles to reduce code repetition
@@ -54,6 +62,7 @@
 - ✅ Enhanced component rendering with reusable functions
 - ✅ Maintained consistent token structure across components
 - ✅ Improved hook reusability with flexible TypeScript typing
+- ✅ Avoided over-optimization (removed unnecessary memoization)
 
 #### Hooks and Utilities
 - ✅ Enhanced useClickOutside hook to accept single ref or array of refs
@@ -101,6 +110,7 @@
 - Need to establish consistent pattern for component refs
 - SplitTag component needs accessibility improvements for keyboard navigation between sections
 - Breadcrumb component needs keyboard navigation improvements
+- ButtonGroup component needs additional keyboard navigation support
 
 ### System Issues
 - Token system needs more consistent naming
@@ -126,24 +136,28 @@
 
 ## Current Status
 - Documentation and rules are in place
-- Four components (Button, Tag, SplitTag, and Breadcrumb) follow the modular structure
+- Five components (Button, ButtonGroup, Tag, SplitTag, and Breadcrumb) follow the modular structure
 - Demo system has been enhanced with beautified demos and better organization
 - All components use a pure slot-based API without deprecated icon props
 - SplitTag component demonstrates proper component reuse and extension patterns
 - Breadcrumb component showcases semantic markup and accessibility patterns
-- DRY principles applied to Breadcrumb component with reusable rendering functions
+- ButtonGroup component demonstrates utility function extraction and DRY principles
+- Tabs component demo moved to correct directory structure (src/demos/Tabs) for consistency
+- DRY principles applied to components with reusable functions and utility extraction
 - Consistent token structure maintained across components for readability
 - Code quality has been improved with cleaner structure and better TypeScript typing
 - Component showcasing is well-organized with proper visual hierarchy
-- All components have been streamlined by removing unnecessary props like `testId`
+- All components have been streamlined by removing unnecessary props like `testId` and `className`
 - Self-documenting code preferred over verbose documentation comments
 - Hooks have been enhanced with better TypeScript typing and flexibility
 - useClickOutside hook refactored to support multiple refs for better component integration
+- Unnecessary optimizations like premature memoization have been avoided for simplicity
 
 ## Known Issues
 - Some CSS styling may need fine-tuning for perfect alignment
 - Token structure may need to evolve as new requirements emerge
 - Breadcrumb component needs additional keyboard navigation support
+- ButtonGroup component needs additional keyboard navigation support
 - Need to apply DRY principles more systematically across all components
 
 ## What's Left
