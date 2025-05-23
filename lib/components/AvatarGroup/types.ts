@@ -8,32 +8,12 @@ export interface AvatarData extends Omit<AvatarProps, 'className' | 'id'> {
 }
 
 export type AvatarGroupProps = {
-  /**
-   * Array of avatar data to display in the group
-   */
+
   avatars: AvatarData[];
-  /**
-   * Maximum number of avatars to display before showing a +X overflow
-   * @default 5
-   */
   maxCount?: number;
-  /**
-   * Size of all avatars in the group
-   * @default AvatarSize.MD
-   */
   size?: AvatarSize;
-  /**
-   * Shape of all avatars in the group
-   * @default AvatarShape.CIRCULAR
-   */
   shape?: AvatarShape;
-  /**
-   * IDs of selected avatars
-   */
   selectedAvatarIds?: (string | number)[];
-  /**
-   * Callback when selection changes
-   */
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
 
