@@ -14,14 +14,12 @@ type TagStyledProps = {
   $tagShape?: TagShape;
 }
 
-// Common styles that apply to both regular tags and split tag sections
 const commonTagStyles = css<TagStyledProps>`
   ${getBaseTagStyles()}
   ${({ $size }) => getTagSizeStyles($size)}
   ${({ $variant, $status }) => getTagVariantStyles($variant, $status)}
 `;
 
-// Common typography styles
 const commonTypographyStyles = css`
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -48,7 +46,7 @@ export const StyledSplitTagSection = styled.div<TagStyledProps & {
   justify-content: center;
   ${commonTypographyStyles}
   
-  /* Improved border handling */
+
   ${({ $position }) => $position === 'left' ? `
     border-right: none !important;
   ` : `

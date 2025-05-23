@@ -36,7 +36,6 @@ export type TagBaseProps = {
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
   onClick?: MouseEventHandler<HTMLDivElement>;
-  testId?: string;
 }
 
 export type TagProps = TagBaseProps & {

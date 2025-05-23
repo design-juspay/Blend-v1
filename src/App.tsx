@@ -5,7 +5,11 @@ import { Button, ButtonSubType } from "../lib/components/Button";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
-import TabsDemo from "./Demo/TabsDemo";
+import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
+import TabsDemo from "./demos/Tabs/TabsDemo";
+import ButtonGroupDemo from "./demos/ButtonGroup/ButtonGroupDemo";
+import AvatarDemo from "./demos/Avatar/AvatarDemo";
+import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -26,6 +30,11 @@ function App() {
       component: <ButtonDemo />,
     },
     {
+      id: "button-group",
+      name: "Button Group",
+      component: <ButtonGroupDemo />,
+    },
+    {
       id: "tags",
       name: "Tags",
       component: <TagsDemo />,
@@ -36,20 +45,25 @@ function App() {
       component: <SplitTagDemo />,
     },
     {
+      id: "breadcrumb",
+      name: "Breadcrumb",
+      component: <BreadcrumbDemo />,
+    },
+    {
       id: "tabs",
       name: "Tabs",
       component: <TabsDemo />,
     },
     {
-      id: "data-display",
-      name: "Data Display",
-      component: <ComingSoon name="Data Display Components" />,
+      id: "avatar",
+      name: "Avatar",
+      component: <AvatarDemo />,
     },
     {
-      id: "feedback",
-      name: "Feedback Components",
-      component: <ComingSoon name="Feedback Components" />,
-    },
+      id: "avatar-group",
+      name: "Avatar Group",
+      component: <AvatarGroupDemo />,
+    }
   ];
 
   // Get the current component to display
@@ -91,16 +105,6 @@ function App() {
 
       {/* Main Content */}
       <main className="main-content">{currentComponent}</main>
-    </div>
-  );
-}
-
-// Coming Soon Component
-function ComingSoon({ name }: { name: string }) {
-  return (
-    <div className="coming-soon">
-      <h1 className="heading-1">{name}</h1>
-      <p>This component category is coming soon!</p>
     </div>
   );
 }

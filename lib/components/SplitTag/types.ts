@@ -27,5 +27,4 @@ export type SplitTagProps = {
   shape?: TagShape;
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
-  testId?: string;
 } 

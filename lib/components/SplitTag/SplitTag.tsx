@@ -4,7 +4,7 @@ import {
   StyledSplitTagContainer,
   StyledSplitTagSection,
 } from "./StyledSplitTag";
-import { TagVariant, TagStatus, TagSize, TagShape } from "./types";
+import { TagVariant, TagStatus, TagShape } from "./types";
 import { Tag } from "../Tags";
 
 export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
@@ -12,15 +12,13 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
     const {
       primaryTag,
       secondaryTag,
-      size = TagSize.MD,
+      size,
       shape = TagShape.ROUNDED,
       leadingSlot,
       trailingSlot,
-      testId,
       ...domProps
     } = props;
     
-    // If no secondaryTag is provided, render a single Tag
     if (!secondaryTag) {
       return (
         <Tag
@@ -33,24 +31,20 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
           leadingSlot={leadingSlot}
           trailingSlot={trailingSlot}
           onClick={primaryTag.onClick}
-          testId={testId}
           {...domProps}
         />
       );
     }
     
-    // Apply defaults for primary tag
     const primaryVariant = primaryTag.variant || TagVariant.SUBTLE;
     const primaryStatus = primaryTag.status || TagStatus.NEUTRAL;
     
-    // Apply defaults for secondary tag (fallback to primary tag values if not specified)
     const secondaryVariant = secondaryTag.variant || primaryVariant;
     const secondaryStatus = secondaryTag.status || primaryStatus;
     
     return (
       <StyledSplitTagContainer
         ref={ref}
-        data-testid={testId}
         {...domProps}
       >
         <StyledSplitTagSection

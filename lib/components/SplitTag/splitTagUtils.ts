@@ -2,7 +2,6 @@ import { css } from "styled-components";
 import { TagSize, TagShape } from "./types";
 import splitTagTokens from "./token";
 
-// Import utilities from Tags
 import {
   getBaseTagStyles,
   getTagSizeStyles,
@@ -10,7 +9,6 @@ import {
   getTagVariantStyles
 } from "../Tags/tagUtils";
 
-// Re-export utilities from Tags
 export {
   getBaseTagStyles,
   getTagSizeStyles,
@@ -18,7 +16,6 @@ export {
   getTagVariantStyles
 };
 
-// SplitTag specific utility
 export const getSplitTagStyles = (
   shape: TagShape = TagShape.ROUNDED,
   position: 'left' | 'right',

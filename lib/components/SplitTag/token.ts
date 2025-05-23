@@ -1,9 +1,7 @@
 import { TagSize, TagShape } from './types';
 import tagTokens from '../Tags/token';
 
-// Reuse most of the token structure from Tags component
 const splitTagTokens = {
-  // Reuse common tokens from Tags
   background: tagTokens.background,
   text: tagTokens.text,
   icon: tagTokens.icon,
@@ -12,7 +10,6 @@ const splitTagTokens = {
   borderRadius: tagTokens.borderRadius,
   font: tagTokens.font,
   
-  // SplitTag specific tokens
   splitShape: {
     rounded: {
       left: (size: TagSize) => `${tagTokens.borderRadius.rounded[size]} 0 0 ${tagTokens.borderRadius.rounded[size]}`,
@@ -24,14 +21,12 @@ const splitTagTokens = {
     }
   },
   
-  // Utility methods (reusing tag tokens)
   getBackgroundColor: tagTokens.getBackgroundColor,
   getTextColor: tagTokens.getTextColor,
   getIconColor: tagTokens.getIconColor,
   getBorderColor: tagTokens.getBorderColor,
   getBorderRadius: tagTokens.getBorderRadius,
   
-  // SplitTag specific method
   getSplitBorderRadius: (shape: TagShape, position: 'left' | 'right', size: TagSize): string => {
     if (shape === TagShape.ROUNDED) {
       return position === 'left' 
