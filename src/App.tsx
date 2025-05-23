@@ -97,14 +97,4 @@ function App() {
   );
 }
 
-// Coming Soon Component
-function ComingSoon({ name }: { name: string }) {
-  return (
-    <div className="coming-soon">
-      <h1 className="heading-1">{name}</h1>
-      <p>This component category is coming soon!</p>
-    </div>
-  );
-}
-
 export default App;
