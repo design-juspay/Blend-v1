@@ -1,6 +1,5 @@
 import type { ComponentPropsWithoutRef, ElementType } from "react";
 
-// Using the provided enums
 export enum ButtonType {
   PRIMARY = "primary",
   SECONDARY = "secondary",
@@ -18,10 +17,10 @@ export enum ButtonSubType {
   DEFAULT = "default",
   ICON_ONLY = "iconOnly",
   LINK = "link",
+  PLAIN_ICON = "plainIcon",
 }
 
-// Using the provided interface
-export interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
+export type ButtonProps = ComponentPropsWithoutRef<"button"> & {
   buttonType?: ButtonType;
   size?: ButtonSize;
   subType?: ButtonSubType;
@@ -35,4 +34,4 @@ export interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   ariaControls?: string;
   ariaPressed?: boolean | "mixed";
   ariaHasPopup?: boolean | "menu" | "listbox" | "tree" | "grid" | "dialog";
-}
+};
