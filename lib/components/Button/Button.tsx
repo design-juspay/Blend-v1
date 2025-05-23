@@ -33,7 +33,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const hasLeadingIcon = !!LeadingIcon;
     const hasTrailingIcon = !!TrailingIcon;
-    const isIconOnly = subType === ButtonSubType.ICON_ONLY;
+    const isIconOnly =
+      subType === ButtonSubType.ICON_ONLY ||
+      subType === ButtonSubType.PLAIN_ICON;
 
     return (
       <StyledButton
@@ -45,7 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         $hasTrailingIcon={hasTrailingIcon}
         $isLoading={isLoading}
         disabled={isDisabled || isLoading}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel || (isIconOnly ? text : undefined)}
         aria-expanded={ariaExpanded}
         aria-controls={ariaControls}
         aria-pressed={ariaPressed}
@@ -59,7 +61,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 <LeadingIcon size={buttonSizes[size].iconSize} />
               </IconContainer>
             )}
-            {(!isIconOnly) && text}
+            {!isIconOnly && text}
             {hasTrailingIcon && (
               <IconContainer>
                 <TrailingIcon size={buttonSizes[size].iconSize} />

@@ -3,13 +3,11 @@ import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
 import {
   getBaseTagStyles,
   getTagSizeStyles,
-  getTagShapeStyles,
   getTagVariantStyles,
   getSplitTagStyles,
 } from "./splitTagUtils";
 
-// Common props interface for styled components
-interface TagStyledProps {
+type TagStyledProps = {
   $variant?: TagVariant;
   $status?: TagStatus;
   $size?: TagSize;

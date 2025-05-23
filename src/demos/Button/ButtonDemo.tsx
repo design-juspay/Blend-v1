@@ -1,306 +1,311 @@
 import React from "react";
-import { ArrowRight, Send } from "lucide-react";
+import { Button } from "../../../lib/components/Button";
 import {
-  Button,
-  ButtonSubType,
   ButtonType,
   ButtonSize,
-} from "../../../lib/components/Button";
+  ButtonSubType,
+} from "../../../lib/components/Button/types";
+import {
+  Send,
+  Mail,
+  Settings,
+  ChevronRight,
+  Bell,
+  Trash,
+  Check,
+  Plus,
+} from "lucide-react";
+import "./ButtonDemo.css";
 
 const ButtonDemo: React.FC = () => {
+  const buttonTypes = [
+    {
+      type: ButtonType.PRIMARY,
+      label: "Primary",
+      icon: Send,
+      color: "#0561E2",
+    },
+    {
+      type: ButtonType.SECONDARY,
+      label: "Secondary",
+      icon: Mail,
+      color: "#666",
+    },
+    { type: ButtonType.DANGER, label: "Danger", icon: Trash, color: "#E53935" },
+    {
+      type: ButtonType.SUCCESS,
+      label: "Success",
+      icon: Check,
+      color: "#2E7D32",
+    },
+  ];
+
+  const buttonSizes = [
+    { size: ButtonSize.SMALL, label: "Small" },
+    { size: ButtonSize.MEDIUM, label: "Medium" },
+    { size: ButtonSize.LARGE, label: "Large" },
+  ];
+
+  const buttonSubTypes = [
+    { subType: ButtonSubType.DEFAULT, label: "Default" },
+    { subType: ButtonSubType.ICON_ONLY, label: "Icon Only" },
+    { subType: ButtonSubType.LINK, label: "Link" },
+    { subType: ButtonSubType.PLAIN_ICON, label: "Plain Icon" },
+  ];
+
+  // Additional states to display
+  const buttonStates = [
+    { state: "default", label: "Default" },
+    { state: "disabled", label: "Disabled" },
+  ];
+
   return (
-    <div className="component-section">
-      <header className="component-header">
-        <h1 className="component-title">Button Component</h1>
-        <p className="component-description">
-          Versatile button components with various types, sizes, and states.
-        </p>
-      </header>
+    <div className="button-demo">
+      <h1>Button Component Demo</h1>
 
-      {/* Primary Buttons */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Primary Buttons</h2>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button text="Send Message" trailingIcon={ArrowRight} />
-            <span className="showcase-label">With Trailing Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button text="Send Message" leadingIcon={Send} />
-            <span className="showcase-label">With Leading Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">Icon Only</span>
+      <div className="demo-section">
+        <h2>Button Types</h2>
+        <div className="button-grid">
+          {buttonTypes.map(({ type, label, icon: Icon }) => (
+            <div key={type} className="button-card">
+              <h3>{label}</h3>
+              <div className="button-sample">
+                <Button
+                  buttonType={type}
+                  text={`${label} Button`}
+                  leadingIcon={Icon}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Button Sizes</h2>
+        <div className="button-grid">
+          {buttonSizes.map(({ size, label }) => (
+            <div key={size} className="button-card">
+              <h3>{label}</h3>
+              <div className="button-sample">
+                <Button
+                  size={size}
+                  text={`${label} Button`}
+                  leadingIcon={Send}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Button SubTypes</h2>
+        <div className="button-grid">
+          {buttonSubTypes.map(({ subType, label }) => (
+            <div key={subType} className="button-card">
+              <h3>{label}</h3>
+              <div className="button-sample">
+                <Button
+                  subType={subType}
+                  text={
+                    subType !== ButtonSubType.ICON_ONLY &&
+                    subType !== ButtonSubType.PLAIN_ICON
+                      ? `${label} Button`
+                      : undefined
+                  }
+                  leadingIcon={Send}
+                  trailingIcon={
+                    subType === ButtonSubType.DEFAULT ? ChevronRight : undefined
+                  }
+                  ariaLabel={
+                    subType === ButtonSubType.ICON_ONLY ||
+                    subType === ButtonSubType.PLAIN_ICON
+                      ? "Icon button"
+                      : undefined
+                  }
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Button States</h2>
+        <div className="button-grid">
+          {buttonStates.map(({ state, label }) => (
+            <div key={state} className="button-card">
+              <h3>{label}</h3>
+              <div className="button-sample">
+                <Button
+                  text={`${label} State`}
+                  leadingIcon={Send}
+                  isDisabled={state === "disabled"}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Comprehensive Demo - All Types × Sizes</h2>
+        <div className="comprehensive-grid">
+          {buttonTypes.map(({ type, label, icon: Icon }) => (
+            <div key={type} className="type-group">
+              <h3>{label} Buttons</h3>
+              <div className="button-row">
+                {buttonSizes.map(({ size, label: sizeLabel }) => (
+                  <div key={`${type}-${size}`} className="button-with-label">
+                    <span className="size-label">{sizeLabel}</span>
+                    <Button
+                      buttonType={type}
+                      size={size}
+                      text={`${label} Button`}
+                      leadingIcon={Icon}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Comprehensive Demo - All Types × SubTypes</h2>
+        <div className="comprehensive-grid">
+          {buttonTypes.map(({ type, label, icon: Icon }) => (
+            <div key={type} className="type-group">
+              <h3>{label} Buttons</h3>
+              <div className="button-row">
+                {buttonSubTypes.map(({ subType, label: subTypeLabel }) => (
+                  <div key={`${type}-${subType}`} className="button-with-label">
+                    <span className="subtype-label">{subTypeLabel}</span>
+                    <Button
+                      buttonType={type}
+                      subType={subType}
+                      text={
+                        subType !== ButtonSubType.ICON_ONLY &&
+                        subType !== ButtonSubType.PLAIN_ICON
+                          ? `${subTypeLabel}`
+                          : undefined
+                      }
+                      leadingIcon={Icon}
+                      trailingIcon={
+                        subType === ButtonSubType.DEFAULT
+                          ? ChevronRight
+                          : undefined
+                      }
+                      ariaLabel={
+                        subType === ButtonSubType.ICON_ONLY ||
+                        subType === ButtonSubType.PLAIN_ICON
+                          ? "Icon button"
+                          : undefined
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Loading State</h2>
+        <div className="button-grid">
+          {buttonTypes.map(({ type, label }) => (
+            <div key={`${type}-loading`} className="button-card">
+              <h3>{label} Loading</h3>
+              <div className="button-sample">
+                <Button buttonType={type} text="Loading..." isLoading={true} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h2>Example Use Cases</h2>
+
+        <div className="use-case-card">
+          <h3>Form Actions</h3>
+          <div className="form-example">
+            <div className="form-fields">
+              <label>Name</label>
+              <input type="text" placeholder="John Doe" disabled />
+              <label>Email</label>
+              <input type="email" placeholder="john@example.com" disabled />
+            </div>
+            <div className="form-actions">
+              <Button buttonType={ButtonType.SECONDARY} text="Cancel" />
+              <Button
+                buttonType={ButtonType.PRIMARY}
+                text="Submit"
+                trailingIcon={ChevronRight}
+              />
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Secondary Buttons */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Secondary Buttons</h2>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SECONDARY}
-              text="Send Message"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">With Trailing Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SECONDARY}
-              text="Send Message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">With Leading Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SECONDARY}
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">Icon Only</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Danger Buttons */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Danger Buttons</h2>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.DANGER}
-              text="Send Message"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">With Trailing Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.DANGER}
-              text="Send Message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">With Leading Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.DANGER}
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">Icon Only</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Success Buttons */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Success Buttons</h2>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SUCCESS}
-              text="Send Message"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">With Trailing Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SUCCESS}
-              text="Send Message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">With Leading Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SUCCESS}
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">Icon Only</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Button Sizes */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Button Sizes</h2>
-        <div className="showcase-container">
-          <div className="showcase-item">
+        <div className="use-case-card">
+          <h3>Action Bar</h3>
+          <div className="action-bar-example">
             <Button
               size={ButtonSize.SMALL}
-              text="Small Button"
-              trailingIcon={ArrowRight}
+              subType={ButtonSubType.PLAIN_ICON}
+              leadingIcon={Plus}
+              ariaLabel="Add item"
             />
-            <span className="showcase-label">Small</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              size={ButtonSize.MEDIUM}
-              text="Medium Button"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Medium</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              size={ButtonSize.LARGE}
-              text="Large Button"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Large</span>
-          </div>
-        </div>
-        <div className="showcase-container mt-4">
-          <div className="showcase-item">
             <Button
               size={ButtonSize.SMALL}
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
+              subType={ButtonSubType.PLAIN_ICON}
+              leadingIcon={Settings}
+              ariaLabel="Settings"
             />
-            <span className="showcase-label">Small Icon</span>
-          </div>
-          <div className="showcase-item">
+            <div className="spacer"></div>
             <Button
-              size={ButtonSize.MEDIUM}
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">Medium Icon</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              size={ButtonSize.LARGE}
-              subType={ButtonSubType.ICON_ONLY}
-              ariaLabel="Send message"
-              leadingIcon={Send}
-            />
-            <span className="showcase-label">Large Icon</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Link Buttons */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Link Buttons</h2>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button
-              subType={ButtonSubType.LINK}
-              text="Primary Link"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Primary</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SECONDARY}
-              subType={ButtonSubType.LINK}
-              text="Secondary Link"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Secondary</span>
-          </div>
-          <div className="showcase-item">
-            <Button
+              size={ButtonSize.SMALL}
               buttonType={ButtonType.DANGER}
-              subType={ButtonSubType.LINK}
-              text="Danger Link"
-              trailingIcon={ArrowRight}
+              text="Delete"
+              leadingIcon={Trash}
             />
-            <span className="showcase-label">Danger</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SUCCESS}
-              subType={ButtonSubType.LINK}
-              text="Success Link"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Success</span>
           </div>
         </div>
-      </section>
 
-      {/* States Section */}
-      <section className="showcase-section">
-        <h2 className="showcase-title">Button States</h2>
-        
-        {/* Disabled Buttons */}
-        <h3 className="showcase-subtitle">Disabled</h3>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button isDisabled text="Primary" trailingIcon={ArrowRight} />
-            <span className="showcase-label">Primary</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SECONDARY}
-              isDisabled
-              text="Secondary"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Secondary</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.DANGER}
-              isDisabled
-              text="Danger"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Danger</span>
-          </div>
-          <div className="showcase-item">
-            <Button
-              buttonType={ButtonType.SUCCESS}
-              isDisabled
-              text="Success"
-              trailingIcon={ArrowRight}
-            />
-            <span className="showcase-label">Success</span>
+        <div className="use-case-card">
+          <h3>Notification Panel</h3>
+          <div className="notification-example">
+            <div className="notification-header">
+              <h4>New Message</h4>
+              <Button
+                subType={ButtonSubType.PLAIN_ICON}
+                size={ButtonSize.SMALL}
+                leadingIcon={Bell}
+                ariaLabel="Notifications"
+              />
+            </div>
+            <p>You have a new message from the support team.</p>
+            <div className="notification-actions">
+              <Button
+                size={ButtonSize.SMALL}
+                buttonType={ButtonType.SECONDARY}
+                subType={ButtonSubType.LINK}
+                text="Dismiss"
+              />
+              <Button
+                size={ButtonSize.SMALL}
+                buttonType={ButtonType.PRIMARY}
+                text="View Message"
+              />
+            </div>
           </div>
         </div>
-        
-        {/* Loading Buttons */}
-        <h3 className="showcase-subtitle">Loading</h3>
-        <div className="showcase-container">
-          <div className="showcase-item">
-            <Button isLoading text="Primary" />
-            <span className="showcase-label">Primary</span>
-          </div>
-          <div className="showcase-item">
-            <Button buttonType={ButtonType.SECONDARY} isLoading text="Secondary" />
-            <span className="showcase-label">Secondary</span>
-          </div>
-          <div className="showcase-item">
-            <Button buttonType={ButtonType.DANGER} isLoading text="Danger" />
-            <span className="showcase-label">Danger</span>
-          </div>
-          <div className="showcase-item">
-            <Button buttonType={ButtonType.SUCCESS} isLoading text="Success" />
-            <span className="showcase-label">Success</span>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };
 
-export default ButtonDemo; 
+export default ButtonDemo;

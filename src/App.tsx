@@ -1,60 +1,105 @@
-import "./App.css";
 import { useState } from "react";
-import { CircleUser, TagIcon, Split } from "lucide-react";
+import "./App.css";
+import { Menu, X } from "lucide-react";
+import { Button, ButtonSubType } from "../lib/components/Button";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 
-type ComponentSection = "buttons" | "tags" | "splitTags";
+// Component categories
+type ComponentCategory = {
+  id: string;
+  name: string;
+  component: React.ReactNode;
+};
 
 function App() {
-  const [activeSection, setActiveSection] = useState<ComponentSection>("buttons");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("buttons");
+
+  // Define the component categories
+  const componentCategories: ComponentCategory[] = [
+    {
+      id: "buttons",
+      name: "Buttons",
+      component: <ButtonDemo />,
+    },
+    {
+      id: "tags",
+      name: "Tags",
+      component: <TagsDemo />,
+    },
+    {
+      id: "split-tags",
+      name: "Split Tags",
+      component: <SplitTagDemo />,
+    },
+    {
+      id: "navigation",
+      name: "Navigation Components",
+      component: <ComingSoon name="Navigation Components" />,
+    },
+    {
+      id: "data-display",
+      name: "Data Display",
+      component: <ComingSoon name="Data Display Components" />,
+    },
+    {
+      id: "feedback",
+      name: "Feedback Components",
+      component: <ComingSoon name="Feedback Components" />,
+    },
+  ];
+
+  // Get the current component to display
+  const currentComponent = componentCategories.find(
+    (category) => category.id === selectedCategory
+  )?.component;
 
   return (
     <div className="app-container">
-      {/* Vertical Navigation Sidebar */}
-      <aside className="sidebar">
+      {/* Sidebar Toggle for Mobile */}
+      <div className="sidebar-toggle">
+        <Button
+          subType={ButtonSubType.PLAIN_ICON}
+          ariaLabel={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+          leadingIcon={isSidebarOpen ? X : Menu}
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
+      </div>
+
+      {/* Sidebar */}
+      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
-          <h1 className="sidebar-title">Blend-v1</h1>
-          <div className="sidebar-subtitle">Component Library</div>
+          <h1 className="sidebar-title">Component Library</h1>
         </div>
-        
         <nav className="sidebar-nav">
-          <button
-            className={`nav-item ${activeSection === "buttons" ? "active" : ""}`}
-            onClick={() => setActiveSection("buttons")}
-          >
-            <CircleUser size={18} />
-            <span>Buttons</span>
-          </button>
-          <button
-            className={`nav-item ${activeSection === "tags" ? "active" : ""}`}
-            onClick={() => setActiveSection("tags")}
-          >
-            <TagIcon size={18} />
-            <span>Tags</span>
-          </button>
-          <button
-            className={`nav-item ${activeSection === "splitTags" ? "active" : ""}`}
-            onClick={() => setActiveSection("splitTags")}
-          >
-            <Split size={18} />
-            <span>Split Tags</span>
-          </button>
-          {/* Future components would be added here */}
+          {componentCategories.map((category) => (
+            <button
+              key={category.id}
+              className={`sidebar-nav-item ${
+                selectedCategory === category.id ? "active" : ""
+              }`}
+              onClick={() => setSelectedCategory(category.id)}
+            >
+              {category.name}
+            </button>
+          ))}
         </nav>
-        
-        <div className="sidebar-footer">
-          <div className="version">Version 1.0.0</div>
-        </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="content-area">
-        {activeSection === "buttons" && <ButtonDemo />}
-        {activeSection === "tags" && <TagsDemo />}
-        {activeSection === "splitTags" && <SplitTagDemo />}
-      </main>
+      {/* Main Content */}
+      <main className="main-content">{currentComponent}</main>
+    </div>
+  );
+}
+
+// Coming Soon Component
+function ComingSoon({ name }: { name: string }) {
+  return (
+    <div className="coming-soon">
+      <h1 className="heading-1">{name}</h1>
+      <p>This component category is coming soon!</p>
     </div>
   );
 }
