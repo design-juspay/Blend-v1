@@ -4,7 +4,7 @@ import {
   StyledSplitTagContainer,
   StyledSplitTagSection,
 } from "./StyledSplitTag";
-import { TagVariant, TagStatus } from "./types";
+import { TagVariant, TagStatus, TagShape } from "./types";
 import { Tag } from "../Tags";
 
 /**
@@ -25,7 +25,7 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
       primaryTag,
       secondaryTag,
       size,
-      shape,
+      shape = TagShape.ROUNDED,
       leadingSlot,
       trailingSlot,
       ...domProps
