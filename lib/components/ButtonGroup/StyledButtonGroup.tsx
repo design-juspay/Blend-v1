@@ -2,13 +2,11 @@ import styled, { css } from 'styled-components';
 import buttonGroupTokens from './token';
 import { ButtonSize } from '../Button/types';
 
-// Base ButtonGroup container
 export const StyledButtonGroup = styled.div`
   display: ${buttonGroupTokens.container.display};
   align-items: ${buttonGroupTokens.container.alignItems};
 `;
 
-// Container with gap for non-stacked groups
 export const StyledButtonGroupContainer = styled(StyledButtonGroup)<{ 
   $isStacked: boolean; 
   $size: ButtonSize 
@@ -18,7 +16,6 @@ export const StyledButtonGroupContainer = styled(StyledButtonGroup)<{
   }
 `;
 
-// Wrapper that applies position-specific styles for buttons in stacked groups
 export const StyledButtonWrapper = styled.div<{ 
   $position: 'first' | 'middle' | 'last'; 
   $isStacked: boolean 
