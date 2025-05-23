@@ -5,7 +5,8 @@ import {
   getTagSizeStyles,
   getTagShapeStyles,
   getTagVariantStyles,
-} from "./tagUtils";
+  getSplitTagStyles,
+} from "./splitTagUtils";
 
 // Common props interface for styled components
 interface TagStyledProps {
@@ -28,15 +29,34 @@ const commonTypographyStyles = css`
   letter-spacing: -0.01em;
 `;
 
-export const StyledTagContainer = styled.div<TagStyledProps>`
-  ${commonTagStyles}
-  ${({ $tagShape, $size }) => $tagShape && getTagShapeStyles($tagShape, $size)}
+export const StyledSplitTagContainer = styled.div`
+  display: inline-flex;
+  align-items: stretch;
+  white-space: nowrap;
+  cursor: pointer;
   width: fit-content;
+  box-sizing: border-box;
+  overflow: hidden; /* Ensures no overflow from inner elements */
 `;
 
-export const StyledTagContent = styled.span`
+export const StyledSplitTagSection = styled.div<TagStyledProps & {
+  $position: 'left' | 'right';
+}>`
+  ${commonTagStyles}
+  ${({ $tagShape, $position, $size }) => $tagShape && getSplitTagStyles($tagShape, $position, $size)}
+  
   display: flex;
   align-items: center;
   justify-content: center;
   ${commonTypographyStyles}
+  
+  /* Improved border handling */
+  ${({ $position }) => $position === 'left' ? `
+    border-right: none !important;
+  ` : `
+    border-left: none !important;
+    position: relative; /* Creates stacking context */
+    margin-left: -1px; /* Clean connection between sections */
+    z-index: 1; /* Ensures proper layering */
+  `}
 `; 

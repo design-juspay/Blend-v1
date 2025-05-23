@@ -1,26 +1,6 @@
 import { css } from "styled-components";
-import { TagSize, TagStatus, TagShape, TagVariant, TagBaseProps } from "./types";
+import { TagSize, TagStatus, TagShape, TagVariant } from "./types";
 import tagTokens from "./token";
-
-/**
- * Common hook for handling default tag props and computed values
- * This centralizes prop handling for both Tag and SplitTag components
- */
-export const useTagProps = <T extends TagBaseProps>(props: T) => {
-  const {
-    variant = TagVariant.SUBTLE,
-    status = TagStatus.NEUTRAL,
-    size = TagSize.MD,
-    shape = TagShape.ROUNDED,
-  } = props;
-
-  return {
-    shape,
-    variant,
-    status,
-    size
-  };
-};
 
 export const getTagSizeStyles = (size: TagSize = TagSize.MD) => {
   const sizeToken = tagTokens.sizes[size];
@@ -56,14 +36,6 @@ export const getTagShapeStyles = (
   size: TagSize = TagSize.MD
 ) => css`
   border-radius: ${tagTokens.getBorderRadius(shape, size)};
-`;
-
-export const getSplitTagStyles = (
-  shape: TagShape = TagShape.ROUNDED,
-  position: 'left' | 'right',
-  size: TagSize = TagSize.MD
-) => css`
-  border-radius: ${tagTokens.getSplitBorderRadius(shape, position, size)};
 `;
 
 export const getBaseTagStyles = () => css`

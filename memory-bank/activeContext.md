@@ -14,15 +14,24 @@
    - Added comprehensive token system for styling 
    - Implemented new slot-based API for enhanced flexibility
 
-2. **Demo System Improvements:**
+2. **SplitTag Component Implementation:**
+   - Created a standalone SplitTag component with its own directory structure
+   - Designed to reuse Tag component functionality when appropriate
+   - Implemented a clear API with primaryTag and secondaryTag objects
+   - Added fallback to regular Tag when secondaryTag is not provided
+   - Reused Tag tokens and utilities to maintain consistency
+   - Created a dedicated demo for SplitTag with comprehensive examples
+
+3. **Demo System Improvements:**
    - Restructured the demo system to be more modular and maintainable
    - Created dedicated component demo files in separate directories
    - Moved Button demos to `src/demos/Button/ButtonDemo.tsx`
    - Moved Tag demos to `src/demos/Tags/TagsDemo.tsx`
+   - Added SplitTag demos to `src/demos/SplitTag/SplitTagDemo.tsx`
    - Simplified `App.tsx` by importing modularized demo components
    - Enhanced component showcasing with better organization and aesthetics
 
-3. **Code Quality Improvements:**
+4. **Code Quality Improvements:**
    - Applied consistent styling patterns across components
    - Implemented cleaner utility functions
    - Removed unnecessary comments while maintaining essential documentation
@@ -47,6 +56,13 @@
   - Restructured SplitTag to use a more intuitive API with primaryTag and secondaryTag objects
   - Added single Tag fallback functionality when secondaryTag is not provided
   - Added the components to the demo system with a simple navigation bar
+- Created a standalone SplitTag component:
+  - Moved SplitTag from the Tags directory to its own directory
+  - Established proper component structure with separate files for component logic, styling, tokens, types, and utilities
+  - Reused Tag component for the single tag fallback case
+  - Leveraged Tag tokens and utilities for consistency
+  - Created a dedicated demo with comprehensive examples
+  - Implemented a clean API with primaryTag and secondaryTag objects
 - Enhanced the demo system with a more organized and beautiful UI:
   - Implemented a vertical navigation sidebar for better component organization
   - Created a structured showcase format with labeled component examples
@@ -88,7 +104,7 @@
 - All new components must follow the modular directory and file structure.
 - Foundation tokens are the single source of truth for design primitives.
 - Consider adding specific hover/focus/active states to components for better interactivity.
-- Need to decide on a strategy for component variants vs. subcomponents (e.g., SplitTag).
+- **Resolved strategy for component variants vs. subcomponents by creating standalone components when appropriate (e.g., SplitTag).**
 - All components should use box-sizing: border-box to ensure consistent dimensions.
 
 ## Active Development Focus

@@ -1,6 +1,5 @@
 // Component exports
 export { Tag } from './Tag';
-export { SplitTag } from './SplitTag';
 
 // Type exports
 export {
@@ -9,8 +8,6 @@ export {
   TagSize,
   TagShape,
   type TagProps,
-  type SplitTagProps,
-  type TagConfig,
   type TagBaseProps
 } from './types';
 

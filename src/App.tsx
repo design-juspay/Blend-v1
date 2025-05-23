@@ -1,10 +1,11 @@
 import "./App.css";
 import { useState } from "react";
-import { CircleUser, TagIcon } from "lucide-react";
+import { CircleUser, TagIcon, Split } from "lucide-react";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
+import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 
-type ComponentSection = "buttons" | "tags";
+type ComponentSection = "buttons" | "tags" | "splitTags";
 
 function App() {
   const [activeSection, setActiveSection] = useState<ComponentSection>("buttons");
@@ -33,6 +34,13 @@ function App() {
             <TagIcon size={18} />
             <span>Tags</span>
           </button>
+          <button
+            className={`nav-item ${activeSection === "splitTags" ? "active" : ""}`}
+            onClick={() => setActiveSection("splitTags")}
+          >
+            <Split size={18} />
+            <span>Split Tags</span>
+          </button>
           {/* Future components would be added here */}
         </nav>
         
@@ -45,6 +53,7 @@ function App() {
       <main className="content-area">
         {activeSection === "buttons" && <ButtonDemo />}
         {activeSection === "tags" && <TagsDemo />}
+        {activeSection === "splitTags" && <SplitTagDemo />}
       </main>
     </div>
   );

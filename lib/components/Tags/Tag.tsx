@@ -1,9 +1,9 @@
-import { forwardRef, memo, useCallback, MouseEvent } from "react";
+import { forwardRef, MouseEvent } from "react";
 import type { TagProps } from "./types";
 import { StyledTagContainer, StyledTagContent } from "./StyledTag";
-import { useTagProps } from "./tagUtils";
+import { TagVariant, TagStatus, TagSize, TagShape } from "./types";
 
-export const Tag = memo(forwardRef<HTMLDivElement, TagProps>(
+export const Tag = forwardRef<HTMLDivElement, TagProps>(
   (props, ref) => {
     const {
       text,
@@ -13,35 +13,23 @@ export const Tag = memo(forwardRef<HTMLDivElement, TagProps>(
       onClick,
       testId,
       children,
-      // Explicitly extract props that shouldn't be passed to the DOM element
-      variant,
-      status,
-      size,
-      shape,
+      // Extract props with defaults
+      variant = TagVariant.SUBTLE,
+      status = TagStatus.NEUTRAL,
+      size = TagSize.MD,
+      shape = TagShape.ROUNDED,
       ...domProps
     } = props;
-    
-    const {
-      shape: computedShape,
-      variant: computedVariant,
-      status: computedStatus,
-      size: computedSize
-    } = useTagProps(props);
-    
-    // Memoize click handler for better performance
-    const handleClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
-      onClick?.(e);
-    }, [onClick]);
     
     return (
       <StyledTagContainer
         ref={ref}
-        $variant={computedVariant}
-        $status={computedStatus}
-        $size={computedSize}
-        $tagShape={computedShape}
+        $variant={variant}
+        $status={status}
+        $size={size}
+        $tagShape={shape}
         className={className}
-        onClick={handleClick}
+        onClick={onClick}
         data-testid={testId}
         {...domProps}
       >
@@ -55,7 +43,7 @@ export const Tag = memo(forwardRef<HTMLDivElement, TagProps>(
       </StyledTagContainer>
     );
   }
-));
+);
 
 Tag.displayName = "Tag";
 
