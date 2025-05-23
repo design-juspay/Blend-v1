@@ -8,6 +8,8 @@ import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import TabsDemo from "./demos/Tabs/TabsDemo";
 import ButtonGroupDemo from "./demos/ButtonGroup/ButtonGroupDemo";
+import AvatarDemo from "./demos/Avatar/AvatarDemo";
+import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -51,6 +53,16 @@ function App() {
       id: "tabs",
       name: "Tabs",
       component: <TabsDemo />,
+    },
+    {
+      id: "avatar",
+      name: "Avatar",
+      component: <AvatarDemo />,
+    },
+    {
+      id: "avatar-group",
+      name: "Avatar Group",
+      component: <AvatarGroupDemo />,
     }
   ];
 

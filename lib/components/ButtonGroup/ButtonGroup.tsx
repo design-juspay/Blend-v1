@@ -24,13 +24,10 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     },
     ref
   ) => {
-    // Get React children as array and validate
     const childrenArray = React.Children.toArray(children)
       .filter(React.isValidElement) as React.ReactElement[];
     const totalChildren = childrenArray.length;
 
-    // Find the first primary/success/danger button (for singlePrimary mode)
-    // Only calculate if we're in SINGLE_PRIMARY mode
     const primaryButtonIndex = mode === ButtonGroupMode.SINGLE_PRIMARY 
       ? findPrimaryButtonIndex(childrenArray) 
       : -1;
@@ -48,10 +45,8 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
             return child;
           }
 
-          // Type checking for Button component
           const childProps = child.props as Partial<ButtonProps>;
           
-          // Apply button type transformation
           const finalButtonType = getTransformedButtonType(
             childProps.buttonType, 
             mode, 
@@ -59,17 +54,14 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
             primaryButtonIndex
           );
 
-          // Get position in the group (first, middle, last)
           const position = getButtonPosition(index, totalChildren);
           
-          // Create the button with appropriate props
           const buttonElement = React.cloneElement(child, {
             ...childProps,
             buttonType: finalButtonType,
-            size: size, // Ensure consistent size
+            size: size,
           } as React.HTMLAttributes<HTMLElement>);
-          
-          // If stacked, wrap the button in a styled container
+
           if (isStacked) {
             return (
               <StyledButtonWrapper $position={position} $isStacked={isStacked}>
@@ -78,7 +70,6 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
             );
           }
 
-          // For non-stacked, just return the button
           return buttonElement;
         })}
       </StyledButtonGroupContainer>

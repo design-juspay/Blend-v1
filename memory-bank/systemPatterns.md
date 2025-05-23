@@ -75,4 +75,1979 @@
 - **Visual Organization**: Demo items are organized with clear section headers and explanatory text.
 - **Consistent Structure**: All demos follow a similar structure with headers, sections, and examples.
 - **Accessibility Demonstration**: Demos showcase proper accessibility patterns and semantic markup.
+- **Interactive Examples**: Where appropriate, demos include interactive examples with onClick handlers.
+
+### Specific Component Patterns
+
+#### AvatarGroup Component Pattern
+
+The AvatarGroup component follows the modular architecture pattern with a focus on composability and reusability.
+
+1. **Core Structure**:
+   - Main component (`AvatarGroup.tsx`): Handles the presentation logic for displaying multiple avatars with overflow
+   - Styled component (`StyledAvatarGroup.tsx`): Contains all styled-components definitions
+   - Tokens (`token.ts`): Component-specific design tokens with references to foundation tokens
+   - Types (`types.ts`): TypeScript interfaces and types for the component
+   - Utility functions (`avatarGroupUtils.ts`): Helper functions for calculations and processing
+
+2. **Key Features**:
+   - Displays a configurable number of avatars with an overflow counter for extras
+   - Size-responsive overlapping avatar layout:
+     - Small avatars use less overlap (6px) to maintain visibility
+     - Medium avatars use moderate overlap (8px)
+     - Large avatars use more pronounced overlap (12px)
+     - Extra large avatars use maximum overlap (16px) for a polished look
+   - Consistent border styling using token values
+   - Selection mechanism with visual feedback
+   - Support for different avatar sizes and shapes
+
+3. **Usage Pattern**:
+   - Provide an array of avatar objects with required properties (id, alt)
+   - Optional properties include src for images, fallback content (string for initials or ReactNode for icons)
+   - Configure maxCount to control how many avatars are visible before showing overflow counter
+   - Optionally provide selection-related props for interactive avatar selection
+
+4. **Component Relationships**:
+   - Leverages the Avatar component for individual avatar rendering
+   - Provides a complementary relationship to the Avatar component
+   - Uses the foundation token system for styling consistency
+
+5. **State Management**:
+   - Manages selection state internally or accepts controlled state via props
+   - Provides callback for selection changes
+
+## Design Token Architecture
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
+- Components are designed to be composed and extended as needed.
+- Split components (like SplitTag) support different variants while maintaining visual consistency.
+- Slot-based components allow for custom content insertion while maintaining consistent styling and layout.
+- Component reuse hierarchy: Complex components can leverage simpler components when appropriate.
+- Component extension patterns: 
+  - SplitTag extends Tag functionality for dual-section tags
+  - SplitTag falls back to Tag when only one section is needed
+  - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
+
+- Components in the same family share tokens for consistent styling (Tag and SplitTag).
+- Component-specific utilities can be shared between related components.
+- Related components maintain consistent prop naming and behavior.
+- All components consume foundation tokens for consistency.
 - **Interactive Examples**: Where appropriate, demos include interactive examples with onClick handlers. 
