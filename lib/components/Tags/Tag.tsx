@@ -10,7 +10,6 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(
       leadingSlot,
       trailingSlot,
       onClick,
-      testId,
       children,
       // Extract props with defaults
       variant = TagVariant.SUBTLE,
@@ -28,7 +27,6 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(
         $size={size}
         $tagShape={shape}
         onClick={onClick}
-        data-testid={testId}
         {...domProps}
       >
         {leadingSlot}

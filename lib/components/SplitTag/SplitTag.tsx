@@ -4,19 +4,30 @@ import {
   StyledSplitTagContainer,
   StyledSplitTagSection,
 } from "./StyledSplitTag";
-import { TagVariant, TagStatus, TagSize, TagShape } from "./types";
+import { TagVariant, TagStatus } from "./types";
 import { Tag } from "../Tags";
 
+/**
+ * SplitTag component
+ * 
+ * Renders a split tag with primary and secondary sections, or falls back to a regular Tag
+ * if no secondary tag is provided.
+ * 
+ * @example
+ * <SplitTag 
+ *   primaryTag={{ text: "Category", variant: "attentive" }}
+ *   secondaryTag={{ text: "5", variant: "noFill" }}
+ * />
+ */
 export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
   (props, ref) => {
     const {
       primaryTag,
       secondaryTag,
-      size = TagSize.MD,
-      shape = TagShape.ROUNDED,
+      size,
+      shape,
       leadingSlot,
       trailingSlot,
-      testId,
       ...domProps
     } = props;
     
@@ -33,7 +44,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
           leadingSlot={leadingSlot}
           trailingSlot={trailingSlot}
           onClick={primaryTag.onClick}
-          testId={testId}
           {...domProps}
         />
       );
@@ -50,7 +60,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
     return (
       <StyledSplitTagContainer
         ref={ref}
-        data-testid={testId}
         {...domProps}
       >
         <StyledSplitTagSection

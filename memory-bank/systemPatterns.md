@@ -13,6 +13,7 @@
 - Use system fonts with custom font integration for typography.
 - Never define font-family at the component level, allowing proper inheritance from the application.
 - Create standalone components for complex variants when appropriate (e.g., SplitTag).
+- Remove unnecessary props like `testId` for cleaner component APIs.
 
 ## Design Patterns
 - Separation of concerns: logic, styles, tokens, types, and utilities in separate files.
@@ -25,6 +26,7 @@
 - Component reuse and extension: Reuse existing components when appropriate (e.g., SplitTag using Tag for single tag fallback).
 - **Style encapsulation: Components do not accept className props to prevent custom styling that could break component UI consistency and design system integrity.**
 - **Type aliases over interfaces: Use `type` instead of `interface` for component props and other type definitions to prevent accidental declaration merging and maintain clearer intent.**
+- Accessibility-first approach: All components include proper ARIA attributes and follow semantic markup patterns.
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.
@@ -36,9 +38,18 @@
   - SplitTag extends Tag functionality for dual-section tags
   - SplitTag falls back to Tag when only one section is needed
   - Both maintain consistent styling and behavior
+- Navigation components (like Breadcrumb) implement proper semantic markup and accessibility patterns.
 
 ## Component Reuse Patterns
 - **Fallback Pattern**: When a complex component doesn't need all its features, it falls back to a simpler component (e.g., SplitTag → Tag).
 - **Token Sharing**: Components in the same family share tokens for consistent styling (Tag and SplitTag).
 - **Utility Reuse**: Component-specific utilities can be shared between related components.
-- **Consistent APIs**: Related components maintain consistent prop naming and behavior. 
+- **Consistent APIs**: Related components maintain consistent prop naming and behavior.
+
+## Demo Patterns
+- **Component Isolation**: Each component has its own dedicated demo file for better maintainability.
+- **Example Variety**: Demos showcase all component variants, states, and use cases.
+- **Visual Organization**: Demo items are organized with clear section headers and explanatory text.
+- **Consistent Structure**: All demos follow a similar structure with headers, sections, and examples.
+- **Accessibility Demonstration**: Demos showcase proper accessibility patterns and semantic markup.
+- **Interactive Examples**: Where appropriate, demos include interactive examples with onClick handlers. 
