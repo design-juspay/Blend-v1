@@ -27,7 +27,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
     // Use either isActive or isLast to determine if this is the active item
     const isActiveItem = isActive || isLast;
 
-    const content = (
+    const renderContent = () => (
       <>
         {leftSlot && <StyledIconSlot $position="left">{leftSlot}</StyledIconSlot>}
         <span>{label}</span>
@@ -42,7 +42,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
           $isActive={true}
           aria-current="page"
         >
-          {content}
+          {renderContent()}
         </StyledBreadcrumbSpan>
       );
     }
@@ -54,7 +54,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
           href={href}
           $isActive={false}
         >
-          {content}
+          {renderContent()}
         </StyledBreadcrumbLink>
       );
     }
@@ -68,7 +68,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
         $isActive={false}
         type="button"
       >
-        {content}
+        {renderContent()}
       </StyledBreadcrumbLink>
     );
   }

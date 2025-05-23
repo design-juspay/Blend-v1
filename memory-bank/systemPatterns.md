@@ -14,6 +14,9 @@
 - Never define font-family at the component level, allowing proper inheritance from the application.
 - Create standalone components for complex variants when appropriate (e.g., SplitTag).
 - Remove unnecessary props like `testId` for cleaner component APIs.
+- Apply DRY principles to reduce code repetition across components.
+- Use self-documenting code over verbose documentation comments.
+- Maintain consistent token structure across components.
 
 ## Design Patterns
 - Separation of concerns: logic, styles, tokens, types, and utilities in separate files.
@@ -27,6 +30,7 @@
 - **Style encapsulation: Components do not accept className props to prevent custom styling that could break component UI consistency and design system integrity.**
 - **Type aliases over interfaces: Use `type` instead of `interface` for component props and other type definitions to prevent accidental declaration merging and maintain clearer intent.**
 - Accessibility-first approach: All components include proper ARIA attributes and follow semantic markup patterns.
+- DRY code implementation: Extract repetitive code into reusable functions and shared types.
 
 ## Component Relationships
 - All components consume foundation tokens for consistency.
@@ -45,6 +49,14 @@
 - **Token Sharing**: Components in the same family share tokens for consistent styling (Tag and SplitTag).
 - **Utility Reuse**: Component-specific utilities can be shared between related components.
 - **Consistent APIs**: Related components maintain consistent prop naming and behavior.
+
+## Code Quality Patterns
+- **DRY Implementation**: Extract repeated code patterns into reusable functions.
+- **Centralized Type Definitions**: Create shared type aliases for better consistency and maintenance.
+- **Self-Documenting Code**: Prefer clear function and variable names over verbose documentation comments.
+- **Utility Functions Over Inline Logic**: Extract complex transformations into utility functions for better testability and reuse.
+- **Consistent Token Structure**: Maintain similar token structure across components for better readability and familiarity.
+- **Getter Functions for Token Access**: Use utility methods to access token values rather than direct object access.
 
 ## Demo Patterns
 - **Component Isolation**: Each component has its own dedicated demo file for better maintainability.

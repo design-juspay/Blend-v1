@@ -1,12 +1,7 @@
 import React from "react";
-import { Hash, Filter, ArrowRight, Info, Tag as TagIcon, CheckCircle, AlertCircle } from "lucide-react";
-import SplitTag from "../../../lib/components/SplitTag";
-import { 
-  TagVariant, 
-  TagStatus, 
-  TagSize, 
-  TagShape 
-} from "../../../lib/components/Tags";
+import { Hash, Filter, ArrowRight, Tag as TagIcon, CheckCircle, AlertCircle } from "lucide-react";
+import { SplitTag } from "../../../lib/components/SplitTag/SplitTag";
+import { TagStatus, TagSize, TagVariant, TagShape } from "../../../lib/components/Tags/types";
 
 const SplitTagDemo: React.FC = () => {
   return (

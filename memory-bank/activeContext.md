@@ -5,6 +5,7 @@
 - Refactoring existing components to follow the established patterns.
 - Building a demo system to showcase component variants and usage.
 - Ensuring all components follow accessibility best practices.
+- Improving code quality by applying DRY principles to reduce repetition.
 
 ## Current Work Focus
 
@@ -30,6 +31,8 @@
    - Included proper accessibility attributes and semantic markup
    - Designed with customizable active state highlighting
    - Created comprehensive demo with various examples
+   - Applied DRY principles to reuse code for rendering breadcrumb items
+   - Removed unnecessary documentation comments in favor of self-documenting code
 
 4. **Demo System Improvements:**
    - Restructured the demo system to be more modular and maintainable
@@ -49,8 +52,18 @@
    - Removed unnecessary comments while maintaining essential documentation
    - Ensured proper TypeScript typing throughout the codebase
    - Removed all references to `testId` prop across components for cleaner APIs
+   - Applied DRY principles to reduce code repetition in components
+   - Created type aliases to improve code readability and maintenance
+   - Implemented reusable rendering functions for component parts
 
 ## Recent Changes
+- Applied DRY principles to the Breadcrumb component:
+  - Created reusable `renderBreadcrumbItem` function to eliminate repetitive code
+  - Added a shared type definition `ProcessedBreadcrumbItem` to improve type safety
+  - Implemented `resetActiveState` utility to avoid code duplication
+  - Removed documentation comments in favor of self-documenting code
+  - Kept original token structure to maintain consistency with other components
+
 - Implemented the Breadcrumb component with full modular structure:
   - Created BreadcrumbItem subcomponent for individual items in the breadcrumb trail
   - Added support for truncated variant to handle long breadcrumb paths
@@ -128,6 +141,10 @@
    - Set up testing infrastructure
    - Add unit tests for components and utilities
 
+4. **Code Quality:**
+   - Continue refactoring existing components to apply DRY principles
+   - Create shared utilities for common patterns across components
+
 ## Active Decisions
 
 1. **Slot-Based API for Components:**
@@ -146,20 +163,28 @@
    - Removing unnecessary props like `testId` for cleaner interfaces
    - Focusing on essential functionality and flexibility
 
+5. **DRY Code Principles:**
+   - Identify and extract repeated patterns into reusable functions
+   - Prefer type aliases and shared types to improve readability
+   - Use state-based token accessors for cleaner component code
+
 ## Active Decisions & Considerations
 - All new components must follow the modular directory and file structure.
 - Foundation tokens are the single source of truth for design primitives.
 - Consider adding specific hover/focus/active states to components for better interactivity.
 - **Resolved strategy for component variants vs. subcomponents by creating standalone components when appropriate (e.g., SplitTag).**
 - All components should use box-sizing: border-box to ensure consistent dimensions.
+- Self-documenting code is preferred over verbose documentation comments.
+- Maintain consistent token structure across components to ensure similar patterns.
 
 ## Active Development Focus
 
 ### Current Focus Areas
 - Tag component refactoring and improvements
-- Breadcrumb component implementation
+- Breadcrumb component implementation and optimization
 - Demo system organization and aesthetics
 - Component structure alignment with best practices
+- Application of DRY principles across the codebase
 
 ### Recent Changes
 
@@ -170,6 +195,10 @@
 - Implemented proper accessibility attributes for navigation elements
 - Designed to support interactive items with onClick handlers
 - Created comprehensive demo with various examples
+- Applied DRY principles to reduce repetition in rendering logic
+- Removed documentation comments in favor of self-documenting code
+- Added improved type safety with explicit state types and shared type definitions
+- Maintained consistent token structure with other components
 
 #### Tags Component
 - Completed implementation of a pure slot-based API, removing the deprecated icon-specific props for more flexibility
@@ -207,6 +236,7 @@
 - Develop comprehensive documentation
 - Add accessibility improvements to all components
 - Create a unified system for component state management
+- Apply DRY principles to all components
 
 ### Active Decisions
 
@@ -229,6 +259,7 @@ This structure allows for better maintainability, clearer separation of concerns
 - Ensure all components have proper TypeScript types
 - Design for extensibility with future requirements in mind
 - Remove unnecessary props (like `testId`) for cleaner interfaces
+- Apply DRY principles to reduce code repetition
 
 #### Typography Inheritance
 - **Removed font-family definitions from all components**: Based on team discussion, we've determined that components should never define font-family properties, as this overrides project preferences.
@@ -242,6 +273,7 @@ This structure allows for better maintainability, clearer separation of concerns
 - Centralize token structure knowledge within the token file itself
 - Keep styled components clean and focused on styling rather than token logic
 - Provide a consistent interface that shields components from token structure changes
+- Keep consistent token structure across components for familiarity and ease of maintenance
 
 #### Migration and Backward Compatibility
 - **Complete migration from `style` to `shape` prop**: The legacy `style` prop has been removed, with `shape` being the standard prop for controlling tag appearance
@@ -253,4 +285,6 @@ This structure allows for better maintainability, clearer separation of concerns
 - Styled components should use the proper typing for theme props
 - Use modern React patterns (hooks, functional components)
 - Maintain consistent code style throughout the codebase
-- Performance considerations should be documented 
+- Performance considerations should be documented
+- Apply DRY principles to reduce repetition
+- Prefer self-documenting code over verbose comments 

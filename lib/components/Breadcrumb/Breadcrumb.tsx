@@ -1,7 +1,8 @@
 import { forwardRef, useState, useRef, useEffect } from 'react';
 import {
   BreadcrumbProps,
-  BreadcrumbVariant
+  BreadcrumbVariant,
+  BreadcrumbItemInternalProps
 } from './types';
 import { BreadcrumbItem } from './BreadcrumbItem';
 import {
@@ -52,21 +53,34 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       };
     }, []);
 
+    // Render a single breadcrumb item with divider
+    const renderBreadcrumbItem = (
+      item: BreadcrumbItemInternalProps, 
+      _index: number, 
+      isLast: boolean, 
+      key: string
+    ) => (
+      <StyledBreadcrumbItem key={key}>
+        <BreadcrumbItem 
+          {...item} 
+          isLast={isLast}
+        />
+        {!isLast && <StyledDivider>/</StyledDivider>}
+      </StyledBreadcrumbItem>
+    );
+
     // Render full breadcrumb when not truncated
     const renderFullBreadcrumb = () => (
       <StyledBreadcrumbContainer ref={ref as any}>
         <StyledBreadcrumbList>
-          {processedItems.map((item, index) => (
-            <StyledBreadcrumbItem key={index}>
-              <BreadcrumbItem 
-                {...item} 
-                isLast={index === processedItems.length - 1}
-              />
-              {index < processedItems.length - 1 && (
-                <StyledDivider>/</StyledDivider>
-              )}
-            </StyledBreadcrumbItem>
-          ))}
+          {processedItems.map((item, index) => 
+            renderBreadcrumbItem(
+              item, 
+              index, 
+              index === processedItems.length - 1, 
+              `item-${index}`
+            )
+          )}
         </StyledBreadcrumbList>
       </StyledBreadcrumbContainer>
     );
@@ -79,15 +93,9 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
         <StyledBreadcrumbContainer ref={ref as any}>
           <StyledBreadcrumbList>
             {/* First item */}
-            {firstItems.map((item, index) => (
-              <StyledBreadcrumbItem key={`first-${index}`}>
-                <BreadcrumbItem 
-                  {...item} 
-                  isLast={false}
-                />
-                <StyledDivider>/</StyledDivider>
-              </StyledBreadcrumbItem>
-            ))}
+            {firstItems.map((item, index) => 
+              renderBreadcrumbItem(item, index, false, `first-${index}`)
+            )}
 
             {/* More button with dropdown */}
             <StyledBreadcrumbItem key="dropdown">
@@ -127,15 +135,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
             {/* Last items */}
             {lastItems.map((item, index) => {
               const isLastItem = index === lastItems.length - 1;
-              return (
-                <StyledBreadcrumbItem key={`last-${index}`}>
-                  <BreadcrumbItem 
-                    {...item} 
-                    isLast={isLastItem}
-                  />
-                  {!isLastItem && <StyledDivider>/</StyledDivider>}
-                </StyledBreadcrumbItem>
-              );
+              return renderBreadcrumbItem(item, index, isLastItem, `last-${index}`);
             })}
           </StyledBreadcrumbList>
         </StyledBreadcrumbContainer>
