@@ -7,18 +7,6 @@ import {
 import { TagVariant, TagStatus, TagShape } from "./types";
 import { Tag } from "../Tags";
 
-/**
- * SplitTag component
- * 
- * Renders a split tag with primary and secondary sections, or falls back to a regular Tag
- * if no secondary tag is provided.
- * 
- * @example
- * <SplitTag 
- *   primaryTag={{ text: "Category", variant: "attentive" }}
- *   secondaryTag={{ text: "5", variant: "noFill" }}
- * />
- */
 export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
   (props, ref) => {
     const {
@@ -31,7 +19,6 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
       ...domProps
     } = props;
     
-    // If no secondaryTag is provided, render a single Tag
     if (!secondaryTag) {
       return (
         <Tag
@@ -49,11 +36,9 @@ export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
       );
     }
     
-    // Apply defaults for primary tag
     const primaryVariant = primaryTag.variant || TagVariant.SUBTLE;
     const primaryStatus = primaryTag.status || TagStatus.NEUTRAL;
     
-    // Apply defaults for secondary tag (fallback to primary tag values if not specified)
     const secondaryVariant = secondaryTag.variant || primaryVariant;
     const secondaryStatus = secondaryTag.status || primaryStatus;
     

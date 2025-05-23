@@ -1,6 +1,5 @@
 import { BreadcrumbItemProps } from './types';
 
-// Define the extended type for processed items
 type ProcessedBreadcrumbItem = BreadcrumbItemProps & { isActive: boolean };
 
 export const processBreadcrumbItems = (items: BreadcrumbItemProps[]): ProcessedBreadcrumbItem[] => {

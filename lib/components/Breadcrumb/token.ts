@@ -1,14 +1,12 @@
 import { foundationToken } from '../../foundationToken';
 
 const breadcrumbTokens = {
-  // Text colors
   text: {
     default: foundationToken.colors.gray[400],
     hover: foundationToken.colors.gray[1000],
     active: foundationToken.colors.gray[700],
   },
   
-  // Icon colors
   icon: {
     main: {
       default: foundationToken.colors.gray[400],
@@ -22,7 +20,6 @@ const breadcrumbTokens = {
     },
   },
   
-  // Background colors
   background: {
     more: {
       default: 'transparent',
@@ -37,7 +34,6 @@ const breadcrumbTokens = {
     },
   },
   
-  // Border colors
   border: {
     more: {
       default: 'transparent',
@@ -49,18 +45,15 @@ const breadcrumbTokens = {
     },
   },
   
-  // Font weights
   fontWeight: {
     default: foundationToken.fontWeight[500],
     active: foundationToken.fontWeight[600],
   },
   
-  // Font sizes
   fontSize: {
     md: foundationToken.fontSize.bodyMD,
   },
   
-  // Spacing and dimensions
   spacing: {
     gap: foundationToken.spacing[8],
     dropdownPadding: foundationToken.spacing[4],
@@ -69,18 +62,15 @@ const breadcrumbTokens = {
     iconSlotSize: '18px', // 4.5 * 4px
   },
   
-  // Border radius
   borderRadius: {
     dropdown: foundationToken.borderRadius[8],
     moreButton: foundationToken.borderRadius[8],
   },
   
-  // Shadows
   shadow: {
     dropdown: foundationToken.boxShadow.lg,
   },
   
-  // Utility functions to access tokens
   getTextColor: (isActive: boolean, isHovered?: boolean): string => {
     if (isActive) return breadcrumbTokens.text.active;
     if (isHovered) return breadcrumbTokens.text.hover;

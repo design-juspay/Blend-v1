@@ -1,7 +1,6 @@
 import { foundationToken } from '../../foundationToken';
 import { TagSize, TagShape, TagVariant, TagStatus } from './types';
 
-// Type for the tag status values
 type TagStatusValue = 'neutral' | 'primary' | 'success' | 'error' | 'warning' | 'purple';
 
 const tagTokens = {
@@ -176,23 +175,6 @@ const tagTokens = {
     letterSpacing: '-0.01em'
   },
   
-  /**
-   * Token Utility Methods
-   * 
-   * These utility methods provide a standardized, type-safe interface for accessing 
-   * token values. They offer several key advantages over direct object access:
-   * 
-   * 1. Type Safety: Ensures proper enum values are used with TypeScript validation
-   * 2. Abstraction: Shields component implementation from token structure changes
-   * 3. Normalization: Handles any necessary data transformations consistently
-   * 4. Performance: Reduces potential for complex inline expressions in styled components
-   * 5. Maintainability: Centralizes token access logic for easier updates
-   * 
-   * Example usage in styled components:
-   * ${({$variant, $status}) => tagTokens.getBackgroundColor($variant, $status)}
-   */
-  
-  // Utility methods for normalized token access
   getBackgroundColor: (variant: TagVariant, status: TagStatus): string => 
     tagTokens.background[variant as keyof typeof tagTokens.background][status as TagStatusValue],
   

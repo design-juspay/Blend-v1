@@ -19,7 +19,6 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
     },
     ref
   ) => {
-    // Use either isActive or isLast to determine if this is the active item
     const isActiveItem = isActive || isLast;
 
     const renderContent = () => (
@@ -54,7 +53,6 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
       );
     }
 
-    // For clickable items without href
     return (
       <StyledBreadcrumbLink
         ref={ref as any}

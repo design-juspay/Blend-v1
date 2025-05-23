@@ -3,25 +3,17 @@ import buttonGroupTokens from './token';
 import { ReactElement } from 'react';
 import { ButtonGroupMode } from './types';
 
-/**
- * Get spacing between buttons based on size
- */
 export const getButtonGroupSpacing = (size: ButtonSize): string => {
   return buttonGroupTokens.spacing[size];
 };
 
-/**
- * Determine position of a button in a group (first, middle, last)
- */
 export const getButtonPosition = (index: number, total: number): 'first' | 'middle' | 'last' => {
   if (index === 0) return 'first';
   if (index === total - 1) return 'last';
   return 'middle';
 };
 
-/**
- * Find the first non-secondary button index
- */
+
 export const findPrimaryButtonIndex = (
   children: ReactElement[]
 ): number => {
@@ -41,9 +33,7 @@ export const findPrimaryButtonIndex = (
   return primaryIndex;
 };
 
-/**
- * Apply button type transformation based on group mode
- */
+
 export const getTransformedButtonType = (
   originalType: ButtonType | undefined,
   mode: ButtonGroupMode,
@@ -58,6 +48,5 @@ export const getTransformedButtonType = (
     return index === primaryIndex ? (originalType || ButtonType.PRIMARY) : ButtonType.SECONDARY;
   }
   
-  // Default: return original type or PRIMARY if undefined
   return originalType || ButtonType.PRIMARY;
 }; 
