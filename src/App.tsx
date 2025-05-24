@@ -6,6 +6,7 @@ import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 import TabsDemo from "./Demo/TabsDemo";
+import TextDemo from "./demos/Text/TextDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -16,7 +17,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("buttons");
+  const [selectedCategory, setSelectedCategory] = useState<string>("text");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -24,6 +25,11 @@ function App() {
       id: "buttons",
       name: "Buttons",
       component: <ButtonDemo />,
+    },
+    {
+      id: "text",
+      name: "Text",
+      component: <TextDemo />,
     },
     {
       id: "tags",
