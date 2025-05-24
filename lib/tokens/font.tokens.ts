@@ -25,7 +25,7 @@ type LetterSpacingType = Readonly<{
   extended: number;
 }>;
 
-type FontGroupType = Readonly<{
+export type FontGroupType = Readonly<{
   fontSize: number;
   lineHeight: number;
   letterSpacing: number;
@@ -67,6 +67,13 @@ export type FontTokensType = Readonly<{
 }>;
 
 
+/**
+ * Font tokens
+ * @description
+ * Font tokens are used to define the font family, weight, size, and letter spacing.
+ * @warning
+ * Whenever changing the font tokens, make sure to handle it in the Text   Component as well.
+ */
 const fontTokens: FontTokensType = {
   family: {
     display: "InterDisplay",

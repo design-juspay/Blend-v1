@@ -1,28 +1,7 @@
-import React from "react";
 import { styled, CSSObject } from "styled-components";
-import { theme } from "../../tokens/index";
-import type { ThemeType } from "../../tokens/index";
-import { CSS } from "styled-components/dist/types";
-
-interface StyledTextProps {
-  size?:
-    | keyof ThemeType["font"]["size"]["body"]
-    | keyof ThemeType["font"]["size"]["heading"]
-    | keyof ThemeType["font"]["size"]["display"]
-    | keyof ThemeType["font"]["size"]["code"];
-  weight?: keyof ThemeType["font"]["weight"];
-  color?: string;
-  textAlign?: CSS.Property.TextAlign;
-  letterSpacing?: keyof ThemeType["font"]["letterSpacing"];
-  fontFamily?: keyof ThemeType["font"]["family"];
-  fontSize?: number;
-  theme?: any;
-  opacity?: keyof ThemeType["opacity"];
-}
-
-export interface TextProps extends StyledTextProps {
-  children: React.ReactNode;
-}
+import FOUNDATION_THEME from "../../tokens/theme.tokens";
+import { StyledTextProps, TextProps } from "./types";
+import { getFontGroup, getSemanticTag } from "./utils";
 
 const StyledText = styled.p.withConfig({
   displayName: "StyledText",
@@ -30,21 +9,24 @@ const StyledText = styled.p.withConfig({
   ({
     color = "black",
     fontFamily = "body",
-    fontSize = theme.font.size.base,
     weight = 400,
     letterSpacing = "normal",
     textAlign = "left",
     opacity = 100,
-    ...props
+    variant,
   }): CSSObject => {
+    const fontGroup = getFontGroup(variant);
+
     return {
-      color, // TODO: Match with foundation tokens - ask Deepanshu
-      fontFamily: theme.font.family[fontFamily],
-      fontSize,
-      weight: theme.font.weight[weight],
-      letterSpacing: theme.font.letterSpacing[letterSpacing],
+      color,
+      fontFamily: FOUNDATION_THEME.font.family[fontFamily],
+      fontSize: fontGroup?.fontSize || FOUNDATION_THEME.font.size.base,
+      lineHeight: `${fontGroup?.lineHeight}px`,
+      fontWeight: FOUNDATION_THEME.font.weight[weight],
+      letterSpacing: FOUNDATION_THEME.font.letterSpacing[letterSpacing],
       textAlign,
-      opacity: theme.opacity[opacity],
+      opacity: FOUNDATION_THEME.opacity[opacity],
+      margin: 0,
     };
   }
 );
@@ -53,20 +35,21 @@ const Text = ({
   children,
   color,
   fontFamily,
-  fontSize,
-  size,
+  variant,
   weight,
   letterSpacing,
   textAlign,
   opacity,
-}: 
-TextProps) => {
+  as,
+}: TextProps) => {
+  let Tag = getSemanticTag(variant, as);
+
   return (
     <StyledText
+      as={Tag}
       color={color}
       fontFamily={fontFamily}
-      fontSize={fontSize}
-      size={size}
+      variant={variant}
       weight={weight}
       letterSpacing={letterSpacing}
       textAlign={textAlign}

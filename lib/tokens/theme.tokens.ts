@@ -10,11 +10,11 @@ export type ThemeType = {
   opacity: OpacityTokensType;
 };
 
-const theme: ThemeType = {
+const FOUNDATION_THEME: ThemeType = {
   shadows: shadowTokens,
   border: borderTokens,
   font: fontTokens,
   opacity: opacityTokens,
 };
 
-export default theme;
+export default FOUNDATION_THEME;
