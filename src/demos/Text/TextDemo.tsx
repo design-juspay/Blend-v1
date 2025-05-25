@@ -1,7 +1,8 @@
 import React from "react";
-import { Text } from "../../../lib/components/Text";
+import Text from "../../../lib/components/Primitives/Text/Text";
+// import Text from "../../../lib/components/Text/Text";
 import "./TextDemo.css";
-import Block from "../../../lib/components/Block/Block";
+import Block from "../../../lib/components/Primitives/Block/Block";
 
 const TextDemo: React.FC = () => {
   return (

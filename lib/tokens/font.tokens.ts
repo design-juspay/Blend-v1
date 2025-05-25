@@ -1,38 +1,40 @@
+import { CSSObject } from "styled-components";
+
 type FontWeightType = Readonly<{
-  100: number;
-  200: number;
-  300: number;
-  400: number;
-  500: number;
-  600: number;
-  700: number;
-  800: number;
-  900: number;
+  100: CSSObject["fontWeight"];
+  200: CSSObject["fontWeight"];
+  300: CSSObject["fontWeight"];
+  400: CSSObject["fontWeight"];
+  500: CSSObject["fontWeight"];
+  600: CSSObject["fontWeight"];
+  700: CSSObject["fontWeight"];
+  800: CSSObject["fontWeight"];
+  900: CSSObject["fontWeight"];
 }>;
 
 type FontFamilyType = Readonly<{
-  display: string;
-  body: string;
-  heading: string;
-  mono: string;
+  display: CSSObject["fontFamily"];
+  body: CSSObject["fontFamily"];
+  heading: CSSObject["fontFamily"];
+  mono: CSSObject["fontFamily"];
 }>;
 
 type LetterSpacingType = Readonly<{
-  compressed: number;
-  condensed: number;
-  normal: number;
-  expanded: number;
-  extended: number;
+  compressed: CSSObject["letterSpacing"];
+  condensed: CSSObject["letterSpacing"];
+  normal: CSSObject["letterSpacing"];
+  expanded: CSSObject["letterSpacing"];
+  extended: CSSObject["letterSpacing"];
 }>;
 
 export type FontGroupType = Readonly<{
-  fontSize: number;
-  lineHeight: number;
-  letterSpacing: number;
+  fontSize: CSSObject["fontSize"];
+  lineHeight: CSSObject["lineHeight"];
+  letterSpacing: CSSObject["letterSpacing"];
 }>;
 
 type FontSizeType = Readonly<{
-  base: number; // as 1rem
+  base: CSSObject["fontSize"]; // as 1rem
   body: {
     xs: FontGroupType;
     sm: FontGroupType;
@@ -57,7 +59,7 @@ type FontSizeType = Readonly<{
     md: FontGroupType;
     lg: FontGroupType;
   };
-}>
+}>;
 
 export type FontTokensType = Readonly<{
   family: FontFamilyType;
@@ -65,7 +67,6 @@ export type FontTokensType = Readonly<{
   letterSpacing: LetterSpacingType;
   size: FontSizeType;
 }>;
-
 
 /**
  * Font tokens

@@ -6,8 +6,9 @@ import Alert, {
 } from "../../../lib/components/Alert/Alert";
 import "./AlertDemo.css";
 import { Info } from "lucide-react";
-import Block from "../../../lib/components/Block/Block";
+import Block from "../../../lib/components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
+import PrimitiveButton from "../../../lib/components/Primitives/PrimitiveButton/PrimitiveButton";
 
 const AlertDemo: React.FC = () => {
   const [playgroundProps, setPlaygroundProps] = useState({
@@ -37,6 +38,19 @@ const AlertDemo: React.FC = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+      <PrimitiveButton
+        onClick={() => alert("Hello")}
+        paddingX={"16px"}
+        paddingY={"8px"}
+        borderRadius={FOUNDATION_THEME.border.radius[10]}
+        backgroundColor={FOUNDATION_THEME.colors.gray[100]}
+        color={FOUNDATION_THEME.colors.gray[900]}
+        style={{
+          border: `1px solid red`,
+        }}
+      >
+        Hello
+      </PrimitiveButton>
       {/* Playground Section */}
       <div>
         <h2>Playground</h2>
