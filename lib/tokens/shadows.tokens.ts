@@ -1,11 +1,13 @@
+import { CSSObject } from "styled-components";
+
 export type ShadowTokensType = Readonly<{
-  xs: string;
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-  "2xl": string;
-  full: string;
+  xs: CSSObject["boxShadow"];
+  sm: CSSObject["boxShadow"];
+  md: CSSObject["boxShadow"];
+  lg: CSSObject["boxShadow"];
+  xl: CSSObject["boxShadow"];
+  "2xl": CSSObject["boxShadow"];
+  full: CSSObject["boxShadow"];
 }>;
 
 const shadowTokens: ShadowTokensType = {

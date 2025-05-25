@@ -1,98 +1,16 @@
-import { ReactNode } from "react";
 import { X } from "lucide-react";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/Text/Text";
 import { FOUNDATION_THEME } from "../../tokens";
 import { foundationToken } from "../../foundationToken";
 import { styled } from "styled-components";
-
-export enum AlertVariant {
-  PRIMARY = "primary",
-  SUCCESS = "success",
-  WARNING = "warning",
-  ERROR = "error",
-  PURPLE = "purple",
-  ORANGE = "orange",
-  NEUTRAL = "neutral",
-}
-
-export enum AlertActionPlacement {
-  BOTTOM = "bottom",
-  RIGHT = "right",
-}
-
-export enum AlertStyle {
-  SUBTLE = "subtle",
-  NO_FILL = "noFill",
-}
-
-export interface AlertAction {
-  label: string;
-  onClick: () => void;
-}
-
-export interface AlertProps {
-  heading: string;
-  description: string;
-  variant?: AlertVariant;
-  style?: AlertStyle;
-  primaryAction?: AlertAction;
-  secondaryAction?: AlertAction;
-  onClose?: () => void;
-  icon?: ReactNode;
-  actionPlacement?: AlertActionPlacement;
-}
-
-const alertTokens = {
-  backgroundColor: {
-    primary: {
-      subtle: foundationToken.colors.primary[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-    warning: {
-      subtle: foundationToken.colors.yellow[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-    success: {
-      subtle: foundationToken.colors.green[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-    purple: {
-      subtle: foundationToken.colors.purple[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-    neutral: {
-      subtle: foundationToken.colors.gray[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-    error: {
-      subtle: foundationToken.colors.red[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-    orange: {
-      subtle: foundationToken.colors.orange[50],
-      noFill: foundationToken.colors.gray[0],
-    },
-  },
-  border: {
-    primary: foundationToken.colors.primary[500],
-    warning: foundationToken.colors.yellow[500],
-    success: foundationToken.colors.green[500],
-    purple: foundationToken.colors.purple[500],
-    neutral: foundationToken.colors.gray[500],
-    error: foundationToken.colors.red[500],
-    orange: foundationToken.colors.orange[500],
-  },
-  button: {
-    primary: foundationToken.colors.primary[700],
-    warning: foundationToken.colors.yellow[700],
-    success: foundationToken.colors.green[700],
-    purple: foundationToken.colors.purple[700],
-    neutral: foundationToken.colors.gray[700],
-    error: foundationToken.colors.red[700],
-    orange: foundationToken.colors.orange[700],
-  },
-};
+import {
+  AlertActionPlacement,
+  AlertProps,
+  AlertStyle,
+  AlertVariant,
+} from "./types";
+import alertTokens from "./alert.tokens";
 
 const AlertCloseButton = styled.button<{ variant: AlertVariant }>((props) => {
   return {
@@ -107,7 +25,7 @@ const AlertCloseButton = styled.button<{ variant: AlertVariant }>((props) => {
     borderRadius: FOUNDATION_THEME.border.radius[2],
     cursor: "pointer",
 
-    "&:focus-visible, &:hover": {
+    "&:focus-visible": {
       outline: `1px solid ${alertTokens.button[props.variant]}`,
     },
   };
@@ -148,7 +66,7 @@ const Alert: React.FC<AlertProps> = ({
   return (
     <Block
       maxWidth={900}
-      backgroundColor={alertTokens.backgroundColor[variant][style] as string}
+      backgroundColor={alertTokens.backgroundColor[variant][style]}
       padding={FOUNDATION_THEME.spacing[16]}
       borderRadius={FOUNDATION_THEME.border.radius[8]}
       display="flex"

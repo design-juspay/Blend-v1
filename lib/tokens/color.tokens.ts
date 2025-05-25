@@ -1,5 +1,7 @@
+import { CSSObject } from "styled-components";
+
 type ColorGroupType = Readonly<{
-  [key: string]: string;
+  [key: string]: CSSObject["color"];
 }>;
 
 export type ColorTokensType = Readonly<{
