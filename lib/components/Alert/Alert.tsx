@@ -217,6 +217,7 @@ const Alert: React.FC<AlertProps> = ({
           {onClose && actionPlacement === AlertActionPlacement.RIGHT && (
             <Block
               as="span"
+              aria-hidden="true"
               width={"1px"}
               height={FOUNDATION_THEME.spacing[20]}
               backgroundColor={foundationToken.colors.gray[300]}
