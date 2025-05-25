@@ -37,10 +37,41 @@ interface StyledBlockProps {
   alignContent?: CSSObject["alignContent"];
   alignSelf?: CSSObject["alignSelf"];
   justifySelf?: CSSObject["justifySelf"];
+
+  // Border Radius
+  borderRadius?: CSSObject["borderRadius"];
+  borderTopLeftRadius?: CSSObject["borderTopLeftRadius"];
+  borderTopRightRadius?: CSSObject["borderTopRightRadius"];
+  borderBottomLeftRadius?: CSSObject["borderBottomLeftRadius"];
+  borderBottomRightRadius?: CSSObject["borderBottomRightRadius"];
+
+  // Sizing
+  width?: CSSObject["width"];
+  height?: CSSObject["height"];
+  minWidth?: CSSObject["minWidth"];
+  minHeight?: CSSObject["minHeight"];
+  maxWidth?: CSSObject["maxWidth"];
+  maxHeight?: CSSObject["maxHeight"];
+  size?: SpacingValue;
+
+  // Background
+  backgroundColor?: CSSObject["backgroundColor"];
+
+  // Border
+  border?: CSSObject["border"];
+  borderTop?: CSSObject["borderTop"];
+  borderBottom?: CSSObject["borderBottom"];
+  borderLeft?: CSSObject["borderLeft"];
+  borderRight?: CSSObject["borderRight"];
+
+  // Shortcuts
+  contentCentered?: boolean; // uses flex box to auto center content
+
+  // Cursor
+  cursor?: CSSObject["cursor"];
 }
 
 const blockedProps = [
-  // Padding
   "padding",
   "paddingTop",
   "paddingBottom",
@@ -48,8 +79,6 @@ const blockedProps = [
   "paddingRight",
   "paddingX",
   "paddingY",
-
-  // Margin
   "margin",
   "marginTop",
   "marginBottom",
@@ -57,8 +86,6 @@ const blockedProps = [
   "marginRight",
   "marginX",
   "marginY",
-
-  // Layout / Flexbox
   "display",
   "flexDirection",
   "justifyContent",
@@ -73,12 +100,53 @@ const blockedProps = [
   "alignContent",
   "alignSelf",
   "justifySelf",
+  "borderRadius",
+  "borderTopLeftRadius",
+  "borderTopRightRadius",
+  "borderBottomLeftRadius",
+  "borderBottomRightRadius",
+  "width",
+  "height",
+  "minWidth",
+  "minHeight",
+  "maxWidth",
+  "maxHeight",
+  "size",
+  "contentCentered",
+  "backgroundColor",
+  "border",
+  "borderTop",
+  "borderBottom",
+  "borderLeft",
+  "borderRight",
+  "cursor",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
 
 const getStyles = (props: StyledBlockProps): CSSObject => {
   const styles: CSSObject = {};
+
+  // Shortcuts
+  if (props.contentCentered) {
+    styles.display = props.display ?? "flex";
+    styles.justifyContent = props.justifyContent ?? "center";
+    styles.alignItems = props.alignItems ?? "center";
+  } else {
+    if (props.display !== undefined) styles.display = props.display;
+    if (props.justifyContent !== undefined)
+      styles.justifyContent = props.justifyContent;
+    if (props.alignItems !== undefined) styles.alignItems = props.alignItems;
+  }
+
+  // Size shortcut
+  if (props.size !== undefined) {
+    styles.width = props.size;
+    styles.height = props.size;
+  } else {
+    if (props.width !== undefined) styles.width = props.width;
+    if (props.height !== undefined) styles.height = props.height;
+  }
 
   // Padding
   if (props.padding !== undefined) styles.padding = props.padding;
@@ -113,13 +181,9 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     styles.marginBottom = props.marginY;
   }
 
-  // Flexbox / Layout
-  if (props.display !== undefined) styles.display = props.display;
+  // Flexbox
   if (props.flexDirection !== undefined)
     styles.flexDirection = props.flexDirection;
-  if (props.justifyContent !== undefined)
-    styles.justifyContent = props.justifyContent;
-  if (props.alignItems !== undefined) styles.alignItems = props.alignItems;
   if (props.flexWrap !== undefined) styles.flexWrap = props.flexWrap;
   if (props.flexGrow !== undefined) styles.flexGrow = props.flexGrow;
   if (props.flexShrink !== undefined) styles.flexShrink = props.flexShrink;
@@ -132,12 +196,53 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.alignSelf !== undefined) styles.alignSelf = props.alignSelf;
   if (props.justifySelf !== undefined) styles.justifySelf = props.justifySelf;
 
+  // Border radius
+  if (props.borderRadius !== undefined)
+    styles.borderRadius = props.borderRadius;
+  if (props.borderTopLeftRadius !== undefined)
+    styles.borderTopLeftRadius = props.borderTopLeftRadius;
+  if (props.borderTopRightRadius !== undefined)
+    styles.borderTopRightRadius = props.borderTopRightRadius;
+  if (props.borderBottomLeftRadius !== undefined)
+    styles.borderBottomLeftRadius = props.borderBottomLeftRadius;
+  if (props.borderBottomRightRadius !== undefined)
+    styles.borderBottomRightRadius = props.borderBottomRightRadius;
+
+  // Sizing
+  if (props.minWidth !== undefined) styles.minWidth = props.minWidth;
+  if (props.minHeight !== undefined) styles.minHeight = props.minHeight;
+  if (props.maxWidth !== undefined) styles.maxWidth = props.maxWidth;
+  if (props.maxHeight !== undefined) styles.maxHeight = props.maxHeight;
+
+  // Background
+  if (props.backgroundColor !== undefined)
+    styles.backgroundColor = props.backgroundColor;
+
+  // Border
+  if (props.border !== undefined) styles.border = props.border;
+  if (props.borderTop !== undefined) styles.borderTop = props.borderTop;
+  if (props.borderBottom !== undefined)
+    styles.borderBottom = props.borderBottom;
+  if (props.borderLeft !== undefined) styles.borderLeft = props.borderLeft;
+  if (props.borderRight !== undefined) styles.borderRight = props.borderRight;
+
+  // Cursor
+  if (props.cursor !== undefined) styles.cursor = props.cursor;
+
   return styles;
 };
 
 type SemanticTagType = keyof Pick<
   JSX.IntrinsicElements,
-  "div" | "section" | "article" | "header" | "footer" | "main" | "span" | "nav"
+  | "div"
+  | "section"
+  | "article"
+  | "header"
+  | "footer"
+  | "main"
+  | "span"
+  | "nav"
+  | "hr"
 >;
 
 const StyledBlock = styled.div.withConfig({

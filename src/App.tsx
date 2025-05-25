@@ -7,6 +7,7 @@ import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 import TabsDemo from "./Demo/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
+import AlertDemo from "./demos/Alert/AlertDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -17,7 +18,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("text");
+  const [selectedCategory, setSelectedCategory] = useState<string>("alerts");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -45,6 +46,11 @@ function App() {
       id: "tabs",
       name: "Tabs",
       component: <TabsDemo />,
+    },
+    {
+      id: "alerts",
+      name: "Alerts",
+      component: <AlertDemo />,
     },
     {
       id: "data-display",

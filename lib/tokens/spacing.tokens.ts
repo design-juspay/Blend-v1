@@ -7,6 +7,7 @@ export type SpacingTokensType = Readonly<{
   10: string;
   12: string;
   16: string;
+  18: string;
   20: string;
   24: string;
   28: string;
@@ -28,6 +29,7 @@ const spacingTokens: SpacingTokensType = {
   10: "10px",
   12: "12px",
   16: "16px",
+  18: "18px",
   20: "20px",
   24: "24px",
   28: "28px",
