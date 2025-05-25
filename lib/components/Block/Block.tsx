@@ -1,113 +1,81 @@
 import React, { JSX } from "react";
-import { CSSObject, styled } from "styled-components";
+import styled, { css, CSSObject } from "styled-components";
 
-// ——— Semantic Tag Support ———
-
-export type SemanticTagType = keyof Pick<
-  JSX.IntrinsicElements,
-  | "div"
-  | "span"
-  | "section"
-  | "footer"
-  | "aside"
-  | "main"
-  | "article"
-  | "header"
-  | "nav"
->;
-
-// ——— Spacing and Layout Types ———
-
-type SpacingType = string | number;
+type SpacingValue = string | number;
 
 interface StyledBlockProps {
-  // Spacing
-  padding?: SpacingType;
-  paddingTop?: SpacingType;
-  paddingRight?: SpacingType;
-  paddingBottom?: SpacingType;
-  paddingLeft?: SpacingType;
-  paddingX?: SpacingType;
-  paddingY?: SpacingType;
+  // Padding
+  padding?: SpacingValue;
+  paddingTop?: SpacingValue;
+  paddingBottom?: SpacingValue;
+  paddingLeft?: SpacingValue;
+  paddingRight?: SpacingValue;
+  paddingX?: SpacingValue;
+  paddingY?: SpacingValue;
 
-  margin?: SpacingType;
-  marginTop?: SpacingType;
-  marginRight?: SpacingType;
-  marginBottom?: SpacingType;
-  marginLeft?: SpacingType;
-  marginX?: SpacingType;
-  marginY?: SpacingType;
+  // Margin
+  margin?: SpacingValue;
+  marginTop?: SpacingValue;
+  marginBottom?: SpacingValue;
+  marginLeft?: SpacingValue;
+  marginRight?: SpacingValue;
+  marginX?: SpacingValue;
+  marginY?: SpacingValue;
 
-  // Layout
-  display?: CSSObject["display"];
-  width?: CSSObject["width"];
-  height?: CSSObject["height"];
-  minWidth?: CSSObject["minWidth"];
-  maxWidth?: CSSObject["maxWidth"];
-  minHeight?: CSSObject["minHeight"];
-  maxHeight?: CSSObject["maxHeight"];
-  overflow?: CSSObject["overflow"];
-
-  // Flexbox
-  flexDirection?: CSSObject["flexDirection"];
-  flexWrap?: CSSObject["flexWrap"];
-  justifyContent?: CSSObject["justifyContent"];
-  alignItems?: CSSObject["alignItems"];
-  alignContent?: CSSObject["alignContent"];
-  alignSelf?: CSSObject["alignSelf"];
-  flex?: CSSObject["flex"];
-  flexGrow?: CSSObject["flexGrow"];
-  flexShrink?: CSSObject["flexShrink"];
-  flexBasis?: CSSObject["flexBasis"];
-  gap?: CSSObject["gap"];
-  rowGap?: CSSObject["rowGap"];
-  columnGap?: CSSObject["columnGap"];
-
-  // Positioning
-  position?: CSSObject["position"];
-  top?: CSSObject["top"];
-  right?: CSSObject["right"];
-  bottom?: CSSObject["bottom"];
-  left?: CSSObject["left"];
-  zIndex?: number;
-
-  // Visuals
-  backgroundColor?: string;
-  color?: string;
-  border?: string;
-  borderRadius?: string | number;
-  boxShadow?: string;
-  opacity?: number;
+  // ✨ Future props like background, border, etc.
 }
 
-// ——— Component Props ———
+const blockedProps = [
+  "padding",
+  "paddingTop",
+  "paddingBottom",
+  "paddingLeft",
+  "paddingRight",
+  "paddingX",
+  "paddingY",
+  "margin",
+  "marginTop",
+  "marginBottom",
+  "marginLeft",
+  "marginRight",
+  "marginX",
+  "marginY",
+];
 
-interface BlockProps extends StyledBlockProps {
-  as?: SemanticTagType;
-  children: React.ReactNode;
-}
+const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
 
-// ——— Utility: Expand Shorthands ———
-
-const expandShorthand = (props: StyledBlockProps): CSSObject => {
+const getStyles = (props: StyledBlockProps): CSSObject => {
   const styles: CSSObject = {};
 
   // Padding
-  if (props.paddingX) {
+  if (props.padding !== undefined) styles.padding = props.padding;
+  if (props.paddingTop !== undefined) styles.paddingTop = props.paddingTop;
+  if (props.paddingBottom !== undefined)
+    styles.paddingBottom = props.paddingBottom;
+  if (props.paddingLeft !== undefined) styles.paddingLeft = props.paddingLeft;
+  if (props.paddingRight !== undefined)
+    styles.paddingRight = props.paddingRight;
+  if (props.paddingX !== undefined) {
     styles.paddingLeft = props.paddingX;
     styles.paddingRight = props.paddingX;
   }
-  if (props.paddingY) {
+  if (props.paddingY !== undefined) {
     styles.paddingTop = props.paddingY;
     styles.paddingBottom = props.paddingY;
   }
 
   // Margin
-  if (props.marginX) {
+  if (props.margin !== undefined) styles.margin = props.margin;
+  if (props.marginTop !== undefined) styles.marginTop = props.marginTop;
+  if (props.marginBottom !== undefined)
+    styles.marginBottom = props.marginBottom;
+  if (props.marginLeft !== undefined) styles.marginLeft = props.marginLeft;
+  if (props.marginRight !== undefined) styles.marginRight = props.marginRight;
+  if (props.marginX !== undefined) {
     styles.marginLeft = props.marginX;
     styles.marginRight = props.marginX;
   }
-  if (props.marginY) {
+  if (props.marginY !== undefined) {
     styles.marginTop = props.marginY;
     styles.marginBottom = props.marginY;
   }
@@ -115,77 +83,25 @@ const expandShorthand = (props: StyledBlockProps): CSSObject => {
   return styles;
 };
 
-// ——— Styled Component ———
+// Only allow semantic tag types
+type SemanticTagType = keyof Pick<
+  JSX.IntrinsicElements,
+  "div" | "section" | "article" | "header" | "footer" | "main" | "span" | "nav"
+>;
 
-const StyledBlock = styled.div<StyledBlockProps>((props): CSSObject => {
-  return {
-    // Spacing
-    padding: props.padding,
-    paddingTop: props.paddingTop,
-    paddingRight: props.paddingRight,
-    paddingBottom: props.paddingBottom,
-    paddingLeft: props.paddingLeft,
+const StyledBlock = styled.div.withConfig({
+  shouldForwardProp,
+})<StyledBlockProps>((props) => css(getStyles(props)));
 
-    margin: props.margin,
-    marginTop: props.marginTop,
-    marginRight: props.marginRight,
-    marginBottom: props.marginBottom,
-    marginLeft: props.marginLeft,
+export interface BlockProps
+  extends StyledBlockProps,
+    Omit<React.HTMLAttributes<HTMLElement>, "as"> {
+  children?: React.ReactNode;
+  as?: SemanticTagType;
+}
 
-    // Layout
-    display: props.display,
-    width: props.width,
-    height: props.height,
-    minWidth: props.minWidth,
-    maxWidth: props.maxWidth,
-    minHeight: props.minHeight,
-    maxHeight: props.maxHeight,
-    overflow: props.overflow,
-
-    // Flexbox
-    flexDirection: props.flexDirection,
-    flexWrap: props.flexWrap,
-    justifyContent: props.justifyContent,
-    alignItems: props.alignItems,
-    alignContent: props.alignContent,
-    alignSelf: props.alignSelf,
-    flex: props.flex,
-    flexGrow: props.flexGrow,
-    flexShrink: props.flexShrink,
-    flexBasis: props.flexBasis,
-    gap: props.gap,
-    rowGap: props.rowGap,
-    columnGap: props.columnGap,
-
-    // Position
-    position: props.position,
-    top: props.top,
-    right: props.right,
-    bottom: props.bottom,
-    left: props.left,
-    zIndex: props.zIndex,
-
-    // Visual
-    backgroundColor: props.backgroundColor,
-    color: props.color,
-    border: props.border,
-    borderRadius: props.borderRadius,
-    boxShadow: props.boxShadow,
-    opacity: props.opacity,
-
-    // Shorthand expansion
-    ...expandShorthand(props),
-  };
-});
-
-// ——— Main Component ———
-
-const Block = ({ children, as = "div", ...rest }: BlockProps) => {
-  return (
-    <StyledBlock as={as} {...rest}>
-      {children}
-    </StyledBlock>
-  );
+const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
+  return <StyledBlock {...rest}>{children}</StyledBlock>;
 };
 
 export default Block;

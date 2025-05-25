@@ -10,16 +10,12 @@ const TextDemo: React.FC = () => {
 
       <Text variant="body.md">Hello</Text>
       <Block
-        padding="1rem"
-        border="1px solid red"
-        borderRadius="1rem"
-        display="flex"
-        backgroundColor="gray"
-        color="white"
-        flexDirection="column"
-        gap="1rem"
+        as="article"
+        paddingX="16px"
+        paddingY="16px"
+        style={{ border: "1px solid red", borderRadius: "8px" }}
       >
-        <Text variant="body.md">
+        <Text variant="body.md" color="red">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
           recusandae iusto vero eaque quaerat quia quod at, amet, reiciendis
           neque atque nulla, beatae natus ex illum obcaecati ab repellendus?
