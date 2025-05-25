@@ -14,6 +14,8 @@ const TextDemo: React.FC = () => {
         paddingX="16px"
         paddingY="16px"
         style={{ border: "1px solid red", borderRadius: "8px" }}
+        display="flex"
+        gap="2rem"
       >
         <Text variant="body.md" color="red">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi

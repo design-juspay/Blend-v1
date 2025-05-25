@@ -22,10 +22,25 @@ interface StyledBlockProps {
   marginX?: SpacingValue;
   marginY?: SpacingValue;
 
-  // ✨ Future props like background, border, etc.
+  // Layout / Flexbox
+  display?: CSSObject["display"];
+  flexDirection?: CSSObject["flexDirection"];
+  justifyContent?: CSSObject["justifyContent"];
+  alignItems?: CSSObject["alignItems"];
+  flexWrap?: CSSObject["flexWrap"];
+  flexGrow?: CSSObject["flexGrow"];
+  flexShrink?: CSSObject["flexShrink"];
+  flexBasis?: CSSObject["flexBasis"];
+  gap?: CSSObject["gap"];
+  rowGap?: CSSObject["rowGap"];
+  columnGap?: CSSObject["columnGap"];
+  alignContent?: CSSObject["alignContent"];
+  alignSelf?: CSSObject["alignSelf"];
+  justifySelf?: CSSObject["justifySelf"];
 }
 
 const blockedProps = [
+  // Padding
   "padding",
   "paddingTop",
   "paddingBottom",
@@ -33,6 +48,8 @@ const blockedProps = [
   "paddingRight",
   "paddingX",
   "paddingY",
+
+  // Margin
   "margin",
   "marginTop",
   "marginBottom",
@@ -40,6 +57,22 @@ const blockedProps = [
   "marginRight",
   "marginX",
   "marginY",
+
+  // Layout / Flexbox
+  "display",
+  "flexDirection",
+  "justifyContent",
+  "alignItems",
+  "flexWrap",
+  "flexGrow",
+  "flexShrink",
+  "flexBasis",
+  "gap",
+  "rowGap",
+  "columnGap",
+  "alignContent",
+  "alignSelf",
+  "justifySelf",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -80,10 +113,28 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     styles.marginBottom = props.marginY;
   }
 
+  // Flexbox / Layout
+  if (props.display !== undefined) styles.display = props.display;
+  if (props.flexDirection !== undefined)
+    styles.flexDirection = props.flexDirection;
+  if (props.justifyContent !== undefined)
+    styles.justifyContent = props.justifyContent;
+  if (props.alignItems !== undefined) styles.alignItems = props.alignItems;
+  if (props.flexWrap !== undefined) styles.flexWrap = props.flexWrap;
+  if (props.flexGrow !== undefined) styles.flexGrow = props.flexGrow;
+  if (props.flexShrink !== undefined) styles.flexShrink = props.flexShrink;
+  if (props.flexBasis !== undefined) styles.flexBasis = props.flexBasis;
+  if (props.gap !== undefined) styles.gap = props.gap;
+  if (props.rowGap !== undefined) styles.rowGap = props.rowGap;
+  if (props.columnGap !== undefined) styles.columnGap = props.columnGap;
+  if (props.alignContent !== undefined)
+    styles.alignContent = props.alignContent;
+  if (props.alignSelf !== undefined) styles.alignSelf = props.alignSelf;
+  if (props.justifySelf !== undefined) styles.justifySelf = props.justifySelf;
+
   return styles;
 };
 
-// Only allow semantic tag types
 type SemanticTagType = keyof Pick<
   JSX.IntrinsicElements,
   "div" | "section" | "article" | "header" | "footer" | "main" | "span" | "nav"
