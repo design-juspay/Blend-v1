@@ -7,3 +7,4 @@ export * from "./components/Tags";
 export * from "./components/Breadcrumb";
 export * from "./components/Avatar";
 export * from "./components/AvatarGroup";
+export * from "./components/Modal";

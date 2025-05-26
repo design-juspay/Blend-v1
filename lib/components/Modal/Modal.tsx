@@ -8,7 +8,7 @@ import { FOUNDATION_THEME } from "../../tokens";
 import modalTokens from "./modal.tokens";
 import Text from "../Text/Text";
 
-export const Modal = forwardRef<HTMLDivElement, ModalProps>(
+const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (
     {
       isOpen,
@@ -202,3 +202,5 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
 );
 
 Modal.displayName = "Modal";
+
+export default Modal;
