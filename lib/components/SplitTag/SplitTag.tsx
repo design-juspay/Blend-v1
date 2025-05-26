@@ -1,5 +1,5 @@
 import Block from "../Primitives/Block/Block";
-import { Tag, TagV2Variant } from "../TagsV2";
+import { Tag, TagVariant } from "../Tags";
 import { SplitTagProps } from "./types";
 
 const SplitTag = ({ primaryTag, secondaryTag, size, shape }: SplitTagProps) => {
@@ -9,7 +9,7 @@ const SplitTag = ({ primaryTag, secondaryTag, size, shape }: SplitTagProps) => {
         <Tag
           {...primaryTag}
           splitTagPosition="left"
-          variant={TagV2Variant.NO_FILL}
+          variant={TagVariant.NO_FILL}
           size={size}
           shape={shape}
         />
@@ -18,7 +18,7 @@ const SplitTag = ({ primaryTag, secondaryTag, size, shape }: SplitTagProps) => {
         <Tag
           {...secondaryTag}
           splitTagPosition="right"
-          variant={TagV2Variant.ATTENTIVE}
+          variant={TagVariant.ATTENTIVE}
           size={size}
           shape={shape}
         />

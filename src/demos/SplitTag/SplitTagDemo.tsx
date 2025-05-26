@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag, TagV2Variant } from "../../../lib/main";
+import { Tag, TagVariant } from "../../../lib/main";
 
 const SplitTagDemo: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const SplitTagDemo: React.FC = () => {
       </header>
 
       {/* <SplitTag primaryTag={{ text: "Primary Tag" }} variant/> */}
-      <Tag text="Primary Tag" variant={TagV2Variant.ATTENTIVE} />
+      <Tag text="Primary Tag" variant={TagVariant.ATTENTIVE} />
     </div>
   );
 };

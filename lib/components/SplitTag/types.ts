@@ -1,24 +1,18 @@
 import { ReactNode } from "react";
-import {
-  TagV2Color,
-  TagV2Props,
-  TagV2Shape,
-  TagV2Size,
-  TagV2Variant,
-} from "../TagsV2";
+import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "../Tags";
 
 export type TagConfig = {
   text: string;
-  variant?: TagV2Variant;
-  style?: TagV2Color;
+  variant?: TagVariant;
+  style?: TagColor;
   onClick?: () => {};
 };
 
 export type SplitTagProps = {
-  primaryTag: Omit<TagV2Props, "splitTagPosition" | "size" | "shape">;
-  secondaryTag?: Omit<TagV2Props, "splitTagPosition" | "size" | "shape">;
+  primaryTag: Omit<TagProps, "splitTagPosition" | "size" | "shape">;
+  secondaryTag?: Omit<TagProps, "splitTagPosition" | "size" | "shape">;
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
-  size?: TagV2Size;
-  shape?: TagV2Shape;
+  size?: TagSize;
+  shape?: TagShape;
 };

@@ -306,8 +306,6 @@ export interface BlockProps
  * The Block component is a primitive component that renders a styled div element.
  * It is used to create consistent spacing and layout patterns across the application.
  * 
- * @todo
- * - Add support for focus-visible outline
  */
 const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
   return <StyledBlock {...rest}>{children}</StyledBlock>;

@@ -20,7 +20,7 @@ const AlertCloseButton = styled.button<{ variant: AlertVariant }>((props) => {
     background: "none",
     border: "none",
     outline: "none",
-    height: FOUNDATION_THEME.spacing[20],
+    height: FOUNDATION_THEME.unit[20],
     aspectRatio: "1/1",
     borderRadius: FOUNDATION_THEME.border.radius[2],
     cursor: "pointer",
@@ -36,7 +36,7 @@ const AlertActionButton = styled.button<{ variant: AlertVariant }>((props) => {
     border: "none",
     background: "none",
     cursor: "pointer",
-    height: FOUNDATION_THEME.spacing[20],
+    height: FOUNDATION_THEME.unit[20],
     color: alertTokens.button[props.variant],
     fontWeight: 600,
     fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
@@ -63,26 +63,31 @@ const Alert: React.FC<AlertProps> = ({
   icon,
   actionPlacement = AlertActionPlacement.RIGHT,
 }) => {
+  // this is to make sure that the close button is always visible if there is an onClose prop
+  // but no primary or secondary actions are provided
+  if (onClose && primaryAction === undefined && secondaryAction === undefined) {
+    actionPlacement = AlertActionPlacement.BOTTOM;
+  }
   return (
     <Block
       maxWidth={900}
       backgroundColor={alertTokens.backgroundColor[variant][style]}
-      padding={FOUNDATION_THEME.spacing[16]}
+      padding={FOUNDATION_THEME.unit[16]}
       borderRadius={FOUNDATION_THEME.border.radius[8]}
       display="flex"
       flexDirection="column"
-      gap={FOUNDATION_THEME.spacing[8]}
+      gap={FOUNDATION_THEME.unit[8]}
       border={`1px solid ${alertTokens.border[variant]}`}
     >
       <Block
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        gap={FOUNDATION_THEME.spacing[8]}
+        gap={FOUNDATION_THEME.unit[8]}
       >
-        <Block display="flex" contentCentered gap={FOUNDATION_THEME.spacing[8]}>
+        <Block display="flex" contentCentered gap={FOUNDATION_THEME.unit[8]}>
           {icon && (
-            <Block size={FOUNDATION_THEME.spacing[16]} contentCentered>
+            <Block size={FOUNDATION_THEME.unit[16]} contentCentered>
               {icon}
             </Block>
           )}
@@ -101,55 +106,56 @@ const Alert: React.FC<AlertProps> = ({
         )}
       </Block>
       <Block
-        paddingLeft={icon ? FOUNDATION_THEME.spacing[24] : 0}
+        paddingLeft={icon ? FOUNDATION_THEME.unit[24] : 0}
         display="flex"
         flexDirection={
           actionPlacement === AlertActionPlacement.BOTTOM ? "column" : "row"
         }
         alignItems="flex-start"
         justifyContent="space-between"
-        gap={FOUNDATION_THEME.spacing[18]}
+        gap={FOUNDATION_THEME.unit[18]}
       >
-        <Text
-          variant="body.md"
-          color={foundationToken.colors.gray[600]}
-        >
+        <Text variant="body.md" color={foundationToken.colors.gray[600]}>
           {description}
         </Text>
-        <Block display="flex" gap={FOUNDATION_THEME.spacing[16]}>
-          <Block display="flex" gap={FOUNDATION_THEME.spacing[20]}>
-            {primaryAction && (
-              <AlertActionButton
-                onClick={primaryAction.onClick}
-                variant={variant}
-              >
-                {primaryAction.label}
-              </AlertActionButton>
+        {(primaryAction || secondaryAction) && (
+          <Block display="flex" gap={FOUNDATION_THEME.unit[16]}>
+            {(primaryAction || secondaryAction) && (
+              <Block as="span" display="flex" gap={FOUNDATION_THEME.unit[20]}>
+                {primaryAction && (
+                  <AlertActionButton
+                    onClick={primaryAction.onClick}
+                    variant={variant}
+                  >
+                    {primaryAction.label}
+                  </AlertActionButton>
+                )}
+                {secondaryAction && (
+                  <AlertActionButton
+                    onClick={secondaryAction.onClick}
+                    variant={variant}
+                  >
+                    {secondaryAction.label}
+                  </AlertActionButton>
+                )}
+              </Block>
             )}
-            {secondaryAction && (
-              <AlertActionButton
-                onClick={secondaryAction.onClick}
-                variant={variant}
-              >
-                {secondaryAction.label}
-              </AlertActionButton>
+            {onClose && actionPlacement === AlertActionPlacement.RIGHT && (
+              <>
+                <Block
+                  as="span"
+                  aria-hidden="true"
+                  width={"1px"}
+                  height={FOUNDATION_THEME.unit[20]}
+                  backgroundColor={foundationToken.colors.gray[300]}
+                />
+                <AlertCloseButton onClick={onClose} variant={variant}>
+                  <X size={16} color={foundationToken.colors.gray[800]} />
+                </AlertCloseButton>
+              </>
             )}
           </Block>
-          {onClose && actionPlacement === AlertActionPlacement.RIGHT && (
-            <Block
-              as="span"
-              aria-hidden="true"
-              width={"1px"}
-              height={FOUNDATION_THEME.spacing[20]}
-              backgroundColor={foundationToken.colors.gray[300]}
-            />
-          )}
-          {onClose && actionPlacement === AlertActionPlacement.RIGHT && (
-            <AlertCloseButton onClick={onClose} variant={variant}>
-              <X size={16} color={foundationToken.colors.gray[800]} />
-            </AlertCloseButton>
-          )}
-        </Block>
+        )}
       </Block>
     </Block>
   );

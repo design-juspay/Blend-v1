@@ -1,13 +1,10 @@
-import Block from "../Primitives/Block/Block";
-
-import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
-import Text from "../Text/Text";
-import { TagV2Color, TagV2Props, TagV2Shape, TagV2Size, TagV2Variant } from "./types";
+import { FOUNDATION_THEME } from "../../tokens";
 
-
-
-type TagV2Tokens = Readonly<{
+/**
+ * @todo: Should we hardcode the keys for the tokens?
+ */
+export type TagTokensType = Readonly<{
   background: {
     [key: string]: {
       [key: string]: CSSObject["color"];
@@ -40,7 +37,7 @@ type TagV2Tokens = Readonly<{
   };
 }>;
 
-const tagTokens: TagV2Tokens = {
+const tagTokens: TagTokensType = {
   background: {
     noFill: {
       neutral: FOUNDATION_THEME.colors.gray[0],
@@ -121,34 +118,34 @@ const tagTokens: TagV2Tokens = {
   },
   borderRadius: {
     squarical: {
-      xs: "6px",
-      sm: "6px",
-      md: "6px",
-      lg: "8px",
+      xs: FOUNDATION_THEME.border.radius[6],
+      sm: FOUNDATION_THEME.border.radius[6],
+      md: FOUNDATION_THEME.border.radius[6],
+      lg: FOUNDATION_THEME.border.radius[8],
     },
     rounded: {
-      xs: "100px",
-      sm: "100px",
-      md: "100px",
-      lg: "100px",
+      xs: FOUNDATION_THEME.border.radius.full,
+      sm: FOUNDATION_THEME.border.radius.full,
+      md: FOUNDATION_THEME.border.radius.full,
+      lg: FOUNDATION_THEME.border.radius.full,
     },
   },
   font: {
     xs: {
-      fontSize: "12px",
-      fontWeight: "600",
+      fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
     },
     sm: {
-      fontSize: "12px",
-      fontWeight: "600",
+      fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
     },
     md: {
-      fontSize: "14px",
-      fontWeight: "600",
+      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
     },
     lg: {
-      fontSize: "14px",
-      fontWeight: "600",
+      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
     },
   },
   layout: {
@@ -179,61 +176,4 @@ const tagTokens: TagV2Tokens = {
   },
 };
 
-const Tag = ({
-  text,
-  variant = TagV2Variant.SUBTLE,
-  color = TagV2Color.PRIMARY,
-  size = TagV2Size.SM,
-  shape = TagV2Shape.SQUARICAL,
-  leadingSlot,
-  trailingSlot,
-  onClick,
-  splitTagPosition,
-}: TagV2Props) => {
-  const isSplitTag = splitTagPosition !== undefined;
-  let borderRadius = tagTokens.borderRadius[shape][size];
-  if (isSplitTag) {
-    borderRadius =
-      splitTagPosition === "left"
-        ? `${tagTokens.borderRadius[shape][size]} 0 0 ${tagTokens.borderRadius[shape][size]}`
-        : `0 ${tagTokens.borderRadius[shape][size]} ${tagTokens.borderRadius[shape][size]} 0`;
-  }
-  
-  return (
-    <Block
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      gap={FOUNDATION_THEME.spacing[6]}
-      height={tagTokens.layout[size].height}
-      width="fit-content"
-      paddingX={FOUNDATION_THEME.spacing[8]}
-      paddingY={FOUNDATION_THEME.spacing[4]}
-      backgroundColor={tagTokens.background[variant][color]}
-      color={tagTokens.text[variant][color]}
-      border={`1px solid ${tagTokens.border[variant][color]}`}
-      borderRadius={borderRadius}
-      cursor={onClick ? "pointer" : "default"}
-      onClick={onClick}
-    >
-      {leadingSlot && (
-        <Block contentCentered size={tagTokens.layout[size].iconSize}>
-          {leadingSlot}
-        </Block>
-      )}
-      <Text
-        fontSize={tagTokens.font[size].fontSize}
-        fontWeight={tagTokens.font[size].fontWeight}
-      >
-        {text}
-      </Text>
-      {trailingSlot && (
-        <Block contentCentered size={tagTokens.layout[size].iconSize}>
-          {trailingSlot}
-        </Block>
-      )}
-    </Block>
-  );
-};
-
-export default Tag;
+export default tagTokens;

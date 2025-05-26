@@ -1,4 +1,4 @@
-export type SpacingTokensType = Readonly<{
+export type UnitTokensType = Readonly<{
   0: string;
   2: string;
   4: string;
@@ -20,7 +20,7 @@ export type SpacingTokensType = Readonly<{
   auto: string;
 }>;
 
-const spacingTokens: SpacingTokensType = {
+const unitTokens: UnitTokensType = {
   0: "0px",
   2: "2px",
   4: "4px",
@@ -42,4 +42,4 @@ const spacingTokens: SpacingTokensType = {
   auto: "auto",
 };
 
-export default spacingTokens;
+export default unitTokens;
