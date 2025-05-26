@@ -10,6 +10,7 @@ import Block from "../../../lib/components/Primitives/Block/Block";
 import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
 import { SplitTag } from "../../../lib/main";
 import { Tag } from "../../../lib/main";
+import Tooltip from "../../../lib/components/Tooltip/Tooltip";
 
 const TagsDemo: React.FC = () => {
   return (
@@ -21,34 +22,21 @@ const TagsDemo: React.FC = () => {
         </p>
       </header>
 
-      <Block display="flex" gap={10} paddingBottom={10}>
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          onClick={() => alert("Clicked")}
-        />
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          size={TagSize.SM}
-          onClick={() => alert("Clicked")}
-        />
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          size={TagSize.MD}
-          onClick={() => alert("Clicked")}
-        />
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          size={TagSize.LG}
-          onClick={() => alert("Clicked")}
-        />
+      <Block display="flex" gap={10} className="debug" marginBottom={10}>
+        <Tooltip content="Hello">
+          <Block color="blue" cursor="pointer" height={"100%"}>
+            Click me
+          </Block>
+        </Tooltip>
+        <Tooltip content="Hello">
+          <Tag
+            text="Hello"
+            leadingSlot={<Hash size={12} />}
+            trailingSlot={<Filter size={12} />}
+            size={TagSize.SM}
+            onClick={() => alert("Clicked")}
+          />
+        </Tooltip>
       </Block>
       <Block display="flex" gap={10}>
         <SplitTag
