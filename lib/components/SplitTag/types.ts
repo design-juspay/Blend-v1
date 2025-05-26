@@ -1,31 +1,18 @@
-import type { ReactNode, MouseEventHandler } from "react";
-import { 
-  TagVariant, 
-  TagStatus, 
-  TagSize, 
-  TagShape 
-} from "../Tags";
-
-export { 
-  TagVariant, 
-  TagStatus, 
-  TagSize, 
-  TagShape 
-};
+import { ReactNode } from "react";
+import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "../Tags";
 
 export type TagConfig = {
   text: string;
   variant?: TagVariant;
-  status?: TagStatus;
-  onClick?: MouseEventHandler<HTMLDivElement>;
-}
+  style?: TagColor;
+  onClick?: () => void;
+};
 
 export type SplitTagProps = {
-  primaryTag: TagConfig;
-  secondaryTag?: TagConfig;
-  size?: TagSize;
-  shape?: TagShape;
+  primaryTag: Omit<TagProps, "splitTagPosition" | "size" | "shape">;
+  secondaryTag?: Omit<TagProps, "splitTagPosition" | "size" | "shape">;
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
-  testId?: string;
-} 
+  size?: TagSize;
+  shape?: TagShape;
+};

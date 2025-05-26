@@ -2,8 +2,8 @@ import React, { JSX } from "react";
 import styled, { css, CSSObject } from "styled-components";
 
 type SpacingValue = string | number;
-
-interface StateStyles {
+ 
+type StateStyles = {
   _hover?: StyledBlockProps;
   _focus?: StyledBlockProps;
   _active?: StyledBlockProps;
@@ -11,7 +11,7 @@ interface StateStyles {
   _visited?: StyledBlockProps;
 }
 
-interface StyledBlockProps extends StateStyles {
+type StyledBlockProps = StateStyles & {
   color?: CSSObject["color"];
 
   // Padding
@@ -293,21 +293,18 @@ type SemanticTagType = keyof Pick<
   | "hr"
 >;
 
-export interface BlockProps
-  extends StyledBlockProps,
-    Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> {
-  children?: React.ReactNode;
-  as?: SemanticTagType;
-}
+export type BlockProps = StyledBlockProps &
+  Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
+    children?: React.ReactNode;
+    as?: SemanticTagType;
+  };
 
 /**
  * Block Component
  * @description
  * The Block component is a primitive component that renders a styled div element.
  * It is used to create consistent spacing and layout patterns across the application.
- * 
- * @todo
- * - Add support for focus-visible outline
+ *
  */
 const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
   return <StyledBlock {...rest}>{children}</StyledBlock>;
