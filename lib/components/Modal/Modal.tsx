@@ -16,17 +16,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       title,
       subtitle,
       children,
-      primaryButtonText,
-      secondaryButtonText,
-      onPrimaryButtonClick,
-      onSecondaryButtonClick,
-      primaryButtonDisabled = false,
-      secondaryButtonDisabled = false,
+      primaryAction,
+      secondaryAction,
       className,
       showCloseButton = true,
       closeOnBackdropClick = true,
-      primaryButtonType = ButtonType.PRIMARY,
-      secondaryButtonType = ButtonType.SECONDARY,
       headerRightSlot,
       showDivider = true,
     },
@@ -67,9 +61,12 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           }
         >
           <Block
+            display="flex"
+            flexDirection="column"
             flexGrow={1}
             minWidth="0"
             paddingRight={FOUNDATION_THEME.unit[16]}
+            gap={FOUNDATION_THEME.unit[8]}
           >
             <Block
               display="flex"
@@ -111,7 +108,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     };
 
     const renderFooter = () => {
-      if (!primaryButtonText && !secondaryButtonText) return null;
+      if (!primaryAction && !secondaryAction) return null;
 
       return (
         <Block
@@ -124,20 +121,20 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
             showDivider ? `1px solid ${modalTokens.dividerColor}` : undefined
           }
         >
-          {secondaryButtonText && (
+          {secondaryAction && (
             <Button
-              buttonType={secondaryButtonType}
-              text={secondaryButtonText}
-              onClick={onSecondaryButtonClick}
-              isDisabled={secondaryButtonDisabled}
+              buttonType={secondaryAction.type || ButtonType.SECONDARY}
+              text={secondaryAction.label}
+              onClick={secondaryAction.onClick}
+              isDisabled={secondaryAction.isDisabled}
             />
           )}
-          {primaryButtonText && (
+          {primaryAction && (
             <Button
-              buttonType={primaryButtonType}
-              text={primaryButtonText}
-              onClick={onPrimaryButtonClick}
-              isDisabled={primaryButtonDisabled}
+              buttonType={primaryAction.type || ButtonType.PRIMARY}
+              text={primaryAction.label}
+              onClick={primaryAction.onClick}
+              isDisabled={primaryAction.isDisabled}
             />
           )}
         </Block>

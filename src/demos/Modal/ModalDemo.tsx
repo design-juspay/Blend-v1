@@ -432,20 +432,28 @@ const ModalDemo = () => {
         onClose={() => setIsModalOpen(false)}
         title={config.title}
         subtitle={config.subtitle}
-        primaryButtonText={
-          config.showPrimaryButton ? config.primaryButtonText : undefined
+        primaryAction={
+          config.showPrimaryButton
+            ? {
+                label: config.primaryButtonText,
+                onClick: () => setIsModalOpen(false),
+                isDisabled: config.primaryButtonDisabled,
+                type: config.primaryButtonType as ButtonType,
+              }
+            : undefined
         }
-        secondaryButtonText={
-          config.showSecondaryButton ? config.secondaryButtonText : undefined
+        secondaryAction={
+          config.showSecondaryButton
+            ? {
+                label: config.secondaryButtonText,
+                onClick: () => setIsModalOpen(false),
+                isDisabled: config.secondaryButtonDisabled,
+                type: config.secondaryButtonType as ButtonType,
+              }
+            : undefined
         }
-        onPrimaryButtonClick={() => setIsModalOpen(false)}
-        onSecondaryButtonClick={() => setIsModalOpen(false)}
-        primaryButtonDisabled={config.primaryButtonDisabled}
-        secondaryButtonDisabled={config.secondaryButtonDisabled}
         showCloseButton={config.showCloseButton}
         closeOnBackdropClick={config.closeOnBackdropClick}
-        primaryButtonType={config.primaryButtonType as ButtonType}
-        secondaryButtonType={config.secondaryButtonType as ButtonType}
         showDivider={config.showDivider}
       >
         {renderModalContent()}

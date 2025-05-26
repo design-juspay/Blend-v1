@@ -1,25 +1,26 @@
 import { ButtonType } from "../Button/types";
 import { ReactNode } from "react";
 
+export interface ModalButtonAction {
+  label: string;
+  onClick?: () => void;
+  isDisabled?: boolean;
+  type?: ButtonType;
+}
+
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   subtitle?: string;
   children: ReactNode;
-  primaryButtonText?: string;
-  secondaryButtonText?: string;
-  onPrimaryButtonClick?: () => void;
-  onSecondaryButtonClick?: () => void;
-  primaryButtonDisabled?: boolean;
-  secondaryButtonDisabled?: boolean;
+  primaryAction?: ModalButtonAction;
+  secondaryAction?: ModalButtonAction;
   className?: string;
   showCloseButton?: boolean;
   showHeader?: boolean;
   showFooter?: boolean;
   closeOnBackdropClick?: boolean;
-  primaryButtonType?: ButtonType;
-  secondaryButtonType?: ButtonType;
   customHeader?: ReactNode;
   customFooter?: ReactNode;
   headerRightSlot?: ReactNode;
