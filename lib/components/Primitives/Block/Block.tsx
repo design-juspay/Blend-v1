@@ -3,7 +3,17 @@ import styled, { css, CSSObject } from "styled-components";
 
 type SpacingValue = string | number;
 
-interface StyledBlockProps {
+interface StateStyles {
+  _hover?: StyledBlockProps;
+  _focus?: StyledBlockProps;
+  _active?: StyledBlockProps;
+  _disabled?: StyledBlockProps;
+  _visited?: StyledBlockProps;
+}
+
+interface StyledBlockProps extends StateStyles {
+  color?: CSSObject["color"];
+
   // Padding
   padding?: SpacingValue;
   paddingTop?: SpacingValue;
@@ -64,14 +74,20 @@ interface StyledBlockProps {
   borderLeft?: CSSObject["borderLeft"];
   borderRight?: CSSObject["borderRight"];
 
+  // Overflow
+  overflow?: CSSObject["overflow"];
+  overflowX?: CSSObject["overflowX"];
+  overflowY?: CSSObject["overflowY"];
+
   // Shortcuts
-  contentCentered?: boolean; // uses flex box to auto center content
+  contentCentered?: boolean;
 
   // Cursor
   cursor?: CSSObject["cursor"];
 }
 
 const blockedProps = [
+  // All base props
   "padding",
   "paddingTop",
   "paddingBottom",
@@ -120,6 +136,15 @@ const blockedProps = [
   "borderLeft",
   "borderRight",
   "cursor",
+  "overflow",
+  "overflowX",
+  "overflowY",
+  // Pseudo states
+  "_hover",
+  "_focus",
+  "_active",
+  "_disabled",
+  "_visited",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -127,7 +152,8 @@ const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
 const getStyles = (props: StyledBlockProps): CSSObject => {
   const styles: CSSObject = {};
 
-  // Shortcuts
+  if (props.color !== undefined) styles.color = props.color;
+
   if (props.contentCentered) {
     styles.display = props.display ?? "flex";
     styles.justifyContent = props.justifyContent ?? "center";
@@ -139,7 +165,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     if (props.alignItems !== undefined) styles.alignItems = props.alignItems;
   }
 
-  // Size shortcut
   if (props.size !== undefined) {
     styles.width = props.size;
     styles.height = props.size;
@@ -148,7 +173,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     if (props.height !== undefined) styles.height = props.height;
   }
 
-  // Padding
   if (props.padding !== undefined) styles.padding = props.padding;
   if (props.paddingTop !== undefined) styles.paddingTop = props.paddingTop;
   if (props.paddingBottom !== undefined)
@@ -165,7 +189,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     styles.paddingBottom = props.paddingY;
   }
 
-  // Margin
   if (props.margin !== undefined) styles.margin = props.margin;
   if (props.marginTop !== undefined) styles.marginTop = props.marginTop;
   if (props.marginBottom !== undefined)
@@ -181,7 +204,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     styles.marginBottom = props.marginY;
   }
 
-  // Flexbox
   if (props.flexDirection !== undefined)
     styles.flexDirection = props.flexDirection;
   if (props.flexWrap !== undefined) styles.flexWrap = props.flexWrap;
@@ -196,7 +218,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.alignSelf !== undefined) styles.alignSelf = props.alignSelf;
   if (props.justifySelf !== undefined) styles.justifySelf = props.justifySelf;
 
-  // Border radius
   if (props.borderRadius !== undefined)
     styles.borderRadius = props.borderRadius;
   if (props.borderTopLeftRadius !== undefined)
@@ -208,17 +229,14 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.borderBottomRightRadius !== undefined)
     styles.borderBottomRightRadius = props.borderBottomRightRadius;
 
-  // Sizing
   if (props.minWidth !== undefined) styles.minWidth = props.minWidth;
   if (props.minHeight !== undefined) styles.minHeight = props.minHeight;
   if (props.maxWidth !== undefined) styles.maxWidth = props.maxWidth;
   if (props.maxHeight !== undefined) styles.maxHeight = props.maxHeight;
 
-  // Background
   if (props.backgroundColor !== undefined)
     styles.backgroundColor = props.backgroundColor;
 
-  // Border
   if (props.border !== undefined) styles.border = props.border;
   if (props.borderTop !== undefined) styles.borderTop = props.borderTop;
   if (props.borderBottom !== undefined)
@@ -226,11 +244,41 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.borderLeft !== undefined) styles.borderLeft = props.borderLeft;
   if (props.borderRight !== undefined) styles.borderRight = props.borderRight;
 
-  // Cursor
+  if (props.overflow !== undefined) styles.overflow = props.overflow;
+  if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
+  if (props.overflowY !== undefined) styles.overflowY = props.overflowY;
+
   if (props.cursor !== undefined) styles.cursor = props.cursor;
 
   return styles;
 };
+
+const stateToSelector: Record<keyof StateStyles, string> = {
+  _hover: "&:hover",
+  _focus: "&:focus",
+  _active: "&:active",
+  _disabled: "&:disabled",
+  _visited: "&:visited",
+};
+
+const StyledBlock = styled.div.withConfig({
+  shouldForwardProp,
+})<StyledBlockProps>((props) => {
+  const base = getStyles(props);
+
+  const stateStyles = Object.entries(stateToSelector).reduce(
+    (acc, [key, selector]) => {
+      const stateProps = props[key as keyof StateStyles];
+      if (stateProps) {
+        acc[selector] = getStyles(stateProps);
+      }
+      return acc;
+    },
+    {} as CSSObject
+  );
+
+  return css({ ...base, ...stateStyles });
+});
 
 type SemanticTagType = keyof Pick<
   JSX.IntrinsicElements,
@@ -245,17 +293,22 @@ type SemanticTagType = keyof Pick<
   | "hr"
 >;
 
-const StyledBlock = styled.div.withConfig({
-  shouldForwardProp,
-})<StyledBlockProps>((props) => css(getStyles(props)));
-
 export interface BlockProps
   extends StyledBlockProps,
-    Omit<React.HTMLAttributes<HTMLElement>, "as"> {
+    Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> {
   children?: React.ReactNode;
   as?: SemanticTagType;
 }
 
+/**
+ * Block Component
+ * @description
+ * The Block component is a primitive component that renders a styled div element.
+ * It is used to create consistent spacing and layout patterns across the application.
+ * 
+ * @todo
+ * - Add support for focus-visible outline
+ */
 const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
   return <StyledBlock {...rest}>{children}</StyledBlock>;
 };

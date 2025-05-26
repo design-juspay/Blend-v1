@@ -27,7 +27,7 @@ export type VariantType =
 // @TODO can we add additional semantic tags? like figcaption, caption, etc.
 export type SemanticTagType = keyof Pick<
   JSX.IntrinsicElements,
-  "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q"
+  "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q" | "small"
 >;
 
 export interface PrimitiveTextProps {
@@ -44,6 +44,7 @@ export interface PrimitiveTextProps {
   padding?: CSSObject["padding"];
   paddingX?: string | number;
   paddingY?: string | number;
+  size?: CSSObject["fontSize"];
 }
 
 export interface TextProps
@@ -123,7 +124,7 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
   const {
     variant,
     weight = 400,
-    color = "black",
+    color,
     fontFamily = "body",
     textAlign = "left",
     letterSpacing = "normal",
@@ -143,6 +144,10 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
     opacity: FOUNDATION_THEME.opacity[opacity],
     margin: 0,
   };
+
+  if (color !== undefined) {
+    styles.color = color;
+  }
 
   // Spacing
   if (props.margin) styles.margin = props.margin;
@@ -182,7 +187,7 @@ const PrimitiveText = styled.p.withConfig({
  * It is used to display text in a consistent manner across the application.
  *
  * @param {React.ReactNode} children - The content to display inside the text component.
- * @param {SemanticTagType} as - The semantic tag to use for the text component. "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "div" | "code" | "q"
+ * @param {SemanticTagType} as - The semantic tag to use for the text component. "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "div" | "code" | "q" | "small"
  * @param {VariantType} variant - The variant to use for the text component.
  * @param {PrimitiveTextProps} rest - The rest of the props to pass to the text component.
  *

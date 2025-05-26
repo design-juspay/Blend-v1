@@ -1,12 +1,22 @@
 import React from "react";
 import { Hash, Filter } from "lucide-react";
-import {
-  Tag,
+import Tag, {
   TagVariant,
-  TagStatus,
+  TagStyle,
   TagSize,
-  TagShape
-} from "../../../lib/components/Tags";
+  TagShape,
+} from "../../../lib/components/TagsV2/TagsV2";
+import Block from "../../../lib/components/Primitives/Block/Block";
+import Text from "../../../lib/components/Primitives/Text/Text";
+
+// import {
+//   Tag,
+//   TagVariant,
+//   TagStatus,
+//   TagSize,
+//   TagShape
+// } from "../../../lib/components/Tags";
+// import Tags from "../../../lib/components/TagsV2/TagsV2";
 
 const TagsDemo: React.FC = () => {
   return (
@@ -18,20 +28,39 @@ const TagsDemo: React.FC = () => {
         </p>
       </header>
 
+      <Tag
+        text="Hello"
+        leadingSlot={<Hash size={12} />}
+        trailingSlot={<Filter size={12} />}
+        onClick={() => alert("Clicked")}
+      />
+
       {/* Tag Variants */}
-      <section className="showcase-section">
+      <section className="showcase-section" style={{ marginTop: "200px" }}>
         <h2 className="showcase-title">Tag Variants</h2>
         <div className="showcase-container">
           <div className="showcase-item">
-            <Tag text="No Fill" variant={TagVariant.NO_FILL} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="No Fill"
+              variant={TagVariant.NO_FILL}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">No Fill</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Attentive" variant={TagVariant.ATTENTIVE} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Attentive"
+              variant={TagVariant.ATTENTIVE}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Attentive</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Subtle" variant={TagVariant.SUBTLE} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Subtle"
+              variant={TagVariant.SUBTLE}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Subtle</span>
           </div>
         </div>
@@ -42,27 +71,51 @@ const TagsDemo: React.FC = () => {
         <h2 className="showcase-title">Tag Statuses</h2>
         <div className="showcase-container">
           <div className="showcase-item">
-            <Tag text="Neutral" status={TagStatus.NEUTRAL} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Neutral"
+              style={TagStyle.NEUTRAL}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Neutral</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Primary" status={TagStatus.PRIMARY} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Primary"
+              style={TagStyle.PRIMARY}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Primary</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Success" status={TagStatus.SUCCESS} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Success"
+              style={TagStyle.SUCCESS}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Success</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Error" status={TagStatus.ERROR} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Error"
+              style={TagStyle.ERROR}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Error</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Warning" status={TagStatus.WARNING} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Warning"
+              style={TagStyle.WARNING}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Warning</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Purple" status={TagStatus.PURPLE} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Purple"
+              style={TagStyle.PURPLE}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Purple</span>
           </div>
         </div>
@@ -73,19 +126,35 @@ const TagsDemo: React.FC = () => {
         <h2 className="showcase-title">Tag Sizes</h2>
         <div className="showcase-container">
           <div className="showcase-item">
-            <Tag text="Extra Small" size={TagSize.XS} leadingSlot={<Hash size={10} />} />
+            <Tag
+              text="Extra Small"
+              size={TagSize.XS}
+              leadingSlot={<Hash size={10} />}
+            />
             <span className="showcase-label">XS</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Small" size={TagSize.SM} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Small"
+              size={TagSize.SM}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">SM</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Medium" size={TagSize.MD} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Medium"
+              size={TagSize.MD}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">MD</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Large" size={TagSize.LG} leadingSlot={<Hash size={14} />} />
+            <Tag
+              text="Large"
+              size={TagSize.LG}
+              leadingSlot={<Hash size={14} />}
+            />
             <span className="showcase-label">LG</span>
           </div>
         </div>
@@ -96,11 +165,19 @@ const TagsDemo: React.FC = () => {
         <h2 className="showcase-title">Tag Shapes</h2>
         <div className="showcase-container">
           <div className="showcase-item">
-            <Tag text="Rounded" shape={TagShape.ROUNDED} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Rounded"
+              shape={TagShape.ROUNDED}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Rounded</span>
           </div>
           <div className="showcase-item">
-            <Tag text="Squarical" shape={TagShape.SQUARICAL} leadingSlot={<Hash size={12} />} />
+            <Tag
+              text="Squarical"
+              shape={TagShape.SQUARICAL}
+              leadingSlot={<Hash size={12} />}
+            />
             <span className="showcase-label">Squarical</span>
           </div>
         </div>
@@ -119,30 +196,32 @@ const TagsDemo: React.FC = () => {
             <span className="showcase-label">Trailing Slot</span>
           </div>
           <div className="showcase-item">
-            <Tag 
-              text="Both Slots" 
-              leadingSlot={<Hash size={12} />} 
-              trailingSlot={<Filter size={12} />} 
+            <Tag
+              text="Both Slots"
+              leadingSlot={<Hash size={12} />}
+              trailingSlot={<Filter size={12} />}
             />
             <span className="showcase-label">Both Slots</span>
           </div>
           <div className="showcase-item">
-            <Tag 
-              text="Custom Slot" 
-              leadingSlot={<Hash size={12} />} 
+            <Tag
+              text="Custom Slot"
+              leadingSlot={<Hash size={12} />}
               trailingSlot={
-                <div style={{ 
-                  backgroundColor: 'rgba(0,0,0,0.1)', 
-                  padding: '0 4px', 
-                  borderRadius: '4px', 
-                  marginLeft: '2px',
-                  display: 'flex',
-                  alignItems: 'center'
-                }}>
-                  <span style={{ fontSize: '10px', marginRight: '2px' }}>5</span>
+                <Block
+                  backgroundColor="rgba(0,0,0,0.1)"
+                  paddingX={4}
+                  paddingY={2}
+                  borderRadius="9999px"
+                  display="flex"
+                  alignItems="center"
+                >
+                  <Text as="span" style={{ marginRight: "2px" }}>
+                    5
+                  </Text>
                   <Filter size={10} />
-                </div>
-              } 
+                </Block>
+              }
             />
             <span className="showcase-label">Complex Content</span>
           </div>

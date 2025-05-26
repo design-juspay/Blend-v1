@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import Alert, {
-  AlertVariant,
-  AlertStyle,
-  AlertActionPlacement,
-} from "../../../lib/components/Alert/Alert";
+
 import "./AlertDemo.css";
 import { Info } from "lucide-react";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import PrimitiveButton from "../../../lib/components/Primitives/PrimitiveButton/PrimitiveButton";
+import { Alert, AlertActionPlacement, AlertStyle, AlertVariant } from "../../../lib/main";
 
 const AlertDemo: React.FC = () => {
   const [playgroundProps, setPlaygroundProps] = useState({
