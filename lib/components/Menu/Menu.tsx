@@ -1,6 +1,8 @@
 import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
 import styled from "styled-components";
 import Block from "../Primitives/Block/Block";
+import Text from "../Text/Text";
+import { PencilIcon } from "lucide-react";
 
 const Content = styled(RadixDropdownMenu.Content)(() => ({
   backgroundColor: "white",
@@ -51,6 +53,7 @@ const dummyItems: MenuItemType[] = [
   {
     variant: MenuItemVariant.DEFAULT,
     text: "Edit",
+    slot1: <PencilIcon size={12} />,
     onClick: () => alert("Edit clicked"),
   },
   {
@@ -89,9 +92,9 @@ const dummyItems: MenuItemType[] = [
 
 export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <RadixDropdownMenu.Root>
+    <RadixDropdownMenu.Root open={true}>
       <RadixDropdownMenu.Trigger asChild>{trigger}</RadixDropdownMenu.Trigger>
-      <Content sideOffset={8}>
+      <Content style={{ padding: 6 }} sideOffset={8}>
         {dummyItems.map((item, index) =>
           item.subMenu && item.subMenu.items.length > 0 ? (
             <RadixDropdownMenu.Sub key={index}>
@@ -108,7 +111,7 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                 </Block>
               </RadixDropdownMenu.SubTrigger>
               <RadixDropdownMenu.Portal>
-                <SubContent>
+                <SubContent style={{ padding: 6 }}>
                   {item.subMenu.items.map((subItem, subIndex) => (
                     <RadixDropdownMenu.Item
                       asChild
@@ -117,17 +120,38 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                     >
                       <Block
                         display="flex"
-                        height={32}
                         alignItems="center"
+                        gap={8}
+                        height={32}
                         paddingX={8}
                         paddingY={6}
-                        style={{
-                          cursor: subItem.disabled ? "not-allowed" : "pointer",
-                          opacity: subItem.disabled ? 0.5 : 1,
-                        }}
                         onClick={subItem.disabled ? undefined : subItem.onClick}
                       >
-                        {subItem.text}
+                        {subItem.slot1 && (
+                          <Block size={16} contentCentered>
+                            {subItem.slot1}
+                          </Block>
+                        )}
+                        <Block display="flex" flexGrow={1} alignItems="center">
+                          <Text variant="body.md" fontWeight={500}>
+                            {subItem.text}
+                          </Text>
+                        </Block>
+                        {subItem.slot2 && (
+                          <Block size={16} contentCentered>
+                            {subItem.slot1}
+                          </Block>
+                        )}
+                        {subItem.slot3 && (
+                          <Block size={16} contentCentered>
+                            {subItem.slot1}
+                          </Block>
+                        )}
+                        {subItem.slot4 && (
+                          <Block size={16} contentCentered>
+                            {subItem.slot1}
+                          </Block>
+                        )}
                       </Block>
                     </RadixDropdownMenu.Item>
                   ))}
@@ -142,8 +166,9 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
             >
               <Block
                 display="flex"
-                height={32}
                 alignItems="center"
+                gap={8}
+                height={32}
                 paddingX={8}
                 paddingY={6}
                 style={{
@@ -152,7 +177,31 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                 }}
                 onClick={item.disabled ? undefined : item.onClick}
               >
-                {item.text}
+                {item.slot1 && (
+                  <Block size={16} contentCentered>
+                    {item.slot1}
+                  </Block>
+                )}
+                <Block display="flex" flexGrow={1} alignItems="center">
+                  <Text variant="body.md" fontWeight={500}>
+                    {item.text}
+                  </Text>
+                </Block>
+                {item.slot2 && (
+                  <Block size={16} contentCentered>
+                    {item.slot2}
+                  </Block>
+                )}
+                {item.slot3 && (
+                  <Block size={16} contentCentered>
+                    {item.slot3}
+                  </Block>
+                )}
+                {item.slot4 && (
+                  <Block size={16} contentCentered>
+                    {item.slot4}
+                  </Block>
+                )}
               </Block>
             </RadixDropdownMenu.Item>
           )
