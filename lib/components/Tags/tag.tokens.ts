@@ -1,47 +1,43 @@
-import type { ReactNode, MouseEventHandler } from "react";
-import Block from "../Primitives/Block/Block";
-import Text from "../Primitives/Text/Text";
+import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 
-export enum TagV2Variant {
-  NO_FILL = "noFill",
-  ATTENTIVE = "attentive",
-  SUBTLE = "subtle",
-}
+/**
+ * @todo: Should we hardcode the keys for the tokens?
+ */
+export type TagTokensType = Readonly<{
+  background: {
+    [key: string]: {
+      [key: string]: CSSObject["color"];
+    };
+  };
+  text: {
+    [key: string]: {
+      [key: string]: CSSObject["color"];
+    };
+  };
+  border: {
+    [key: string]: {
+      [key: string]: CSSObject["color"];
+    };
+  };
+  borderRadius: {
+    [key: string]: {
+      [key: string]: CSSObject["borderRadius"];
+    };
+  };
+  font: {
+    [key: string]: {
+      [key: string]: CSSObject["fontSize"];
+    };
+  };
+  layout: {
+    [key: string]: {
+      [key: string]: CSSObject["height"];
+    };
+  };
+}>;
 
-export enum TagV2Style {
-  NEUTRAL = "neutral",
-  PRIMARY = "primary",
-  SUCCESS = "success",
-  ERROR = "error",
-  WARNING = "warning",
-  PURPLE = "purple",
-}
-
-export enum TagV2Size {
-  XS = "xs",
-  SM = "sm",
-  MD = "md",
-  LG = "lg",
-}
-
-export enum TagV2Shape {
-  ROUNDED = "rounded",
-  SQUARICAL = "squarical",
-}
-
-export type TagV2Props = {
-  text: string;
-  variant?: TagV2Variant;
-  style?: TagV2Style;
-  size?: TagV2Size;
-  shape?: TagV2Shape;
-  leadingSlot?: ReactNode;
-  trailingSlot?: ReactNode;
-  onClick?: MouseEventHandler<HTMLDivElement>;
-};
-
-const tagTokens = {
+const tagTokens: TagTokensType = {
   background: {
     noFill: {
       neutral: FOUNDATION_THEME.colors.gray[0],
@@ -122,51 +118,62 @@ const tagTokens = {
   },
   borderRadius: {
     squarical: {
-      xs: "6px",
-      sm: "6px",
-      md: "6px",
-      lg: "8px",
+      xs: FOUNDATION_THEME.border.radius[6],
+      sm: FOUNDATION_THEME.border.radius[6],
+      md: FOUNDATION_THEME.border.radius[6],
+      lg: FOUNDATION_THEME.border.radius[8],
     },
     rounded: {
-      xs: "100px",
-      sm: "100px",
-      md: "100px",
-      lg: "100px",
+      xs: FOUNDATION_THEME.border.radius.full,
+      sm: FOUNDATION_THEME.border.radius.full,
+      md: FOUNDATION_THEME.border.radius.full,
+      lg: FOUNDATION_THEME.border.radius.full,
+    },
+  },
+  font: {
+    xs: {
+      fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
+    },
+    sm: {
+      fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
+    },
+    md: {
+      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
+    },
+    lg: {
+      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
+    },
+  },
+  layout: {
+    xs: {
+      height: "20px",
+      padding: "2px 6px",
+      iconSize: "12px",
+      gap: "6px",
+    },
+    sm: {
+      height: "22px",
+      padding: "3px 8px",
+      iconSize: "12px",
+      gap: "6px",
+    },
+    md: {
+      height: "24px",
+      padding: "4px 10px",
+      iconSize: "12px",
+      gap: "6px",
+    },
+    lg: {
+      height: "28px",
+      padding: "6px 12px",
+      iconSize: "12px",
+      gap: "6px",
     },
   },
 };
 
-const Tag = ({
-  text,
-  variant = TagV2Variant.SUBTLE,
-  style = TagV2Style.PRIMARY,
-  size = TagV2Size.SM,
-  shape = TagV2Shape.SQUARICAL,
-  leadingSlot,
-  trailingSlot,
-  onClick,
-}: TagV2Props) => {
-  return (
-    <Block
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      gap={FOUNDATION_THEME.spacing[6]}
-      width="fit-content"
-      paddingX={FOUNDATION_THEME.spacing[8]}
-      paddingY={FOUNDATION_THEME.spacing[4]}
-      backgroundColor={tagTokens.background[variant][style]}
-      color={tagTokens.text[variant][style]}
-      border={`1px solid ${tagTokens.border[variant][style]}`}
-      borderRadius={tagTokens.borderRadius[shape][size]}
-      cursor={onClick ? "pointer" : "default"}
-      onClick={onClick}
-    >
-      {leadingSlot}
-      <Text variant="body.md">{text}</Text>
-      {trailingSlot}
-    </Block>
-  );
-};
-
-export default Tag;
+export default tagTokens;

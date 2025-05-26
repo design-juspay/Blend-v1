@@ -4,7 +4,6 @@ import "./AlertDemo.css";
 import { Info } from "lucide-react";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
-import PrimitiveButton from "../../../lib/components/Primitives/PrimitiveButton/PrimitiveButton";
 import { Alert, AlertActionPlacement, AlertStyle, AlertVariant } from "../../../lib/main";
 
 const AlertDemo: React.FC = () => {
@@ -35,26 +34,19 @@ const AlertDemo: React.FC = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <PrimitiveButton
-        onClick={() => alert("Hello")}
-        paddingX={"16px"}
-        paddingY={"8px"}
-        borderRadius={FOUNDATION_THEME.border.radius[10]}
-        backgroundColor={FOUNDATION_THEME.colors.gray[100]}
-        color={FOUNDATION_THEME.colors.gray[900]}
-        style={{
-          border: `1px solid red`,
-        }}
-      >
-        Hello
-      </PrimitiveButton>
+      <Alert
+        heading="Alert Heading"
+        description="Welcome to the Blend UI component library documentation. Explore our comprehensive collection of React components designed for modern web applications."
+        actionPlacement={AlertActionPlacement.RIGHT}
+        onClose={() => alert("Close")}
+      />
       {/* Playground Section */}
       <div>
         <h2>Playground</h2>
         <Block
           display="flex"
-          gap={FOUNDATION_THEME.spacing[16]}
-          marginY={FOUNDATION_THEME.spacing[16]}
+          gap={FOUNDATION_THEME.unit[16]}
+          marginY={FOUNDATION_THEME.unit[16]}
         >
           <div style={{ marginBottom: "8px" }}>
             <label style={{ marginRight: "8px" }}>Variant:</label>

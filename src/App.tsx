@@ -5,10 +5,12 @@ import { Button, ButtonSubType } from "../lib/components/Button";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
-import TabsDemo from "./Demo/TabsDemo";
+import TabsDemo from "./demos/Tabs/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
-import ModalDemo from "./Demo/ModalDemo";
+import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
+import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import ModalDemo from "./demos/Modal/ModalDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -44,6 +46,11 @@ function App() {
       component: <SplitTagDemo />,
     },
     {
+      id: "breadcrumb",
+      name: "Breadcrumb",
+      component: <BreadcrumbDemo />,
+    },
+    {
       id: "tabs",
       name: "Tabs",
       component: <TabsDemo />,
@@ -58,15 +65,11 @@ function App() {
       name: "Modals",
       component: <ModalDemo />,
     },
+
     {
-      id: "data-display",
-      name: "Data Display",
-      component: <ComingSoon name="Data Display Components" />,
-    },
-    {
-      id: "feedback",
-      name: "Feedback Components",
-      component: <ComingSoon name="Feedback Components" />,
+      id: "avatar-group",
+      name: "Avatar Group",
+      component: <AvatarGroupDemo />,
     },
   ];
 
@@ -109,16 +112,6 @@ function App() {
 
       {/* Main Content */}
       <main className="main-content">{currentComponent}</main>
-    </div>
-  );
-}
-
-// Coming Soon Component
-function ComingSoon({ name }: { name: string }) {
-  return (
-    <div className="coming-soon">
-      <h1 className="heading-1">{name}</h1>
-      <p>This component category is coming soon!</p>
     </div>
   );
 }

@@ -3,15 +3,15 @@ import styled, { css, CSSObject } from "styled-components";
 
 type SpacingValue = string | number;
 
-interface StateStyles {
+type StateStyles = {
   _hover?: StyledBlockProps;
   _focus?: StyledBlockProps;
   _active?: StyledBlockProps;
   _disabled?: StyledBlockProps;
   _visited?: StyledBlockProps;
-}
+};
 
-interface StyledBlockProps extends StateStyles {
+type StyledBlockProps = StateStyles & {
   color?: CSSObject["color"];
 
   // Positioning
@@ -96,7 +96,7 @@ interface StyledBlockProps extends StateStyles {
 
   // Cursor
   cursor?: CSSObject["cursor"];
-}
+};
 
 const blockedProps = [
   // All base props

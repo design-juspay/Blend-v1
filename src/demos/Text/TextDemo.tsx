@@ -1,7 +1,8 @@
 import React from "react";
-import Text from "../../../lib/components/Primitives/Text/Text";
 import "./TextDemo.css";
 import Block from "../../../lib/components/Primitives/Block/Block";
+import Text from "../../../lib/components/Text/Text";
+import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
 
 const TextDemo: React.FC = () => {
   return (
@@ -16,8 +17,9 @@ const TextDemo: React.FC = () => {
         style={{ border: "1px solid red", borderRadius: "8px" }}
         display="flex"
         gap="2rem"
+        color="red"
       >
-        <Text variant="body.md" color="red">
+        <Text variant="body.md" color="green">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
           recusandae iusto vero eaque quaerat quia quod at, amet, reiciendis
           neque atque nulla, beatae natus ex illum obcaecati ab repellendus?
@@ -43,6 +45,14 @@ const TextDemo: React.FC = () => {
           omnis dolorem dolore ad. Excepturi sunt totam, explicabo consequuntur
           exercitationem quaerat illum aliquid laborum repellat impedit.
         </Text>
+      </Block>
+      <Block paddingY="16px" color="green">
+        <Text variant="display.lg">Blend</Text>
+        <PrimitiveText color="red">Blend</PrimitiveText>
+      </Block>
+
+      <Block paddingY="16px" color="blue">
+        <Text variant="body.lg">Heading 2xl</Text>
       </Block>
     </div>
   );

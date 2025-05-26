@@ -20,12 +20,12 @@ export enum AlertStyle {
   NO_FILL = "noFill",
 }
 
-export interface AlertAction {
+export type AlertAction = {
   label: string;
   onClick: () => void;
 }
 
-export interface AlertProps {
+export type AlertProps = {
   heading: string;
   description: string;
   variant?: AlertVariant;

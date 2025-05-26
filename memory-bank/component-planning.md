@@ -1,16 +1,46 @@
-# Component Planning: Modular, Scalable, and Maintainable Components
+# Component Planning: Primitive-First Architecture
 
-## 1. Directory Structure & File Roles
+## 1. Component Hierarchy
+
+### Primitive Components
+Primitive components form the foundation of the design system:
+
+1. **Block (`@Block.tsx`)**
+   - Fundamental layout primitive
+   - Supports most layout styling properties
+   - Can render as various semantic HTML elements
+   - Handles state-based styling
+
+2. **PrimitiveText (`@PrimitiveText.tsx`)**
+   - Base text primitive
+   - Supports semantic text elements
+   - Handles basic text styling
+   - Foundation for typography system
+
+3. **PrimitiveButton (`@PrimitiveButton.tsx`)**
+   - Base button primitive
+   - Handles fundamental button behavior
+   - Provides layout and visual control
+   - Foundation for button variants
+
+### Higher-Level Components
+Built on top of primitive components:
+- Use primitives as building blocks
+- Handle specific use cases
+- Maintain consistent styling through tokens
+- Follow the same directory structure
+
+## 2. Directory Structure & File Roles
 
 Each component should reside in its own directory under `lib/components/ComponentName/` with the following files:
 
 | File Name             | Purpose                                                        |
 |----------------------|----------------------------------------------------------------|
 | `Component.tsx`      | Main React component implementation                            |
-| `StyledComponent.tsx`| All styled-components (or emotion) for the component           |
-| `token.ts`           | Component-specific design tokens, referencing foundationToken   |
-| `types.ts`           | TypeScript types, enums, and interfaces for the component      |
-| `componentUtils.ts`  | Utility functions for logic, style computation, etc.           |
+| `StyledComponent.tsx`| All styled-components definitions                              |
+| `token.ts`           | Component-specific design tokens                               |
+| `types.ts`           | TypeScript types, enums, and interfaces                        |
+| `componentUtils.ts`  | Utility functions for logic and style computation              |
 | `index.ts`           | Barrel file for clean imports                                  |
 
 **Example:**
@@ -24,162 +54,172 @@ lib/components/Button/
   └── index.ts
 ```
 
-## 2. Best Practices for Writing Component Code
+## 3. Token System
+
+### Organization
+Tokens are organized by category in the `lib/tokens` directory:
+
+| File Name           | Purpose                                    |
+|---------------------|--------------------------------------------|
+| `color.tokens.ts`   | Color palette and semantic colors          |
+| `font.tokens.ts`    | Typography tokens                          |
+| `spacing.tokens.ts` | Layout and spacing values                  |
+| `border.tokens.ts`  | Border styles and radius                   |
+| `shadow.tokens.ts`  | Elevation and shadow styles                |
+| `opacity.tokens.ts` | Transparency values                        |
+| `unit.tokens.ts`    | Measurement units and scales               |
+
+### Usage Guidelines
+- All components must use tokens for styling
+- Tokens are the single source of truth
+- Component-specific tokens should reference foundation tokens
+- Maintain consistent naming conventions
+
+## 4. Best Practices
 
 ### Type Safety
-- Use TypeScript for all files.
-- Define all props, enums, and utility function signatures explicitly.
+- Use TypeScript for all files
+- Define all props, enums, and utility function signatures explicitly
+- Use proper type inference where possible
+- **Use type aliases instead of interfaces for all type definitions**
+- Avoid interface declaration merging for better predictability
+
+### Type Definitions
+```typescript
+// ✅ Good: Using type aliases
+type ButtonProps = {
+  variant: 'primary' | 'secondary';
+  size: 'small' | 'medium' | 'large';
+  children: React.ReactNode;
+};
+
+// ❌ Bad: Using interfaces
+interface ButtonProps {
+  variant: 'primary' | 'secondary';
+  size: 'small' | 'medium' | 'large';
+  children: React.ReactNode;
+}
+```
 
 ### Separation of Concerns
-- UI logic in `Component.tsx`.
-- Styling in `StyledComponent.tsx`.
-- Tokens in `token.ts`.
-- Types in `types.ts`.
-- Utilities in `componentUtils.ts`.
+- UI logic in `Component.tsx`
+- Styling in `StyledComponent.tsx`
+- Tokens in `token.ts`
+- Types in `types.ts`
+- Utilities in `componentUtils.ts`
 
 ### Reusability
-- Write utility functions that are generic and composable.
-- Avoid hardcoding values; use tokens and enums.
+- Write utility functions that are generic and composable
+- Avoid hardcoding values; use tokens and enums
+- Build on top of primitive components
 
 ### Readability
-- Use descriptive variable and function names.
-- Add comments for complex logic.
-- Keep files focused and under 200 lines where possible.
+- Use descriptive variable and function names
+- Add comments for complex logic
+- Keep files focused and under 200 lines where possible
 
 ### Extensibility
-- Use enums for variants, sizes, and subtypes.
-- Design tokens and types to be easily extendable.
+- Use enums for variants, sizes, and subtypes
+- Design tokens and types to be easily extendable
+- Consider future use cases when designing primitives
 
 ### Testing
-- Utilities and tokens should be easily testable in isolation.
+- Utilities and tokens should be easily testable in isolation
+- Write tests for primitive components
+- Ensure higher-level components are tested with primitives
 
 ### Accessibility
-- Always consider ARIA attributes and keyboard navigation.
+- Always consider ARIA attributes
+- Ensure keyboard navigation works
+- Test with screen readers
 
-## 3. Writing Robust, Scalable Component Tokens
+## 5. Component Development Process
 
-### Reference Foundation Tokens
-- All component tokens must reference `foundationToken.ts` for colors, spacing, etc.
+1. **Start with Primitives**
+   - Identify if a new primitive is needed
+   - Build on existing primitives when possible
+   - Keep primitives simple and focused
 
-### Structure
-- Organize tokens by state (default, hover, disabled) and by type (primary, secondary, etc.).
+2. **Design Higher-Level Components**
+   - Compose primitives for specific use cases
+   - Maintain consistent styling through tokens
+   - Follow established patterns
 
-### Scalability
-- Use nested objects for easy extension (e.g., `background.primary.default`).
+3. **Token Integration**
+   - Use existing tokens when possible
+   - Create new tokens only when necessary
+   - Document token decisions
 
-### Consistency
-- Use the same naming conventions and structure across all components.
+4. **Documentation**
+   - Document component API
+   - Provide usage examples
+   - Explain design decisions
 
-### Documentation
-- Comment on token choices, especially for non-obvious values.
+5. **Testing**
+   - Write unit tests
+   - Test accessibility
+   - Verify token usage
 
-#### Example: Button Token
-```ts
-import { foundationToken } from '../foundationToken';
+## 6. Example Implementation
 
-const buttonTokens = {
-  background: {
-    primary: {
-      default: foundationToken.colors.primary[500],
-      hover: foundationToken.colors.primary[600],
-      disabled: foundationToken.colors.primary[200],
-    },
-    // ... other types
-  },
-  // ... other token categories
-};
-export default buttonTokens;
-```
-
-## 4. Example Directory and Code Snippets
-
-**Directory:**
-```
-lib/components/ComponentName/
-  ├── ComponentName.tsx
-  ├── StyledComponentName.tsx
-  ├── token.ts
-  ├── types.ts
-  ├── componentNameUtils.ts
-  └── index.ts
-```
-
-**Component Example:**
+### Primitive Component
 ```tsx
-// ComponentName.tsx
-import { StyledComponentName } from './StyledComponentName';
-import { ComponentNameProps } from './types';
-import { getComponentNameStyles } from './componentNameUtils';
+// PrimitiveText.tsx
+import { StyledPrimitiveText } from './StyledPrimitiveText';
+import { PrimitiveTextProps } from './types';
 
-export const ComponentName = (props: ComponentNameProps) => {
-  // ...component logic
-  return <StyledComponentName {...props} />;
+export const PrimitiveText = (props: PrimitiveTextProps) => {
+  return <StyledPrimitiveText {...props} />;
 };
 ```
 
-**Token Example:**
+### Higher-Level Component
+```tsx
+// Text.tsx
+import { PrimitiveText } from '../Primitives/PrimitiveText';
+import { TextProps } from './types';
+import { getTextStyles } from './textUtils';
+
+export const Text = (props: TextProps) => {
+  const styles = getTextStyles(props);
+  return <PrimitiveText {...styles} {...props} />;
+};
+```
+
+### Type Definitions
+```typescript
+// types.ts
+type PrimitiveTextProps = {
+  as?: SemanticTagType;
+  children: React.ReactNode;
+  color?: string;
+  fontSize?: string | number;
+  fontWeight?: number;
+  // ... other props
+};
+
+type TextProps = PrimitiveTextProps & {
+  variant?: 'heading' | 'body' | 'caption';
+  size?: 'small' | 'medium' | 'large';
+  // ... other props
+};
+```
+
+### Token Usage
 ```ts
 // token.ts
-import { foundationToken } from '../foundationToken';
+import { foundationToken } from '../../tokens';
 
-const componentNameTokens = {
-  // ...tokens referencing foundationToken
+const textTokens = {
+  heading: {
+    h1: {
+      fontSize: foundationToken.font.size.xl,
+      fontWeight: foundationToken.font.weight.bold,
+    },
+    // ... other heading styles
+  },
+  // ... other text styles
 };
-export default componentNameTokens;
 ```
 
-## 5. Slot-Based Component APIs
-
-Slot-based components provide a flexible way to customize component content while maintaining consistent styling and behavior.
-
-### Benefits of Slot-Based APIs
-- More flexible than icon-only props
-- Support for complex custom content
-- Better composition and reusability
-- Easier to extend with new features
-
-### Implementation Guidelines
-- Use ReactNode type for slot props
-- Maintain backward compatibility with existing APIs
-- Name slots descriptively (e.g., leadingSlot, trailingSlot, actionSlot)
-- Provide sensible defaults or fallbacks
-
-### Example
-```tsx
-// Component with slot-based API
-export const ComponentWithSlots = ({
-  leadingSlot,
-  trailingSlot,
-  children,
-  // Backward compatibility
-  leadingIcon: LeadingIcon,
-  trailingIcon: TrailingIcon,
-  ...props
-}) => {
-  // Fallback to icon if slot not provided
-  const leadingContent = leadingSlot || (LeadingIcon && <LeadingIcon />);
-  const trailingContent = trailingSlot || (TrailingIcon && <TrailingIcon />);
-  
-  return (
-    <StyledContainer {...props}>
-      {leadingContent}
-      <Content>{children}</Content>
-      {trailingContent}
-    </StyledContainer>
-  );
-};
-
-// Usage
-<ComponentWithSlots 
-  leadingSlot={<CustomComponent />}
-  trailingSlot={<Button variant="primary" />}
->
-  Content
-</ComponentWithSlots>
-```
-
-This pattern enables advanced customization while maintaining the component's core functionality and styling.
-
----
-
-This planning document should be referenced before building any new component to ensure consistency, scalability, and maintainability across the library. 
+This planning document should be referenced when building new components to ensure consistency, scalability, and maintainability across the library. 

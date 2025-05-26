@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css, CSSObject } from "styled-components";
 
-interface PrimitiveButtonProps {
+type PrimitiveButtonProps = {
   // Spacing
   padding?: CSSObject["padding"];
   paddingX?: CSSObject["padding"];
@@ -193,12 +193,11 @@ const StyledButton = styled.button.withConfig({
   shouldForwardProp,
 })<PrimitiveButtonProps>((props) => css(getStyles(props)));
 
-export interface ButtonProps
-  extends PrimitiveButtonProps,
-    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
-  children?: React.ReactNode;
-  className?: string;
-}
+export type ButtonProps = PrimitiveButtonProps &
+  Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
+    children?: React.ReactNode;
+    className?: string;
+  };
 
 const PrimitiveButton: React.FC<ButtonProps> = ({ children, ...rest }) => {
   return (
