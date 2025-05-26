@@ -2,8 +2,13 @@ import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
 import styled from "styled-components";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
-import { FileIcon, PencilIcon } from "lucide-react";
-import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
+import {
+  ChevronRightIcon,
+  CopyIcon,
+  FileIcon,
+  PlusIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { FOUNDATION_THEME } from "../../tokens";
 
 const Content = styled(RadixDropdownMenu.Content)(() => ({
@@ -42,15 +47,48 @@ const Label = styled(RadixDropdownMenu.Label)(() => ({
   textTransform: "uppercase",
 }));
 
+const StyledItem = styled.div<{ disabled?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 4px;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+
+  &:hover {
+    background-color: ${FOUNDATION_THEME.colors.primary[50]};
+  }
+
+  &[data-highlighted] {
+    outline: none;
+    border: none;
+    background-color: ${FOUNDATION_THEME.colors.primary[50]};
+  }
+
+  &:active {
+    outline: none;
+    border: none;
+    background-color: ${FOUNDATION_THEME.colors.primary[50]};
+  }
+`;
+
 enum MenuItemVariant {
   DEFAULT = "default",
   ACTION = "action",
   MULTISELECT = "multiselect",
 }
 
+enum MenuItemActionType {
+  PRIMARY = "primary",
+  DANGER = "danger",
+}
+
 type MenuItemType = {
   variant?: MenuItemVariant;
   text: string;
+  actionType?: MenuItemActionType;
   icon?: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
@@ -80,7 +118,7 @@ const dummyItems: MenuGroupType[] = [
       },
       {
         variant: MenuItemVariant.ACTION,
-        slot1: <FileIcon size={14} />,
+        slot1: <FileIcon size={13} />,
         text: "Save As CSV",
         onClick: () => alert("Delete clicked"),
       },
@@ -89,21 +127,21 @@ const dummyItems: MenuGroupType[] = [
   {
     items: [
       {
-        variant: MenuItemVariant.MULTISELECT,
-        text: "Select All",
+        variant: MenuItemVariant.ACTION,
+        actionType: MenuItemActionType.PRIMARY,
+        slot1: <PlusIcon size={14} color={"blue"} />,
+        text: "Create New",
         onClick: () => alert("Select All clicked"),
       },
-    ],
-  },
-  {
-    items: [
       {
-        text: "Disabled Item",
-        disabled: true,
+        text: "Copy CSV",
+        slot1: <CopyIcon size={13} />,
         onClick: () => alert("This won't fire"),
       },
       {
-        text: "Sub Menu",
+        text: "Merchant Settings",
+        slot1: <SettingsIcon size={13} />,
+        slot2: <ChevronRightIcon size={13} />,
         subMenu: {
           items: [
             {
@@ -123,17 +161,38 @@ const dummyItems: MenuGroupType[] = [
   },
 ];
 
-export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
+/**
+ * @description A dropdown menu component
+ * @param {React.ReactNode} trigger - The trigger element
+ * @param {string} side - The side of the menu
+ * @param {string} align - The alignment of the menu
+ * @returns {React.ReactNode}
+ *
+ * @todo - Add support for collisionBoundaries
+ */
+export const Menu = ({
+  trigger,
+  side = "bottom",
+  align = "center",
+}: {
+  trigger: React.ReactNode;
+  side?: "left" | "right" | "bottom" | "top";
+  align?: "start" | "center" | "end";
+}) => {
   return (
     <RadixDropdownMenu.Root open>
       <RadixDropdownMenu.Trigger asChild>{trigger}</RadixDropdownMenu.Trigger>
-      <Content sideOffset={8} style={{ padding: 6 }}>
+      <Content
+        side={side}
+        align={align}
+        loop
+        avoidCollisions
+        sideOffset={8}
+        style={{ padding: 6 }}
+      >
         {dummyItems.map((group, groupIndex) => (
           <div key={groupIndex}>
             {group.label && (
-              /* ------------
-               * Label
-               * ------------ */
               <RadixDropdownMenu.Label asChild>
                 <Block
                   display="flex"
@@ -155,36 +214,63 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
               item.subMenu && item.subMenu.items.length > 0 ? (
                 <RadixDropdownMenu.Sub key={itemIndex}>
                   <RadixDropdownMenu.SubTrigger asChild>
-                    <Block
-                      display="flex"
-                      height={32}
-                      alignItems="center"
-                      paddingX={8}
-                      paddingY={6}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {item.text}
-                    </Block>
+                    <StyledItem>
+                      <Block
+                        display="flex"
+                        flexGrow={1}
+                        alignItems="center"
+                        gap={8}
+                      >
+                        {item.slot1 && (
+                          <Block size={16} contentCentered>
+                            {item.slot1}
+                          </Block>
+                        )}
+                        <Block display="flex" flexGrow={1} alignItems="center">
+                          <Text
+                            variant="body.md"
+                            color={
+                              item.variant === MenuItemVariant.ACTION
+                                ? item.actionType ===
+                                    MenuItemActionType.PRIMARY ||
+                                  !item.actionType
+                                  ? FOUNDATION_THEME.colors.primary[600]
+                                  : FOUNDATION_THEME.colors.red[600]
+                                : FOUNDATION_THEME.colors.gray[600]
+                            }
+                            fontWeight={500}
+                            truncate
+                          >
+                            {item.text}
+                          </Text>
+                        </Block>
+                        {item.slot2 && (
+                          <Block size={16} contentCentered>
+                            {item.slot2}
+                          </Block>
+                        )}
+                        {item.slot3 && (
+                          <Block size={16} contentCentered>
+                            {item.slot3}
+                          </Block>
+                        )}
+                        {item.slot4 && (
+                          <Block size={16} contentCentered>
+                            {item.slot4}
+                          </Block>
+                        )}
+                      </Block>
+                    </StyledItem>
                   </RadixDropdownMenu.SubTrigger>
                   <RadixDropdownMenu.Portal>
-                    <SubContent sideOffset={8} style={{ padding: 6 }}>
+                    <SubContent style={{ padding: 6 }}>
                       {item.subMenu.items.map((subItem, subIndex) => (
                         <RadixDropdownMenu.Item
                           asChild
                           key={subIndex}
                           disabled={subItem.disabled}
                         >
-                          <Block
-                            display="flex"
-                            alignItems="center"
-                            gap={8}
-                            height={32}
-                            paddingX={8}
-                            paddingY={6}
-                            onClick={
-                              subItem.disabled ? undefined : subItem.onClick
-                            }
-                          >
+                          <StyledItem disabled={subItem.disabled}>
                             {subItem.slot1 && (
                               <Block size={16} contentCentered>
                                 {subItem.slot1}
@@ -197,14 +283,21 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                             >
                               <Text
                                 variant="body.md"
-                                color={FOUNDATION_THEME.colors.gray[600]}
+                                color={
+                                  item.variant === MenuItemVariant.ACTION
+                                    ? item.actionType ===
+                                      MenuItemActionType.PRIMARY
+                                      ? FOUNDATION_THEME.colors.primary[600]
+                                      : FOUNDATION_THEME.colors.red[600]
+                                    : FOUNDATION_THEME.colors.gray[600]
+                                }
                                 fontWeight={500}
                                 truncate
                               >
-                                {item.text}
+                                {subItem.text}
                               </Text>
                             </Block>
-                          </Block>
+                          </StyledItem>
                         </RadixDropdownMenu.Item>
                       ))}
                     </SubContent>
@@ -216,19 +309,7 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                   key={itemIndex}
                   disabled={item.disabled}
                 >
-                  <Block
-                    display="flex"
-                    alignItems="center"
-                    gap={8}
-                    height={32}
-                    paddingX={8}
-                    paddingY={6}
-                    style={{
-                      cursor: item.disabled ? "not-allowed" : "pointer",
-                      opacity: item.disabled ? 0.5 : 1,
-                    }}
-                    onClick={item.disabled ? undefined : item.onClick}
-                  >
+                  <StyledItem disabled={item.disabled}>
                     {item.slot1 && (
                       <Block size={16} contentCentered>
                         {item.slot1}
@@ -238,12 +319,19 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                       display="flex"
                       flexGrow={1}
                       alignItems="center"
-                      maxWidth={"100%"}
+                      maxWidth="100%"
                       overflow="hidden"
                     >
                       <Text
                         variant="body.md"
-                        color={FOUNDATION_THEME.colors.gray[600]}
+                        color={
+                          item.variant === MenuItemVariant.ACTION
+                            ? item.actionType === MenuItemActionType.PRIMARY ||
+                              !item.actionType
+                              ? FOUNDATION_THEME.colors.primary[600]
+                              : FOUNDATION_THEME.colors.red[600]
+                            : FOUNDATION_THEME.colors.gray[600]
+                        }
                         fontWeight={500}
                         truncate
                       >
@@ -265,7 +353,7 @@ export const Menu = ({ trigger }: { trigger: React.ReactNode }) => {
                         {item.slot4}
                       </Block>
                     )}
-                  </Block>
+                  </StyledItem>
                 </RadixDropdownMenu.Item>
               )
             )}
