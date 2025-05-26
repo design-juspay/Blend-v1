@@ -1,6 +1,6 @@
 import React from "react";
 import { Hash, Filter, ArrowRight } from "lucide-react";
-import SplitTag from "../../../lib/components/SplitTag";
+import { SplitTag } from "../../../lib/components/SplitTag";
 import { 
   TagVariant, 
   TagStatus, 

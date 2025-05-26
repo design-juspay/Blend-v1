@@ -60,12 +60,18 @@ export default meta;
 type Story = StoryObj<TabsStoryArgs>;
 
 export const Default: Story = {
-  render: (args) => {
-    const { expanded, showLeftSlot, showRightSlot, variant, size, ...tabsProps } = args as TabsStoryArgs &
-      typeof args;
+  render: (args: TabsStoryArgs) => {
+    const {
+      expanded,
+      showLeftSlot,
+      showRightSlot,
+      variant,
+      size,
+      ...tabsProps
+    } = args as TabsStoryArgs & typeof args;
 
     return (
-      <Tabs defaultValue="tab1" style={{ width: '500px' }} {...tabsProps}>
+      <Tabs defaultValue="tab1" style={{ width: "500px" }} {...tabsProps}>
         <TabsList variant={variant} size={size} expanded={expanded}>
           <TabsTrigger
             value="tab1"
@@ -96,36 +102,54 @@ export const Default: Story = {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="tab1">
-          <div style={{ 
-            padding: '16px', 
-            borderRadius: '6px', 
-            border: '1px solid #e2e8f0', 
-            marginTop: '16px' 
-          }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 600 }}>Account Settings</h3>
-            <p style={{ color: '#4b5563', marginTop: '8px' }}>Manage your account preferences here.</p>
+          <div
+            style={{
+              padding: "16px",
+              borderRadius: "6px",
+              border: "1px solid #e2e8f0",
+              marginTop: "16px",
+            }}
+          >
+            <h3 style={{ fontSize: "18px", fontWeight: 600 }}>
+              Account Settings
+            </h3>
+            <p style={{ color: "#4b5563", marginTop: "8px" }}>
+              Manage your account preferences here.
+            </p>
           </div>
         </TabsContent>
         <TabsContent value="tab2">
-          <div style={{ 
-            padding: '16px', 
-            borderRadius: '6px', 
-            border: '1px solid #e2e8f0', 
-            marginTop: '16px' 
-          }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 600 }}>Password Settings</h3>
-            <p style={{ color: '#4b5563', marginTop: '8px' }}>Change your password and security settings.</p>
+          <div
+            style={{
+              padding: "16px",
+              borderRadius: "6px",
+              border: "1px solid #e2e8f0",
+              marginTop: "16px",
+            }}
+          >
+            <h3 style={{ fontSize: "18px", fontWeight: 600 }}>
+              Password Settings
+            </h3>
+            <p style={{ color: "#4b5563", marginTop: "8px" }}>
+              Change your password and security settings.
+            </p>
           </div>
         </TabsContent>
         <TabsContent value="tab3">
-          <div style={{ 
-            padding: '16px', 
-            borderRadius: '6px', 
-            border: '1px solid #e2e8f0', 
-            marginTop: '16px' 
-          }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 600 }}>General Settings</h3>
-            <p style={{ color: '#4b5563', marginTop: '8px' }}>Configure your application preferences.</p>
+          <div
+            style={{
+              padding: "16px",
+              borderRadius: "6px",
+              border: "1px solid #e2e8f0",
+              marginTop: "16px",
+            }}
+          >
+            <h3 style={{ fontSize: "18px", fontWeight: 600 }}>
+              General Settings
+            </h3>
+            <p style={{ color: "#4b5563", marginTop: "8px" }}>
+              Configure your application preferences.
+            </p>
           </div>
         </TabsContent>
       </Tabs>
