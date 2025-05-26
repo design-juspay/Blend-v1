@@ -10,7 +10,7 @@ const SplitTagDemo: React.FC = () => {
           Split tags combine two tags into a single connected component with
           various styling options.
         </p>
-      </header>
+      </div>
 
       {/* <SplitTag primaryTag={{ text: "Primary Tag" }} variant/> */}
       <Tag text="Primary Tag" variant={TagVariant.ATTENTIVE} />

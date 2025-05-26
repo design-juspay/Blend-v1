@@ -5,9 +5,11 @@ import { Button, ButtonSubType } from "../lib/components/Button";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
-import TabsDemo from "./Demo/TabsDemo";
+import TabsDemo from "./demos/Tabs/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
+import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
+import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -56,11 +58,6 @@ function App() {
       id: "alerts",
       name: "Alerts",
       component: <AlertDemo />,
-    },
-    {
-      id: "data-display",
-      name: "Data Display",
-      component: <ComingSoon name="Data Display Components" />,
     },
     {
       id: "avatar-group",
