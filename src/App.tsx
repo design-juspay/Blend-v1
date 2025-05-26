@@ -5,11 +5,9 @@ import { Button, ButtonSubType } from "../lib/components/Button";
 import ButtonDemo from "./demos/Button/ButtonDemo";
 import TagsDemo from "./demos/Tags/TagsDemo";
 import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
-import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
-import TabsDemo from "./demos/Tabs/TabsDemo";
-import ButtonGroupDemo from "./demos/ButtonGroup/ButtonGroupDemo";
-import AvatarDemo from "./demos/Avatar/AvatarDemo";
-import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import TabsDemo from "./Demo/TabsDemo";
+import TextDemo from "./demos/Text/TextDemo";
+import AlertDemo from "./demos/Alert/AlertDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -20,7 +18,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("buttons");
+  const [selectedCategory, setSelectedCategory] = useState<string>("tags");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -30,9 +28,9 @@ function App() {
       component: <ButtonDemo />,
     },
     {
-      id: "button-group",
-      name: "Button Group",
-      component: <ButtonGroupDemo />,
+      id: "text",
+      name: "Text",
+      component: <TextDemo />,
     },
     {
       id: "tags",
@@ -55,9 +53,14 @@ function App() {
       component: <TabsDemo />,
     },
     {
-      id: "avatar",
-      name: "Avatar",
-      component: <AvatarDemo />,
+      id: "alerts",
+      name: "Alerts",
+      component: <AlertDemo />,
+    },
+    {
+      id: "data-display",
+      name: "Data Display",
+      component: <ComingSoon name="Data Display Components" />,
     },
     {
       id: "avatar-group",
