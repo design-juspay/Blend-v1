@@ -1,6 +1,5 @@
 import { X } from "lucide-react";
 import Block from "../Primitives/Block/Block";
-import PrimitiveText from "../Primitives/Text/Text";
 import { FOUNDATION_THEME } from "../../tokens";
 import { foundationToken } from "../../foundationToken";
 import { styled } from "styled-components";
@@ -11,6 +10,7 @@ import {
   AlertVariant,
 } from "./types";
 import alertTokens from "./alert.tokens";
+import Text from "../Text/Text";
 
 const AlertCloseButton = styled.button<{ variant: AlertVariant }>((props) => {
   return {
@@ -86,13 +86,13 @@ const Alert: React.FC<AlertProps> = ({
               {icon}
             </Block>
           )}
-          <PrimitiveText
+          <Text
             variant="body.md"
             color={foundationToken.colors.gray[700]}
-            weight={600}
+            fontWeight={600}
           >
             {heading}
-          </PrimitiveText>
+          </Text>
         </Block>
         {onClose && actionPlacement === AlertActionPlacement.BOTTOM && (
           <AlertCloseButton onClick={onClose} variant={variant}>
@@ -110,12 +110,12 @@ const Alert: React.FC<AlertProps> = ({
         justifyContent="space-between"
         gap={FOUNDATION_THEME.spacing[18]}
       >
-        <PrimitiveText
+        <Text
           variant="body.md"
           color={foundationToken.colors.gray[600]}
         >
           {description}
-        </PrimitiveText>
+        </Text>
         <Block display="flex" gap={FOUNDATION_THEME.spacing[16]}>
           <Block display="flex" gap={FOUNDATION_THEME.spacing[20]}>
             {primaryAction && (

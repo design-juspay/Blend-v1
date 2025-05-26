@@ -290,7 +290,7 @@ type SemanticTagType = keyof Pick<
   | "main"
   | "span"
   | "nav"
-  | "hr"
+  | "hr" 
 >;
 
 export interface BlockProps

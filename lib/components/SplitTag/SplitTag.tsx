@@ -1,86 +1,31 @@
-import { forwardRef } from "react";
-import type { SplitTagProps } from "./types";
-import {
-  StyledSplitTagContainer,
-  StyledSplitTagSection,
-} from "./StyledSplitTag";
-import { TagVariant, TagStatus, TagSize, TagShape } from "./types";
-import { Tag } from "../Tags";
+import Block from "../Primitives/Block/Block";
+import { Tag, TagV2Variant } from "../TagsV2";
+import { SplitTagProps } from "./types";
 
-export const SplitTag = forwardRef<HTMLDivElement, SplitTagProps>(
-  (props, ref) => {
-    const {
-      primaryTag,
-      secondaryTag,
-      size = TagSize.MD,
-      shape = TagShape.ROUNDED,
-      leadingSlot,
-      trailingSlot,
-      testId,
-      ...domProps
-    } = props;
-    
-    // If no secondaryTag is provided, render a single Tag
-    if (!secondaryTag) {
-      return (
+const SplitTag = ({ primaryTag, secondaryTag, size, shape }: SplitTagProps) => {
+  return (
+    <Block display="flex" width="fit-content" flexWrap="nowrap">
+      {primaryTag ? (
         <Tag
-          ref={ref}
-          text={primaryTag.text}
-          variant={primaryTag.variant}
-          status={primaryTag.status}
+          {...primaryTag}
+          splitTagPosition="left"
+          variant={TagV2Variant.NO_FILL}
           size={size}
           shape={shape}
-          leadingSlot={leadingSlot}
-          trailingSlot={trailingSlot}
-          onClick={primaryTag.onClick}
-          testId={testId}
-          {...domProps}
         />
-      );
-    }
-    
-    // Apply defaults for primary tag
-    const primaryVariant = primaryTag.variant || TagVariant.SUBTLE;
-    const primaryStatus = primaryTag.status || TagStatus.NEUTRAL;
-    
-    // Apply defaults for secondary tag (fallback to primary tag values if not specified)
-    const secondaryVariant = secondaryTag.variant || primaryVariant;
-    const secondaryStatus = secondaryTag.status || primaryStatus;
-    
-    return (
-      <StyledSplitTagContainer
-        ref={ref}
-        data-testid={testId}
-        {...domProps}
-      >
-        <StyledSplitTagSection
-          $variant={primaryVariant}
-          $status={primaryStatus}
-          $size={size}
-          $tagShape={shape}
-          $position="left"
-          onClick={primaryTag.onClick}
-        >
-          {leadingSlot}
-          {primaryTag.text}
-        </StyledSplitTagSection>
-        
-        <StyledSplitTagSection
-          $variant={secondaryVariant}
-          $status={secondaryStatus}
-          $size={size}
-          $tagShape={shape}
-          $position="right"
-          onClick={secondaryTag.onClick}
-        >
-          {secondaryTag.text}
-          {trailingSlot}
-        </StyledSplitTagSection>
-      </StyledSplitTagContainer>
-    );
-  }
-);
+      ) : null}
+      {secondaryTag ? (
+        <Tag
+          {...secondaryTag}
+          splitTagPosition="right"
+          variant={TagV2Variant.ATTENTIVE}
+          size={size}
+          shape={shape}
+        />
+      ) : null}
+    </Block>
+  );
+};
 
-SplitTag.displayName = "SplitTag";
+export default SplitTag;
 
-export default SplitTag; 
