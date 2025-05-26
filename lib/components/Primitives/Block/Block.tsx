@@ -290,22 +290,21 @@ type SemanticTagType = keyof Pick<
   | "main"
   | "span"
   | "nav"
-  | "hr" 
+  | "hr"
 >;
 
-export interface BlockProps
-  extends StyledBlockProps,
-    Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> {
-  children?: React.ReactNode;
-  as?: SemanticTagType;
-}
+export type BlockProps = StyledBlockProps &
+  Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
+    children?: React.ReactNode;
+    as?: SemanticTagType;
+  };
 
 /**
  * Block Component
  * @description
  * The Block component is a primitive component that renders a styled div element.
  * It is used to create consistent spacing and layout patterns across the application.
- * 
+ *
  */
 const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
   return <StyledBlock {...rest}>{children}</StyledBlock>;
