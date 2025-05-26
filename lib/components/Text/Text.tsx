@@ -16,7 +16,8 @@ export type TextProps = {
   color?: CSSObject["color"];
   fontWeight?: CSSObject["fontWeight"];
   fontSize?: CSSObject["fontSize"];
-}
+  truncate?: boolean;
+};
 
 export type VariantType =
   | "body.xs"
@@ -83,6 +84,7 @@ const Text = ({
   color,
   fontWeight,
   fontSize,
+  truncate,
 }: TextProps) => {
   const Tag = getSemanticTag(variant, as);
 
@@ -108,6 +110,7 @@ const Text = ({
       fontSize={fontGroup?.fontSize}
       fontWeight={fontWeight}
       color={color ?? "inherit"}
+      truncate={truncate}
     >
       {children}
     </PrimitiveText>
