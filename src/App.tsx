@@ -10,6 +10,7 @@ import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -63,6 +64,11 @@ function App() {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
+    },
+    {
+      id: "checkbox",
+      name: "Checkbox",
+      component: <CheckboxDemo />,
     }
   ];
 
