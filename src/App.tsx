@@ -8,6 +8,7 @@ import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
 import TabsDemo from "./Demo/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
+import ModalDemo from "./Demo/ModalDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -51,6 +52,11 @@ function App() {
       id: "alerts",
       name: "Alerts",
       component: <AlertDemo />,
+    },
+    {
+      id: "modals",
+      name: "Modals",
+      component: <ModalDemo />,
     },
     {
       id: "data-display",
