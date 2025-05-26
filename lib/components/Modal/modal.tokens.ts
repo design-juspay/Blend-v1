@@ -47,16 +47,16 @@ const modalTokens: ModalToken = {
   maxWidth: "calc(100vw - 2rem)",
   maxHeight: "calc(100vh - 2rem)",
   padding: {
-    header: FOUNDATION_THEME.spacing[16],
-    body: FOUNDATION_THEME.spacing[16],
+    header: FOUNDATION_THEME.unit[16],
+    body: FOUNDATION_THEME.unit[16],
     footer: {
-      x: FOUNDATION_THEME.spacing[24],
-      y: FOUNDATION_THEME.spacing[16]
+      x: FOUNDATION_THEME.unit[24],
+      y: FOUNDATION_THEME.unit[16]
     }
   },
   gap: {
-    header: FOUNDATION_THEME.spacing[16],
-    footer: FOUNDATION_THEME.spacing[12]
+    header: FOUNDATION_THEME.unit[16],
+    footer: FOUNDATION_THEME.unit[12]
   },
   zIndex: "50",
   pointerEvents: "auto"

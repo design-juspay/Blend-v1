@@ -2,11 +2,11 @@ import { forwardRef, useCallback, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button, ButtonType, ButtonSubType } from "../Button";
 import Block from "../Primitives/Block/Block";
-import Text from "../Primitives/Text/Text";
 import useScrollLock from "./useScrollLock";
 import { ModalProps } from "./types";
 import { FOUNDATION_THEME } from "../../tokens";
 import modalTokens from "./modal.tokens";
+import Text from "../Text/Text";
 
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (
@@ -69,18 +69,17 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           <Block
             flexGrow={1}
             minWidth="0"
-            paddingRight={FOUNDATION_THEME.spacing[16]}
+            paddingRight={FOUNDATION_THEME.unit[16]}
           >
             <Block
               display="flex"
               alignItems="center"
-              gap={FOUNDATION_THEME.spacing[8]}
+              gap={FOUNDATION_THEME.unit[8]}
             >
               {title && (
                 <Text
-                  id="modal-title"
                   variant="heading.sm"
-                  weight={600}
+                  fontWeight={600}
                   color={modalTokens.titleColor}
                 >
                   {title}
@@ -92,8 +91,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
               <Text
                 variant="code.lg"
                 color={modalTokens.subtitleColor}
-                weight={400}
-                margin={FOUNDATION_THEME.spacing[4]}
+                fontWeight={400}
               >
                 {subtitle}
               </Text>
@@ -119,7 +117,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         <Block
           display="flex"
           justifyContent="flex-end"
-          gap={FOUNDATION_THEME.spacing[12]}
+          gap={FOUNDATION_THEME.unit[12]}
           padding={modalTokens.padding.footer.y}
           flexShrink={0}
           borderTop={
@@ -155,7 +153,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         alignItems="center"
         justifyContent="center"
         overflow="auto"
-        padding={FOUNDATION_THEME.spacing[16]}
+        padding={FOUNDATION_THEME.unit[16]}
       >
         <Block
           onClick={handleBackdropClick}
