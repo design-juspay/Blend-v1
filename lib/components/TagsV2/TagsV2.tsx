@@ -3,13 +3,13 @@ import Block from "../Primitives/Block/Block";
 import Text from "../Primitives/Text/Text";
 import { FOUNDATION_THEME } from "../../tokens";
 
-export enum TagVariant {
+export enum TagV2Variant {
   NO_FILL = "noFill",
   ATTENTIVE = "attentive",
   SUBTLE = "subtle",
 }
 
-export enum TagStyle {
+export enum TagV2Style {
   NEUTRAL = "neutral",
   PRIMARY = "primary",
   SUCCESS = "success",
@@ -18,24 +18,24 @@ export enum TagStyle {
   PURPLE = "purple",
 }
 
-export enum TagSize {
+export enum TagV2Size {
   XS = "xs",
   SM = "sm",
   MD = "md",
   LG = "lg",
 }
 
-export enum TagShape {
+export enum TagV2Shape {
   ROUNDED = "rounded",
   SQUARICAL = "squarical",
 }
 
-export type TagProps = {
+export type TagV2Props = {
   text: string;
-  variant?: TagVariant;
-  style?: TagStyle;
-  size?: TagSize;
-  shape?: TagShape;
+  variant?: TagV2Variant;
+  style?: TagV2Style;
+  size?: TagV2Size;
+  shape?: TagV2Shape;
   leadingSlot?: ReactNode;
   trailingSlot?: ReactNode;
   onClick?: MouseEventHandler<HTMLDivElement>;
@@ -138,14 +138,14 @@ const tagTokens = {
 
 const Tag = ({
   text,
-  variant = TagVariant.SUBTLE,
-  style = TagStyle.PRIMARY,
-  size = TagSize.SM,
-  shape = TagShape.SQUARICAL,
+  variant = TagV2Variant.SUBTLE,
+  style = TagV2Style.PRIMARY,
+  size = TagV2Size.SM,
+  shape = TagV2Shape.SQUARICAL,
   leadingSlot,
   trailingSlot,
   onClick,
-}: TagProps) => {
+}: TagV2Props) => {
   return (
     <Block
       display="flex"
