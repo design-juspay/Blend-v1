@@ -1,6 +1,22 @@
 import { FOUNDATION_THEME } from "../../tokens";
+import { CSSObject } from "styled-components";
 
-const alertTokens = {
+// TODO: Check if this is correct - works for now
+type AlertToken = {
+  backgroundColor: {
+    [key: string]: {
+      [key: string]: CSSObject["color"];
+    };
+  };
+  border: {
+    [key: string]: CSSObject["color"];
+  };
+  button: {
+    [key: string]: CSSObject["color"];
+  };
+};
+
+const alertTokens: AlertToken = {
   backgroundColor: {
     primary: {
       subtle: FOUNDATION_THEME.colors.primary[50],
