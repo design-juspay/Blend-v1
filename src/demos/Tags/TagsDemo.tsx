@@ -22,7 +22,7 @@ const TagsDemo: React.FC = () => {
         </p>
       </header>
 
-      <Block display="flex" gap={10} className="debug" marginBottom={10}>
+      <Block display="flex" gap={10} marginBottom={10}>
         <Tooltip content="Hello">
           <Block color="blue" cursor="pointer" height={"100%"}>
             Click me

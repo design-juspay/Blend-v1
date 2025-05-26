@@ -1,7 +1,6 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 import styled from "styled-components";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import Block from "../Primitives/Block/Block";
 import { TooltipProps, TooltipAlign, TooltipSide, TooltipSize, TooltipSlotDirection } from "./types";
 
 
@@ -36,14 +35,11 @@ export const Tooltip = ({
   offset = 5,
 }: TooltipProps) => {
   console.log(slot, slotDirection);
+
   return (
     <RadixTooltip.Provider delayDuration={delayDuration}>
       <RadixTooltip.Root open={open}>
-        <RadixTooltip.Trigger asChild>
-          <Block as="span" aria-hidden="true" className="debug">
-            {trigger}
-          </Block>
-        </RadixTooltip.Trigger>
+        <RadixTooltip.Trigger asChild>{trigger}</RadixTooltip.Trigger>
         <Content side={side} align={align} sideOffset={offset} $size={size}>
           <PrimitiveText>{content}</PrimitiveText>
           {showArrow && <Arrow offset={8} />}

@@ -11,6 +11,7 @@ import {
 } from "./types";
 import alertTokens from "./alert.tokens";
 import Text from "../Text/Text";
+import { forwardRef } from "react";
 
 const AlertCloseButton = styled.button<{ variant: AlertVariant }>((props) => {
   return {
@@ -52,7 +53,7 @@ const AlertActionButton = styled.button<{ variant: AlertVariant }>((props) => {
   };
 });
 
-const Alert: React.FC<AlertProps> = ({
+const Alert = forwardRef<HTMLDivElement, AlertProps>(({
   heading,
   description,
   variant = AlertVariant.PRIMARY,
@@ -62,7 +63,7 @@ const Alert: React.FC<AlertProps> = ({
   onClose,
   icon,
   actionPlacement = AlertActionPlacement.RIGHT,
-}) => {
+}, ref) => {
   // this is to make sure that the close button is always visible if there is an onClose prop
   // but no primary or secondary actions are provided
   if (onClose && primaryAction === undefined && secondaryAction === undefined) {
@@ -70,6 +71,7 @@ const Alert: React.FC<AlertProps> = ({
   }
   return (
     <Block
+      ref={ref}
       maxWidth={900}
       backgroundColor={alertTokens.backgroundColor[variant][style]}
       padding={FOUNDATION_THEME.unit[16]}
@@ -159,6 +161,8 @@ const Alert: React.FC<AlertProps> = ({
       </Block>
     </Block>
   );
-};
+});
+
+Alert.displayName = "Alert";
 
 export default Alert;
