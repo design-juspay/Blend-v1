@@ -10,7 +10,7 @@ export type SemanticTagType = keyof Pick<
   "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q" | "small"
 >;
 
-export interface PrimitiveTextProps {
+export type PrimitiveTextProps = {
   fontWeight?: CSSObject["fontWeight"];
   color?: CSSObject["color"];
   textAlign?: CSSObject["textAlign"];
@@ -26,12 +26,11 @@ export interface PrimitiveTextProps {
   fontSize?: CSSObject["fontSize"];
 }
 
-export interface TextProps
-  extends PrimitiveTextProps,
-    Omit<React.HTMLAttributes<HTMLElement>, "color"> {
-  children: React.ReactNode;
-  as?: SemanticTagType;
-}
+export type TextProps = PrimitiveTextProps &
+  Omit<React.HTMLAttributes<HTMLElement>, "color"> & {
+    children: React.ReactNode;
+    as?: SemanticTagType;
+  };
 
 // --------------------
 // Styled Component

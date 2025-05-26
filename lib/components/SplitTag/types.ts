@@ -5,7 +5,7 @@ export type TagConfig = {
   text: string;
   variant?: TagVariant;
   style?: TagColor;
-  onClick?: () => {};
+  onClick?: () => void;
 };
 
 export type SplitTagProps = {

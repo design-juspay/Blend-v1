@@ -2,8 +2,8 @@ import React, { JSX } from "react";
 import styled, { css, CSSObject } from "styled-components";
 
 type SpacingValue = string | number;
-
-interface StateStyles {
+ 
+type StateStyles = {
   _hover?: StyledBlockProps;
   _focus?: StyledBlockProps;
   _active?: StyledBlockProps;
@@ -11,7 +11,7 @@ interface StateStyles {
   _visited?: StyledBlockProps;
 }
 
-interface StyledBlockProps extends StateStyles {
+type StyledBlockProps = StateStyles & {
   color?: CSSObject["color"];
 
   // Padding

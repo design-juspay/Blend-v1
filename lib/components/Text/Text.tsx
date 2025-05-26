@@ -9,7 +9,7 @@ export type SemanticTagType = keyof Pick<
   "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q" | "small"
 >;
 
-interface TextProps {
+export type TextProps = {
   children: React.ReactNode;
   variant?: VariantType;
   as?: SemanticTagType;
