@@ -125,6 +125,11 @@ const blockedProps = [
   "outlineColor",
   "variant",
   "disabled",
+  "_hover",
+  "_focus",
+  "_active",
+  "_disabled",
+  "_visited",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);

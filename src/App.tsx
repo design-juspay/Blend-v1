@@ -13,7 +13,8 @@ import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
-import { Snackbar } from "../lib/components/Snackbar/Snackbar";
+import MenuDemo from "./demos/Menu/MenuDemo";
+import Snackbar from "../lib/components/Snackbar/Snackbar";
 
 // Component categories
 type ComponentCategory = {
@@ -24,7 +25,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("accordion");
+  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -68,7 +69,11 @@ function App() {
       name: "Modals",
       component: <ModalDemo />,
     },
-
+    {
+      id: "menu",
+      name: "Menu",
+      component: <MenuDemo />,
+    },
     {
       id: "accordion",
       name: "Accordion",
@@ -103,7 +108,7 @@ function App() {
         />
       </div>
 
-      <Snackbar />
+      <Snackbar visibleToasts={5} />
 
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>

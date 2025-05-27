@@ -1,26 +1,16 @@
 "use client";
 
 import type React from "react";
-import { toast as sonnerToast, Toaster } from "sonner";
+import { toast as sonnerToast, Toaster as Snackbar } from "sonner";
 import { Info, X } from "lucide-react";
 import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
-import Text from "../Text/Text";
+import Text, { VariantType } from "../Text/Text";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
+import { AddToastOptions, CustomToastProps } from "./types";
+import snackbarTokens from "./snackbar.tokens";
 
-// Custom Toast Component
-interface CustomToastProps {
-  header: string;
-  description?: string;
-  variant: "info" | "success" | "warning" | "error";
-  onClose?: () => void;
-  actionButton?: {
-    label: string;
-    onClick: () => void;
-  };
-}
-
-const CustomToast: React.FC<CustomToastProps> = ({
+const StyledToast: React.FC<CustomToastProps> = ({
   header,
   description,
   variant,
@@ -42,23 +32,30 @@ const CustomToast: React.FC<CustomToastProps> = ({
 
   return (
     <Block
-      backgroundColor={FOUNDATION_THEME.colors["gray"][900]}
-      borderRadius={FOUNDATION_THEME.border.radius[8]}
-      padding={FOUNDATION_THEME.unit[16]}
-      minWidth={400}
-      maxWidth={500}
-      boxShadow={FOUNDATION_THEME.shadows.lg}
+      backgroundColor={snackbarTokens.container.backgroundColor}
+      borderRadius={snackbarTokens.container.borderRadius}
+      padding={snackbarTokens.container.padding}
+      minWidth={snackbarTokens.container.minWidth}
+      maxWidth={snackbarTokens.container.maxWidth}
+      boxShadow={snackbarTokens.container.boxShadow}
     >
       <Block
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        gap={12}
-        marginBottom={8}
+        gap={snackbarTokens.header.layout.gap}
+        marginBottom={snackbarTokens.header.layout.marginBottom}
       >
-        <Block display="flex" alignItems="center" gap={8}>
+        <Block
+          display="flex"
+          alignItems="center"
+          gap={snackbarTokens.header.layout.iconGap}
+        >
           <Info size={16} color={getIconColor()} />
-          <Text variant="body.md" color={FOUNDATION_THEME.colors["gray"][0]}>
+          <Text
+            variant={snackbarTokens.header.text.variant as VariantType}
+            color={snackbarTokens.header.text.color}
+          >
             {header}
           </Text>
         </Block>
@@ -72,25 +69,28 @@ const CustomToast: React.FC<CustomToastProps> = ({
       </Block>
 
       <Block
-        paddingLeft={24}
+        paddingLeft={snackbarTokens.description.layout.paddingLeft}
         display="flex"
         flexDirection="column"
-        gap={FOUNDATION_THEME.unit[18]}
+        gap={snackbarTokens.description.layout.gap}
       >
-        <Text variant="body.md" color={FOUNDATION_THEME.colors["gray"][300]}>
+        <Text
+          variant={snackbarTokens.description.text.variant}
+          color={snackbarTokens.description.text.color}
+        >
           {description}
         </Text>
         {actionButton && (
           <PrimitiveButton
             backgroundColor="transparent"
             contentCentered
-            paddingX={FOUNDATION_THEME.unit[2]}
-            color={FOUNDATION_THEME.colors["gray"][0]}
+            paddingX={snackbarTokens.actionButton.layout.paddingX}
+            color={snackbarTokens.actionButton.text.color}
             onClick={actionButton.onClick}
           >
             <Text
-              variant="body.md"
-              color={FOUNDATION_THEME.colors["gray"][100]}
+              variant={snackbarTokens.actionButton.text.variant}
+              color={snackbarTokens.actionButton.text.color}
             >
               {actionButton.label}
             </Text>
@@ -101,21 +101,9 @@ const CustomToast: React.FC<CustomToastProps> = ({
   );
 };
 
-// addToast method
-type AddToastOptions = {
-  header: string;
-  description?: string;
-  variant: "info" | "success" | "warning" | "error";
-  onClose?: () => void;
-  actionButton?: {
-    label: string;
-    onClick: () => void;
-  };
-}
-
-export const addToast = (options: AddToastOptions) => {
+export const addSnackbar = (options: AddToastOptions) => {
   return sonnerToast.custom((t) => (
-    <CustomToast
+    <StyledToast
       header={options.header}
       description={options.description}
       variant={options.variant}
@@ -128,8 +116,5 @@ export const addToast = (options: AddToastOptions) => {
   ));
 };
 
-// Export the original toast for other use cases
-export const toast = sonnerToast;
-
 // Export the Toaster component
-export { Toaster as Snackbar };
+export default Snackbar;
