@@ -5,9 +5,11 @@ import { styled } from "styled-components";
 import { AccordionProps, AccordionType } from "./types";
 import accordionTokens from "./accordion.tokens";
 
-const AccordionRoot = styled(RadixAccordion.Root)<{ accordionType: AccordionType }>((props) => ({
+const StyledAccordionRoot = styled(RadixAccordion.Root)<{ 
+  $accordionType: AccordionType 
+}>((props) => ({
   ...accordionTokens.base.container,
-  ...accordionTokens.type[props.accordionType].container,
+  ...accordionTokens.type[props.$accordionType].container,
 }));
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
@@ -26,7 +28,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const baseProps = {
       collapsible: isCollapsible,
       ref: ref,
-      accordionType: accordionType,
+      $accordionType: accordionType,
     };
 
     const renderChildren = () => {
@@ -43,25 +45,25 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     };
 
     return isMultiple ? (
-      <AccordionRoot
+      <StyledAccordionRoot
         type="multiple"
-        value={value as string[]}
-        defaultValue={defaultValue as string[]}
-        onValueChange={onValueChange as ((value: string[]) => void)}
+        value={value as string[] | undefined}
+        defaultValue={defaultValue as string[] | undefined}
+        onValueChange={onValueChange as ((value: string[]) => void) | undefined}
         {...baseProps}
       >
         {renderChildren()}
-      </AccordionRoot>
+      </StyledAccordionRoot>
     ) : (
-      <AccordionRoot
+      <StyledAccordionRoot
         type="single"
-        value={value as string }
-        defaultValue={defaultValue as string }
-        onValueChange={onValueChange as ((value: string) => void)}
+        value={value as string | undefined}
+        defaultValue={defaultValue as string | undefined}
+        onValueChange={onValueChange as ((value: string) => void) | undefined}
         {...baseProps}
       >
         {renderChildren()}
-      </AccordionRoot>
+      </StyledAccordionRoot>
     );
   }
 );

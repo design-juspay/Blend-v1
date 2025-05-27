@@ -61,7 +61,7 @@ const accordionTokens: AccordionTokens = {
       border: "none",
       outline: "none",
       
-      "&:focus-visible": {
+      "&:focusVisible": {
         outline: `${FOUNDATION_THEME.border.width[2]} solid ${FOUNDATION_THEME.colors.primary[500]}`,
         outlineOffset: FOUNDATION_THEME.unit[2],
       },
@@ -123,7 +123,7 @@ const accordionTokens: AccordionTokens = {
           backgroundColor: FOUNDATION_THEME.colors.gray[50],
         },
         
-        "&[data-state=open]": {
+        "&[dataState=open]": {
           backgroundColor: FOUNDATION_THEME.colors.gray[50],
         },
       },
@@ -142,7 +142,7 @@ const accordionTokens: AccordionTokens = {
       item: {
         borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
         
-        "&:last-child": {
+        "&:lastChild": {
           borderBottom: "none",
         },
       },
