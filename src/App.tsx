@@ -11,6 +11,7 @@ import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
+import SnackbarDemo from "./demos/Snackbar/SnackbarDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -21,7 +22,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("tags");
+  const [selectedCategory, setSelectedCategory] = useState<string>("snackbar");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -41,14 +42,9 @@ function App() {
       component: <TagsDemo />,
     },
     {
-      id: "split-tags",
-      name: "Split Tags",
+      id: "split-tag",
+      name: "Split Tag",
       component: <SplitTagDemo />,
-    },
-    {
-      id: "breadcrumb",
-      name: "Breadcrumb",
-      component: <BreadcrumbDemo />,
     },
     {
       id: "tabs",
@@ -56,20 +52,29 @@ function App() {
       component: <TabsDemo />,
     },
     {
-      id: "alerts",
-      name: "Alerts",
+      id: "alert",
+      name: "Alert",
       component: <AlertDemo />,
     },
     {
-      id: "modals",
-      name: "Modals",
-      component: <ModalDemo />,
+      id: "breadcrumb",
+      name: "Breadcrumb",
+      component: <BreadcrumbDemo />,
     },
-
     {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
+    },
+    {
+      id: "modal",
+      name: "Modal",
+      component: <ModalDemo />,
+    },
+    {
+      id: "snackbar",
+      name: "Snackbar",
+      component: <SnackbarDemo />,
     },
   ];
 
