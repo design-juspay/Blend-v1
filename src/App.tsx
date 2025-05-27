@@ -11,6 +11,7 @@ import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
+import AccordionDemo from "./demos/Accordion/AccordionDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
 
 // Component categories
@@ -22,7 +23,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("tags");
+  const [selectedCategory, setSelectedCategory] = useState<string>("accordion");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -67,6 +68,11 @@ function App() {
       component: <ModalDemo />,
     },
 
+    {
+      id: "accordion",
+      name: "Accordion",
+      component: <AccordionDemo />,
+    },
     {
       id: "avatar-group",
       name: "Avatar Group",
