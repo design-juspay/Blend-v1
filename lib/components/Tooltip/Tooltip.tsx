@@ -1,21 +1,41 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
-import styled from "styled-components";
-import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import { TooltipProps, TooltipAlign, TooltipSide, TooltipSize, TooltipSlotDirection } from "./types";
+import styled, { CSSObject } from "styled-components";
+import {
+  TooltipProps,
+  TooltipAlign,
+  TooltipSide,
+  TooltipSize,
+  TooltipSlotDirection,
+} from "./types";
+import Block from "../Primitives/Block/Block";
+import Text from "../Text/Text";
+import tooltipTokens from "./tooltip.token";
 
+const blockedProps = ["size"];
 
+const Content = styled(RadixTooltip.Content).withConfig({
+  shouldForwardProp: (prop) => !blockedProps.includes(prop),
+})<{ size: TooltipSize }>(({ size }) => {
+  const styles: CSSObject = {};
 
-const Content = styled(RadixTooltip.Content)<{ $size: TooltipSize }>`
-  background-color: black;
-  color: white;
-  border-radius: 4px;
-  font-size: 14px;
-  padding: 8px 12px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-  z-index: 9999;
-  max-width: 280px;
-  line-height: 1.4;
-`;
+  styles.display = "flex";
+  styles.alignItems = "center";
+  styles.justifyContent = "center";
+  styles.gap = 4;
+
+  styles.backgroundColor = "black";
+  styles.borderRadius = tooltipTokens.border.radius[size];
+
+  switch (size) {
+    case TooltipSize.SMALL:
+      styles.padding = tooltipTokens.padding.sm;
+      break;
+    case TooltipSize.LARGE:
+      styles.padding = tooltipTokens.padding.lg;
+      break;
+  }
+  return styles;
+});
 
 const Arrow = styled(RadixTooltip.Arrow)`
   fill: black;
@@ -30,18 +50,36 @@ export const Tooltip = ({
   showArrow = true,
   size = TooltipSize.SMALL,
   slot,
-  slotDirection = TooltipSlotDirection.RIGHT,
+  slotDirection = TooltipSlotDirection.LEFT,
   delayDuration = 300,
   offset = 5,
 }: TooltipProps) => {
-  console.log(slot, slotDirection);
-
   return (
     <RadixTooltip.Provider delayDuration={delayDuration}>
-      <RadixTooltip.Root open={open}>
+      <RadixTooltip.Root open={true}>
         <RadixTooltip.Trigger asChild>{trigger}</RadixTooltip.Trigger>
-        <Content side={side} align={align} sideOffset={offset} $size={size}>
-          <PrimitiveText>{content}</PrimitiveText>
+        <Content
+          arrowPadding={8}
+          side={side}
+          align={align}
+          sideOffset={offset}
+          size={size}
+        >
+          {slot && slotDirection === TooltipSlotDirection.LEFT && (
+            <Block size={tooltipTokens.size[size]} contentCentered>
+              {slot}
+            </Block>
+          )}
+          <Text variant={tooltipTokens.font.size[size]}>{content}</Text>
+          {slot && slotDirection === TooltipSlotDirection.RIGHT && (
+            <Block
+              className="debug"
+              size={tooltipTokens.size[size]}
+              contentCentered
+            >
+              {slot}
+            </Block>
+          )}
           {showArrow && <Arrow offset={8} />}
         </Content>
       </RadixTooltip.Root>

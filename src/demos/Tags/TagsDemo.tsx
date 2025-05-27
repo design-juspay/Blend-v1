@@ -8,7 +8,7 @@ import {
 } from "../../../lib/components/Tags";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
-import { Button, ButtonSize, SplitTag } from "../../../lib/main";
+import { Button, ButtonSize, SplitTag, TooltipSide, TooltipSize } from "../../../lib/main";
 import { Tag } from "../../../lib/main";
 import Tooltip from "../../../lib/components/Tooltip/Tooltip";
 import Popover from "../../../lib/components/Popover/Popover";
@@ -39,6 +39,13 @@ const TagsDemo: React.FC = () => {
               size={TagSize.SM}
               onClick={() => alert("Clicked")}
             />
+          </Tooltip>
+
+          <Tooltip side={TooltipSide.BOTTOM} showArrow={false} offset={10} size={TooltipSize.SMALL} content="Hello" slot={<Hash size={10} />}>
+            <Button size={ButtonSize.SMALL} text="Open Menu" />
+          </Tooltip>
+          <Tooltip side={TooltipSide.RIGHT} showArrow={true} size={TooltipSize.LARGE} content="Hello" slot={<Hash size={12} />}>
+            <Button size={ButtonSize.SMALL} text="Open Menu" />
           </Tooltip>
         </Block>
 
