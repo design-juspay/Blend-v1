@@ -35,11 +35,6 @@ const AccordionDemo: React.FC = () => {
           >
             <div className="content-space">
               <p className="text-content">Manage your security preferences:</p>
-              <ul className="content-list">
-                <li>Change password</li>
-                <li>Setup two-factor authentication</li>
-                <li>Manage connected devices</li>
-              </ul>
             </div>
           </AccordionItem>
 
@@ -80,12 +75,6 @@ const AccordionDemo: React.FC = () => {
           >
             <div className="content-space">
               <p className="text-content">We accept the following payment methods:</p>
-              <ul className="content-list">
-                <li>Credit/Debit Cards (Visa, Mastercard, Amex)</li>
-                <li>PayPal</li>
-                <li>Bank Transfer</li>
-                <li>Apple Pay / Google Pay</li>
-              </ul>
             </div>
           </AccordionItem>
 
@@ -130,12 +119,6 @@ const AccordionDemo: React.FC = () => {
           >
             <div className="content-space">
               <p className="text-content">We offer several subscription tiers:</p>
-              <ul className="content-list">
-                <li>Free - Basic access with limited features</li>
-                <li>Pro - Advanced features for individuals ($9.99/month)</li>
-                <li>Team - Collaboration tools for small teams ($24.99/month)</li>
-                <li>Enterprise - Custom solutions for large organizations</li>
-              </ul>
             </div>
           </AccordionItem>
 

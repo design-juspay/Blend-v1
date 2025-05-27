@@ -110,7 +110,7 @@ const AccordionItem = forwardRef<
           style={itemStyles}
         >
           <RadixAccordion.Header style={{ display: "flex" }}>
-            <RadixAccordion.Trigger asChild>
+            <RadixAccordion.Trigger asChild disabled={isDisabled}>
               <PrimitiveButton
                 ref={triggerRef}
                 disabled={isDisabled}
@@ -118,6 +118,7 @@ const AccordionItem = forwardRef<
                 data-disabled={isDisabled || undefined}
                 style={triggerStyles}
                 cursor={isDisabled ? "not-allowed" : "pointer"}
+                onClick={isDisabled ? (e) => e.preventDefault() : undefined}
               >
                 <Block width="100%" position="relative">
                   <Block style={accordionTokens.layout.headerRow}>
@@ -196,13 +197,15 @@ const AccordionItem = forwardRef<
             </RadixAccordion.Trigger>
           </RadixAccordion.Header>
           
-          <RadixAccordion.Content asChild>
-            <Block style={contentStyles}>
-              <Block style={contentWrapperStyles}>
-                {children}
+          {!isDisabled && (
+            <RadixAccordion.Content asChild>
+              <Block style={contentStyles}>
+                <Block style={contentWrapperStyles}>
+                  {children}
+                </Block>
               </Block>
-            </Block>
-          </RadixAccordion.Content>
+            </RadixAccordion.Content>
+          )}
         </Block>
       </RadixAccordion.Item>
     );
