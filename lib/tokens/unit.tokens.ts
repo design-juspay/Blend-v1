@@ -1,23 +1,26 @@
+import { CSSObject } from "styled-components";
+
 export type UnitTokensType = Readonly<{
-  0: string;
-  2: string;
-  4: string;
-  6: string;
-  8: string;
-  10: string;
-  12: string;
-  16: string;
-  18: string;
-  20: string;
-  24: string;
-  28: string;
-  32: string;
-  36: string;
-  40: string;
-  48: string;
-  56: string;
-  64: string;
-  auto: string;
+  0: CSSObject["width "];
+  2: CSSObject["width"];
+  4: CSSObject["width"];
+  6: CSSObject["width"];
+  8: CSSObject["width"];
+  10: CSSObject["width"];
+  12: CSSObject["width"];
+  14: CSSObject["width"];
+  16: CSSObject["width"];
+  18: CSSObject["width"];
+  20: CSSObject["width"];
+  24: CSSObject["width"];
+  28: CSSObject["width"];
+  32: CSSObject["width"];
+  36: CSSObject["width"];
+  40: CSSObject["width"];
+  48: CSSObject["width"];
+  56: CSSObject["width"];
+  64: CSSObject["width"];
+  auto: CSSObject["width"];
 }>;
 
 const unitTokens: UnitTokensType = {
@@ -28,6 +31,7 @@ const unitTokens: UnitTokensType = {
   8: "8px",
   10: "10px",
   12: "12px",
+  14: "14px",
   16: "16px",
   18: "18px",
   20: "20px",

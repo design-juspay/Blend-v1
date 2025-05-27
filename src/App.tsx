@@ -11,6 +11,7 @@ import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
+import TooltipDemo from "./demos/Tooltip/TooltipDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -70,6 +71,11 @@ function App() {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
+    },
+    {
+      id: "tooltips",
+      name: "Tooltips",
+      component: <TooltipDemo />,
     },
   ];
 

@@ -8,11 +8,17 @@ import {
 } from "../../../lib/components/Tags";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
-import { Button, ButtonSize, SplitTag } from "../../../lib/main";
+import {
+  Button,
+  ButtonSize,
+  SplitTag,
+  TooltipSide,
+  TooltipSize,
+} from "../../../lib/main";
 import { Tag } from "../../../lib/main";
 import Tooltip from "../../../lib/components/Tooltip/Tooltip";
 import Popover from "../../../lib/components/Popover/Popover";
-import Menu from "../../../lib/components/Menu/Menu";
+// import Menu from "../../../lib/components/Menu/Menu";
 
 const TagsDemo: React.FC = () => {
   return (
@@ -40,6 +46,26 @@ const TagsDemo: React.FC = () => {
               onClick={() => alert("Clicked")}
             />
           </Tooltip>
+
+          <Tooltip
+            side={TooltipSide.BOTTOM}
+            showArrow={false}
+            offset={10}
+            size={TooltipSize.SMALL}
+            content="Hello"
+            slot={<Hash size={10} />}
+          >
+            <Button size={ButtonSize.SMALL} text="Open Menu" />
+          </Tooltip>
+          <Tooltip
+            side={TooltipSide.RIGHT}
+            showArrow={true}
+            size={TooltipSize.LARGE}
+            content="Hello"
+            slot={<Hash size={12} />}
+          >
+            <Button size={ButtonSize.SMALL} text="Open Menu" />
+          </Tooltip>
         </Block>
 
         <Block display="flex" gap={10} marginBottom={10}>
@@ -52,9 +78,9 @@ const TagsDemo: React.FC = () => {
         </Block>
 
         <Block display="flex" gap={10} marginBottom={10}>
-          <Menu
+          {/* <Menu
             trigger={<Button size={ButtonSize.SMALL} text="Open Menu" />}
-          ></Menu>
+          ></Menu> */}
         </Block>
       </Block>
 
@@ -264,4 +290,4 @@ const TagsDemo: React.FC = () => {
   );
 };
 
-export default TagsDemo; 
+export default TagsDemo;
