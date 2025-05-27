@@ -4,8 +4,7 @@ import { CheckboxProps, CheckboxSize, CheckboxPosition } from './types';
 import { 
   generateCheckboxId, 
   getCheckboxDataState, 
-  extractPixelValue,
-  getSpacingBySize
+  extractPixelValue
 } from './checkboxUtils';
 import {
   StyledCheckboxRoot,
@@ -15,7 +14,6 @@ import {
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import checkboxTokens from './token';
-import styled from 'styled-components';
 
 const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
   (
