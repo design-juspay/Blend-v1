@@ -1,15 +1,15 @@
-import React, { JSX } from "react";
+import React, { JSX, forwardRef } from "react";
 import styled, { css, CSSObject } from "styled-components";
 
 type SpacingValue = string | number;
- 
+
 type StateStyles = {
   _hover?: StyledBlockProps;
   _focus?: StyledBlockProps;
   _active?: StyledBlockProps;
   _disabled?: StyledBlockProps;
   _visited?: StyledBlockProps;
-}
+};
 
 type StyledBlockProps = StateStyles & {
   color?: CSSObject["color"];
@@ -84,7 +84,7 @@ type StyledBlockProps = StateStyles & {
 
   // Cursor
   cursor?: CSSObject["cursor"];
-}
+};
 
 const blockedProps = [
   // All base props
@@ -306,8 +306,16 @@ export type BlockProps = StyledBlockProps &
  * It is used to create consistent spacing and layout patterns across the application.
  *
  */
-const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
-  return <StyledBlock {...rest}>{children}</StyledBlock>;
-};
+const Block = forwardRef<HTMLDivElement, BlockProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <StyledBlock ref={ref} {...rest}>
+        {children}
+      </StyledBlock>
+    );
+  }
+);
+
+Block.displayName = "Block";
 
 export default Block;

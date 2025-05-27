@@ -24,7 +24,8 @@ export type PrimitiveTextProps = {
   paddingX?: CSSObject["padding"];
   paddingY?: CSSObject["padding"];
   fontSize?: CSSObject["fontSize"];
-}
+  truncate?: boolean;
+};
 
 export type TextProps = PrimitiveTextProps &
   Omit<React.HTMLAttributes<HTMLElement>, "color"> & {
@@ -50,6 +51,7 @@ const blockedProps = [
   "paddingX",
   "paddingY",
   "fontSize",
+  "truncate",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -93,6 +95,13 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
   if (props.paddingY) {
     styles.paddingTop = props.paddingY;
     styles.paddingBottom = props.paddingY;
+  }
+
+  // Truncation
+  if (props.truncate) {
+    styles.overflow = "hidden";
+    styles.textOverflow = "ellipsis";
+    styles.whiteSpace = "nowrap";
   }
 
   return styles;
