@@ -172,7 +172,7 @@ export const Menu = ({
   align?: "start" | "center" | "end";
 }) => {
   return (
-    <RadixDropdownMenu.Root open>
+    <RadixDropdownMenu.Root>
       <RadixDropdownMenu.Trigger asChild>{trigger}</RadixDropdownMenu.Trigger>
       <Content
         side={side}
