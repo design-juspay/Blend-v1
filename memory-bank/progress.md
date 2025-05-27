@@ -290,6 +290,15 @@
     - ✅ Updated `extractPixelValue` function to handle complex styled-components types (`string | number | undefined`)
     - ✅ Updated `getIconSize` function to properly convert token values to strings with fallbacks
     - ✅ Fixed all TypeScript compilation errors related to icon sizing
+  - ✅ **CI/CD Lockfile Fix**: Resolved pnpm lockfile synchronization issues:
+    - ✅ Updated `pnpm-lock.yaml` to sync with `package.json` dependencies
+    - ✅ Verified `pnpm install --frozen-lockfile` works correctly for CI environments
+    - ✅ Clean build with no TypeScript errors (warnings are acceptable for declaration files)
+  - ✅ **Token Consistency**: Maintained consistent token import patterns:
+    - ✅ Form components (Checkbox, Radio, Switch) use `FOUNDATION_THEME` from `"../../tokens"`
+    - ✅ Other components use `foundationToken` from `"../../foundationToken"`
+    - ✅ Avoided breaking changes by keeping existing token structure
+    - ✅ TypeScript declaration warnings are acceptable as they don't affect functionality
 
 #### Demo System
 - ✅ Basic demo layout
