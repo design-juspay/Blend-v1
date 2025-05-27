@@ -53,6 +53,26 @@
   - Enhanced focus states for keyboard navigation
   - Added smooth animations for state transitions
   - Applied consistent code structure following project patterns
+- **Restructured Radio and RadioGroup components to follow memory bank standards:**
+  - Converted Tailwind theme config to foundation tokens
+  - Replaced interfaces with type aliases for TypeScript compliance
+  - Created styled components with proper token integration
+  - Integrated with Block and PrimitiveText primitives
+  - Added comprehensive utility functions for state management
+  - Enhanced accessibility with proper ARIA attributes and radiogroup role
+  - Implemented smooth animations for state transitions
+  - Applied modular directory structure with proper file separation
+- **Restructured Switch and SwitchGroup components to follow memory bank standards:**
+  - Converted Tailwind theme config to comprehensive foundation tokens
+  - Replaced interfaces with type aliases for TypeScript compliance
+  - Created styled components with proper token integration and animations
+  - Integrated with Block and PrimitiveText primitives for layout consistency
+  - Added comprehensive utility functions for state and ID management
+  - Enhanced accessibility with proper ARIA attributes and switch role
+  - Implemented smooth sliding animations for thumb movement
+  - Applied modular directory structure with proper file separation
+  - Added support for subtext, right slot, and disabled states
+  - Created comprehensive demo showcasing all features and states
 
 ## Next Steps
 

@@ -12,6 +12,8 @@ import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
+import RadioDemo from "./demos/Radio/RadioDemo";
+import SwitchDemo from "./demos/Switch/SwitchDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -22,7 +24,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("tags");
+  const [selectedCategory, setSelectedCategory] = useState<string>("switch");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -76,6 +78,16 @@ function App() {
       id: "checkbox",
       name: "Checkbox",
       component: <CheckboxDemo />,
+    },
+    {
+      id: "radio",
+      name: "Radio",
+      component: <RadioDemo />,
+    },
+    {
+      id: "switch",
+      name: "Switch",
+      component: <SwitchDemo />,
     },
   ];
 
