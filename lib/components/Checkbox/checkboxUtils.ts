@@ -14,8 +14,10 @@ export const generateCheckboxId = (
   return id || (value ? `checkbox-${value}` : `checkbox-${generatedId}`);
 };
 
-export const extractPixelValue = (tokenValue: string): number => {
-  return parseInt(tokenValue.replace('px', ''));
+export const extractPixelValue = (tokenValue: string | number | undefined): number => {
+  if (typeof tokenValue === 'number') return tokenValue;
+  if (typeof tokenValue === 'string') return parseInt(tokenValue.replace('px', ''));
+  return 0; // fallback for undefined
 };
 
 export const getAccessibilityAttributes = (uniqueId: string, isIndeterminate: boolean) => {
@@ -29,8 +31,8 @@ export const getAccessibilityAttributes = (uniqueId: string, isIndeterminate: bo
 
 export const getIconSize = (size: CheckboxSize): { width: string; height: string } => {
   return {
-    width: checkboxTokens.sizes[size].icon.width,
-    height: checkboxTokens.sizes[size].icon.height
+    width: String(checkboxTokens.sizes[size].icon.width || '0px'),
+    height: String(checkboxTokens.sizes[size].icon.height || '0px')
   };
 };
 

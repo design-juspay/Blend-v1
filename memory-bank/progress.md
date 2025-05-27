@@ -286,6 +286,10 @@
     - ✅ SwitchDemo: Uses Tags with "PRO" (success), "BETA" (warning), "EXPERIMENTAL" (error), and "Optional" (primary)
     - ✅ RadioDemo: Added new slot section with "FREE" (neutral), "POPULAR" (success), and "PREMIUM" (warning) tags
     - ✅ All tags use TagSize.XS for optimal slot sizing and appropriate colors/variants for semantic meaning
+  - ✅ **TypeScript Build Fix**: Resolved type compatibility issues in Checkbox component:
+    - ✅ Updated `extractPixelValue` function to handle complex styled-components types (`string | number | undefined`)
+    - ✅ Updated `getIconSize` function to properly convert token values to strings with fallbacks
+    - ✅ Fixed all TypeScript compilation errors related to icon sizing
 
 #### Demo System
 - ✅ Basic demo layout
