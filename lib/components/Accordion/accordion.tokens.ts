@@ -39,6 +39,7 @@ type AccordionTokens = {
   };
   states: {
     disabled: CSSObject;
+    open: CSSObject;
   };
 };
 
@@ -91,6 +92,7 @@ const accordionTokens: AccordionTokens = {
     subtext: {
       fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
       marginTop: FOUNDATION_THEME.unit[4],
+      paddingLeft: FOUNDATION_THEME.unit[20],
     },
     subtextEnabled: {
       color: FOUNDATION_THEME.colors.gray[600],
@@ -166,10 +168,16 @@ const accordionTokens: AccordionTokens = {
     leftSlot: {
       marginRight: FOUNDATION_THEME.unit[8],
       flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
     rightSlot: {
       marginLeft: FOUNDATION_THEME.unit[8],
       flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
     headerRow: {
       display: "flex",
@@ -210,6 +218,9 @@ const accordionTokens: AccordionTokens = {
     disabled: {
       backgroundColor: FOUNDATION_THEME.colors.gray[50],
     },
+    open: {
+        borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
+      }
   },
 };
 

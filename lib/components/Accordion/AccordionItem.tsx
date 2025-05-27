@@ -4,7 +4,6 @@ import { forwardRef } from "react";
 import { styled } from "styled-components";
 import { AccordionItemProps, AccordionType, AccordionChevronPosition } from "./types";
 import accordionTokens from "./accordion.tokens";
-import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 
@@ -32,9 +31,7 @@ const StyledAccordionTrigger = styled(RadixAccordion.Trigger)<{
     cursor: "not-allowed",
   }),
   '&[data-state="open"]': {
-    ...(props.$accordionType === AccordionType.BORDER && {
-      borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-    }),
+    ...(props.$accordionType === AccordionType.BORDER && accordionTokens.states.open),
   },
 }));
 
@@ -43,6 +40,25 @@ const StyledAccordionContent = styled(RadixAccordion.Content)<{
 }>((props) => ({
   ...accordionTokens.base.content,
   ...accordionTokens.type[props.$accordionType].content,
+}));
+
+const ChevronIcon = styled(Block)<{
+  $chevronPosition: AccordionChevronPosition;
+}>((props) => ({
+  transition: 'transform 200ms ease',
+  transformOrigin: 'center',
+  
+  ...(props.$chevronPosition === AccordionChevronPosition.RIGHT && {
+    '[data-state="open"] &': {
+      transform: 'rotate(180deg)',
+    },
+  }),
+  
+  ...(props.$chevronPosition === AccordionChevronPosition.LEFT && {
+    '[data-state="open"] &': {
+      transform: 'rotate(90deg)',
+    },
+  }),
 }));
 
 const AccordionItem = forwardRef<
@@ -77,19 +93,18 @@ const AccordionItem = forwardRef<
           : accordionTokens.layout.chevronIcon.enabled),
       };
 
-      if (chevronPosition === AccordionChevronPosition.RIGHT) {
-        return (
-          <Block style={iconStyles}>
+      return (
+        <ChevronIcon 
+          $chevronPosition={chevronPosition}
+          style={iconStyles}
+        >
+          {chevronPosition === AccordionChevronPosition.RIGHT ? (
             <ChevronDown style={{ width: '100%', height: '100%' }} />
-          </Block>
-        );
-      } else {
-        return (
-          <Block style={iconStyles}>
+          ) : (
             <ChevronRight style={{ width: '100%', height: '100%' }} />
-          </Block>
-        );
-      }
+          )}
+        </ChevronIcon>
+      );
     };
 
     return (
@@ -168,7 +183,6 @@ const AccordionItem = forwardRef<
                   alignItems="center"
                   style={{
                     ...accordionTokens.base.subtext,
-                    paddingLeft: chevronPosition === AccordionChevronPosition.LEFT ? "32px" : "20px"
                   }}
                 >
                   {subtext && (

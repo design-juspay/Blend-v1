@@ -25,12 +25,6 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     },
     ref
   ) => {
-    const baseProps = {
-      collapsible: isCollapsible,
-      ref: ref,
-      $accordionType: accordionType,
-    };
-
     const renderChildren = () => {
       return React.Children.map(children, (child) => {
         if (!React.isValidElement(child)) return child;
@@ -44,13 +38,19 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       });
     };
 
+    const commonProps = {
+      ref: ref,
+      $accordionType: accordionType,
+      collapsible: isCollapsible,
+    };
+
     return isMultiple ? (
       <StyledAccordionRoot
         type="multiple"
         value={value as string[] | undefined}
         defaultValue={defaultValue as string[] | undefined}
         onValueChange={onValueChange as ((value: string[]) => void) | undefined}
-        {...baseProps}
+        {...commonProps}
       >
         {renderChildren()}
       </StyledAccordionRoot>
@@ -60,7 +60,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
         value={value as string | undefined}
         defaultValue={defaultValue as string | undefined}
         onValueChange={onValueChange as ((value: string) => void) | undefined}
-        {...baseProps}
+        {...commonProps}
       >
         {renderChildren()}
       </StyledAccordionRoot>
