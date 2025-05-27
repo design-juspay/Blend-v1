@@ -56,7 +56,7 @@ export const Tooltip = ({
 }: TooltipProps) => {
   return (
     <RadixTooltip.Provider delayDuration={delayDuration}>
-      <RadixTooltip.Root open={true}>
+      <RadixTooltip.Root open={open}>
         <RadixTooltip.Trigger asChild>{trigger}</RadixTooltip.Trigger>
         <Content
           arrowPadding={8}

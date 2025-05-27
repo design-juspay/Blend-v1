@@ -43,8 +43,8 @@ const tooltipTokens: TooltipToken = {
     },
   },
   size: {
-    sm: 14,
-    lg: 18,
+    sm: FOUNDATION_THEME.unit[14],
+    lg: FOUNDATION_THEME.unit[18],
   },
 };
 
