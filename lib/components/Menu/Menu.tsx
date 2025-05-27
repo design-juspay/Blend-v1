@@ -39,14 +39,6 @@ const Separator = styled(RadixDropdownMenu.Separator)(() => ({
   margin: "6px 0",
 }));
 
-const Label = styled(RadixDropdownMenu.Label)(() => ({
-  padding: "8px 6px",
-  fontSize: 12,
-  fontWeight: 500,
-  color: "#666",
-  textTransform: "uppercase",
-}));
-
 const StyledItem = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
