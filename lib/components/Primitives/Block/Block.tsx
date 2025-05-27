@@ -345,7 +345,7 @@ export interface BlockProps
  * @todo
  * - Add support for focus-visible outline
  */
-const Block = forwardRef<HTMLElement, BlockProps>(
+const Block = forwardRef<HTMLDivElement, BlockProps>(
   ({ children, ...rest }, ref) => {
     return (
       <StyledBlock ref={ref} {...rest}>
