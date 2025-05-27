@@ -12,6 +12,7 @@ import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
+import { Snackbar } from "../lib/components/Snackbar/Snackbar";
 
 // Component categories
 type ComponentCategory = {
@@ -95,6 +96,8 @@ function App() {
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         />
       </div>
+
+      <Snackbar />
 
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>

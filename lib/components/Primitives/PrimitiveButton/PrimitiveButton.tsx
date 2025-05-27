@@ -1,7 +1,15 @@
 import React from "react";
 import styled, { css, CSSObject } from "styled-components";
 
-type PrimitiveButtonProps = {
+type StateStyles = {
+  _hover?: PrimitiveButtonProps;
+  _focus?: PrimitiveButtonProps;
+  _active?: PrimitiveButtonProps;
+  _disabled?: PrimitiveButtonProps;
+  _visited?: PrimitiveButtonProps;
+};
+
+type PrimitiveButtonProps = StateStyles & {
   // Spacing
   padding?: CSSObject["padding"];
   paddingX?: CSSObject["padding"];
@@ -43,6 +51,10 @@ type PrimitiveButtonProps = {
   backgroundColor?: CSSObject["backgroundColor"];
   color?: CSSObject["color"];
   border?: CSSObject["border"];
+  borderTop?: CSSObject["borderTop"];
+  borderRight?: CSSObject["borderRight"];
+  borderBottom?: CSSObject["borderBottom"];
+  borderLeft?: CSSObject["borderLeft"];
   borderRadius?: CSSObject["borderRadius"];
   boxShadow?: CSSObject["boxShadow"];
   textAlign?: CSSObject["textAlign"];
@@ -52,9 +64,16 @@ type PrimitiveButtonProps = {
   overflowY?: CSSObject["overflowY"];
   cursor?: CSSObject["cursor"];
 
+  // Outline
+  outline?: CSSObject["outline"];
+  outlineOffset?: CSSObject["outlineOffset"];
+  outlineStyle?: CSSObject["outlineStyle"];
+  outlineWidth?: CSSObject["outlineWidth"];
+  outlineColor?: CSSObject["outlineColor"];
+
   // State
   disabled?: boolean;
-}
+};
 
 const blockedProps = [
   "padding",
@@ -87,6 +106,10 @@ const blockedProps = [
   "backgroundColor",
   "color",
   "border",
+  "borderTop",
+  "borderRight",
+  "borderBottom",
+  "borderLeft",
   "borderRadius",
   "boxShadow",
   "textAlign",
@@ -95,6 +118,11 @@ const blockedProps = [
   "overflowX",
   "overflowY",
   "cursor",
+  "outline",
+  "outlineOffset",
+  "outlineStyle",
+  "outlineWidth",
+  "outlineColor",
   "variant",
   "disabled",
 ];
@@ -177,6 +205,11 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
     styles.backgroundColor = props.backgroundColor;
   if (props.color !== undefined) styles.color = props.color;
   if (props.border !== undefined) styles.border = props.border;
+  if (props.borderTop !== undefined) styles.borderTop = props.borderTop;
+  if (props.borderRight !== undefined) styles.borderRight = props.borderRight;
+  if (props.borderBottom !== undefined)
+    styles.borderBottom = props.borderBottom;
+  if (props.borderLeft !== undefined) styles.borderLeft = props.borderLeft;
   if (props.borderRadius !== undefined)
     styles.borderRadius = props.borderRadius;
   if (props.boxShadow !== undefined) styles.boxShadow = props.boxShadow;
@@ -186,12 +219,46 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
   if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
   if (props.overflowY !== undefined) styles.overflowY = props.overflowY;
 
+  // Outline
+  if (props.outline !== undefined) styles.outline = props.outline;
+  if (props.outlineOffset !== undefined)
+    styles.outlineOffset = props.outlineOffset;
+  if (props.outlineStyle !== undefined)
+    styles.outlineStyle = props.outlineStyle;
+  if (props.outlineWidth !== undefined)
+    styles.outlineWidth = props.outlineWidth;
+  if (props.outlineColor !== undefined)
+    styles.outlineColor = props.outlineColor;
+
   return styles;
+};
+
+const stateToSelector: Record<keyof StateStyles, string> = {
+  _hover: "&:hover",
+  _focus: "&:focus",
+  _active: "&:active",
+  _disabled: "&:disabled",
+  _visited: "&:visited",
 };
 
 const StyledButton = styled.button.withConfig({
   shouldForwardProp,
-})<PrimitiveButtonProps>((props) => css(getStyles(props)));
+})<PrimitiveButtonProps>((props) => {
+  const base = getStyles(props);
+
+  const stateStyles = Object.entries(stateToSelector).reduce(
+    (acc, [key, selector]) => {
+      const stateProps = props[key as keyof StateStyles];
+      if (stateProps) {
+        acc[selector] = getStyles(stateProps);
+      }
+      return acc;
+    },
+    {} as CSSObject
+  );
+
+  return css({ ...base, ...stateStyles });
+});
 
 export type ButtonProps = PrimitiveButtonProps &
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
