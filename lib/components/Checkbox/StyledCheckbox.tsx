@@ -116,4 +116,15 @@ export const StyledCheckboxIndicator = styled(CheckboxPrimitive.Indicator)<{
       opacity: 0;
     }
   }
+`;
+
+export const StyledLabel = styled.label<{
+  $isDisabled: boolean;
+}>`
+  color: ${({ $isDisabled }) => 
+    $isDisabled ? checkboxTokens.label.disabled : checkboxTokens.label.default};
+  font-weight: ${checkboxTokens.label.fontWeight};
+  cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
+  display: flex;
+  align-items: center;
 `; 

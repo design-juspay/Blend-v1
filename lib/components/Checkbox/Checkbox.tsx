@@ -9,29 +9,14 @@ import {
 } from './checkboxUtils';
 import {
   StyledCheckboxRoot,
-  StyledCheckboxIndicator
+  StyledCheckboxIndicator,
+  StyledLabel
 } from './StyledCheckbox';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import checkboxTokens from './token';
 import styled from 'styled-components';
 
-// Custom styled label component
-const StyledLabel = styled.label<{
-  $isDisabled: boolean;
-}>`
-  color: ${({ $isDisabled }) => 
-    $isDisabled ? checkboxTokens.label.disabled : checkboxTokens.label.default};
-  font-weight: ${checkboxTokens.label.fontWeight};
-  cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
-  display: flex;
-  align-items: center;
-`;
-
-/**
- * Checkbox Component
- * A form control component that allows users to select one or more options
- */
 const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
   (
     {

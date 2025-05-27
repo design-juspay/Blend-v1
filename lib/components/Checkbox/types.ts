@@ -10,7 +10,7 @@ export enum CheckboxPosition {
   RIGHT = 'right',
 }
 
-export interface CheckboxProps {
+export type CheckboxProps = {
   id?: string;
   value?: string;
   isChecked?: boolean | 'indeterminate';
@@ -26,4 +26,4 @@ export interface CheckboxProps {
   position?: CheckboxPosition;
   subtext?: string;
   rightSlot?: ReactNode;
-}
+};
