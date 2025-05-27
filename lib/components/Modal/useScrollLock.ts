@@ -1,54 +1,36 @@
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useEffect } from 'react';
 
-interface WindowWithMSStream extends Window {
-  MSStream?: boolean | undefined;
-}
-
-const useScrollLock = () => {
-  const scrollOffset = useRef(0);
-  
-  // Check if we're on iOS
-  const isIOS = 
-    typeof window !== "undefined" &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-    !(window as WindowWithMSStream).MSStream;
-
-  useLayoutEffect(() => {
-    const scrollBarCompensation = window.innerWidth - document.body.offsetWidth;
-    document.body.style.setProperty("--scrollbar-compensation", `${scrollBarCompensation}px`);
-  }, []);
-
-  const lockScroll = useCallback(() => {
-    document.body.dataset.scrollLock = "true";
-    document.body.style.overflow = "hidden";
-    document.body.style.paddingRight = "var(--scrollbar-compensation)";
-
-    if (isIOS) {
-      scrollOffset.current = window.pageYOffset;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollOffset.current}px`;
-      document.body.style.width = "100%";
-    }
-  }, [isIOS]);
-
-  const unlockScroll = useCallback(() => {
-    document.body.style.overflow = "";
-    document.body.style.paddingRight = "";
-
-    if (isIOS) {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      window.scrollTo(0, scrollOffset.current);
+const useScrollLock = (shouldLock?: boolean) => {
+  useEffect(() => {
+    if (shouldLock) {
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.touchAction = 'none';
+      document.documentElement.style.overscrollBehavior = 'none';
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.touchAction = '';
+      document.documentElement.style.overscrollBehavior = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
     }
     
-    delete document.body.dataset.scrollLock;
-  }, [isIOS]);
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.touchAction = '';
+      document.documentElement.style.overscrollBehavior = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    };
+  }, [shouldLock]);
 
-  return {
-    lockScroll,
-    unlockScroll
-  };
 };
 
 export default useScrollLock; 

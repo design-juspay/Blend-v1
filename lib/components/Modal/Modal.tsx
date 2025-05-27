@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect } from "react";
+import { forwardRef, useCallback } from "react";
 import { X } from "lucide-react";
 import { Button, ButtonType, ButtonSubType } from "../Button";
 import Block from "../Primitives/Block/Block";
@@ -26,21 +26,13 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     },
     ref
   ) => {
-    const { lockScroll, unlockScroll } = useScrollLock();
+    useScrollLock(isOpen);
 
     const handleBackdropClick = useCallback(() => {
       if (closeOnBackdropClick) {
         onClose();
       }
     }, [closeOnBackdropClick, onClose]);
-
-    useEffect(() => {
-      if (isOpen) {
-        lockScroll();
-      } else {
-        unlockScroll();
-      }
-    }, [isOpen, lockScroll, unlockScroll]);
 
     if (!isOpen) return null;
 
