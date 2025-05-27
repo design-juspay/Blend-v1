@@ -1,77 +1,12 @@
 import * as RadixAccordion from "@radix-ui/react-accordion";
 import { ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { styled } from "styled-components";
 import { AccordionItemProps, AccordionType, AccordionChevronPosition } from "./types";
 import accordionTokens from "./accordion.tokens";
-
-const StyledAccordionItem = styled(RadixAccordion.Item)<{
-  accordionType: AccordionType;
-  isDisabled: boolean;
-}>((props) => ({
-  ...accordionTokens.base.item,
-  ...accordionTokens.type[props.accordionType].item,
-  ...(props.isDisabled && props.accordionType === AccordionType.BORDER && accordionTokens.states.disabled),
-}));
-
-const StyledAccordionTrigger = styled(RadixAccordion.Trigger)<{
-  accordionType: AccordionType;
-  isDisabled: boolean;
-}>((props) => ({
-  ...accordionTokens.base.trigger,
-  ...accordionTokens.type[props.accordionType].trigger,
-  ...(props.isDisabled && {
-    ...accordionTokens.states.disabled,
-    "&:hover": {
-      backgroundColor: accordionTokens.states.disabled.backgroundColor,
-    },
-  }),
-}));
-
-const StyledAccordionContent = styled(RadixAccordion.Content)<{
-  accordionType: AccordionType;
-}>((props) => ({
-  ...accordionTokens.base.content,
-  ...accordionTokens.type[props.accordionType].content,
-}));
-
-const ContentWrapper = styled.div<{ accordionType: AccordionType }>((props) => ({
-  ...accordionTokens.base.contentWrapper,
-  ...accordionTokens.type[props.accordionType].contentWrapper,
-}));
-
-const HeaderRow = styled.div(() => accordionTokens.layout.headerRow);
-
-const ChevronContainer = styled.div<{ position: AccordionChevronPosition }>((props) => 
-  props.position === AccordionChevronPosition.RIGHT 
-    ? accordionTokens.layout.chevronRight 
-    : accordionTokens.layout.chevronLeft
-);
-
-const SlotContainer = styled.div<{ isLeft: boolean }>((props) => 
-  props.isLeft ? accordionTokens.layout.leftSlot : accordionTokens.layout.rightSlot
-);
-
-const TitleContainer = styled.div<{ isDisabled: boolean }>((props) => ({
-  ...accordionTokens.base.title,
-  ...(props.isDisabled ? accordionTokens.base.titleDisabled : accordionTokens.base.titleEnabled),
-  flex: 1,
-}));
-
-const SubtextRow = styled.div<{ chevronPosition: AccordionChevronPosition }>(() => ({
-  display: "flex",
-  alignItems: "center",
-  ...accordionTokens.base.subtext,
-}));
-
-const SubtextContainer = styled.div<{ isDisabled: boolean }>((props) => 
-  props.isDisabled ? accordionTokens.base.subtextDisabled : accordionTokens.base.subtextEnabled
-);
-
-const SubtextSlotContainer = styled.div(() => ({
-  marginLeft: "8px",
-  flexShrink: 0,
-}));
+import { FOUNDATION_THEME } from "../../tokens";
+import Block from "../Primitives/Block/Block";
+import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
+import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 
 const AccordionItem = forwardRef<
   HTMLDivElement,
@@ -119,95 +54,157 @@ const AccordionItem = forwardRef<
       return () => observer.disconnect();
     }, []);
 
+    const itemStyles = {
+      ...accordionTokens.base.item,
+      ...accordionTokens.type[accordionType].item,
+      ...(isDisabled && accordionType === AccordionType.BORDER && accordionTokens.states.disabled),
+    };
+
+    const triggerStyles = {
+      ...accordionTokens.base.trigger,
+      ...accordionTokens.type[accordionType].trigger,
+      ...(isDisabled && {
+        ...accordionTokens.states.disabled,
+        cursor: "not-allowed",
+        "&:hover": {
+          backgroundColor: accordionTokens.states.disabled.backgroundColor,
+        },
+      }),
+      ...(accordionType === AccordionType.BORDER && isOpen && {
+        borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+      }),
+    };
+
+    const contentStyles = {
+      ...accordionTokens.base.content,
+      ...accordionTokens.type[accordionType].content,
+    };
+
+    const contentWrapperStyles = {
+      ...accordionTokens.base.contentWrapper,
+      ...accordionTokens.type[accordionType].contentWrapper,
+    };
+
     const chevronIconStyle = {
-      ...accordionTokens.layout.chevronIcon.default,
+      width: accordionTokens.layout.chevronIcon.default.width,
+      height: accordionTokens.layout.chevronIcon.default.height,
       ...(isDisabled 
         ? accordionTokens.layout.chevronIcon.disabled 
         : accordionTokens.layout.chevronIcon.enabled),
     };
 
-    return (
-      <StyledAccordionItem
-        value={value}
-        disabled={isDisabled}
-        accordionType={accordionType}
-        isDisabled={isDisabled}
-        className={className}
-        ref={ref}
-        data-disabled={isDisabled || undefined}
-      >
-        <RadixAccordion.Header style={{ display: "flex" }}>
-          <StyledAccordionTrigger
-            ref={triggerRef}
-            accordionType={accordionType}
-            isDisabled={isDisabled}
-            disabled={isDisabled}
-            data-type={accordionType}
-            data-disabled={isDisabled || undefined}
-            style={{
-              ...(accordionType === AccordionType.BORDER && isOpen && {
-                borderBottom: `1px solid ${accordionTokens.base.item.borderBottom}`,
-              }),
-            }}
-          >
-            <div style={{ width: "100%", position: "relative" }}>
-              <HeaderRow>
-                {chevronPosition === AccordionChevronPosition.LEFT && (
-                  <ChevronContainer position={chevronPosition} aria-hidden="true">
-                    {isOpen ? (
-                      <ChevronDown style={chevronIconStyle} />
-                    ) : (
-                      <ChevronRight style={chevronIconStyle} />
-                    )}
-                  </ChevronContainer>
-                )}
-                
-                {leftSlot && (
-                  <SlotContainer isLeft={true}>{leftSlot}</SlotContainer>
-                )}
-                
-                <TitleContainer isDisabled={isDisabled}>
-                  {title}
-                </TitleContainer>
-                
-                {rightSlot && (
-                  <SlotContainer isLeft={false}>{rightSlot}</SlotContainer>
-                )}
-                
-                {chevronPosition === AccordionChevronPosition.RIGHT && (
-                  <ChevronContainer position={chevronPosition} aria-hidden="true">
-                    {isOpen ? (
-                      <ChevronUp style={chevronIconStyle} />
-                    ) : (
-                      <ChevronDown style={chevronIconStyle} />
-                    )}
-                  </ChevronContainer>
-                )}
-              </HeaderRow>
+    const getChevronIcon = () => {
+      if (chevronPosition === AccordionChevronPosition.RIGHT) {
+        return isOpen ? <ChevronUp style={chevronIconStyle} /> : <ChevronDown style={chevronIconStyle} />;
+      } else {
+        return isOpen ? <ChevronDown style={chevronIconStyle} /> : <ChevronRight style={chevronIconStyle} />;
+      }
+    };
 
-              {(subtext || subtextSlot) && (
-                <SubtextRow chevronPosition={chevronPosition}>
-                  {subtext && (
-                    <SubtextContainer isDisabled={isDisabled}>
-                      {subtext}
-                    </SubtextContainer>
+    return (
+      <RadixAccordion.Item asChild value={value} disabled={isDisabled}>
+        <Block
+          ref={ref}
+          className={className}
+          data-disabled={isDisabled || undefined}
+          style={itemStyles}
+        >
+          <RadixAccordion.Header style={{ display: "flex" }}>
+            <RadixAccordion.Trigger asChild>
+              <PrimitiveButton
+                ref={triggerRef}
+                disabled={isDisabled}
+                data-type={accordionType}
+                data-disabled={isDisabled || undefined}
+                style={triggerStyles}
+                cursor={isDisabled ? "not-allowed" : "pointer"}
+              >
+                <Block width="100%" position="relative">
+                  <Block style={accordionTokens.layout.headerRow}>
+                    {chevronPosition === AccordionChevronPosition.LEFT && (
+                      <Block 
+                        style={accordionTokens.layout.chevronLeft}
+                        aria-hidden="true"
+                      >
+                        {getChevronIcon()}
+                      </Block>
+                    )}
+                    
+                    {leftSlot && (
+                      <Block style={accordionTokens.layout.leftSlot}>
+                        {leftSlot}
+                      </Block>
+                    )}
+                    
+                    <Block 
+                      flexGrow={1}
+                      style={{
+                        ...accordionTokens.base.title,
+                        ...(isDisabled ? accordionTokens.base.titleDisabled : accordionTokens.base.titleEnabled)
+                      }}
+                    >
+                      <PrimitiveText
+                        fontSize={accordionTokens.base.title.fontSize}
+                        fontWeight={accordionTokens.base.title.fontWeight}
+                        color={isDisabled 
+                          ? accordionTokens.base.titleDisabled.color 
+                          : accordionTokens.base.titleEnabled.color
+                        }
+                      >
+                        {title}
+                      </PrimitiveText>
+                    </Block>
+                    
+                    {rightSlot && (
+                      <Block style={accordionTokens.layout.rightSlot}>
+                        {rightSlot}
+                      </Block>
+                    )}
+                    
+                    {chevronPosition === AccordionChevronPosition.RIGHT && (
+                      <Block 
+                        style={accordionTokens.layout.chevronRight}
+                        aria-hidden="true"
+                      >
+                        {getChevronIcon()}
+                      </Block>
+                    )}
+                  </Block>
+
+                  {(subtext || subtextSlot) && (
+                    <Block display="flex" alignItems="center" style={accordionTokens.base.subtext}>
+                      {subtext && (
+                        <PrimitiveText
+                          fontSize={accordionTokens.base.subtext.fontSize}
+                          color={isDisabled 
+                            ? accordionTokens.base.subtextDisabled.color 
+                            : accordionTokens.base.subtextEnabled.color
+                          }
+                        >
+                          {subtext}
+                        </PrimitiveText>
+                      )}
+                      {subtextSlot && (
+                        <Block marginLeft="8px" flexShrink={0}>
+                          {subtextSlot}
+                        </Block>
+                      )}
+                    </Block>
                   )}
-                  {subtextSlot && (
-                    <SubtextSlotContainer>
-                      {subtextSlot}
-                    </SubtextSlotContainer>
-                  )}
-                </SubtextRow>
-              )}
-            </div>
-          </StyledAccordionTrigger>
-        </RadixAccordion.Header>
-        <StyledAccordionContent accordionType={accordionType}>
-          <ContentWrapper accordionType={accordionType}>
-            {children}
-          </ContentWrapper>
-        </StyledAccordionContent>
-      </StyledAccordionItem>
+                </Block>
+              </PrimitiveButton>
+            </RadixAccordion.Trigger>
+          </RadixAccordion.Header>
+          
+          <RadixAccordion.Content asChild>
+            <Block style={contentStyles}>
+              <Block style={contentWrapperStyles}>
+                {children}
+              </Block>
+            </Block>
+          </RadixAccordion.Content>
+        </Block>
+      </RadixAccordion.Item>
     );
   }
 );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled, { css, CSSObject } from "styled-components";
 
 type PrimitiveButtonProps = {
@@ -191,20 +191,37 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
 
 const StyledButton = styled.button.withConfig({
   shouldForwardProp,
-})<PrimitiveButtonProps>((props) => css(getStyles(props)));
+})<PrimitiveButtonProps & { dynamicStyles?: CSSObject }>((props) => {
+  const baseStyles = getStyles(props);
+  
+  return css`
+    ${baseStyles}
+    ${props.dynamicStyles && css(props.dynamicStyles)}
+  `;
+});
 
 export type ButtonProps = PrimitiveButtonProps &
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
     children?: React.ReactNode;
     className?: string;
+    style?: CSSObject;
   };
 
-const PrimitiveButton: React.FC<ButtonProps> = ({ children, ...rest }) => {
-  return (
-    <StyledButton className={rest.className} {...rest}>
-      {children}
-    </StyledButton>
-  );
-};
+const PrimitiveButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, style, ...rest }, ref) => {
+    return (
+      <StyledButton 
+        ref={ref} 
+        className={rest.className} 
+        dynamicStyles={style}
+        {...rest}
+      >
+        {children}
+      </StyledButton>
+    );
+  }
+);
+
+PrimitiveButton.displayName = "PrimitiveButton";
 
 export default PrimitiveButton;

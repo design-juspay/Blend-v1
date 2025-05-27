@@ -122,9 +122,12 @@ const accordionTokens: AccordionTokens = {
       trigger: {
         padding: `${FOUNDATION_THEME.unit[16]} ${FOUNDATION_THEME.unit[16]}`,
         
+        "&:hover:not(:disabled)": {
+          backgroundColor: FOUNDATION_THEME.colors.gray[50],
+        },
+        
         "&[data-state=open]": {
           backgroundColor: FOUNDATION_THEME.colors.gray[50],
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
         },
       },
       content: {
@@ -148,6 +151,10 @@ const accordionTokens: AccordionTokens = {
       },
       trigger: {
         padding: `${FOUNDATION_THEME.unit[16]} ${FOUNDATION_THEME.unit[12]}`,
+        
+        "&:hover:not(:disabled)": {
+          backgroundColor: FOUNDATION_THEME.colors.gray[50],
+        },
       },
       content: {
         padding: "0",
@@ -193,7 +200,6 @@ const accordionTokens: AccordionTokens = {
       default: {
         width: FOUNDATION_THEME.unit[16],
         height: FOUNDATION_THEME.unit[16],
-        transition: "transform 0.3s ease-in-out",
       },
       enabled: {
         color: FOUNDATION_THEME.colors.gray[500],

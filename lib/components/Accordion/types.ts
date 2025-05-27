@@ -10,7 +10,7 @@ export enum AccordionChevronPosition {
   RIGHT = "right",
 }
 
-export interface AccordionItemProps {
+export type AccordionItemProps = {
   value: string;
   title: string;
   subtext?: string;
@@ -23,7 +23,7 @@ export interface AccordionItemProps {
   chevronPosition?: AccordionChevronPosition;
 }
 
-export interface AccordionProps {
+export type AccordionProps = {
   children: ReactNode;
   accordionType?: AccordionType;
   defaultValue?: string | string[];
