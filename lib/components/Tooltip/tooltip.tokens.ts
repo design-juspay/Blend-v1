@@ -31,7 +31,6 @@ type TooltipToken = {
     sm: CSSObject["width"] | CSSObject["height"];
     lg: CSSObject["width"] | CSSObject["height"];
   };
-  zIndex: CSSObject["zIndex"];
 };
 
 const tooltipTokens: TooltipToken = {
@@ -63,7 +62,6 @@ const tooltipTokens: TooltipToken = {
     sm: FOUNDATION_THEME.unit[14],
     lg: FOUNDATION_THEME.unit[18],
   },
-  zIndex: "50",
 };
 
 export default tooltipTokens;
