@@ -48,12 +48,11 @@ const accordionTokens: AccordionTokens = {
       width: "100%",
     },
     item: {
-      borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+      borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
     },
     trigger: {
       display: "flex",
       width: "100%",
-      minHeight: "56px",
       padding: `${FOUNDATION_THEME.unit[16]} ${FOUNDATION_THEME.unit[12]}`,
       textAlign: "left",
       transition: "all 0.2s ease",
@@ -63,8 +62,8 @@ const accordionTokens: AccordionTokens = {
       outline: "none",
       
       "&:focus-visible": {
-        outline: `2px solid ${FOUNDATION_THEME.colors.primary[500]}`,
-        outlineOffset: "2px",
+        outline: `${FOUNDATION_THEME.border.width[2]} solid ${FOUNDATION_THEME.colors.primary[500]}`,
+        outlineOffset: FOUNDATION_THEME.unit[2],
       },
       
       "&:disabled": {
@@ -80,9 +79,8 @@ const accordionTokens: AccordionTokens = {
       transition: "all 0.2s ease",
     },
     title: {
-      fontSize: "18px",
-      fontWeight: 600,
-      lineHeight: "24px",
+      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+      fontWeight: FOUNDATION_THEME.font.weight[600],
     },
     titleEnabled: {
       color: FOUNDATION_THEME.colors.gray[800],
@@ -91,8 +89,7 @@ const accordionTokens: AccordionTokens = {
       color: FOUNDATION_THEME.colors.gray[500],
     },
     subtext: {
-      fontSize: "14px",
-      lineHeight: "20px",
+      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
       marginTop: FOUNDATION_THEME.unit[4],
     },
     subtextEnabled: {
@@ -114,7 +111,7 @@ const accordionTokens: AccordionTokens = {
         borderRadius: FOUNDATION_THEME.border.radius[8],
       },
       item: {
-        border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+        border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
         borderRadius: FOUNDATION_THEME.border.radius[8],
         overflow: "hidden",
         borderBottom: "none",
@@ -143,7 +140,7 @@ const accordionTokens: AccordionTokens = {
         flexDirection: "column",
       },
       item: {
-        borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+        borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
         
         "&:last-child": {
           borderBottom: "none",
@@ -160,7 +157,7 @@ const accordionTokens: AccordionTokens = {
         padding: "0",
       },
       contentWrapper: {
-        borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+        borderTop: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
         padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[12]}`,
       },
     },

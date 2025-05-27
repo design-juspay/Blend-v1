@@ -20,13 +20,11 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       isCollapsible = true,
       isMultiple = false,
       onValueChange,
-      className,
     },
     ref
   ) => {
     const baseProps = {
       collapsible: isCollapsible,
-      className: className,
       ref: ref,
       accordionType: accordionType,
     };

@@ -31,5 +31,4 @@ export type AccordionProps = {
   isCollapsible?: boolean;
   isMultiple?: boolean;
   onValueChange?: (value: string | string[]) => void;
-  className?: string;
 } 
