@@ -10,6 +10,7 @@ import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import AccordionDemo from "./demos/Accordion/AccordionDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -20,7 +21,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("tags");
+  const [selectedCategory, setSelectedCategory] = useState<string>("accordion");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -58,6 +59,11 @@ function App() {
       id: "alerts",
       name: "Alerts",
       component: <AlertDemo />,
+    },
+    {
+      id: "accordion",
+      name: "Accordion",
+      component: <AccordionDemo />,
     },
     {
       id: "avatar-group",
