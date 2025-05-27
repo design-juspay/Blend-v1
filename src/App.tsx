@@ -10,6 +10,7 @@ import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
 
 // Component categories
@@ -61,6 +62,12 @@ function App() {
       component: <AlertDemo />,
     },
     {
+      id: "modals",
+      name: "Modals",
+      component: <ModalDemo />,
+    },
+
+    {
       id: "accordion",
       name: "Accordion",
       component: <AccordionDemo />,
@@ -69,7 +76,7 @@ function App() {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
-    }
+    },
   ];
 
   // Get the current component to display
