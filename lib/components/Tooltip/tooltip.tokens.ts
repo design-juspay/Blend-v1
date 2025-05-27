@@ -1,5 +1,6 @@
 import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
+import { VariantType } from "../Text/Text";
 
 type TooltipToken = {
   background: {
@@ -24,8 +25,10 @@ type TooltipToken = {
     lg: CSSObject["padding"];
   };
   font: {
-    sm: CSSObject["fontSize"];
-    lg: CSSObject["fontSize"];
+    size: {
+      sm: VariantType;
+      lg: VariantType;
+    };
   };
   size: {
     sm: CSSObject["width"] | CSSObject["height"];
@@ -55,8 +58,10 @@ const tooltipTokens: TooltipToken = {
     lg: `${FOUNDATION_THEME.unit[6]} ${FOUNDATION_THEME.unit[8]}`,
   },
   font: {
-    sm: FOUNDATION_THEME.font.size.body.xs.fontSize,
-    lg: FOUNDATION_THEME.font.size.body.sm.fontSize,
+    size: {
+      sm: "body.xs",
+      lg: "body.sm",
+    },
   },
   size: {
     sm: FOUNDATION_THEME.unit[14],

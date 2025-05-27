@@ -55,9 +55,8 @@ export const Tooltip = ({
             <Block flexGrow={1} overflow="hidden">
               <Text
                 color={tooltipTokens.color.text}
+                variant={tooltipTokens.font.size[size]}
                 fontWeight={500}
-                fontSize={tooltipTokens.font[size]}
-                // truncate={true}
               >
                 {content}
               </Text>
