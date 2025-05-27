@@ -57,7 +57,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           overflow="auto"
           maxHeight="20vh"
           borderBottom={
-            showDivider ? `1px solid ${modalTokens.dividerColor}` : undefined
+            showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
           }
         >
           <Block
@@ -77,7 +77,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
                 <Text
                   variant="heading.sm"
                   fontWeight={600}
-                  color={modalTokens.titleColor}
+                  color={modalTokens.color.title}
                 >
                   {title}
                 </Text>
@@ -87,7 +87,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
             {subtitle && (
               <Text
                 variant="code.lg"
-                color={modalTokens.subtitleColor}
+                color={modalTokens.color.subtitle}
                 fontWeight={400}
               >
                 {subtitle}
@@ -115,10 +115,10 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           display="flex"
           justifyContent="flex-end"
           gap={FOUNDATION_THEME.unit[12]}
-          padding={modalTokens.padding.footer.y}
+          padding={modalTokens.padding.footerY}
           flexShrink={0}
           borderTop={
-            showDivider ? `1px solid ${modalTokens.dividerColor}` : undefined
+            showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
           }
         >
           {secondaryAction && (
@@ -145,7 +145,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       <Block
         position="fixed"
         inset={0}
-        zIndex={modalTokens.zIndex}
+        zIndex={modalTokens.z.index}
         display="flex"
         alignItems="center"
         justifyContent="center"
@@ -159,9 +159,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           justifyContent="center"
           position="fixed"
           inset={0}
-          backgroundColor={modalTokens.backdropColor}
-          opacity={modalTokens.backdropOpacity}
-          pointerEvents="auto"
+          backgroundColor={modalTokens.background.backdrop}
+          opacity={modalTokens.opacity.backdrop}
+          pointerEvents={modalTokens.interaction.pointerEvents}
           role="presentation"
           aria-hidden="true"
         />
@@ -172,11 +172,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           display="flex"
           flexDirection="column"
           position="relative"
-          backgroundColor={modalTokens.backgroundColor}
-          maxWidth={modalTokens.maxWidth}
-          maxHeight={modalTokens.maxHeight}
-          borderRadius={modalTokens.borderRadius}
-          boxShadow={modalTokens.boxShadow}
+          backgroundColor={modalTokens.background.modal}
+          maxWidth={modalTokens.size.maxWidth}
+          maxHeight={modalTokens.size.maxHeight}
+          borderRadius={modalTokens.border.radius}
+          boxShadow={modalTokens.shadow.box}
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"

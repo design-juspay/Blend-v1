@@ -328,13 +328,12 @@ type SemanticTagType = keyof Pick<
   | "hr"
 >;
 
-export interface BlockProps
-  extends StyledBlockProps,
-    Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> {
-  children?: React.ReactNode;
-  as?: SemanticTagType;
-  ref?: React.Ref<HTMLElement>;
-}
+export type BlockProps = StyledBlockProps &
+  Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
+    children?: React.ReactNode;
+    as?: SemanticTagType;
+    ref?: React.Ref<HTMLElement>;
+  };
 
 /**
  * Block Component

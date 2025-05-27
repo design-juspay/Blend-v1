@@ -1,14 +1,14 @@
 import { ButtonType } from "../Button/types";
 import { ReactNode } from "react";
 
-export interface ModalButtonAction {
+export type ModalButtonAction = {
   label: string;
   onClick?: () => void;
   isDisabled?: boolean;
   type?: ButtonType;
-}
+};
 
-export interface ModalProps {
+export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -25,4 +25,4 @@ export interface ModalProps {
   customFooter?: ReactNode;
   headerRightSlot?: ReactNode;
   showDivider?: boolean;
-}
+};
