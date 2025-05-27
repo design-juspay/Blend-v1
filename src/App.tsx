@@ -10,6 +10,7 @@ import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import ModalDemo from "./demos/Modal/ModalDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -60,10 +61,16 @@ function App() {
       component: <AlertDemo />,
     },
     {
+      id: "modals",
+      name: "Modals",
+      component: <ModalDemo />,
+    },
+
+    {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
-    }
+    },
   ];
 
   // Get the current component to display

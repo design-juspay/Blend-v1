@@ -14,6 +14,17 @@ type StateStyles = {
 type StyledBlockProps = StateStyles & {
   color?: CSSObject["color"];
 
+  // Positioning
+  position?: CSSObject["position"];
+  inset?: CSSObject["inset"];
+  top?: CSSObject["top"];
+  right?: CSSObject["right"];
+  bottom?: CSSObject["bottom"];
+  left?: CSSObject["left"];
+  zIndex?: CSSObject["zIndex"];
+  pointerEvents?: CSSObject["pointerEvents"];
+  opacity?: CSSObject["opacity"];
+
   // Padding
   padding?: SpacingValue;
   paddingTop?: SpacingValue;
@@ -73,6 +84,7 @@ type StyledBlockProps = StateStyles & {
   borderBottom?: CSSObject["borderBottom"];
   borderLeft?: CSSObject["borderLeft"];
   borderRight?: CSSObject["borderRight"];
+  boxShadow?: CSSObject["boxShadow"];
 
   // Overflow
   overflow?: CSSObject["overflow"];
@@ -135,10 +147,21 @@ const blockedProps = [
   "borderBottom",
   "borderLeft",
   "borderRight",
+  "boxShadow",
   "cursor",
   "overflow",
   "overflowX",
   "overflowY",
+  // Positioning
+  "position",
+  "inset",
+  "top",
+  "right",
+  "bottom",
+  "left",
+  "zIndex",
+  "pointerEvents",
+  "opacity",
   // Pseudo states
   "_hover",
   "_focus",
@@ -153,6 +176,17 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   const styles: CSSObject = {};
 
   if (props.color !== undefined) styles.color = props.color;
+
+  if (props.position !== undefined) styles.position = props.position;
+  if (props.inset !== undefined) styles.inset = props.inset;
+  if (props.top !== undefined) styles.top = props.top;
+  if (props.right !== undefined) styles.right = props.right;
+  if (props.bottom !== undefined) styles.bottom = props.bottom;
+  if (props.left !== undefined) styles.left = props.left;
+  if (props.zIndex !== undefined) styles.zIndex = props.zIndex;
+  if (props.pointerEvents !== undefined)
+    styles.pointerEvents = props.pointerEvents;
+  if (props.opacity !== undefined) styles.opacity = props.opacity;
 
   if (props.contentCentered) {
     styles.display = props.display ?? "flex";
@@ -243,6 +277,7 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     styles.borderBottom = props.borderBottom;
   if (props.borderLeft !== undefined) styles.borderLeft = props.borderLeft;
   if (props.borderRight !== undefined) styles.borderRight = props.borderRight;
+  if (props.boxShadow !== undefined) styles.boxShadow = props.boxShadow;
 
   if (props.overflow !== undefined) styles.overflow = props.overflow;
   if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
@@ -297,6 +332,7 @@ export type BlockProps = StyledBlockProps &
   Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
     children?: React.ReactNode;
     as?: SemanticTagType;
+    ref?: React.Ref<HTMLElement>;
   };
 
 /**
@@ -305,6 +341,8 @@ export type BlockProps = StyledBlockProps &
  * The Block component is a primitive component that renders a styled div element.
  * It is used to create consistent spacing and layout patterns across the application.
  *
+ * @todo
+ * - Add support for focus-visible outline
  */
 const Block = forwardRef<HTMLDivElement, BlockProps>(
   ({ children, ...rest }, ref) => {
