@@ -28,7 +28,12 @@ const radioTokens = {
   },
   subtext: {
     default: FOUNDATION_THEME.colors.gray[400], 
-    disabled: FOUNDATION_THEME.colors.gray[200] 
+    disabled: FOUNDATION_THEME.colors.gray[200],
+    error: FOUNDATION_THEME.colors.red[600]
+  },
+  required: {
+    color: FOUNDATION_THEME.colors.red[600],
+    spacing: FOUNDATION_THEME.unit[2]
   },
   groupLabel: {
     color: FOUNDATION_THEME.colors.gray[700],       

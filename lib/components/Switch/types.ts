@@ -7,17 +7,17 @@ export enum SwitchSize {
 
 export type SwitchProps = {
   id?: string;
-  isChecked?: boolean;
+  checked?: boolean;
   defaultChecked?: boolean;
-  isDisabled?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  error?: boolean;
   size?: SwitchSize;
   onChange?: (isChecked: boolean) => void;
   value?: string;
-  label?: string;
+  children?: string;
   subtext?: string;
-  accessibilityLabel?: string;
-  rightSlot?: ReactNode;
-  className?: string;
+  slot?: ReactNode;
   name?: string;
 };
 
@@ -26,8 +26,7 @@ export type SwitchGroupProps = {
   label?: string;
   name?: string;
   children: ReactNode;
-  className?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
   value?: string[];
   defaultValue?: string[];
   onChange?: (value: string[]) => void;

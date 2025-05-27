@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Check, Minus } from 'lucide-react';
-import { CheckboxProps, CheckboxSize, CheckboxPosition } from './types';
+import { CheckboxProps, CheckboxSize } from './types';
 import { 
   generateCheckboxId, 
   getCheckboxDataState, 
@@ -20,181 +20,116 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     {
       id,
       value,
-      isChecked,
+      checked,
       defaultChecked = false,
       onCheckedChange,
-      isDisabled = false,
+      disabled = false,
       required = false,
-      className = '',
-      indicatorClassName = '',
-      checkIconClassName = '',
+      error = false,
+
       size = CheckboxSize.MEDIUM,
       children,
-      position = CheckboxPosition.LEFT,
       subtext,
-      rightSlot,
+      slot,
     },
     ref
   ) => {
-    const [checkedState, setCheckedState] = React.useState<boolean | 'indeterminate'>(
-      defaultChecked
-    );
-
-    const isControlled = isChecked !== undefined;
-    const checked = isControlled ? isChecked : checkedState;
-    const isIndeterminate = checked === 'indeterminate';
-
-    const handleChange = (newChecked: boolean | 'indeterminate') => {
-      if (isDisabled) return;
-
-      if (!isControlled) {
-        setCheckedState(newChecked);
-      }
-
-      if (onCheckedChange) {
-        onCheckedChange(newChecked);
-      }
-    };
-
-    const renderIndicator = () => {
-      if (!checked) return null;
-
-      // Extract numeric values from token size strings
-      const iconSize = extractPixelValue(checkboxTokens.sizes[size].icon.width);
-
-      if (isIndeterminate) {
-        return (
-          <Block 
-            as="span" 
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-            height="100%"
-            className={checkIconClassName}
-          >
-            <Minus 
-              size={iconSize}
-              color={checkboxTokens.icon.color} 
-              strokeWidth={2.5}
-            />
-          </Block>
-        );
-      }
-
-      return (
-        <Block 
-          as="span" 
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          width="100%"
-          height="100%"
-          className={checkIconClassName}
-        >
-          <Check 
-            size={iconSize}
-            color={checkboxTokens.icon.color} 
-            strokeWidth={2.5}
-          />
-        </Block>
-      );
-    };
-
     const reactId = React.useId();
     const uniqueId = generateCheckboxId(id, value, reactId);
     
-    // Checkbox element with improved accessibility
-    const checkboxElement = (
-      <StyledCheckboxRoot
-        ref={ref}
-        id={uniqueId}
-        checked={isIndeterminate ? false : checked}
-        onCheckedChange={handleChange}
-        disabled={isDisabled}
-        required={required}
-        value={value}
-        className={className}
-        data-state={getCheckboxDataState(checked)}
-        size={size}
-        $isDisabled={isDisabled}
-        $checked={checked}
-        aria-labelledby={`${uniqueId}-label`}
-        aria-describedby={`${uniqueId}-description`}
-      >
-        <StyledCheckboxIndicator
-          className={indicatorClassName}
-          forceMount={isIndeterminate ? true : undefined}
-          size={size}
-        >
-          {renderIndicator()}
-        </StyledCheckboxIndicator>
-      </StyledCheckboxRoot>
-    );
 
-    // Label element with PrimitiveText for better typography control
-    const labelElement = children && (
-      <StyledLabel
-        htmlFor={uniqueId}
-        id={`${uniqueId}-label`}
-        $isDisabled={isDisabled}
-      >
-        <PrimitiveText
-          as="span"
-          fontSize={checkboxTokens.sizes[size].fontSize}
-          fontWeight={checkboxTokens.label.fontWeight}
-        >
-          {children}
-        </PrimitiveText>
-      </StyledLabel>
-    );
 
     return (
       <Block display="flex" flexDirection="column">
-        <Block 
-          display="flex" 
-          alignItems="center"
-          flexDirection={position === CheckboxPosition.RIGHT ? 'row-reverse' : 'row'}
-        >
-          {position === CheckboxPosition.LEFT ? (
-            <>
-              {checkboxElement}
-              <Block display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                {labelElement}
-                {rightSlot && (
-                  <Block as="span" marginLeft="auto">
-                    {rightSlot}
-                  </Block>
+        <Block display="flex" alignItems="center">
+          <StyledCheckboxRoot
+            ref={ref}
+            id={uniqueId}
+            checked={checked === 'indeterminate' ? false : checked}
+            defaultChecked={defaultChecked}
+            onCheckedChange={onCheckedChange}
+            disabled={disabled}
+            required={required}
+            value={value}
+            data-state={getCheckboxDataState(checked || false)}
+            data-error={error}
+            size={size}
+            $isDisabled={disabled}
+            $checked={checked || false}
+            $error={error}
+          >
+            <StyledCheckboxIndicator
+              forceMount={checked === 'indeterminate' ? true : undefined}
+              size={size}
+            >
+              {checked && (
+                <Block 
+                  as="span" 
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  width="100%"
+                  height="100%"
+                >
+                  {checked === 'indeterminate' ? (
+                    <Minus 
+                      size={extractPixelValue(checkboxTokens.sizes[size].icon.width)}
+                      color={checkboxTokens.icon.color} 
+                      strokeWidth={2.5}
+                    />
+                  ) : (
+                    <Check 
+                      size={extractPixelValue(checkboxTokens.sizes[size].icon.width)}
+                      color={checkboxTokens.icon.color} 
+                      strokeWidth={2.5}
+                    />
+                  )}
+                </Block>
+              )}
+            </StyledCheckboxIndicator>
+          </StyledCheckboxRoot>
+          
+          {children && (
+            <StyledLabel
+              htmlFor={uniqueId}
+              $isDisabled={disabled}
+              $error={error}
+            >
+              <PrimitiveText
+                as="span"
+                fontSize={checkboxTokens.sizes[size].fontSize}
+                fontWeight={checkboxTokens.label.fontWeight}
+              >
+                {children}
+                {required && (
+                  <PrimitiveText
+                    as="span"
+                    color={checkboxTokens.required.color}
+                    margin={`0 0 0 ${checkboxTokens.required.spacing}`}
+                  >
+                    *
+                  </PrimitiveText>
                 )}
-              </Block>
-            </>
-          ) : (
-            <>
-              <Block display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                {labelElement}
-                {rightSlot && (
-                  <Block as="span" marginLeft="auto">
-                    {rightSlot}
-                  </Block>
-                )}
-              </Block>
-              {checkboxElement}
-            </>
+              </PrimitiveText>
+            </StyledLabel>
+          )}
+          {slot && (
+            <Block as="span" marginLeft={checkboxTokens.spacing.rightSlot}>
+              {slot}
+            </Block>
           )}
         </Block>
 
         {subtext && (
           <Block 
-            id={`${uniqueId}-description`}
-            marginLeft={position === CheckboxPosition.LEFT 
-              ? checkboxTokens.sizes[size].subtext.marginLeft 
-              : '0'
-            }
+            marginLeft={checkboxTokens.sizes[size].subtext.marginLeft}
             marginTop={checkboxTokens.sizes[size].subtext.marginTop}
           >
             <PrimitiveText
               as="span"
-              color={isDisabled ? checkboxTokens.subtext.disabled : checkboxTokens.subtext.default}
+              color={disabled ? checkboxTokens.subtext.disabled : 
+                     error ? checkboxTokens.subtext.error : 
+                     checkboxTokens.subtext.default}
               fontSize={checkboxTokens.sizes[size].subtext.fontSize}
             >
               {subtext}

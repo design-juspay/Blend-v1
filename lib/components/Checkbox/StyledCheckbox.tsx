@@ -7,6 +7,7 @@ export const StyledCheckboxRoot = styled(CheckboxPrimitive.Root)<{
   size: CheckboxSize;
   $isDisabled: boolean;
   $checked: boolean | 'indeterminate';
+  $error?: boolean;
 }>`
   all: unset; /* Reset all styles for better cross-browser consistency */
   display: flex;
@@ -120,6 +121,7 @@ export const StyledCheckboxIndicator = styled(CheckboxPrimitive.Indicator)<{
 
 export const StyledLabel = styled.label<{
   $isDisabled: boolean;
+  $error?: boolean;
 }>`
   color: ${({ $isDisabled }) => 
     $isDisabled ? checkboxTokens.label.disabled : checkboxTokens.label.default};

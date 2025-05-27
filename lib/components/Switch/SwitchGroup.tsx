@@ -6,10 +6,6 @@ import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import Switch from './Switch';
 import switchTokens from './token';
 
-/**
- * SwitchGroup Component
- * A container component that manages a group of switch toggles
- */
 const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
   (
     {
@@ -20,8 +16,7 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
       value: controlledValue,
       children,
       onChange,
-      className,
-      isDisabled = false,
+      disabled = false,
     },
     ref
   ) => {
@@ -45,7 +40,7 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
         if (!childValue) return child;
 
         return React.cloneElement(child, {
-          isChecked: values.includes(childValue),
+          checked: values.includes(childValue),
           onChange: (checked: boolean) => {
             let newValues: string[];
 
@@ -68,7 +63,7 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
             }
           },
           name: name,
-          isDisabled: isDisabled || child.props.isDisabled,
+          disabled: disabled || child.props.disabled,
         });
       }
 
@@ -83,7 +78,6 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
         display="flex"
         flexDirection="column"
         gap={switchTokens.spacing.groupSpacing}
-        className={className}
       >
         {label && (
           <StyledSwitchGroupLabel>

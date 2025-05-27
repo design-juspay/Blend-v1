@@ -8,17 +8,17 @@ export enum RadioSize {
 export type RadioProps = {
   id?: string;
   value?: string;
-  isChecked?: boolean;
+  checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (checked: boolean) => void;
-  isDisabled?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  error?: boolean;
   size?: RadioSize;
   children?: ReactNode;
   subtext?: string;
-  rightSlot?: ReactNode;
-  className?: string;
+  slot?: ReactNode;
   name?: string;
-  accessibilityLabel?: string;
 };
 
 export type RadioGroupProps = {
@@ -29,6 +29,5 @@ export type RadioGroupProps = {
   value?: string;
   children: ReactNode;
   onChange?: (value: string) => void;
-  className?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
 };

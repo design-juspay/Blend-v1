@@ -3,6 +3,7 @@ import { Radio, RadioGroup, RadioSize } from '../../../lib/components/Radio';
 import { FOUNDATION_THEME } from '../../../lib/tokens';
 import Block from '../../../lib/components/Primitives/Block/Block';
 import PrimitiveText from '../../../lib/components/Primitives/PrimitiveText/PrimitiveText';
+import { Tag, TagSize, TagColor, TagVariant } from '../../../lib/components/Tags';
 
 const RadioDemo: React.FC = () => {
   const [selectedValue, setSelectedValue] = useState<string>('option1');
@@ -108,6 +109,38 @@ const RadioDemo: React.FC = () => {
         </RadioGroup>
       </Block>
 
+      {/* Radio with Slot */}
+      <Block>
+        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
+            Radio with Slot
+          </PrimitiveText>
+        </Block>
+        <RadioGroup name="slot-options" label="Select subscription tier" defaultValue="starter">
+          <Radio 
+            value="starter" 
+            slot={<Tag text="FREE" size={TagSize.XS} color={TagColor.NEUTRAL} variant={TagVariant.SUBTLE} />}
+            subtext="Basic features for getting started"
+          >
+            Starter Plan
+          </Radio>
+          <Radio 
+            value="professional" 
+            slot={<Tag text="POPULAR" size={TagSize.XS} color={TagColor.SUCCESS} variant={TagVariant.SUBTLE} />}
+            subtext="Advanced features for professionals"
+          >
+            Professional Plan
+          </Radio>
+          <Radio 
+            value="enterprise" 
+            slot={<Tag text="PREMIUM" size={TagSize.XS} color={TagColor.WARNING} variant={TagVariant.SUBTLE} />}
+            subtext="Full feature set for large organizations"
+          >
+            Enterprise Plan
+          </Radio>
+        </RadioGroup>
+      </Block>
+
       {/* Disabled States */}
       <Block>
         <Block marginBottom={FOUNDATION_THEME.unit[16]}>
@@ -117,8 +150,8 @@ const RadioDemo: React.FC = () => {
         </Block>
         <RadioGroup name="disabled-options" label="Disabled options" defaultValue="enabled">
           <Radio value="enabled">Enabled Option</Radio>
-          <Radio value="disabled1" isDisabled>Disabled Option 1</Radio>
-          <Radio value="disabled2" isDisabled>Disabled Option 2</Radio>
+          <Radio value="disabled1" disabled>Disabled Option 1</Radio>
+          <Radio value="disabled2" disabled>Disabled Option 2</Radio>
         </RadioGroup>
       </Block>
 

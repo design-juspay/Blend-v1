@@ -6,6 +6,7 @@ export const StyledSwitchRoot = styled.button<{
   size: SwitchSize;
   $isDisabled: boolean;
   $isChecked: boolean;
+  $error?: boolean;
 }>`
   position: relative;
   border-radius: ${switchTokens.border.radius};
@@ -73,6 +74,7 @@ export const StyledSwitchThumb = styled.div<{
 
 export const StyledSwitchLabel = styled.label<{
   $isDisabled: boolean;
+  $error?: boolean;
 }>`
   color: ${({ $isDisabled }) => 
     $isDisabled ? switchTokens.label.disabled : switchTokens.label.default};

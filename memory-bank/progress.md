@@ -136,20 +136,31 @@
     - ✅ Converted from interface to type alias for CheckboxProps
     - ✅ Moved StyledLabel to StyledCheckbox.tsx for better organization
     - ✅ Follows memory bank TypeScript type system standards
+  - ✅ **API Simplification**:
+    - ✅ Removed position prop (always renders checkbox on left)
+    - ✅ Renamed rightSlot to slot for cleaner API
+    - ✅ Simplified component layout without position complexity
+    - ✅ Added required and error state support with visual indicators
+    - ✅ Removed className props to maintain design system integrity
+    - ✅ Removed ARIA labels for simpler accessibility approach
+    - ✅ Inlined renderIndicator and checkboxElement functions directly in JSX
   - ✅ **Status**: ✅ Complete and Fully Compliant
   - ✅ **Implementation**:
     - Fully modular structure following project patterns
     - Comprehensive TypeScript types for all props and configurations
     - Proper token-based styling with design system consistency
     - Complete primitive component integration (Block, PrimitiveText)
+    - Simplified API with parent-managed state (no internal state management)
     - Features:
-      - Controlled and uncontrolled checkbox state management
+      - Parent-controlled checkbox state management
       - Support for indeterminate state
-      - Right-aligned and left-aligned label positioning
-      - Support for supplementary description text
+      - Support for supplementary description text with error/disabled states
       - Custom icon rendering based on state
       - Enhanced focus states for better keyboard navigation
       - Animation for smoother state transitions
+      - Required field indicator with red asterisk
+      - Error state support with visual feedback
+      - Slot support for additional content
 
 - ✅ Radio and RadioGroup components with different sizes and states
   - ✅ Support for different sizes (small, medium)
@@ -182,20 +193,30 @@
     - ✅ Converted from interface to type alias for all props
     - ✅ Proper separation of styled components
     - ✅ Follows memory bank TypeScript type system standards
+  - ✅ **API Simplification**:
+    - ✅ Removed className and accessibilityLabel props for cleaner API
+    - ✅ Renamed isChecked to checked and isDisabled to disabled for consistency
+    - ✅ Renamed rightSlot to slot for cleaner API
+    - ✅ Removed ARIA labels for simpler accessibility approach
+    - ✅ Removed internal state management (parent-controlled state)
+    - ✅ Added required and error state support with visual indicators
   - ✅ **Status**: ✅ Complete and Fully Compliant
   - ✅ **Implementation**:
     - Fully modular structure following project patterns
     - Comprehensive TypeScript types for all props and configurations
     - Proper token-based styling with design system consistency
     - Complete primitive component integration (Block, PrimitiveText)
+    - Simplified API with parent-managed state (no internal state management)
     - Features:
-      - Controlled and uncontrolled radio state management
+      - Parent-controlled radio state management
       - RadioGroup for managing multiple radio buttons
-      - Support for supplementary description text
+      - Support for supplementary description text with error/disabled states
       - Custom circular radio styling with inner dot indicator
       - Enhanced focus states for better keyboard navigation
       - Animation for smoother state transitions
-      - Right slot support for additional content
+      - Slot support for additional content
+      - Required field indicator with red asterisk
+      - Error state support with visual feedback
 
 - ✅ Switch and SwitchGroup components with different sizes and states
   - ✅ Support for different sizes (small, medium)
@@ -230,21 +251,41 @@
     - ✅ Converted from interface to type alias for all props
     - ✅ Proper separation of styled components
     - ✅ Follows memory bank TypeScript type system standards
+  - ✅ **API Simplification**:
+    - ✅ Removed className and accessibilityLabel props for cleaner API
+    - ✅ Renamed isChecked to checked and isDisabled to disabled for consistency
+    - ✅ Renamed label to children and rightSlot to slot for cleaner API
+    - ✅ Removed ARIA labels for simpler accessibility approach
+    - ✅ Removed internal state management (parent-controlled state)
+    - ✅ Added required and error state support with visual indicators
+    - ✅ Removed defaultChecked prop for simpler state management
   - ✅ **Status**: ✅ Complete and Fully Compliant
   - ✅ **Implementation**:
     - Fully modular structure following project patterns
     - Comprehensive TypeScript types for all props and configurations
     - Proper token-based styling with design system consistency
     - Complete primitive component integration (Block, PrimitiveText)
+    - Simplified API with parent-managed state (no internal state management)
     - Features:
-      - Controlled and uncontrolled switch state management
+      - Parent-controlled switch state management
       - SwitchGroup for managing multiple switch toggles
-      - Support for supplementary description text (subtext)
+      - Support for supplementary description text with error/disabled states
       - Custom rounded switch styling with sliding thumb animation
       - Enhanced focus states for better keyboard navigation
       - Animation for smoother state transitions
-      - Right slot support for additional content
+      - Slot support for additional content
+      - Required field indicator with red asterisk
+      - Error state support with visual feedback
       - Proper switch role for accessibility compliance
+  - ✅ **Spacing Fix**: Fixed slot spacing across all form components (Checkbox, Radio, Switch):
+    - ✅ Updated Switch token from 8px to 6px for consistency
+    - ✅ Removed `justifyContent="space-between"` wrapper that was overriding spacing tokens
+    - ✅ Simplified layout to use direct `marginLeft` spacing tokens (6px) between label and slot
+  - ✅ **Tag Component Integration**: Enhanced all form component demos to use Tag components as slot content:
+    - ✅ CheckboxDemo: Uses Tag with "Optional" text for slot examples
+    - ✅ SwitchDemo: Uses Tags with "PRO" (success), "BETA" (warning), "EXPERIMENTAL" (error), and "Optional" (primary)
+    - ✅ RadioDemo: Added new slot section with "FREE" (neutral), "POPULAR" (success), and "PREMIUM" (warning) tags
+    - ✅ All tags use TagSize.XS for optimal slot sizing and appropriate colors/variants for semantic meaning
 
 #### Demo System
 - ✅ Basic demo layout

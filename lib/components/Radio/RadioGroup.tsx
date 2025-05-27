@@ -16,8 +16,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       value: controlledValue,
       children,
       onChange,
-      className,
-      isDisabled = false,
+      disabled = false,
     },
     ref
   ) => {
@@ -39,7 +38,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         if (!childValue) return child;
 
         return React.cloneElement(child, {
-          isChecked: value === childValue,
+          checked: value === childValue,
           onChange: (checked: boolean) => {
             if (checked) {
               if (!isControlled) {
@@ -56,7 +55,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             }
           },
           name,
-          isDisabled: isDisabled || child.props.isDisabled,
+          disabled: disabled || child.props.disabled,
         });
       }
 
@@ -71,7 +70,6 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         display="flex"
         flexDirection="column"
         gap={radioTokens.spacing.groupSpacing}
-        className={className}
       >
         {label && (
           <StyledRadioGroupLabel>

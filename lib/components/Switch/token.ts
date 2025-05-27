@@ -20,7 +20,12 @@ const switchTokens = {
   },
   subtext: {
     default: FOUNDATION_THEME.colors.gray[400],
-    disabled: FOUNDATION_THEME.colors.gray[200]
+    disabled: FOUNDATION_THEME.colors.gray[200],
+    error: FOUNDATION_THEME.colors.red[600]
+  },
+  required: {
+    color: FOUNDATION_THEME.colors.red[600],
+    spacing: FOUNDATION_THEME.unit[2]
   },
   groupLabel: {
     color: FOUNDATION_THEME.colors.gray[700],
@@ -71,7 +76,7 @@ const switchTokens = {
     }
   },
   spacing: {
-    rightSlot: FOUNDATION_THEME.unit[8],
+    rightSlot: FOUNDATION_THEME.unit[6],
     switchMarginRight: FOUNDATION_THEME.unit[8],
     groupSpacing: FOUNDATION_THEME.unit[16]
   },

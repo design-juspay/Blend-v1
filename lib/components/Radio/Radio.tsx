@@ -11,104 +11,92 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     {
       id,
       value,
-      isChecked,
+      checked,
       defaultChecked = false,
       onChange,
-      isDisabled = false,
+      disabled = false,
+      required = false,
+      error = false,
       size = RadioSize.MEDIUM,
       children,
       subtext,
-      rightSlot,
-      className = '',
+      slot,
       name,
-      accessibilityLabel,
     },
     ref
   ) => {
-    const [checkedState, setCheckedState] = React.useState<boolean>(defaultChecked);
-
-    const isControlled = isChecked !== undefined;
-    const checked = isControlled ? isChecked : checkedState;
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (isDisabled) return;
-
-      const newChecked = e.target.checked;
-
-      if (!isControlled) {
-        setCheckedState(newChecked);
-      }
-
-      if (onChange) {
-        onChange(newChecked);
-      }
-    };
-
     const reactId = React.useId();
     const uniqueId = generateRadioId(id, value, reactId);
 
-    // Radio input element with improved accessibility
-    const radioElement = (
-      <StyledRadioInput
-        ref={ref}
-        type="radio"
-        id={uniqueId}
-        name={name}
-        value={value}
-        checked={checked}
-        disabled={isDisabled}
-        onChange={handleChange}
-        aria-label={accessibilityLabel}
-        aria-labelledby={children ? `${uniqueId}-label` : undefined}
-        aria-describedby={subtext ? `${uniqueId}-description` : undefined}
-        data-state={getRadioDataState(checked)}
-        size={size}
-        $isDisabled={isDisabled}
-        $isChecked={checked}
-        className={className}
-      />
-    );
-
-    // Label element with PrimitiveText for better typography control
-    const labelElement = children && (
-      <StyledRadioLabel
-        htmlFor={uniqueId}
-        id={`${uniqueId}-label`}
-        $isDisabled={isDisabled}
-      >
-        <PrimitiveText
-          as="span"
-          fontSize={radioTokens.sizes[size].fontSize}
-          fontWeight={radioTokens.label.fontWeight}
-        >
-          {children}
-        </PrimitiveText>
-      </StyledRadioLabel>
-    );
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (disabled) return;
+      if (onChange) {
+        onChange(e.target.checked);
+      }
+    };
 
     return (
       <Block display="flex" flexDirection="column">
         <Block display="flex" alignItems="center">
-          {radioElement}
-          <Block display="flex" alignItems="center" justifyContent="space-between" width="100%">
-            {labelElement}
-            {rightSlot && (
-              <Block as="span" marginLeft="auto">
-                {rightSlot}
-              </Block>
-            )}
-          </Block>
+          <StyledRadioInput
+            ref={ref}
+            type="radio"
+            id={uniqueId}
+            name={name}
+            value={value}
+            checked={checked}
+            defaultChecked={defaultChecked}
+            disabled={disabled}
+            required={required}
+            onChange={handleChange}
+            data-state={getRadioDataState(checked || false)}
+            size={size}
+            $isDisabled={disabled}
+            $isChecked={checked || false}
+            $error={error}
+          />
+          
+          {children && (
+            <StyledRadioLabel
+              htmlFor={uniqueId}
+              $isDisabled={disabled}
+              $error={error}
+            >
+              <PrimitiveText
+                as="span"
+                fontSize={radioTokens.sizes[size].fontSize}
+                fontWeight={radioTokens.label.fontWeight}
+              >
+                {children}
+                {required && (
+                  <PrimitiveText
+                    as="span"
+                    color={radioTokens.required.color}
+                    margin={`0 0 0 ${radioTokens.required.spacing}`}
+                  >
+                    *
+                  </PrimitiveText>
+                )}
+              </PrimitiveText>
+            </StyledRadioLabel>
+          )}
+          {slot && (
+            <Block as="span" marginLeft={radioTokens.spacing.rightSlot}>
+              {slot}
+            </Block>
+          )}
         </Block>
 
         {subtext && (
           <Block 
-            id={`${uniqueId}-description`}
             marginLeft={radioTokens.sizes[size].subtext.marginLeft}
             marginTop={radioTokens.sizes[size].subtext.marginTop}
           >
             <PrimitiveText
               as="span"
-              color={isDisabled ? radioTokens.subtext.disabled : radioTokens.subtext.default}
+              color={disabled ? radioTokens.subtext.disabled : 
+                     error ? radioTokens.subtext.error : 
+                     radioTokens.subtext.default}
               fontSize={radioTokens.sizes[size].subtext.fontSize}
             >
               {subtext}

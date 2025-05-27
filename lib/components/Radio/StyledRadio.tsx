@@ -6,6 +6,7 @@ export const StyledRadioInput = styled.input<{
   size: RadioSize;
   $isDisabled: boolean;
   $isChecked: boolean;
+  $error?: boolean;
 }>`
   appearance: none;
   position: relative;
@@ -77,6 +78,7 @@ export const StyledRadioInput = styled.input<{
 
 export const StyledRadioLabel = styled.label<{
   $isDisabled: boolean;
+  $error?: boolean;
 }>`
   color: ${({ $isDisabled }) => 
     $isDisabled ? radioTokens.label.disabled : radioTokens.label.default};
