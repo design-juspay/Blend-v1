@@ -8,8 +8,11 @@ import {
 } from "../../../lib/components/Tags";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
-import { SplitTag } from "../../../lib/main";
+import { Button, ButtonSize, SplitTag } from "../../../lib/main";
 import { Tag } from "../../../lib/main";
+import Tooltip from "../../../lib/components/Tooltip/Tooltip";
+import Popover from "../../../lib/components/Popover/Popover";
+import Menu from "../../../lib/components/Menu/Menu";
 
 const TagsDemo: React.FC = () => {
   return (
@@ -21,43 +24,50 @@ const TagsDemo: React.FC = () => {
         </p>
       </header>
 
-      <Block display="flex" gap={10} paddingBottom={10}>
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          onClick={() => alert("Clicked")}
-        />
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          size={TagSize.SM}
-          onClick={() => alert("Clicked")}
-        />
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          size={TagSize.MD}
-          onClick={() => alert("Clicked")}
-        />
-        <Tag
-          text="Hello"
-          leadingSlot={<Hash size={12} />}
-          trailingSlot={<Filter size={12} />}
-          size={TagSize.LG}
-          onClick={() => alert("Clicked")}
-        />
+      <Block display="flex" flexDirection="column" gap={40}>
+        <Block display="flex" gap={10} marginBottom={10}>
+          <Tooltip content="Hello">
+            <Block color="blue" cursor="pointer" height={"100%"}>
+              Click me
+            </Block>
+          </Tooltip>
+          <Tooltip content="Hello">
+            <Tag
+              text="Hello"
+              leadingSlot={<Hash size={12} />}
+              trailingSlot={<Filter size={12} />}
+              size={TagSize.SM}
+              onClick={() => alert("Clicked")}
+            />
+          </Tooltip>
+        </Block>
+
+        <Block display="flex" gap={10} marginBottom={10}>
+          <SplitTag
+            size={TagSize.XS}
+            shape={TagShape.SQUARICAL}
+            primaryTag={{ text: "Primary Tag" }}
+            secondaryTag={{ text: "Secondary Tag" }}
+          />
+        </Block>
+
+        <Block display="flex" gap={10} marginBottom={10}>
+          <Menu
+            trigger={<Button size={ButtonSize.SMALL} text="Open Menu" />}
+          ></Menu>
+        </Block>
       </Block>
-      <Block display="flex" gap={10}>
-        <SplitTag
-          size={TagSize.XS}
-          shape={TagShape.SQUARICAL}
-          primaryTag={{ text: "Primary Tag" }}
-          secondaryTag={{ text: "Secondary Tag" }}
-        />
-      </Block>
+
+      <Popover trigger={<Button text="Open Popover" />}>
+        <Block
+          padding={10}
+          backgroundColor="red"
+          className="debug"
+          borderRadius="10px"
+        >
+          <h1>Hello</h1>
+        </Block>
+      </Popover>
       {/* Tag Variants */}
       <section className="showcase-section" style={{ marginTop: "200px" }}>
         <h2 className="showcase-title">Tag Variants</h2>

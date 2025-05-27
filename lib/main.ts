@@ -7,3 +7,7 @@ export * from "./components/Tags";
 export * from "./components/Breadcrumb";
 export * from "./components/Avatar";
 export * from "./components/AvatarGroup";
+export * from "./components/Modal";
+export * from "./components/Tooltip";
+export * from "./components/Menu/Menu";
+export * from "./components/Popover/Popover";

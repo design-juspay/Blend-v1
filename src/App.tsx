@@ -10,6 +10,7 @@ import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
+import ModalDemo from "./demos/Modal/ModalDemo";
 import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 
 // Component categories
@@ -61,6 +62,12 @@ function App() {
       component: <AlertDemo />,
     },
     {
+      id: "modals",
+      name: "Modals",
+      component: <ModalDemo />,
+    },
+
+    {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
@@ -69,7 +76,7 @@ function App() {
       id: "checkbox",
       name: "Checkbox",
       component: <CheckboxDemo />,
-    }
+    },
   ];
 
   // Get the current component to display
