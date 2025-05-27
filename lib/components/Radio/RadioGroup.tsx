@@ -6,10 +6,6 @@ import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import Radio from './Radio';
 import radioTokens from './token';
 
-/**
- * RadioGroup Component
- * A container component that manages a group of radio buttons
- */
 const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   (
     {

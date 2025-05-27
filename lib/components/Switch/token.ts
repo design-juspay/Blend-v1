@@ -1,86 +1,83 @@
 import { FOUNDATION_THEME } from "../../tokens";
 
-/**
- * Switch component specific tokens
- */
 const switchTokens = {
   background: {
-    enabled: FOUNDATION_THEME.colors.primary[500], // Primary color for enabled state
-    disabled: FOUNDATION_THEME.colors.primary[300], // Light primary for disabled but checked
-    inactive: FOUNDATION_THEME.colors.gray[150], // Light gray for inactive/unchecked state
+    enabled: FOUNDATION_THEME.colors.primary[500],
+    disabled: FOUNDATION_THEME.colors.primary[300],
+    inactive: FOUNDATION_THEME.colors.gray[150],
   },
   thumb: {
-    background: FOUNDATION_THEME.colors.gray[25], // Light background for thumb
+    background: FOUNDATION_THEME.colors.gray[25],
     border: {
-      color: FOUNDATION_THEME.colors.gray[300], // Border color for thumb
-      width: '0.5px' // Thin border
+      color: FOUNDATION_THEME.colors.gray[300],
+      width: '0.5px'
     }
   },
   label: {
-    default: FOUNDATION_THEME.colors.gray[700], // Text color
-    disabled: FOUNDATION_THEME.colors.gray[300], // Disabled text color
+    default: FOUNDATION_THEME.colors.gray[700],
+    disabled: FOUNDATION_THEME.colors.gray[300],
     fontWeight: 500
   },
   subtext: {
-    default: FOUNDATION_THEME.colors.gray[400], // Subtext color
-    disabled: FOUNDATION_THEME.colors.gray[200] // Disabled subtext color
+    default: FOUNDATION_THEME.colors.gray[400],
+    disabled: FOUNDATION_THEME.colors.gray[200]
   },
   groupLabel: {
-    color: FOUNDATION_THEME.colors.gray[700], // Group label color
+    color: FOUNDATION_THEME.colors.gray[700],
     fontWeight: 500
   },
   border: {
-    radius: FOUNDATION_THEME.border.radius.full, // Full radius for rounded switch
-    focus: FOUNDATION_THEME.colors.primary[200] // Focus ring color
+    radius: FOUNDATION_THEME.border.radius.full,
+    focus: FOUNDATION_THEME.colors.primary[200]
   },
   sizes: {
     sm: {
       root: {
-        width: FOUNDATION_THEME.unit[24], // "24px" (w-6)
-        height: FOUNDATION_THEME.unit[12] // "12px" (h-3)
+        width: FOUNDATION_THEME.unit[24],
+        height: FOUNDATION_THEME.unit[12]
       },
       thumb: {
-        width: FOUNDATION_THEME.unit[10], // "10px" (w-2.5)
-        height: FOUNDATION_THEME.unit[10], // "10px" (h-2.5)
+        width: FOUNDATION_THEME.unit[10],
+        height: FOUNDATION_THEME.unit[10],
         top: '1px'
       },
-      thumbOn: FOUNDATION_THEME.unit[12], // "12px" translate-x-3
-      thumbOff: FOUNDATION_THEME.unit[2], // "2px" translate-x-0.5
-      fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`, // body-sm
+      thumbOn: FOUNDATION_THEME.unit[12],
+      thumbOff: FOUNDATION_THEME.unit[2],
+      fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
       subtext: {
-        fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`, // body-sm
-        marginLeft: FOUNDATION_THEME.unit[32], // "32px" (ml-8)
-        marginTop: FOUNDATION_THEME.unit[4] // "4px"
+        fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
+        marginLeft: FOUNDATION_THEME.unit[32],
+        marginTop: FOUNDATION_THEME.unit[4]
       }
     },
     md: {
       root: {
-        width: FOUNDATION_THEME.unit[28], // "28px" (w-7)
-        height: FOUNDATION_THEME.unit[14] // "14px" (h-3.5)
+        width: FOUNDATION_THEME.unit[28],
+        height: FOUNDATION_THEME.unit[14]
       },
       thumb: {
-        width: FOUNDATION_THEME.unit[12], // "12px" (w-3)
-        height: FOUNDATION_THEME.unit[12], // "12px" (h-3)
+        width: FOUNDATION_THEME.unit[12],
+        height: FOUNDATION_THEME.unit[12],
         top: '1px'
       },
-      thumbOn: FOUNDATION_THEME.unit[14], // "14px" translate-x-3.5
-      thumbOff: FOUNDATION_THEME.unit[2], // "2px" translate-x-0.5
-      fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`, // body-md
+      thumbOn: FOUNDATION_THEME.unit[14],
+      thumbOff: FOUNDATION_THEME.unit[2],
+      fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`,
       subtext: {
-        fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`, // body-md
-        marginLeft: FOUNDATION_THEME.unit[36], // "36px" (ml-9)
-        marginTop: FOUNDATION_THEME.unit[4] // "4px"
+        fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`,
+        marginLeft: FOUNDATION_THEME.unit[36],
+        marginTop: FOUNDATION_THEME.unit[4]
       }
     }
   },
   spacing: {
-    rightSlot: FOUNDATION_THEME.unit[8], // "8px" (ml-2)
-    switchMarginRight: FOUNDATION_THEME.unit[8], // "8px" spacing between switch and label
-    groupSpacing: FOUNDATION_THEME.unit[16] // "16px" spacing between switch items
+    rightSlot: FOUNDATION_THEME.unit[8],
+    switchMarginRight: FOUNDATION_THEME.unit[8],
+    groupSpacing: FOUNDATION_THEME.unit[16]
   },
   transition: {
-    duration: '300ms', // Transition duration
-    easing: 'cubic-bezier(0.4, 0, 0.2, 1)' // Smooth easing
+    duration: '300ms',
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
   }
 };
 

@@ -6,10 +6,6 @@ import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import switchTokens from './token';
 
-/**
- * Switch Component
- * A toggle control component that allows users to switch between two states
- */
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
   (
     {

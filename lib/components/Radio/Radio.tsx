@@ -6,10 +6,6 @@ import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import radioTokens from './token';
 
-/**
- * Radio Component
- * A form control component that allows users to select one option from a group
- */
 const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
   (
     {
