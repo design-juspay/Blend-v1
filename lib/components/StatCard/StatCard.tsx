@@ -6,6 +6,7 @@ import {
   XAxis,
   YAxis,
   Tooltip as RechartsTooltip,
+  type TooltipProps,
   Area,
   AreaChart,
 } from "recharts";
@@ -64,12 +65,7 @@ const StatCard = ({
     ? FOUNDATION_THEME.colors.red[500]
     : FOUNDATION_THEME.colors.green[500];
 
-  type ChartTooltipProps = {
-    active?: boolean;
-    payload?: Array<{ value: number; payload?: { index: number } }>;
-  };
-
-  const ChartTooltipWrapper = ({ active, payload }: ChartTooltipProps) => {
+  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (!active || !payload || payload.length === 0) return null;
 
     const currentValue = payload[0].value as number;
@@ -82,8 +78,14 @@ const StatCard = ({
     const isUp = diff >= 0;
 
     return (
-      <Block display="inline-block">
-        {`${Math.abs(percentage).toFixed(0)}% ${isUp ? "Up" : "Down"}`}
+      <Block
+        backgroundColor={FOUNDATION_THEME.colors.gray[1000]}
+        padding={`${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[8]}`}
+        borderRadius={FOUNDATION_THEME.border.radius[4]}
+      >
+        <Text color={FOUNDATION_THEME.colors.gray[0]} variant="body.sm">
+          {`${Math.abs(percentage).toFixed(0)}% ${isUp ? "Up" : "Down"}`}
+        </Text>
       </Block>
     );
   };
@@ -324,23 +326,7 @@ const StatCard = ({
                 <XAxis dataKey="date" hide />
                 <YAxis hide />
                 <RechartsTooltip
-                  content={(props: ChartTooltipProps) => {
-                    if (
-                      !props.active ||
-                      !props.payload ||
-                      props.payload.length === 0
-                    )
-                      return null;
-
-                    return (
-                      <Tooltip
-                        content={<ChartTooltipWrapper {...props} />}
-                        open={props.active}
-                      >
-                        <div />
-                      </Tooltip>
-                    );
-                  }}
+                  content={<CustomTooltip />}
                   cursor={{
                     strokeDasharray: "6 5",
                     stroke: FOUNDATION_THEME.colors.gray[400],
@@ -392,23 +378,7 @@ const StatCard = ({
                 <XAxis dataKey="date" hide />
                 <YAxis hide />
                 <RechartsTooltip
-                  content={(props: ChartTooltipProps) => {
-                    if (
-                      !props.active ||
-                      !props.payload ||
-                      props.payload.length === 0
-                    )
-                      return null;
-
-                    return (
-                      <Tooltip
-                        content={<ChartTooltipWrapper {...props} />}
-                        open={props.active}
-                      >
-                        <div />
-                      </Tooltip>
-                    );
-                  }}
+                  content={<CustomTooltip />}
                   cursor={{ fill: "transparent" }}
                   position={{ y: 0 }}
                   isAnimationActive={false}
