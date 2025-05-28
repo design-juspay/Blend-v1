@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, ButtonType } from "../../../lib/components/Button";
 import Popover from "../../../lib/components/Popover/Popover";
+import { PopoverSize } from "../../../lib/components/Popover/types";
 import "./PopoverDemo.css";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import Block from "../../../lib/components/Primitives/Block/Block";
@@ -13,7 +14,7 @@ const PopoverDemo: React.FC = () => {
     "This is a description for the popover"
   );
   const [showCloseButton, setShowCloseButton] = useState(true);
-  const [size, setSize] = useState<"sm" | "md">("sm");
+  const [size, setSize] = useState<PopoverSize>(PopoverSize.SM);
   const [hasPrimaryAction, setHasPrimaryAction] = useState(true);
   const [hasSecondaryAction, setHasSecondaryAction] = useState(true);
   const [primaryActionLabel, setPrimaryActionLabel] =
@@ -123,9 +124,9 @@ const PopoverDemo: React.FC = () => {
                     <input
                       type="radio"
                       name="size"
-                      value="sm"
-                      checked={size === "sm"}
-                      onChange={() => setSize("sm")}
+                      value={PopoverSize.SM}
+                      checked={size === PopoverSize.SM}
+                      onChange={() => setSize(PopoverSize.SM)}
                     />
                     <span style={{ color: FOUNDATION_THEME.colors.gray[700] }}>
                       Small (280px)
@@ -135,9 +136,9 @@ const PopoverDemo: React.FC = () => {
                     <input
                       type="radio"
                       name="size"
-                      value="md"
-                      checked={size === "md"}
-                      onChange={() => setSize("md")}
+                      value={PopoverSize.MD}
+                      checked={size === PopoverSize.MD}
+                      onChange={() => setSize(PopoverSize.MD)}
                     />
                     <span style={{ color: FOUNDATION_THEME.colors.gray[700] }}>
                       Medium (320px)
@@ -249,7 +250,7 @@ const PopoverDemo: React.FC = () => {
                 <div
                   style={{
                     color: FOUNDATION_THEME.colors.gray[500],
-                    fontSize: size === "sm" ? "12px" : "14px",
+                    fontSize: size === PopoverSize.SM ? "12px" : "14px",
                     padding: FOUNDATION_THEME.unit[4],
                   }}
                 >

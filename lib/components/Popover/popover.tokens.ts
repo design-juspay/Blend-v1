@@ -1,5 +1,6 @@
 import { FOUNDATION_THEME } from "../../tokens";
 import { VariantType } from "../Text/Text";
+import { PopoverSize } from "./types";
 import { CSSObject } from "styled-components";
 
 type PopoverToken = {
@@ -13,16 +14,16 @@ type PopoverToken = {
   };
   shadow: CSSObject["boxShadow"];
   padding: {
-    sm: CSSObject["padding"];
-    md: CSSObject["padding"];
+    [PopoverSize.SM]: CSSObject["padding"];
+    [PopoverSize.MD]: CSSObject["padding"];
   };
   gap: {
     content: CSSObject["gap"];
     header: CSSObject["gap"];
   };
   width: {
-    sm: CSSObject["width"];
-    md: CSSObject["width"];
+    [PopoverSize.SM]: CSSObject["width"];
+    [PopoverSize.MD]: CSSObject["width"];
   };
   color: {
     heading: CSSObject["color"];
@@ -31,11 +32,11 @@ type PopoverToken = {
   };
   font: {
     size: {
-      sm: VariantType;
-      md: VariantType;
+      [PopoverSize.SM]: VariantType;
+      [PopoverSize.MD]: VariantType;
       heading: {
-        sm: VariantType;
-        md: VariantType;
+        [PopoverSize.SM]: VariantType;
+        [PopoverSize.MD]: VariantType;
       };
     };
     weight: {
@@ -54,35 +55,35 @@ const popoverTokens: PopoverToken = {
     color: FOUNDATION_THEME.colors.gray[0],
   },
   border: {
-    width: FOUNDATION_THEME.border.width[1],
-    color: FOUNDATION_THEME.colors.gray[150],
-    radius: FOUNDATION_THEME.border.radius[12],
+    width: "1px",
+    color: FOUNDATION_THEME.colors.gray[200] as string,
+    radius: FOUNDATION_THEME.border.radius[8],
   },
   shadow: FOUNDATION_THEME.shadows.md,
   padding: {
-    sm: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[16]}`,
-    md: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[16]}`,
+    [PopoverSize.SM]: FOUNDATION_THEME.unit[12],
+    [PopoverSize.MD]: FOUNDATION_THEME.unit[16],
   },
   gap: {
-    content: FOUNDATION_THEME.unit[12],
+    content: FOUNDATION_THEME.unit[16],
     header: FOUNDATION_THEME.unit[8],
   },
   width: {
-    sm: "280px",
-    md: "320px",
+    [PopoverSize.SM]: "280px",
+    [PopoverSize.MD]: "320px",
   },
   color: {
-    heading: FOUNDATION_THEME.colors.gray[900],
-    description: FOUNDATION_THEME.colors.gray[500],
-    closeIcon: FOUNDATION_THEME.colors.gray[500],
+    heading: FOUNDATION_THEME.colors.gray[900] as string,
+    description: FOUNDATION_THEME.colors.gray[500] as string,
+    closeIcon: FOUNDATION_THEME.colors.gray[500] as string,
   },
   font: {
     size: {
-      sm: "body.sm",
-      md: "body.md",
+      [PopoverSize.SM]: "body.xs",
+      [PopoverSize.MD]: "body.sm",
       heading: {
-        sm: "body.md",
-        md: "body.lg",
+        [PopoverSize.SM]: "body.md",
+        [PopoverSize.MD]: "body.lg",
       },
     },
     weight: {
@@ -91,7 +92,7 @@ const popoverTokens: PopoverToken = {
   },
   icon: {
     close: {
-      size: FOUNDATION_THEME.unit[16],
+      size: 16,
     },
   },
 };

@@ -1,7 +1,10 @@
 import { ButtonType, ButtonSubType } from "../Button/types";
 import { ReactNode } from "react";
 
-export type PopoverSize = "sm" | "md";
+export enum PopoverSize {
+  SM = "sm",
+  MD = "md",
+}
 
 export type PopoverActionType = {
   label: string;

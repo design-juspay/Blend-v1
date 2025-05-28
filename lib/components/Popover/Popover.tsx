@@ -28,7 +28,7 @@ const PopoverHeader = ({
   description,
   showCloseButton,
   onClose,
-  size = "sm",
+  size = PopoverSize.SM,
 }: {
   heading?: string;
   description?: string;
@@ -114,7 +114,7 @@ export const Popover = ({
   showCloseButton = true,
   primaryAction,
   secondaryAction,
-  size = "sm",
+  size = PopoverSize.SM,
 }: PopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
