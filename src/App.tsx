@@ -14,6 +14,9 @@ import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
 import PopoverDemo from "./demos/Popover/PopoverDemo";
+import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
+import RadioDemo from "./demos/Radio/RadioDemo";
+import SwitchDemo from "./demos/Switch/SwitchDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -87,6 +90,21 @@ function App() {
       id: "popover",
       name: "Popover",
       component: <PopoverDemo />,
+    },
+    {
+      id: "checkbox",
+      name: "Checkbox",
+      component: <CheckboxDemo />,
+    },
+    {
+      id: "radio",
+      name: "Radio",
+      component: <RadioDemo />,
+    },
+    {
+      id: "switch",
+      name: "Switch",
+      component: <SwitchDemo />,
     },
   ];
 
