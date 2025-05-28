@@ -3,6 +3,14 @@ import { FOUNDATION_THEME } from "../../tokens";
 import { VariantType } from "../Text/Text";
 
 export type SnackbarTokens = Readonly<{
+  icon: {
+    color: {
+      info: CSSObject["color"];
+      success: CSSObject["color"];
+      warning: CSSObject["color"];
+      error: CSSObject["color"];
+    };
+  };
   container: {
     backgroundColor: CSSObject["color"];
     borderRadius: CSSObject["borderRadius"];
@@ -44,6 +52,14 @@ export type SnackbarTokens = Readonly<{
 }>;
 
 const snackbarTokens: SnackbarTokens = {
+  icon: {
+    color: {
+      info: FOUNDATION_THEME.colors.primary[300],
+      success: FOUNDATION_THEME.colors.green[500],
+      warning: FOUNDATION_THEME.colors.yellow[500],
+      error: FOUNDATION_THEME.colors.red[500],
+    },
+  },
   container: {
     backgroundColor: FOUNDATION_THEME.colors.gray[900],
     borderRadius: FOUNDATION_THEME.border.radius[8],

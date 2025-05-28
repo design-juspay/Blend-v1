@@ -20,13 +20,13 @@ const StyledToast: React.FC<CustomToastProps> = ({
   const getIconColor = () => {
     switch (variant) {
       case "info":
-        return "#1b85ff";
+        return snackbarTokens.icon.color.info;
       case "success":
-        return "#00c951";
+        return snackbarTokens.icon.color.success;
       case "warning":
-        return "#efb100";
+        return snackbarTokens.icon.color.warning;
       case "error":
-        return "#fb2c36";
+        return snackbarTokens.icon.color.error;
     }
   };
 

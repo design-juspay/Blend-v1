@@ -1,7 +1,14 @@
+export enum SnackbarVariant {
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+  ERROR = "error",
+}
+
 export type AddToastOptions = {
   header: string;
   description?: string;
-  variant: "info" | "success" | "warning" | "error";
+  variant: SnackbarVariant;
   onClose?: () => void;
   actionButton?: {
     label: string;
@@ -12,7 +19,7 @@ export type AddToastOptions = {
 export type CustomToastProps = {
   header: string;
   description?: string;
-  variant: "info" | "success" | "warning" | "error";
+  variant: SnackbarVariant;
   onClose?: () => void;
   actionButton?: {
     label: string;
