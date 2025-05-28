@@ -13,6 +13,9 @@ import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
+import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
+import RadioDemo from "./demos/Radio/RadioDemo";
+import SwitchDemo from "./demos/Switch/SwitchDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -82,6 +85,21 @@ function App() {
       id: "tooltips",
       name: "Tooltips",
       component: <TooltipDemo />,
+    },
+    {
+      id: "checkbox",
+      name: "Checkbox",
+      component: <CheckboxDemo />,
+    },
+    {
+      id: "radio",
+      name: "Radio",
+      component: <RadioDemo />,
+    },
+    {
+      id: "switch",
+      name: "Switch",
+      component: <SwitchDemo />,
     },
   ];
 
