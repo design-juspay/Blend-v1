@@ -196,6 +196,125 @@ const Separator = styled(RadixMenu.Separator)(() => ({
   margin: "6px 0",
 }));
 
+// const Item = ({
+//   item,
+//   idx,
+//   selectedValue,
+//   allowMultiSelect = false,
+//   onSelect,
+// }: {
+//   item: SelectMenuItemType;
+//   idx: number;
+//   selectedValue: string | string[] | undefined;
+//   allowMultiSelect?: boolean;
+//   onSelect?: (value: string | string[]) => void;
+// }) => {
+//   if (item.subMenu) {
+//     return <SubMenu item={item} idx={idx} selectedValue={selectedValue} />;
+//   }
+//   const isSelected = allowMultiSelect
+//     ? Array.isArray(selectedValue) && selectedValue.includes(item.value)
+//     : selectedValue === item.value;
+//   return (
+//     <StyledItem
+//       onClick={() => {
+//         if (item.disabled) return;
+//         if (allowMultiSelect) {
+//           let newSelected: string[] = Array.isArray(selectedValue)
+//             ? [...selectedValue]
+//             : [];
+//           if (newSelected.includes(item.value)) {
+//             newSelected = newSelected.filter((v) => v !== item.value);
+//           } else {
+//             newSelected.push(item.value);
+//           }
+//           onSelect && onSelect(newSelected);
+//         } else {
+//           onSelect && onSelect(item.value);
+//         }
+//         if (item.onClick) item.onClick();
+//       }}
+//       asChild
+//       disabled={item.disabled}
+//       key={idx}
+//       selected={isSelected}
+//     >
+//       <Block
+//         padding="6px"
+//         display="flex"
+//         flexDirection="column"
+//         gap={4}
+//         width="100%"
+//       >
+//         <Block
+//           display="flex"
+//           alignItems="center"
+//           gap={4}
+//           width="100%"
+//           overflow="hidden"
+//         >
+//           {item.slot1 && (
+//             <Block flexShrink={0} height="auto" contentCentered>
+//               {item.slot1}
+//             </Block>
+//           )}
+//           <Block
+//             display="flex"
+//             flexGrow={1}
+//             alignItems="center"
+//             maxWidth="100%"
+//             overflow="hidden"
+//           >
+//             <Text
+//               variant="body.md"
+//               color={
+//                 isSelected
+//                   ? FOUNDATION_THEME.colors.primary[600]
+//                   : FOUNDATION_THEME.colors.gray[600]
+//               }
+//               fontWeight={500}
+//               truncate
+//             >
+//               {item.label}
+//             </Text>
+//           </Block>
+//           {allowMultiSelect && isSelected && (
+//             <Block flexShrink={0} height="auto" contentCentered>
+//               <Check size={16} color={FOUNDATION_THEME.colors.primary[600]} />
+//             </Block>
+//           )}
+//           {item.slot2 && (
+//             <Block flexShrink={0} height="auto" contentCentered>
+//               {item.slot2}
+//             </Block>
+//           )}
+//           {item.slot3 && (
+//             <Block flexShrink={0} height="auto" contentCentered>
+//               {item.slot3}
+//             </Block>
+//           )}
+//           {item.slot4 && (
+//             <Block flexShrink={0} height="auto" contentCentered>
+//               {item.slot4}
+//             </Block>
+//           )}
+//         </Block>
+//         {item.subLabel && (
+//           <Block display="flex" alignItems="center" width="100%">
+//             <Text
+//               variant="body.sm"
+//               color={FOUNDATION_THEME.colors.gray[400]}
+//               fontWeight={400}
+//             >
+//               {item.subLabel}
+//             </Text>
+//           </Block>
+//         )}
+//       </Block>
+//     </StyledItem>
+//   );
+// };
+
 const Item = ({
   item,
   idx,
@@ -212,32 +331,45 @@ const Item = ({
   if (item.subMenu) {
     return <SubMenu item={item} idx={idx} selectedValue={selectedValue} />;
   }
+
   const isSelected = allowMultiSelect
     ? Array.isArray(selectedValue) && selectedValue.includes(item.value)
     : selectedValue === item.value;
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (item.disabled) return;
+
+    // Prevent dropdown from closing in multi-select mode
+    if (allowMultiSelect) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (allowMultiSelect) {
+      let newSelected: string[] = Array.isArray(selectedValue)
+        ? [...selectedValue]
+        : [];
+      if (newSelected.includes(item.value)) {
+        newSelected = newSelected.filter((v) => v !== item.value);
+      } else {
+        newSelected.push(item.value);
+      }
+      onSelect && onSelect(newSelected);
+    } else {
+      onSelect && onSelect(item.value);
+    }
+    if (item.onClick) item.onClick();
+  };
+
   return (
     <StyledItem
-      onClick={() => {
-        if (item.disabled) return;
-        if (allowMultiSelect) {
-          let newSelected: string[] = Array.isArray(selectedValue)
-            ? [...selectedValue]
-            : [];
-          if (newSelected.includes(item.value)) {
-            newSelected = newSelected.filter((v) => v !== item.value);
-          } else {
-            newSelected.push(item.value);
-          }
-          onSelect && onSelect(newSelected);
-        } else {
-          onSelect && onSelect(item.value);
-        }
-        if (item.onClick) item.onClick();
-      }}
+      onClick={handleClick}
       asChild
       disabled={item.disabled}
       key={idx}
       selected={isSelected}
+      // Prevent Radix from handling the select event in multi-select mode
+      onSelect={allowMultiSelect ? (e) => e.preventDefault() : undefined}
     >
       <Block
         padding="6px"
