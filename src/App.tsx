@@ -13,6 +13,7 @@ import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
+import PopoverDemo from "./demos/Popover/PopoverDemo";
 import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
@@ -26,7 +27,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("accordion");
+  const [selectedCategory, setSelectedCategory] = useState<string>("popover");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -70,7 +71,6 @@ function App() {
       name: "Modals",
       component: <ModalDemo />,
     },
-
     {
       id: "accordion",
       name: "Accordion",
@@ -85,6 +85,11 @@ function App() {
       id: "tooltips",
       name: "Tooltips",
       component: <TooltipDemo />,
+    },
+    {
+      id: "popover",
+      name: "Popover",
+      component: <PopoverDemo />,
     },
     {
       id: "checkbox",
