@@ -71,6 +71,8 @@ const dummyItems: MenuGroupType[] = [
 const MenuDemo = () => {
   // Add state for Select demo
   const [selectedOption, setSelectedOption] = useState("profile-settings");
+  // Add state for multi-select demo
+  const [multiSelected, setMultiSelected] = useState<string[]>([]);
   return (
     <div style={{ padding: "20px" }}>
       <h2>Menu Component</h2>
@@ -87,16 +89,31 @@ const MenuDemo = () => {
           <Select
             label="Select an option"
             selected={selectedOption}
-            onSelectChange={setSelectedOption}
+            onSelectChange={(value) => {
+              if (typeof value === "string") setSelectedOption(value);
+            }}
           />
         </div>
-
+        {/* Multi-select demo */}
+        <div style={{ width: "300px" }}>
+          <Select
+            label="Multi Select"
+            allowMultiSelect
+            selected={multiSelected}
+            onSelectChange={(value) =>
+              Array.isArray(value) && setMultiSelected(value)
+            }
+          />
+          <div style={{ marginTop: 8, color: "black" }}>
+            Selected:{" "}
+            {multiSelected.length > 0 ? multiSelected.join(", ") : "None"}
+          </div>
+        </div>
         <Menu
           // enableSearch
           items={dummyItems}
           trigger={<Button text="Open Menu" onClick={() => {}} />}
         />
-
         <Dropdown
           items={dummyItems}
           slot={<Info size={14} color={"black"} />}
@@ -107,3 +124,4 @@ const MenuDemo = () => {
 };
 
 export default MenuDemo;
+

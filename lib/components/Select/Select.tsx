@@ -23,8 +23,9 @@ type SelectProps = {
   size?: SelectMenuSize;
   items?: SelectMenuGroupType[];
   variant?: SelectMenuVariant;
-  selected: string;
-  onSelectChange: (value: string) => void;
+  selected: string | string[];
+  onSelectChange: (value: string | string[]) => void;
+  allowMultiSelect?: boolean;
 };
 
 const Select = ({
@@ -39,6 +40,7 @@ const Select = ({
   size = SelectMenuSize.LARGE,
   selected,
   onSelectChange,
+  allowMultiSelect = false,
 }: SelectProps) => {
   console.log(subLabel);
   return (
@@ -70,6 +72,7 @@ const Select = ({
           items={items}
           selected={selected}
           onSelect={onSelectChange}
+          allowMultiSelect={allowMultiSelect}
           trigger={
             <PrimitiveButton
               display="flex"
@@ -105,7 +108,11 @@ const Select = ({
                 color={selectTokens.trigger.selectedValue.color}
                 truncate
               >
-                {selected || placeholder}
+                {allowMultiSelect
+                  ? Array.isArray(selected) && selected.length > 0
+                    ? selected.join(", ")
+                    : placeholder
+                  : selected || placeholder}
               </Text>
 
               <Block size={20} contentCentered borderRadius={4}>

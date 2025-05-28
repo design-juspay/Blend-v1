@@ -40,8 +40,9 @@ export type SelectMenuProps = {
   alignOffset?: number;
   collisonBoundaryRef?: Element | null | Array<Element | null>;
   maxHeight?: number;
-  selected?: string;
-  onSelect?: (value: string) => void;
+  selected?: string | string[];
+  onSelect?: (value: string | string[]) => void;
+  allowMultiSelect?: boolean;
 };
 
 // export enum SelectMenuItemV2Variant {
@@ -147,3 +148,18 @@ export const dummyMenuItemsLong: SelectMenuGroupType[] = Array.from(
     }),
   })
 );
+
+type SelectProps = {
+  label: string;
+  subLabel?: string;
+  hintText?: string;
+  required?: boolean;
+  helpIconText?: string;
+  placeholder?: string;
+  size?: SelectMenuSize;
+  items?: SelectMenuGroupType[];
+  variant?: SelectMenuVariant;
+  selected: string | string[];
+  onSelectChange: (value: string | string[]) => void;
+  allowMultiSelect?: boolean;
+};

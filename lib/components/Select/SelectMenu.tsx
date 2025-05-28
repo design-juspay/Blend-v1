@@ -3,7 +3,7 @@ import Text from "../Text/Text";
 import styled from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, Check } from "lucide-react";
 import React, { useState } from "react";
 import {
   dummyMenuItems,
@@ -106,7 +106,7 @@ const SubMenu = ({
 }: {
   item: SelectMenuItemType;
   idx: number;
-  selectedValue: string | undefined;
+  selectedValue: string | string[] | undefined;
 }) => {
   return (
     <Sub key={idx}>
@@ -200,18 +200,40 @@ const Item = ({
   item,
   idx,
   selectedValue,
+  allowMultiSelect = false,
+  onSelect,
 }: {
   item: SelectMenuItemType;
   idx: number;
-  selectedValue: string | undefined;
+  selectedValue: string | string[] | undefined;
+  allowMultiSelect?: boolean;
+  onSelect?: (value: string | string[]) => void;
 }) => {
   if (item.subMenu) {
     return <SubMenu item={item} idx={idx} selectedValue={selectedValue} />;
   }
-  const isSelected = selectedValue === item.value;
+  const isSelected = allowMultiSelect
+    ? Array.isArray(selectedValue) && selectedValue.includes(item.value)
+    : selectedValue === item.value;
   return (
     <StyledItem
-      onClick={item.onClick}
+      onClick={() => {
+        if (item.disabled) return;
+        if (allowMultiSelect) {
+          let newSelected: string[] = Array.isArray(selectedValue)
+            ? [...selectedValue]
+            : [];
+          if (newSelected.includes(item.value)) {
+            newSelected = newSelected.filter((v) => v !== item.value);
+          } else {
+            newSelected.push(item.value);
+          }
+          onSelect && onSelect(newSelected);
+        } else {
+          onSelect && onSelect(item.value);
+        }
+        if (item.onClick) item.onClick();
+      }}
       asChild
       disabled={item.disabled}
       key={idx}
@@ -256,6 +278,11 @@ const Item = ({
               {item.label}
             </Text>
           </Block>
+          {allowMultiSelect && isSelected && (
+            <Block flexShrink={0} height="auto" contentCentered>
+              <Check size={16} color={FOUNDATION_THEME.colors.primary[600]} />
+            </Block>
+          )}
           {item.slot2 && (
             <Block flexShrink={0} height="auto" contentCentered>
               {item.slot2}
@@ -388,6 +415,7 @@ const SelectMenu = ({
   maxHeight,
   selected,
   onSelect,
+  allowMultiSelect = false,
 }: SelectMenuProps) => {
   const [searchText, setSearchText] = useState<string>("");
 
@@ -433,6 +461,8 @@ const SelectMenu = ({
                   key={`${groupId}-${itemIndex}`}
                   item={item}
                   idx={itemIndex}
+                  allowMultiSelect={allowMultiSelect}
+                  onSelect={onSelect}
                 />
               ))}
               {groupId !== filteredItems.length - 1 && group.showSeparator && (
