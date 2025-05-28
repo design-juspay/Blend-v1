@@ -447,8 +447,6 @@ const Item = ({
   );
 };
 
-const Group = styled(RadixMenu.Group)(() => ({}));
-
 const Label = styled(RadixMenu.Label)(() => ({
   padding: "6px 8px",
   userSelect: "none",
