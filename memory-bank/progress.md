@@ -91,10 +91,6 @@
     - ✅ Keyboard navigation
     - ✅ ARIA attributes for interactive elements
     - ✅ Screen reader support for overflow avatars
-  - ✅ React hook optimization:
-    - ✅ useCallback for stable event handlers
-    - ✅ Proper effect cleanup for event listeners
-    - ✅ Memoized derivations for performance
   - ✅ **Status**: ✅ Complete
   - ✅ **Implementation**: 
     - Fully modular structure following project patterns
@@ -114,11 +110,201 @@
     - Mixed content types demonstration
     - Plain avatar example with initials only
 
+- ✅ Checkbox component with different sizes, states, and positioning
+  - ✅ Support for different sizes (small, medium)
+  - ✅ Support for multiple states (checked, unchecked, indeterminate, disabled)
+  - ✅ Positioning options (left, right) for label placement
+  - ✅ Enhanced with Primitive components:
+    - ✅ Block component for improved layout management
+    - ✅ PrimitiveText for typography consistency
+  - ✅ Token system integration:
+    - ✅ Foundation tokens used for all styles (colors, spacing, typography)
+    - ✅ Size-specific tokens for different checkbox dimensions
+    - ✅ State-specific styling for different checkbox states
+  - ✅ Utility functions:
+    - ✅ `getCheckboxDataState` for proper state management
+    - ✅ `generateCheckboxId` for unique ID generation
+    - ✅ `extractPixelValue` for processing token values
+    - ✅ `getSpacingBySize` for size-appropriate spacing
+    - ✅ `getFocusRingStyles` for keyboard focus management
+  - ✅ Accessibility improvements:
+    - ✅ Proper ARIA attributes for screen readers
+    - ✅ Enhanced focus indicators for keyboard navigation
+    - ✅ Support for optional description text
+    - ✅ Smooth animations for state changes
+  - ✅ **TypeScript Standards Compliance**:
+    - ✅ Converted from interface to type alias for CheckboxProps
+    - ✅ Moved StyledLabel to StyledCheckbox.tsx for better organization
+    - ✅ Follows memory bank TypeScript type system standards
+  - ✅ **API Simplification**:
+    - ✅ Removed position prop (always renders checkbox on left)
+    - ✅ Renamed rightSlot to slot for cleaner API
+    - ✅ Simplified component layout without position complexity
+    - ✅ Added required and error state support with visual indicators
+    - ✅ Removed className props to maintain design system integrity
+    - ✅ Removed ARIA labels for simpler accessibility approach
+    - ✅ Inlined renderIndicator and checkboxElement functions directly in JSX
+  - ✅ **Status**: ✅ Complete and Fully Compliant
+  - ✅ **Implementation**:
+    - Fully modular structure following project patterns
+    - Comprehensive TypeScript types for all props and configurations
+    - Proper token-based styling with design system consistency
+    - Complete primitive component integration (Block, PrimitiveText)
+    - Simplified API with parent-managed state (no internal state management)
+    - Features:
+      - Parent-controlled checkbox state management
+      - Support for indeterminate state
+      - Support for supplementary description text with error/disabled states
+      - Custom icon rendering based on state
+      - Enhanced focus states for better keyboard navigation
+      - Animation for smoother state transitions
+      - Required field indicator with red asterisk
+      - Error state support with visual feedback
+      - Slot support for additional content
+
+- ✅ Radio and RadioGroup components with different sizes and states
+  - ✅ Support for different sizes (small, medium)
+  - ✅ Support for multiple states (checked, unchecked, disabled)
+  - ✅ RadioGroup for managing radio button groups
+  - ✅ Enhanced with Primitive components:
+    - ✅ Block component for improved layout management
+    - ✅ PrimitiveText for typography consistency
+  - ✅ Token system integration:
+    - ✅ Foundation tokens used for all styles (colors, spacing, typography)
+    - ✅ Size-specific tokens for different radio dimensions
+    - ✅ State-specific styling for different radio states
+    - ✅ Converted Tailwind theme config to foundation tokens
+  - ✅ Styled components:
+    - ✅ `StyledRadioInput` with proper circular styling and animations
+    - ✅ `StyledRadioLabel` for consistent label styling
+    - ✅ `StyledRadioGroupLabel` for group label styling
+  - ✅ Utility functions:
+    - ✅ `getRadioDataState` for proper state management
+    - ✅ `generateRadioId` for unique ID generation
+    - ✅ `extractPixelValue` for processing token values
+    - ✅ `getSpacingBySize` for size-appropriate spacing
+  - ✅ Accessibility improvements:
+    - ✅ Proper ARIA attributes for screen readers
+    - ✅ Enhanced focus indicators for keyboard navigation
+    - ✅ Support for optional description text
+    - ✅ Proper radiogroup role for RadioGroup
+    - ✅ Smooth animations for state changes
+  - ✅ **TypeScript Standards Compliance**:
+    - ✅ Converted from interface to type alias for all props
+    - ✅ Proper separation of styled components
+    - ✅ Follows memory bank TypeScript type system standards
+  - ✅ **API Simplification**:
+    - ✅ Removed className and accessibilityLabel props for cleaner API
+    - ✅ Renamed isChecked to checked and isDisabled to disabled for consistency
+    - ✅ Renamed rightSlot to slot for cleaner API
+    - ✅ Removed ARIA labels for simpler accessibility approach
+    - ✅ Removed internal state management (parent-controlled state)
+    - ✅ Added required and error state support with visual indicators
+  - ✅ **Status**: ✅ Complete and Fully Compliant
+  - ✅ **Implementation**:
+    - Fully modular structure following project patterns
+    - Comprehensive TypeScript types for all props and configurations
+    - Proper token-based styling with design system consistency
+    - Complete primitive component integration (Block, PrimitiveText)
+    - Simplified API with parent-managed state (no internal state management)
+    - Features:
+      - Parent-controlled radio state management
+      - RadioGroup for managing multiple radio buttons
+      - Support for supplementary description text with error/disabled states
+      - Custom circular radio styling with inner dot indicator
+      - Enhanced focus states for better keyboard navigation
+      - Animation for smoother state transitions
+      - Slot support for additional content
+      - Required field indicator with red asterisk
+      - Error state support with visual feedback
+
+- ✅ Switch and SwitchGroup components with different sizes and states
+  - ✅ Support for different sizes (small, medium)
+  - ✅ Support for multiple states (checked, unchecked, disabled)
+  - ✅ SwitchGroup for managing multiple switch toggles
+  - ✅ Enhanced with Primitive components:
+    - ✅ Block component for improved layout management
+    - ✅ PrimitiveText for typography consistency
+  - ✅ Token system integration:
+    - ✅ Foundation tokens used for all styles (colors, spacing, typography)
+    - ✅ Size-specific tokens for different switch dimensions
+    - ✅ State-specific styling for different switch states
+    - ✅ Converted Tailwind theme config to foundation tokens
+    - ✅ Comprehensive token structure for background, thumb, label, subtext, and spacing
+  - ✅ Styled components:
+    - ✅ `StyledSwitchRoot` with proper rounded styling and animations
+    - ✅ `StyledSwitchThumb` with smooth sliding animation
+    - ✅ `StyledSwitchLabel` for consistent label styling
+    - ✅ `StyledSwitchGroupLabel` for group label styling
+  - ✅ Utility functions:
+    - ✅ `getSwitchDataState` for proper state management
+    - ✅ `generateSwitchId` for unique ID generation
+    - ✅ `extractPixelValue` for processing token values
+    - ✅ `getSpacingBySize` for size-appropriate spacing
+  - ✅ Accessibility improvements:
+    - ✅ Proper ARIA attributes for screen readers
+    - ✅ Enhanced focus indicators for keyboard navigation
+    - ✅ Support for optional description text (subtext)
+    - ✅ Proper switch role for accessibility
+    - ✅ Smooth animations for state changes
+  - ✅ **TypeScript Standards Compliance**:
+    - ✅ Converted from interface to type alias for all props
+    - ✅ Proper separation of styled components
+    - ✅ Follows memory bank TypeScript type system standards
+  - ✅ **API Simplification**:
+    - ✅ Removed className and accessibilityLabel props for cleaner API
+    - ✅ Renamed isChecked to checked and isDisabled to disabled for consistency
+    - ✅ Renamed label to children and rightSlot to slot for cleaner API
+    - ✅ Removed ARIA labels for simpler accessibility approach
+    - ✅ Removed internal state management (parent-controlled state)
+    - ✅ Added required and error state support with visual indicators
+    - ✅ Removed defaultChecked prop for simpler state management
+  - ✅ **Status**: ✅ Complete and Fully Compliant
+  - ✅ **Implementation**:
+    - Fully modular structure following project patterns
+    - Comprehensive TypeScript types for all props and configurations
+    - Proper token-based styling with design system consistency
+    - Complete primitive component integration (Block, PrimitiveText)
+    - Simplified API with parent-managed state (no internal state management)
+    - Features:
+      - Parent-controlled switch state management
+      - SwitchGroup for managing multiple switch toggles
+      - Support for supplementary description text with error/disabled states
+      - Custom rounded switch styling with sliding thumb animation
+      - Enhanced focus states for better keyboard navigation
+      - Animation for smoother state transitions
+      - Slot support for additional content
+      - Required field indicator with red asterisk
+      - Error state support with visual feedback
+      - Proper switch role for accessibility compliance
+  - ✅ **Spacing Fix**: Fixed slot spacing across all form components (Checkbox, Radio, Switch):
+    - ✅ Updated Switch token from 8px to 6px for consistency
+    - ✅ Removed `justifyContent="space-between"` wrapper that was overriding spacing tokens
+    - ✅ Simplified layout to use direct `marginLeft` spacing tokens (6px) between label and slot
+  - ✅ **Tag Component Integration**: Enhanced all form component demos to use Tag components as slot content:
+    - ✅ CheckboxDemo: Uses Tag with "Optional" text for slot examples
+    - ✅ SwitchDemo: Uses Tags with "PRO" (success), "BETA" (warning), "EXPERIMENTAL" (error), and "Optional" (primary)
+    - ✅ RadioDemo: Added new slot section with "FREE" (neutral), "POPULAR" (success), and "PREMIUM" (warning) tags
+    - ✅ All tags use TagSize.XS for optimal slot sizing and appropriate colors/variants for semantic meaning
+  - ✅ **TypeScript Build Fix**: Resolved type compatibility issues in Checkbox component:
+    - ✅ Updated `extractPixelValue` function to handle complex styled-components types (`string | number | undefined`)
+    - ✅ Updated `getIconSize` function to properly convert token values to strings with fallbacks
+    - ✅ Fixed all TypeScript compilation errors related to icon sizing
+  - ✅ **CI/CD Lockfile Fix**: Resolved pnpm lockfile synchronization issues:
+    - ✅ Updated `pnpm-lock.yaml` to sync with `package.json` dependencies
+    - ✅ Verified `pnpm install --frozen-lockfile` works correctly for CI environments
+    - ✅ Clean build with no TypeScript errors (warnings are acceptable for declaration files)
+  - ✅ **Token Consistency**: Maintained consistent token import patterns:
+    - ✅ Form components (Checkbox, Radio, Switch) use `FOUNDATION_THEME` from `"../../tokens"`
+    - ✅ Other components use `foundationToken` from `"../../foundationToken"`
+    - ✅ Avoided breaking changes by keeping existing token structure
+    - ✅ TypeScript declaration warnings are acceptable as they don't affect functionality
+
 #### Demo System
 - ✅ Basic demo layout
 - ✅ Component showcase sections
 - ✅ Example variety covering component features
-- ✅ Dedicated demo pages for each component (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Tabs)
+- ✅ Dedicated demo pages for each component (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Tabs, Checkbox, Radio, Switch)
 - ✅ Navigation sidebar for component selection
 - ✅ Beautified demos with consistent headers and explanatory text
 - ✅ Improved visual hierarchy with section dividers and better spacing
@@ -206,7 +392,7 @@
 
 ## Current Status
 - Documentation and rules are in place
-- Seven components (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Avatar, and AvatarGroup) now follow the modular structure described in the system patterns document. The component library is growing with consistent patterns applied across all implementations.
+- Ten components (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Avatar, AvatarGroup, Checkbox, Radio, and Switch) now follow the modular structure described in the system patterns document. The component library is growing with consistent patterns applied across all implementations.
 - Demo system has been enhanced with beautified demos and better organization
 - All components use a pure slot-based API without deprecated icon props
 - SplitTag component demonstrates proper component reuse and extension patterns

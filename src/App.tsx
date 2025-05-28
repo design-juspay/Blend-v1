@@ -11,6 +11,12 @@ import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
+import AccordionDemo from "./demos/Accordion/AccordionDemo";
+import TooltipDemo from "./demos/Tooltip/TooltipDemo";
+import PopoverDemo from "./demos/Popover/PopoverDemo";
+import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
+import RadioDemo from "./demos/Radio/RadioDemo";
+import SwitchDemo from "./demos/Switch/SwitchDemo";
 import SnackbarDemo from "./demos/Snackbar/SnackbarDemo";
 
 // Component categories
@@ -62,6 +68,11 @@ function App() {
       component: <BreadcrumbDemo />,
     },
     {
+      id: "accordion",
+      name: "Accordion",
+      component: <AccordionDemo />,
+    },
+    {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
@@ -75,6 +86,31 @@ function App() {
       id: "snackbar",
       name: "Snackbar",
       component: <SnackbarDemo />,
+    },
+    {
+      id: "tooltips",
+      name: "Tooltips",
+      component: <TooltipDemo />,
+    },
+    {
+      id: "popover",
+      name: "Popover",
+      component: <PopoverDemo />,
+    },
+    {
+      id: "checkbox",
+      name: "Checkbox",
+      component: <CheckboxDemo />,
+    },
+    {
+      id: "radio",
+      name: "Radio",
+      component: <RadioDemo />,
+    },
+    {
+      id: "switch",
+      name: "Switch",
+      component: <SwitchDemo />,
     },
   ];
 

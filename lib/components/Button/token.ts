@@ -1,6 +1,5 @@
 import { foundationToken } from "../../foundationToken";
 
-
 const buttonTokens = {
   background: {
     primary: {
@@ -30,7 +29,7 @@ const buttonTokens = {
     plainIcon: {
       hover: foundationToken.colors.gray[100],
       active: foundationToken.colors.gray[150],
-    }
+    },
   },
   text: {
     primary: {
@@ -83,24 +82,24 @@ const buttonTokens = {
   boxShadow: {
     primary: {
       active: "0px 4px 4px 0px rgba(0, 0, 0, 0.15) inset",
-      focused: `0px 0px 0px 3px ${foundationToken.colors.primary[200]}`
+      focused: `0px 0px 0px 3px ${foundationToken.colors.primary[200]}`,
     },
     secondary: {
       active: "0px 4px 4px 0px rgba(0, 0, 0, 0.10) inset",
-      focused: `0px 0px 0px 3px ${foundationToken.colors.gray[100]}`
+      focused: `0px 0px 0px 3px ${foundationToken.colors.gray[100]}`,
     },
     danger: {
       active: "0px 4px 4px 0px rgba(0, 0, 0, 0.12) inset",
-      focused: `0px 0px 0px 3px ${foundationToken.colors.red[200]}`
+      focused: `0px 0px 0px 3px ${foundationToken.colors.red[200]}`,
     },
     success: {
       active: "0px 4px 4px 0px rgba(0, 0, 0, 0.12) inset",
-      focused: "0px 0px 0px 3px #BCF5D1"
-    }
+      focused: "0px 0px 0px 3px #BCF5D1",
+    },
   },
   link: {
     primary: foundationToken.colors.primary[500],
-    secondary: foundationToken.colors.gray[700],
+    secondary: foundationToken.colors.gray[600],
     danger: foundationToken.colors.red[500],
     success: foundationToken.colors.green[500],
     active: {
@@ -108,9 +107,9 @@ const buttonTokens = {
       secondary: foundationToken.colors.gray[900],
       danger: foundationToken.colors.red[700],
       success: foundationToken.colors.green[700],
-    }
+    },
   },
-  outline: { 
+  outline: {
     primary: foundationToken.colors.primary[300],
     secondary: foundationToken.colors.gray[300],
     danger: foundationToken.colors.red[300],
@@ -125,7 +124,7 @@ const buttonTokens = {
   },
   plainIcon: {
     background: "transparent",
-  }
+  },
 };
 
 export default buttonTokens;

@@ -8,6 +8,125 @@ import { FOUNDATION_THEME } from "../../tokens";
 import modalTokens from "./modal.tokens";
 import Text from "../Text/Text";
 
+const ModalHeader = ({
+  title,
+  subtitle,
+  onClose,
+  showCloseButton,
+  headerRightSlot,
+  showDivider,
+}: {
+  title?: string;
+  subtitle?: string;
+  onClose: () => void;
+  showCloseButton?: boolean;
+  headerRightSlot?: React.ReactNode;
+  showDivider?: boolean;
+}) => {
+  if (!title && !subtitle) return null;
+
+  return (
+    <Block
+      display="flex"
+      justifyContent="space-between"
+      alignItems="flex-start"
+      padding={modalTokens.padding.header}
+      flexShrink={0}
+      overflow="auto"
+      maxHeight="20vh"
+      borderBottom={
+        showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
+      }
+    >
+      <Block
+        display="flex"
+        flexDirection="column"
+        flexGrow={1}
+        minWidth="0"
+        paddingRight={FOUNDATION_THEME.unit[16]}
+        gap={FOUNDATION_THEME.unit[8]}
+      >
+        <Block
+          display="flex"
+          alignItems="center"
+          gap={FOUNDATION_THEME.unit[8]}
+        >
+          {title && (
+            <Text
+              variant="heading.sm"
+              fontWeight={600}
+              color={modalTokens.color.title}
+            >
+              {title}
+            </Text>
+          )}
+          {headerRightSlot}
+        </Block>
+        {subtitle && (
+          <Text
+            variant="code.lg"
+            color={modalTokens.color.subtitle}
+            fontWeight={400}
+          >
+            {subtitle}
+          </Text>
+        )}
+      </Block>
+      {showCloseButton && (
+        <Button
+          subType={ButtonSubType.PLAIN_ICON}
+          buttonType={ButtonType.SECONDARY}
+          leadingIcon={X}
+          onClick={onClose}
+          ariaLabel="Close"
+        />
+      )}
+    </Block>
+  );
+};
+
+const ModalFooter = ({
+  primaryAction,
+  secondaryAction,
+  showDivider,
+}: {
+  primaryAction?: ModalProps["primaryAction"];
+  secondaryAction?: ModalProps["secondaryAction"];
+  showDivider?: boolean;
+}) => {
+  if (!primaryAction && !secondaryAction) return null;
+
+  return (
+    <Block
+      display="flex"
+      justifyContent="flex-end"
+      gap={FOUNDATION_THEME.unit[12]}
+      padding={modalTokens.padding.footerY}
+      flexShrink={0}
+      borderTop={
+        showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
+      }
+    >
+      {secondaryAction && (
+        <Button
+          buttonType={secondaryAction.type || ButtonType.SECONDARY}
+          text={secondaryAction.label}
+          onClick={secondaryAction.onClick}
+          isDisabled={secondaryAction.isDisabled}
+        />
+      )}
+      {primaryAction && (
+        <Button
+          buttonType={primaryAction.type || ButtonType.PRIMARY}
+          text={primaryAction.label}
+          onClick={primaryAction.onClick}
+          isDisabled={primaryAction.isDisabled}
+        />
+      )}
+    </Block>
+  );
+};
+
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (
     {
@@ -35,103 +154,6 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     }, [closeOnBackdropClick, onClose]);
 
     if (!isOpen) return null;
-
-    const renderHeader = () => {
-      if (!title && !subtitle) return null;
-
-      return (
-        <Block
-          display="flex"
-          justifyContent="space-between"
-          alignItems="flex-start"
-          padding={modalTokens.padding.header}
-          flexShrink={0}
-          overflow="auto"
-          maxHeight="20vh"
-          borderBottom={
-            showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
-          }
-        >
-          <Block
-            display="flex"
-            flexDirection="column"
-            flexGrow={1}
-            minWidth="0"
-            paddingRight={FOUNDATION_THEME.unit[16]}
-            gap={FOUNDATION_THEME.unit[8]}
-          >
-            <Block
-              display="flex"
-              alignItems="center"
-              gap={FOUNDATION_THEME.unit[8]}
-            >
-              {title && (
-                <Text
-                  variant="heading.sm"
-                  fontWeight={600}
-                  color={modalTokens.color.title}
-                >
-                  {title}
-                </Text>
-              )}
-              {headerRightSlot}
-            </Block>
-            {subtitle && (
-              <Text
-                variant="code.lg"
-                color={modalTokens.color.subtitle}
-                fontWeight={400}
-              >
-                {subtitle}
-              </Text>
-            )}
-          </Block>
-          {showCloseButton && (
-            <Button
-              subType={ButtonSubType.PLAIN_ICON}
-              buttonType={ButtonType.SECONDARY}
-              leadingIcon={X}
-              onClick={onClose}
-              ariaLabel="Close"
-            />
-          )}
-        </Block>
-      );
-    };
-
-    const renderFooter = () => {
-      if (!primaryAction && !secondaryAction) return null;
-
-      return (
-        <Block
-          display="flex"
-          justifyContent="flex-end"
-          gap={FOUNDATION_THEME.unit[12]}
-          padding={modalTokens.padding.footerY}
-          flexShrink={0}
-          borderTop={
-            showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
-          }
-        >
-          {secondaryAction && (
-            <Button
-              buttonType={secondaryAction.type || ButtonType.SECONDARY}
-              text={secondaryAction.label}
-              onClick={secondaryAction.onClick}
-              isDisabled={secondaryAction.isDisabled}
-            />
-          )}
-          {primaryAction && (
-            <Button
-              buttonType={primaryAction.type || ButtonType.PRIMARY}
-              text={primaryAction.label}
-              onClick={primaryAction.onClick}
-              isDisabled={primaryAction.isDisabled}
-            />
-          )}
-        </Block>
-      );
-    };
 
     return (
       <Block
@@ -173,7 +195,14 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          {renderHeader()}
+          <ModalHeader
+            title={title}
+            subtitle={subtitle}
+            onClose={onClose}
+            showCloseButton={showCloseButton}
+            headerRightSlot={headerRightSlot}
+            showDivider={showDivider}
+          />
 
           <Block
             padding={modalTokens.padding.body}
@@ -183,7 +212,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
             {children}
           </Block>
 
-          {renderFooter()}
+          <ModalFooter
+            primaryAction={primaryAction}
+            secondaryAction={secondaryAction}
+            showDivider={showDivider}
+          />
         </Block>
       </Block>
     );
