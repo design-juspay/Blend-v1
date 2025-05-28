@@ -18,6 +18,8 @@ import {
 import { Tag } from "../../../lib/main";
 import Tooltip from "../../../lib/components/Tooltip/Tooltip";
 import Popover from "../../../lib/components/Popover/Popover";
+import { addSnackbar } from "../../../lib/components/Snackbar/Snackbar";
+import { SnackbarVariant } from "../../../lib/components/Snackbar/types";
 // import Menu from "../../../lib/components/Menu/Menu";
 
 const TagsDemo: React.FC = () => {
@@ -285,6 +287,56 @@ const TagsDemo: React.FC = () => {
             <span className="showcase-label">Complex Content</span>
           </div>
         </div>
+        <Block display="flex" alignItems="center" gap={10} marginTop={10}>
+          <button
+            onClick={() =>
+              addSnackbar({
+                header: "Info Heading",
+                description:
+                  "This is body message of the information bar. This text is going to a run a bit longer.",
+                variant: SnackbarVariant.SUCCESS,
+                actionButton: {
+                  label: "Action",
+                  onClick: () => alert("Action clicked"),
+                },
+              })
+            }
+          >
+            Click me
+          </button>
+          <button
+            onClick={() =>
+              addSnackbar({
+                header: "Info Heading",
+                description:
+                  "This is body message of the information bar. This text is going to a run a bit longer.",
+                variant: SnackbarVariant.SUCCESS,
+                actionButton: {
+                  label: "Action",
+                  onClick: () => alert("Action clicked"),
+                },
+              })
+            }
+          >
+            Click me
+          </button>
+          <button
+            onClick={() =>
+              addSnackbar({
+                header: "Info Heading",
+                description:
+                  "This is body message of the information bar. This text is going to a run a bit longer.",
+                variant: SnackbarVariant.ERROR,
+                actionButton: {
+                  label: "Action",
+                  onClick: () => alert("Action clicked"),
+                },
+              })
+            }
+          >
+            Click me
+          </button>
+        </Block>
       </section>
     </div>
   );

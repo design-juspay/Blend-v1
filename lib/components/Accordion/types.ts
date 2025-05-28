@@ -28,7 +28,7 @@ export type AccordionProps = {
   accordionType?: AccordionType;
   defaultValue?: string | string[];
   value?: string | string[];
-  isCollapsible?: boolean;
   isMultiple?: boolean;
   onValueChange?: (value: string | string[]) => void;
+  className?: string;
 } 
