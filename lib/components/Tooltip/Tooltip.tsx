@@ -32,7 +32,7 @@ export const Tooltip = ({
     <RadixTooltip.Provider delayDuration={delayDuration}>
       <RadixTooltip.Root open={open}>
         <RadixTooltip.Trigger asChild>{trigger}</RadixTooltip.Trigger>
-        <RadixTooltip.Content side={side} align={align} sideOffset={offset}>
+        <RadixTooltip.Content side={side} align={align} sideOffset={offset} style={{ zIndex: 1000 }}>
           <Block
             display="flex"
             alignItems="center"

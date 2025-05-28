@@ -1,6 +1,90 @@
 import { FOUNDATION_THEME } from "../../tokens";
+import { CSSObject } from "styled-components";
 
-const checkboxTokens = {
+type CheckboxTokens = {
+  background: {
+    default: CSSObject["backgroundColor"];
+    hover: CSSObject["backgroundColor"];
+    intermediate: CSSObject["backgroundColor"];
+    checked: CSSObject["backgroundColor"];
+    disabled: CSSObject["backgroundColor"];
+    disabledChecked: CSSObject["backgroundColor"];
+  };
+  icon: {
+    default: CSSObject["width"];
+    small: CSSObject["width"];
+    color: CSSObject["color"];
+  };
+  label: {
+    default: CSSObject["color"];
+    disabled: CSSObject["color"];
+    fontWeight: CSSObject["fontWeight"];
+  };
+  subtext: {
+    default: CSSObject["color"];
+    disabled: CSSObject["color"];
+    error: CSSObject["color"];
+  };
+  required: {
+    color: CSSObject["color"];
+    spacing: CSSObject["margin"];
+  };
+  border: {
+    width: CSSObject["borderWidth"];
+    radius: CSSObject["borderRadius"];
+    default: CSSObject["borderColor"];
+    hover: CSSObject["borderColor"];
+    focus: CSSObject["borderColor"];
+  };
+  sizes: {
+    sm: {
+      root: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      indicator: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      icon: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      fontSize: CSSObject["fontSize"];
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        marginLeft: CSSObject["marginLeft"];
+        marginTop: CSSObject["marginTop"];
+      };
+    };
+    md: {
+      root: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      indicator: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      icon: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      fontSize: CSSObject["fontSize"];
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        marginLeft: CSSObject["marginLeft"];
+        marginTop: CSSObject["marginTop"];
+      };
+    };
+  };
+  spacing: {
+    rightSlot: CSSObject["margin"];
+    checkboxMarginRight: CSSObject["marginRight"];
+  };
+};
+
+const checkboxTokens: CheckboxTokens = {
   background: {
     default: FOUNDATION_THEME.colors.gray[0],
     hover: FOUNDATION_THEME.colors.gray[0],

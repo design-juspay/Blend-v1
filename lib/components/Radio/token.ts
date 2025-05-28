@@ -1,6 +1,79 @@
 import { FOUNDATION_THEME } from "../../tokens";
+import { CSSObject } from "styled-components";
 
-const radioTokens = {
+type RadioTokens = {
+  background: {
+    default: CSSObject["backgroundColor"];
+    checked: CSSObject["backgroundColor"];
+    disabled: CSSObject["backgroundColor"];
+    disabledChecked: CSSObject["backgroundColor"];
+  };
+  border: {
+    width: CSSObject["borderWidth"];
+    radius: CSSObject["borderRadius"];
+    default: CSSObject["borderColor"];
+    hover: CSSObject["borderColor"];
+    focus: CSSObject["borderColor"];
+  };
+  indicator: {
+    color: CSSObject["color"];
+    size: {
+      sm: CSSObject["width"];
+      md: CSSObject["width"];
+    };
+  };
+  label: {
+    default: CSSObject["color"];
+    disabled: CSSObject["color"];
+    fontWeight: CSSObject["fontWeight"];
+  };
+  subtext: {
+    default: CSSObject["color"];
+    disabled: CSSObject["color"];
+    error: CSSObject["color"];
+  };
+  required: {
+    color: CSSObject["color"];
+    spacing: CSSObject["margin"];
+  };
+  groupLabel: {
+    color: CSSObject["color"];
+    fontWeight: CSSObject["fontWeight"];
+  };
+  sizes: {
+    sm: {
+      radio: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      fontSize: CSSObject["fontSize"];
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        marginLeft: CSSObject["marginLeft"];
+        marginTop: CSSObject["marginTop"];
+      };
+    };
+    md: {
+      radio: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      fontSize: CSSObject["fontSize"];
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        marginLeft: CSSObject["marginLeft"];
+        marginTop: CSSObject["marginTop"];
+      };
+    };
+  };
+  spacing: {
+    rightSlot: CSSObject["margin"];
+    radioMarginRight: CSSObject["marginRight"];
+    groupSpacing: CSSObject["margin"];
+  };
+};
+
+const radioTokens: RadioTokens = {
   background: {
     default: FOUNDATION_THEME.colors.gray[0], 
     checked: FOUNDATION_THEME.colors.primary[500],

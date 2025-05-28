@@ -1,6 +1,93 @@
 import { FOUNDATION_THEME } from "../../tokens";
+import { CSSObject } from "styled-components";
 
-const switchTokens = {
+type SwitchTokens = {
+  background: {
+    enabled: CSSObject["backgroundColor"];
+    disabled: CSSObject["backgroundColor"];
+    inactive: CSSObject["backgroundColor"];
+  };
+  thumb: {
+    background: CSSObject["backgroundColor"];
+    border: {
+      color: CSSObject["borderColor"];
+      width: CSSObject["borderWidth"];
+    };
+  };
+  label: {
+    default: CSSObject["color"];
+    disabled: CSSObject["color"];
+    fontWeight: CSSObject["fontWeight"];
+  };
+  subtext: {
+    default: CSSObject["color"];
+    disabled: CSSObject["color"];
+    error: CSSObject["color"];
+  };
+  required: {
+    color: CSSObject["color"];
+    spacing: CSSObject["margin"];
+  };
+  groupLabel: {
+    color: CSSObject["color"];
+    fontWeight: CSSObject["fontWeight"];
+  };
+  border: {
+    radius: CSSObject["borderRadius"];
+    focus: CSSObject["borderColor"];
+  };
+  sizes: {
+    sm: {
+      root: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      thumb: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+        top: CSSObject["top"];
+      };
+      thumbOn: CSSObject["left"];
+      thumbOff: CSSObject["left"];
+      fontSize: CSSObject["fontSize"];
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        marginLeft: CSSObject["marginLeft"];
+        marginTop: CSSObject["marginTop"];
+      };
+    };
+    md: {
+      root: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+      };
+      thumb: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+        top: CSSObject["top"];
+      };
+      thumbOn: CSSObject["left"];
+      thumbOff: CSSObject["left"];
+      fontSize: CSSObject["fontSize"];
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        marginLeft: CSSObject["marginLeft"];
+        marginTop: CSSObject["marginTop"];
+      };
+    };
+  };
+  spacing: {
+    rightSlot: CSSObject["margin"];
+    switchMarginRight: CSSObject["marginRight"];
+    groupSpacing: CSSObject["margin"];
+  };
+  transition: {
+    duration: CSSObject["transitionDuration"];
+    easing: CSSObject["transitionTimingFunction"];
+  };
+};
+
+const switchTokens: SwitchTokens = {
   background: {
     enabled: FOUNDATION_THEME.colors.primary[500],
     disabled: FOUNDATION_THEME.colors.primary[300],
