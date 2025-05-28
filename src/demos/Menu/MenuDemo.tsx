@@ -9,6 +9,7 @@ import {
 } from "../../../lib/components/Menu/Menu";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import MenuV2 from "../../../lib/components/MenuV2/MenuV2";
+import Select from "../../../lib/components/Select/Select";
 
 const dummyItems: MenuGroupType[] = [
   {
@@ -77,9 +78,10 @@ const MenuDemo = () => {
         gap={100}
         style={{ marginTop: "20px" }}
       >
-        <MenuV2
-          trigger={<Button text="Open MenuV2" onClick={() => {}} />}
-        />
+        <MenuV2 trigger={<Button text="Open MenuV2" onClick={() => {}} />} />
+        <div style={{ width: "300px" }}>
+          <Select label="Select an option" />
+        </div>
 
         <Menu
           // enableSearch

@@ -10,7 +10,7 @@ export * from "./components/AvatarGroup";
 export * from "./components/Modal";
 export * from "./components/Tooltip";
 export * from "./components/Menu/Menu";
+export * from "./components/Select/Select";
 export * from "./components/Popover/Popover";
 export * from "./components/Accordion";
-export * from "./components/Dropdown/Dropdown";
 export * from "./components/Snackbar";

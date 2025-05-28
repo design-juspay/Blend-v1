@@ -66,6 +66,13 @@ type StyledBlockProps = StateStyles & {
   borderBottomLeftRadius?: CSSObject["borderBottomLeftRadius"];
   borderBottomRightRadius?: CSSObject["borderBottomRightRadius"];
 
+  // Outline
+  outline?: CSSObject["outline"];
+  outlineColor?: CSSObject["outlineColor"];
+  outlineWidth?: CSSObject["outlineWidth"];
+  outlineStyle?: CSSObject["outlineStyle"];
+  outlineOffset?: CSSObject["outlineOffset"];
+
   // Sizing
   width?: CSSObject["width"];
   height?: CSSObject["height"];
