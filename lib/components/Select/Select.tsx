@@ -40,6 +40,7 @@ const Select = ({
   selected,
   onSelectChange,
 }: SelectProps) => {
+  console.log(subLabel);
   return (
     <Block display="flex" flexDirection="column" gap={8} width="100%">
       <Block display="flex" width={"100%"} alignItems="center" gap={8}>

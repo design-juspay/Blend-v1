@@ -32,7 +32,7 @@ export type SelectMenuGroupType = {
 
 export type SelectMenuProps = {
   trigger?: React.ReactNode;
-  items?: SelectMenuGroupType[];
+  items: SelectMenuGroupType[];
   asModal?: boolean;
   alignment?: SelectMenuAlignment;
   side?: SelectMenuSide;

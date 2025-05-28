@@ -7,6 +7,7 @@ import { ChevronRightIcon } from "lucide-react";
 import React, { useState } from "react";
 import {
   dummyMenuItems,
+  dummyMenuItemsLong,
   SelectMenuAlignment,
   SelectMenuGroupType,
   SelectMenuItemType,
@@ -378,7 +379,7 @@ function overrideOnClickInMenuItem(
 
 const SelectMenu = ({
   trigger,
-  items = dummyMenuItems,
+  items,
   asModal = false,
   alignment = SelectMenuAlignment.CENTER,
   side = SelectMenuSide.BOTTOM,
