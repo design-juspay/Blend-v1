@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import styled from "styled-components";
 import {
   BarChart,
   Bar,
@@ -7,7 +6,6 @@ import {
   XAxis,
   YAxis,
   Tooltip as RechartsTooltip,
-  type TooltipProps,
   Area,
   AreaChart,
 } from "recharts";
@@ -17,32 +15,6 @@ import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
 import { ChangeType, StatCardVariant, type StatCardProps } from "./types";
 import { FOUNDATION_THEME } from "../../tokens";
-
-const ProgressBarFilled = styled(Block)`
-  background-color: ${FOUNDATION_THEME.colors.primary[500]};
-  height: 100%;
-`;
-
-const ProgressBarUnfilled = styled(Block)`
-  background-color: ${FOUNDATION_THEME.colors.gray[0]};
-  height: 100%;
-  background-image: repeating-linear-gradient(
-    to right,
-    ${FOUNDATION_THEME.colors.gray[200]},
-    ${FOUNDATION_THEME.colors.gray[200]} 5px,
-    transparent 1px,
-    transparent
-  );
-  background-size: ${FOUNDATION_THEME.unit[10]} ${FOUNDATION_THEME.unit[10]};
-`;
-
-const CardContainer = styled(Block)`
-  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-  &:hover {
-    box-shadow: ${FOUNDATION_THEME.shadows.xs};
-  }
-`;
 
 const StatCard = ({
   title,
@@ -92,7 +64,12 @@ const StatCard = ({
     ? FOUNDATION_THEME.colors.red[500]
     : FOUNDATION_THEME.colors.green[500];
 
-  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  type ChartTooltipProps = {
+    active?: boolean;
+    payload?: Array<{ value: number; payload?: { index: number } }>;
+  };
+
+  const ChartTooltipWrapper = ({ active, payload }: ChartTooltipProps) => {
     if (!active || !payload || payload.length === 0) return null;
 
     const currentValue = payload[0].value as number;
@@ -105,14 +82,8 @@ const StatCard = ({
     const isUp = diff >= 0;
 
     return (
-      <Block
-        backgroundColor={FOUNDATION_THEME.colors.gray[1000]}
-        padding={`${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[8]}`}
-        borderRadius={FOUNDATION_THEME.border.radius[4]}
-      >
-        <Text color={FOUNDATION_THEME.colors.gray[0]} variant="body.sm">
-          {`${Math.abs(percentage).toFixed(0)}% ${isUp ? "Up" : "Down"}`}
-        </Text>
+      <Block display="inline-block">
+        {`${Math.abs(percentage).toFixed(0)}% ${isUp ? "Up" : "Down"}`}
       </Block>
     );
   };
@@ -125,7 +96,7 @@ const StatCard = ({
   }, [chartData]);
 
   return (
-    <CardContainer
+    <Block
       height="190px"
       border={`${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`}
       borderRadius={FOUNDATION_THEME.border.radius[8]}
@@ -138,6 +109,8 @@ const StatCard = ({
       gap={FOUNDATION_THEME.unit[24]}
       className={className}
       data-variant={normalizedVariant}
+      transition="transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out"
+      _hover={{ boxShadow: FOUNDATION_THEME.shadows.xs }}
     >
       {effectiveVariant !== StatCardVariant.NUMBER && (
         <Block
@@ -351,7 +324,23 @@ const StatCard = ({
                 <XAxis dataKey="date" hide />
                 <YAxis hide />
                 <RechartsTooltip
-                  content={<CustomTooltip />}
+                  content={(props: ChartTooltipProps) => {
+                    if (
+                      !props.active ||
+                      !props.payload ||
+                      props.payload.length === 0
+                    )
+                      return null;
+
+                    return (
+                      <Tooltip
+                        content={<ChartTooltipWrapper {...props} />}
+                        open={props.active}
+                      >
+                        <div />
+                      </Tooltip>
+                    );
+                  }}
                   cursor={{
                     strokeDasharray: "6 5",
                     stroke: FOUNDATION_THEME.colors.gray[400],
@@ -403,7 +392,23 @@ const StatCard = ({
                 <XAxis dataKey="date" hide />
                 <YAxis hide />
                 <RechartsTooltip
-                  content={<CustomTooltip />}
+                  content={(props: ChartTooltipProps) => {
+                    if (
+                      !props.active ||
+                      !props.payload ||
+                      props.payload.length === 0
+                    )
+                      return null;
+
+                    return (
+                      <Tooltip
+                        content={<ChartTooltipWrapper {...props} />}
+                        open={props.active}
+                      >
+                        <div />
+                      </Tooltip>
+                    );
+                  }}
                   cursor={{ fill: "transparent" }}
                   position={{ y: 0 }}
                   isAnimationActive={false}
@@ -438,8 +443,22 @@ const StatCard = ({
                   borderRadius={FOUNDATION_THEME.border.radius[4]}
                   overflow="hidden"
                 >
-                  <ProgressBarFilled style={{ width: `${progressValue}%` }} />
-                  <ProgressBarUnfilled
+                  <Block
+                    backgroundColor={FOUNDATION_THEME.colors.primary[500]}
+                    height="100%"
+                    width={`${progressValue}%`}
+                  />
+                  <Block
+                    backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                    height="100%"
+                    backgroundImage={`repeating-linear-gradient(
+                      to right,
+                      ${FOUNDATION_THEME.colors.gray[200]},
+                      ${FOUNDATION_THEME.colors.gray[200]} 5px,
+                      transparent 1px,
+                      transparent
+                    )`}
+                    backgroundSize={`${FOUNDATION_THEME.unit[10]} ${FOUNDATION_THEME.unit[10]}`}
                     style={{ width: `${100 - progressValue}%` }}
                   />
                 </Block>
@@ -454,7 +473,7 @@ const StatCard = ({
             )}
         </Block>
       )}
-    </CardContainer>
+    </Block>
   );
 };
 
