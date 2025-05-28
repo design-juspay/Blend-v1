@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { Check, Minus } from 'lucide-react';
 import { CheckboxProps, CheckboxSize } from './types';
 import { 
-  generateCheckboxId, 
   getCheckboxDataState, 
   extractPixelValue
 } from './checkboxUtils';
@@ -15,7 +14,7 @@ import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import checkboxTokens from './token';
 
-const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
+export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
   (
     {
       id,
@@ -34,8 +33,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref
   ) => {
-    const reactId = React.useId();
-    const uniqueId = generateCheckboxId(id, value, reactId);
+    const uniqueId = id || React.useId();
     
 
 

@@ -61,7 +61,7 @@ const SwitchDemo: React.FC = () => {
         <Block display="flex" alignItems="center" gap="16px" marginBottom="12px">
           <Switch
             checked={demoValue}
-            onChange={(checked) => setDemoValue(checked)}
+            onChange={(checked: boolean) => setDemoValue(checked)}
           >
             Demo Switch
           </Switch>
@@ -91,14 +91,14 @@ const SwitchDemo: React.FC = () => {
               <Switch 
                 size={SwitchSize.SMALL} 
                 checked={sizeExamples.smallChecked}
-                onChange={(checked) => setSizeExamples(prev => ({ ...prev, smallChecked: checked }))}
+                onChange={(checked: boolean) => setSizeExamples(prev => ({ ...prev, smallChecked: checked }))}
               >
                 Small switch
               </Switch>
               <Switch 
                 size={SwitchSize.SMALL}
                 checked={sizeExamples.smallUnchecked}
-                onChange={(checked) => setSizeExamples(prev => ({ ...prev, smallUnchecked: checked }))}
+                onChange={(checked: boolean) => setSizeExamples(prev => ({ ...prev, smallUnchecked: checked }))}
               >
                 Small switch (unchecked)
               </Switch>
@@ -115,14 +115,14 @@ const SwitchDemo: React.FC = () => {
               <Switch 
                 size={SwitchSize.MEDIUM} 
                 checked={sizeExamples.mediumChecked}
-                onChange={(checked) => setSizeExamples(prev => ({ ...prev, mediumChecked: checked }))}
+                onChange={(checked: boolean) => setSizeExamples(prev => ({ ...prev, mediumChecked: checked }))}
               >
                 Medium switch
               </Switch>
               <Switch 
                 size={SwitchSize.MEDIUM}
                 checked={sizeExamples.mediumUnchecked}
-                onChange={(checked) => setSizeExamples(prev => ({ ...prev, mediumUnchecked: checked }))}
+                onChange={(checked: boolean) => setSizeExamples(prev => ({ ...prev, mediumUnchecked: checked }))}
               >
                 Medium switch (unchecked)
               </Switch>
@@ -142,21 +142,21 @@ const SwitchDemo: React.FC = () => {
           <Switch 
             subtext="Receive email updates about your account activity"
             checked={subtextExamples.email}
-            onChange={(checked) => setSubtextExamples(prev => ({ ...prev, email: checked }))}
+            onChange={(checked: boolean) => setSubtextExamples(prev => ({ ...prev, email: checked }))}
           >
             Email notifications
           </Switch>
           <Switch 
             subtext="Get instant notifications on your mobile device"
             checked={subtextExamples.push}
-            onChange={(checked) => setSubtextExamples(prev => ({ ...prev, push: checked }))}
+            onChange={(checked: boolean) => setSubtextExamples(prev => ({ ...prev, push: checked }))}
           >
             Push notifications
           </Switch>
           <Switch 
             subtext="Receive promotional content and product updates"
             checked={subtextExamples.marketing}
-            onChange={(checked) => setSubtextExamples(prev => ({ ...prev, marketing: checked }))}
+            onChange={(checked: boolean) => setSubtextExamples(prev => ({ ...prev, marketing: checked }))}
           >
             Marketing emails
           </Switch>
@@ -174,21 +174,21 @@ const SwitchDemo: React.FC = () => {
           <Switch 
             slot={<Tag text="PRO" size={TagSize.XS} color={TagColor.SUCCESS} variant={TagVariant.SUBTLE} />}
             checked={slotExamples.premium}
-            onChange={(checked) => setSlotExamples(prev => ({ ...prev, premium: checked }))}
+            onChange={(checked: boolean) => setSlotExamples(prev => ({ ...prev, premium: checked }))}
           >
             Premium features
           </Switch>
           <Switch 
             slot={<Tag text="BETA" size={TagSize.XS} color={TagColor.WARNING} variant={TagVariant.SUBTLE} />}
             checked={slotExamples.beta}
-            onChange={(checked) => setSlotExamples(prev => ({ ...prev, beta: checked }))}
+            onChange={(checked: boolean) => setSlotExamples(prev => ({ ...prev, beta: checked }))}
           >
             Beta features
           </Switch>
           <Switch 
             slot={<Tag text="EXPERIMENTAL" size={TagSize.XS} color={TagColor.ERROR} variant={TagVariant.SUBTLE} />}
             checked={slotExamples.experimental}
-            onChange={(checked) => setSlotExamples(prev => ({ ...prev, experimental: checked }))}
+            onChange={(checked: boolean) => setSlotExamples(prev => ({ ...prev, experimental: checked }))}
           >
             Experimental features
           </Switch>
@@ -282,7 +282,7 @@ const SwitchDemo: React.FC = () => {
             name="individual" 
             value="setting1" 
             checked={individualSwitches.setting1}
-            onChange={(checked) => setIndividualSwitches(prev => ({ ...prev, setting1: checked }))}
+            onChange={(checked: boolean) => setIndividualSwitches(prev => ({ ...prev, setting1: checked }))}
           >
             Setting 1
           </Switch>
@@ -290,7 +290,7 @@ const SwitchDemo: React.FC = () => {
             name="individual" 
             value="setting2"
             checked={individualSwitches.setting2}
-            onChange={(checked) => setIndividualSwitches(prev => ({ ...prev, setting2: checked }))}
+            onChange={(checked: boolean) => setIndividualSwitches(prev => ({ ...prev, setting2: checked }))}
           >
             Setting 2
           </Switch>

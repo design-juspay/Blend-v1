@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { RadioSize } from './types';
 import radioTokens from './token';
+import { FOUNDATION_THEME } from '../../tokens';
 
 export const StyledRadioInput = styled.input<{
   size: RadioSize;
@@ -56,9 +57,9 @@ export const StyledRadioInput = styled.input<{
   
   /* Improved focus styles for better accessibility */
   &:focus-visible {
-    outline: 2px solid ${radioTokens.border.focus};
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    outline: ${FOUNDATION_THEME.border.width[2]} solid ${radioTokens.border.focus};
+    outline-offset: ${FOUNDATION_THEME.unit[2]};
+    box-shadow: 0 0 0 ${FOUNDATION_THEME.border.width[2]} rgba(0, 0, 0, ${FOUNDATION_THEME.opacity[10]});
   }
   
   &:not(:disabled):hover {

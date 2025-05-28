@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { SwitchSize } from './types';
 import switchTokens from './token';
+import { FOUNDATION_THEME } from '../../tokens';
 
 export const StyledSwitchRoot = styled.button<{
   size: SwitchSize;
@@ -35,9 +36,9 @@ export const StyledSwitchRoot = styled.button<{
   
   /* Improved focus styles for better accessibility */
   &:focus-visible {
-    outline: 2px solid ${switchTokens.border.focus};
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    outline: ${FOUNDATION_THEME.border.width[2]} solid ${switchTokens.border.focus};
+    outline-offset: ${FOUNDATION_THEME.unit[2]};
+    box-shadow: 0 0 0 ${FOUNDATION_THEME.border.width[2]} rgba(0, 0, 0, ${FOUNDATION_THEME.opacity[10]});
   }
   
   ${({ $isDisabled }) => $isDisabled && css`

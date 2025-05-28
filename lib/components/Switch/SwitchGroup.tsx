@@ -3,7 +3,7 @@ import { SwitchGroupProps, SwitchProps } from './types';
 import { StyledSwitchGroupLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import Switch from './Switch';
+import { Switch } from './Switch';
 import switchTokens from './token';
 
 const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(

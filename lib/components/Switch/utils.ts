@@ -1,10 +1,5 @@
 import { SwitchSize } from './types';
-
-export const generateSwitchId = (id?: string, value?: string, reactId?: string): string => {
-  if (id) return id;
-  if (value) return `switch-${value}`;
-  return `switch-${reactId}`;
-};
+import { FOUNDATION_THEME } from '../../tokens';
 
 export const getSwitchDataState = (checked: boolean): string => {
   return checked ? 'checked' : 'unchecked';
@@ -16,9 +11,16 @@ export const extractPixelValue = (tokenValue: string): number => {
 };
 
 export const getSpacingBySize = (size: SwitchSize): { marginLeft: string; marginTop: string } => {
+  // Use foundation tokens for consistent spacing
   const sizeMap = {
-    [SwitchSize.SMALL]: { marginLeft: '32px', marginTop: '4px' },
-    [SwitchSize.MEDIUM]: { marginLeft: '36px', marginTop: '4px' }
+    [SwitchSize.SMALL]: { 
+      marginLeft: String(FOUNDATION_THEME.unit[32]), 
+      marginTop: String(FOUNDATION_THEME.unit[4]) 
+    },
+    [SwitchSize.MEDIUM]: { 
+      marginLeft: String(FOUNDATION_THEME.unit[36]), 
+      marginTop: String(FOUNDATION_THEME.unit[4]) 
+    }
   };
   
   return sizeMap[size];

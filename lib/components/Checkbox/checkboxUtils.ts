@@ -1,17 +1,10 @@
 import { CheckboxSize } from './types';
 import checkboxTokens from './token';
+import { FOUNDATION_THEME } from '../../tokens';
 
 export const getCheckboxDataState = (checked: boolean | 'indeterminate'): string => {
   if (checked === 'indeterminate') return 'indeterminate';
   return checked ? 'checked' : 'unchecked';
-};
-
-export const generateCheckboxId = (
-  id: string | undefined,
-  value: string | undefined,
-  generatedId: string
-): string => {
-  return id || (value ? `checkbox-${value}` : `checkbox-${generatedId}`);
 };
 
 export const extractPixelValue = (tokenValue: string | number | undefined): number => {
@@ -37,10 +30,9 @@ export const getIconSize = (size: CheckboxSize): { width: string; height: string
 };
 
 export const getSpacingBySize = (size: CheckboxSize): { margin: string; padding: string } => {
-  // Base margin on checkbox size for better visual hierarchy
-  const margin = size === CheckboxSize.SMALL ? '4px' : '6px';
-  // Base padding on checkbox size for proper spacing
-  const padding = size === CheckboxSize.SMALL ? '2px' : '3px';
+  // Use foundation tokens for consistent spacing
+  const margin = size === CheckboxSize.SMALL ? String(FOUNDATION_THEME.unit[4]) : String(FOUNDATION_THEME.unit[6]);
+  const padding = String(FOUNDATION_THEME.unit[2]); // Consistent padding for both sizes
   
   return { margin, padding };
 };
@@ -49,8 +41,8 @@ export const getFocusRingStyles = (isFocusVisible: boolean): string => {
   if (!isFocusVisible) return '';
   
   return `
-    outline: 2px solid ${checkboxTokens.border.focus};
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+    outline: ${FOUNDATION_THEME.border.width[2]} solid ${checkboxTokens.border.focus};
+    outline-offset: ${FOUNDATION_THEME.unit[2]};
+    box-shadow: 0 0 0 ${FOUNDATION_THEME.border.width[4]} rgba(0, 0, 0, ${FOUNDATION_THEME.opacity[10]});
   `;
 }; 
