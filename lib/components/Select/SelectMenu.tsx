@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import { ChevronRightIcon } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   dummyMenuItems,
   SelectMenuAlignment,
@@ -17,40 +17,46 @@ import {
 const Content = styled(RadixMenu.Content)(() => ({
   backgroundColor: "white",
   color: "black",
-  borderRadius: 6,
+  borderRadius: 8,
   padding: "8px 6px",
   boxShadow: FOUNDATION_THEME.shadows.lg,
   zIndex: 9999,
   minWidth: 200,
   width: "var(--radix-dropdown-menu-trigger-width)",
   maxHeight: 400,
-  overflowY: "auto",
   scrollbarWidth: "thin",
+  border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+  overflowY: "auto",
   scrollbarColor: `${FOUNDATION_THEME.colors.gray[200]} ${FOUNDATION_THEME.colors.gray[0]}`,
 }));
 
-const StyledItem = styled(RadixMenu.Item)(() => ({
-  alignItems: "center",
-  gap: 8,
-  padding: "8px 6px",
-  borderRadius: 4,
-  cursor: "pointer",
-  userSelect: "none",
-  "&:hover": {
-    backgroundColor: FOUNDATION_THEME.colors.gray[50],
-  },
+const StyledItem = styled(RadixMenu.Item)<{ selected: boolean }>(
+  ({ selected }) => ({
+    alignItems: "center",
+    gap: 8,
+    padding: "8px 6px",
+    borderRadius: 4,
+    cursor: "pointer",
+    userSelect: "none",
+    backgroundColor: selected
+      ? FOUNDATION_THEME.colors.gray[50]
+      : "transparent",
+    "&:hover": {
+      backgroundColor: FOUNDATION_THEME.colors.gray[50],
+    },
 
-  "&[data-disabled]": {
-    opacity: 0.5,
-    cursor: "not-allowed",
-  },
+    "&[data-disabled]": {
+      opacity: 0.5,
+      cursor: "not-allowed",
+    },
 
-  "&[data-highlighted]": {
-    border: "none",
-    outline: "none",
-    backgroundColor: FOUNDATION_THEME.colors.gray[50],
-  },
-}));
+    "&[data-highlighted]": {
+      border: "none",
+      outline: "none",
+      backgroundColor: FOUNDATION_THEME.colors.gray[50],
+    },
+  })
+);
 
 const Sub = styled(RadixMenu.Sub)(() => ({
   padding: 0,
@@ -92,7 +98,15 @@ const SubTrigger = styled(RadixMenu.SubTrigger)(() => ({
   },
 }));
 
-const SubMenu = ({ item, idx }: { item: SelectMenuItemType; idx: number }) => {
+const SubMenu = ({
+  item,
+  idx,
+  selectedValue,
+}: {
+  item: SelectMenuItemType;
+  idx: number;
+  selectedValue: string | undefined;
+}) => {
   return (
     <Sub key={idx}>
       <SubTrigger data-gg="sub menu trigger" asChild>
@@ -162,7 +176,12 @@ const SubMenu = ({ item, idx }: { item: SelectMenuItemType; idx: number }) => {
         <SubContent avoidCollisions>
           {item.subMenu &&
             item.subMenu.map((subItem, subIdx) => (
-              <Item key={subIdx} item={subItem} idx={subIdx} />
+              <Item
+                key={subIdx}
+                item={subItem}
+                idx={subIdx}
+                selectedValue={selectedValue}
+              />
             ))}
         </SubContent>
       </RadixMenu.Portal>
@@ -176,16 +195,26 @@ const Separator = styled(RadixMenu.Separator)(() => ({
   margin: "6px 0",
 }));
 
-const Item = ({ item, idx }: { item: SelectMenuItemType; idx: number }) => {
+const Item = ({
+  item,
+  idx,
+  selectedValue,
+}: {
+  item: SelectMenuItemType;
+  idx: number;
+  selectedValue: string | undefined;
+}) => {
   if (item.subMenu) {
-    return <SubMenu item={item} idx={idx} />;
+    return <SubMenu item={item} idx={idx} selectedValue={selectedValue} />;
   }
+  const isSelected = selectedValue === item.value;
   return (
     <StyledItem
       onClick={item.onClick}
       asChild
       disabled={item.disabled}
       key={idx}
+      selected={isSelected}
     >
       <Block
         padding="6px"
@@ -215,7 +244,11 @@ const Item = ({ item, idx }: { item: SelectMenuItemType; idx: number }) => {
           >
             <Text
               variant="body.md"
-              color={FOUNDATION_THEME.colors.gray[600]}
+              color={
+                isSelected
+                  ? FOUNDATION_THEME.colors.primary[600]
+                  : FOUNDATION_THEME.colors.gray[600]
+              }
               fontWeight={500}
               truncate
             >
@@ -382,7 +415,7 @@ const SelectMenu = ({
         />
         {filteredItems &&
           filteredItems.map((group, groupId) => (
-            <Group key={groupId}>
+            <React.Fragment key={groupId}>
               {group.groupLabel && (
                 <Label>
                   <Text
@@ -395,6 +428,7 @@ const SelectMenu = ({
               )}
               {group.items.map((item, itemIndex) => (
                 <Item
+                  selectedValue={selected}
                   key={`${groupId}-${itemIndex}`}
                   item={item}
                   idx={itemIndex}
@@ -403,7 +437,7 @@ const SelectMenu = ({
               {groupId !== filteredItems.length - 1 && group.showSeparator && (
                 <Separator />
               )}
-            </Group>
+            </React.Fragment>
           ))}
       </Content>
     </RadixMenu.Root>

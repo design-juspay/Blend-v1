@@ -1,5 +1,4 @@
 import SelectMenu from "./SelectMenu";
-import React, { useState } from "react";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";

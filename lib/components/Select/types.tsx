@@ -99,6 +99,25 @@ export const dummyMenuItems: SelectMenuGroupType[] = [
       },
     ],
   },
+  {
+    groupLabel: "Preferences",
+    showSeparator: false,
+    items: [
+      {
+        label: "Theme Settings",
+        value: "theme-settings",
+        subLabel: "Customize your appearance",
+      },
+      {
+        label: "Notifications",
+        value: "notifications",
+      },
+      {
+        label: "Privacy",
+        value: "privacy",
+      },
+    ],
+  },
 ];
 
 export const dummyMenuItemsLong: SelectMenuGroupType[] = Array.from(
