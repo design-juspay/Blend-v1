@@ -10,6 +10,7 @@ import {
 import Block from "../../../lib/components/Primitives/Block/Block";
 import MenuV2 from "../../../lib/components/MenuV2/MenuV2";
 import Select from "../../../lib/components/Select/Select";
+import React, { useState } from "react";
 
 const dummyItems: MenuGroupType[] = [
   {
@@ -68,6 +69,8 @@ const dummyItems: MenuGroupType[] = [
 ];
 
 const MenuDemo = () => {
+  // Add state for Select demo
+  const [selectedOption, setSelectedOption] = useState("profile-settings");
   return (
     <div style={{ padding: "20px" }}>
       <h2>Menu Component</h2>
@@ -79,8 +82,13 @@ const MenuDemo = () => {
         style={{ marginTop: "20px" }}
       >
         <MenuV2 trigger={<Button text="Open MenuV2" onClick={() => {}} />} />
+        <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
-          <Select label="Select an option" />
+          <Select
+            label="Select an option"
+            selected={selectedOption}
+            onSelectChange={setSelectedOption}
+          />
         </div>
 
         <Menu

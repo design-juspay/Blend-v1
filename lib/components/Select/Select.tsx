@@ -24,6 +24,8 @@ type SelectProps = {
   size?: SelectMenuSize;
   items?: SelectMenuGroupType[];
   variant?: SelectMenuVariant;
+  selected: string;
+  onSelectChange: (value: string) => void;
 };
 
 const Select = ({
@@ -36,12 +38,9 @@ const Select = ({
   helpIconText = "Help icon text",
   placeholder = "Select an option",
   size = SelectMenuSize.LARGE,
+  selected,
+  onSelectChange,
 }: SelectProps) => {
-  const [selected, setSelected] = useState<string>("");
-
-  React.useEffect(() => {
-    console.log(selected, "selected");
-  }, [selected]);
   return (
     <Block display="flex" flexDirection="column" gap={8} width="100%">
       <Block display="flex" width={"100%"} alignItems="center" gap={8}>
@@ -70,7 +69,7 @@ const Select = ({
         <SelectMenu
           items={items}
           selected={selected}
-          onSelect={setSelected}
+          onSelect={onSelectChange}
           trigger={
             <PrimitiveButton
               display="flex"
@@ -89,7 +88,6 @@ const Select = ({
                 backgroundColor: FOUNDATION_THEME.colors.gray[50],
               }}
               _focus={{
-                backgroundColor: FOUNDATION_THEME.colors.gray[50],
                 border: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
               }}
               _active={{
@@ -97,16 +95,6 @@ const Select = ({
                 border: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
               }}
             >
-              {/* <PrimitiveButton
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                width="100%"
-                flexGrow={1}
-                paddingX={selectTokens.trigger.selectedValue.padding[size].x}
-                paddingY={selectTokens.trigger.selectedValue.padding[size].y}
-                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-              > */}
               <Text
                 as="span"
                 variant={
@@ -127,7 +115,6 @@ const Select = ({
                 />
               </Block>
             </PrimitiveButton>
-            // </PrimitiveButton>
           }
         />
       </Block>
