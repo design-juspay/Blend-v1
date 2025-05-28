@@ -16,6 +16,7 @@ import TooltipDemo from "./demos/Tooltip/TooltipDemo";
 import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
+import DataTableDemo from "./demos/DataTable/DataTableDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -100,6 +101,11 @@ function App() {
       id: "switch",
       name: "Switch",
       component: <SwitchDemo />,
+    },
+    {
+      id: "data-table",
+      name: "Data Table",
+      component: <DataTableDemo />,
     },
   ];
 
