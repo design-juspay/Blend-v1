@@ -20,6 +20,7 @@ const StyledContent = styled(RadixPopover.Content)<{ $size: PopoverSize }>(
     flexDirection: "column",
     width: popoverTokens.width[$size],
     maxWidth: "100%",
+    zIndex: 1000
   })
 );
 
