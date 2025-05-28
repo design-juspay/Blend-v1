@@ -1,0 +1,233 @@
+.popover-demo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.popover-demo h1 {
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.demo-section {
+  margin-bottom: 48px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 24px;
+  background-color: #fff;
+}
+
+.demo-section h2 {
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.popover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.popover-card {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
+.popover-card h3 {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.popover-sample {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.popover-content-basic {
+  padding: 8px 0;
+}
+
+/* Playground styles */
+.playground-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+}
+
+.playground-controls {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  overflow: auto;
+  max-height: 600px;
+}
+
+.playground-preview {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+/* Form elements styling */
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  margin-right: 8px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Notification styles */
+.notification-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* Settings list styles */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.settings-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* Use case examples */
+.use-case-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.use-case-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.use-case-example {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Share options */
+.share-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.share-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.share-option:hover {
+  background-color: #f5f5f5;
+}
+
+/* Form field help */
+.form-field {
+  width: 100%;
+  max-width: 400px;
+}
+
+.field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.field-header label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .playground-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .use-case-example {
+    padding: 1rem;
+  }
+} 

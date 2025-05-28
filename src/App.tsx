@@ -13,6 +13,7 @@ import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
 import TooltipDemo from "./demos/Tooltip/TooltipDemo";
+import PopoverDemo from "./demos/Popover/PopoverDemo";
 import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
@@ -91,6 +92,11 @@ function App() {
       id: "tooltips",
       name: "Tooltips",
       component: <TooltipDemo />,
+    },
+    {
+      id: "popover",
+      name: "Popover",
+      component: <PopoverDemo />,
     },
     {
       id: "checkbox",
