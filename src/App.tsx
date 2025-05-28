@@ -18,6 +18,7 @@ import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
+import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 
 // Component categories
@@ -29,10 +30,16 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("stat-cards");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
+    {
+      id: "stat-cards",
+      name: "Stat Cards",
+      component: <StatCardDemo />,
+    },
     {
       id: "buttons",
       name: "Buttons",
