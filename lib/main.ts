@@ -12,3 +12,5 @@ export * from "./components/Tooltip";
 export * from "./components/Menu/Menu";
 export * from "./components/Popover/Popover";
 export * from "./components/Accordion";
+export * from "./components/Dropdown/Dropdown";
+export * from "./components/Snackbar";

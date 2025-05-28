@@ -17,6 +17,8 @@ import PopoverDemo from "./demos/Popover/PopoverDemo";
 import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
+import MenuDemo from "./demos/Menu/MenuDemo";
+import Snackbar from "../lib/components/Snackbar/Snackbar";
 
 // Component categories
 type ComponentCategory = {
@@ -27,7 +29,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("popover");
+  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -70,6 +72,11 @@ function App() {
       id: "modals",
       name: "Modals",
       component: <ModalDemo />,
+    },
+    {
+      id: "menu",
+      name: "Menu",
+      component: <MenuDemo />,
     },
     {
       id: "accordion",
@@ -124,6 +131,8 @@ function App() {
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         />
       </div>
+
+      <Snackbar visibleToasts={5} />
 
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>

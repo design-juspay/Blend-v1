@@ -6,7 +6,7 @@ import { CSSObject } from "styled-components";
 
 export type SemanticTagType = keyof Pick<
   JSX.IntrinsicElements,
-  "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q" | "small"
+  "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q" | "small" | "label"
 >;
 
 export type TextProps = {

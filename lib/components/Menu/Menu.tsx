@@ -2,14 +2,9 @@ import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
 import styled from "styled-components";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
-import {
-  ChevronRightIcon,
-  CopyIcon,
-  FileIcon,
-  PlusIcon,
-  SettingsIcon,
-} from "lucide-react";
 import { FOUNDATION_THEME } from "../../tokens";
+
+// --- Styled Components ---
 
 const Content = styled(RadixDropdownMenu.Content)(() => ({
   backgroundColor: "white",
@@ -66,18 +61,20 @@ const StyledItem = styled.div<{ disabled?: boolean }>`
   }
 `;
 
-enum MenuItemVariant {
+// --- Types ---
+
+export enum MenuItemVariant {
   DEFAULT = "default",
   ACTION = "action",
   MULTISELECT = "multiselect",
 }
 
-enum MenuItemActionType {
+export enum MenuItemActionType {
   PRIMARY = "primary",
   DANGER = "danger",
 }
 
-type MenuItemType = {
+export type MenuItemType = {
   variant?: MenuItemVariant;
   text: string;
   actionType?: MenuItemActionType;
@@ -91,88 +88,29 @@ type MenuItemType = {
   slot4?: React.ReactNode;
 };
 
-type MenuGroupType = {
+export type MenuGroupType = {
   label?: string;
   showSeparator?: boolean;
   items: MenuItemType[];
 };
 
-const dummyItems: MenuGroupType[] = [
-  {
-    label: "Options",
-    showSeparator: true,
-    items: [
-      {
-        variant: MenuItemVariant.DEFAULT,
-        text: "Release Now",
-        slot4: <kbd>⌘</kbd>,
-        onClick: () => alert("Edit clicked"),
-      },
-      {
-        variant: MenuItemVariant.ACTION,
-        slot1: <FileIcon size={13} />,
-        text: "Save As CSV",
-        onClick: () => alert("Delete clicked"),
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        variant: MenuItemVariant.ACTION,
-        actionType: MenuItemActionType.PRIMARY,
-        slot1: <PlusIcon size={14} color={"blue"} />,
-        text: "Create New",
-        onClick: () => alert("Select All clicked"),
-      },
-      {
-        text: "Copy CSV",
-        slot1: <CopyIcon size={13} />,
-        onClick: () => alert("This won't fire"),
-      },
-      {
-        text: "Merchant Settings",
-        slot1: <SettingsIcon size={13} />,
-        slot2: <ChevronRightIcon size={13} />,
-        subMenu: {
-          items: [
-            {
-              variant: MenuItemVariant.DEFAULT,
-              text: "Edit",
-              onClick: () => alert("Edit clicked"),
-            },
-            {
-              variant: MenuItemVariant.ACTION,
-              text: "Delete",
-              onClick: () => alert("Delete clicked"),
-            },
-          ],
-        },
-      },
-    ],
-  },
-];
+type MenuProps = {
+  trigger: React.ReactNode;
+  side?: "left" | "right" | "bottom" | "top";
+  align?: "start" | "center" | "end";
+  items: MenuGroupType[];
+};
 
-/**
- * @description A dropdown menu component
- * @param {React.ReactNode} trigger - The trigger element
- * @param {string} side - The side of the menu
- * @param {string} align - The alignment of the menu
- * @returns {React.ReactNode}
- *
- * @todo - Add support for collisionBoundaries
- */
+// --- Component ---
+
 export const Menu = ({
   trigger,
   side = "bottom",
   align = "center",
-}: {
-  trigger: React.ReactNode;
-  side?: "left" | "right" | "bottom" | "top";
-  align?: "start" | "center" | "end";
-}) => {
+  items,
+}: MenuProps) => {
   return (
-    <RadixDropdownMenu.Root>
+    <RadixDropdownMenu.Root modal={false}>
       <RadixDropdownMenu.Trigger asChild>{trigger}</RadixDropdownMenu.Trigger>
       <Content
         side={side}
@@ -182,7 +120,7 @@ export const Menu = ({
         sideOffset={8}
         style={{ padding: 6 }}
       >
-        {dummyItems.map((group, groupIndex) => (
+        {items.map((group, groupIndex) => (
           <div key={groupIndex}>
             {group.label && (
               <RadixDropdownMenu.Label asChild>
@@ -202,7 +140,9 @@ export const Menu = ({
                 </Block>
               </RadixDropdownMenu.Label>
             )}
+
             {group.items.map((item, itemIndex) =>
+              // HAS SUBMENU
               item.subMenu && item.subMenu.items.length > 0 ? (
                 <RadixDropdownMenu.Sub key={itemIndex}>
                   <RadixDropdownMenu.SubTrigger asChild>
@@ -254,13 +194,17 @@ export const Menu = ({
                       </Block>
                     </StyledItem>
                   </RadixDropdownMenu.SubTrigger>
+
                   <RadixDropdownMenu.Portal>
-                    <SubContent style={{ padding: 6 }}>
+                    <SubContent avoidCollisions style={{ padding: 6 }}>
                       {item.subMenu.items.map((subItem, subIndex) => (
                         <RadixDropdownMenu.Item
                           asChild
                           key={subIndex}
                           disabled={subItem.disabled}
+                          onClick={
+                            subItem.disabled ? undefined : subItem.onClick
+                          }
                         >
                           <StyledItem disabled={subItem.disabled}>
                             {subItem.slot1 && (
@@ -276,8 +220,8 @@ export const Menu = ({
                               <Text
                                 variant="body.md"
                                 color={
-                                  item.variant === MenuItemVariant.ACTION
-                                    ? item.actionType ===
+                                  subItem.variant === MenuItemVariant.ACTION
+                                    ? subItem.actionType ===
                                       MenuItemActionType.PRIMARY
                                       ? FOUNDATION_THEME.colors.primary[600]
                                       : FOUNDATION_THEME.colors.red[600]
@@ -300,6 +244,7 @@ export const Menu = ({
                   asChild
                   key={itemIndex}
                   disabled={item.disabled}
+                  onClick={item.disabled ? undefined : item.onClick}
                 >
                   <StyledItem disabled={item.disabled}>
                     {item.slot1 && (
@@ -349,6 +294,7 @@ export const Menu = ({
                 </RadixDropdownMenu.Item>
               )
             )}
+
             {group.showSeparator && <Separator />}
           </div>
         ))}
