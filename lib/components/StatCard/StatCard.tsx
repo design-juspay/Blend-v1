@@ -25,7 +25,6 @@ const StatCard = ({
   variant,
   chartData,
   progressValue,
-  className,
   titleIcon,
   actionIcon,
   helpIconText,
@@ -109,10 +108,7 @@ const StatCard = ({
       display="flex"
       flexDirection="column"
       gap={FOUNDATION_THEME.unit[24]}
-      className={className}
-      data-variant={normalizedVariant}
-      transition="transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out"
-      _hover={{ boxShadow: FOUNDATION_THEME.shadows.xs }}
+      data-statcard-variant={normalizedVariant}
     >
       {effectiveVariant !== StatCardVariant.NUMBER && (
         <Block
@@ -151,7 +147,7 @@ const StatCard = ({
                 {title}
               </Text>
               {helpIconText && (
-                <Block>
+                <Block flexShrink={0}>
                   <Tooltip content={helpIconText}>
                     <CircleHelp
                       width={16}
@@ -164,11 +160,10 @@ const StatCard = ({
             </Block>
             {actionIcon && (
               <Block
-                width={FOUNDATION_THEME.unit[20]}
-                height={FOUNDATION_THEME.unit[20]}
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
+                flexShrink={0}
               >
                 {actionIcon}
               </Block>
@@ -237,11 +232,10 @@ const StatCard = ({
           >
             {titleIcon && (
               <Block
-                width={FOUNDATION_THEME.unit[20]}
-                height={FOUNDATION_THEME.unit[20]}
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
+                flexShrink={0}
               >
                 {titleIcon}
               </Block>

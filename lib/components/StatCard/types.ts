@@ -12,18 +12,18 @@ export enum ChangeType {
   DECREASE = "decrease",
 }
 
-export interface ChartDataPoint {
+export type ChartDataPoint = {
   value: number;
   label: string;
   date?: string;
-}
+};
 
-export interface StatCardChange {
+export type StatCardChange = {
   value: number;
   type: ChangeType;
-}
+};
 
-export interface StatCardProps {
+export type StatCardProps = {
   title: string;
   value: string | number;
   change?: StatCardChange;
@@ -31,8 +31,7 @@ export interface StatCardProps {
   variant: StatCardVariant;
   chartData?: ChartDataPoint[];
   progressValue?: number;
-  className?: string;
   titleIcon?: ReactNode;
   actionIcon?: ReactNode;
   helpIconText?: string;
-}
+};
