@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Input, { InputVariant } from "../../../lib/components/Input/Input";
 import NumberInput from "../../../lib/components/NumberInput/NumberInput";
+import TextArea from "../../../lib/components/TextArea/TextArea";
 
 const InputDemo: React.FC = () => {
   const [value, setValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [textAreaValue, setTextAreaValue] = useState<string>("");
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [numberValue, setNumberValue] = useState<number>(0);
@@ -77,6 +79,22 @@ const InputDemo: React.FC = () => {
         min={0}
         step={5}
       />
+      <div style={{ height: 100 }}></div>
+      <p style={{ color: "black" }}>Value: {numberValue}</p>
+      <TextArea
+        placeholder="Enter your text"
+        value={textAreaValue}
+        onChange={(e) => setTextAreaValue(e.target.value)}
+        label="Text Area"
+        helpIconHintText="This is a hint text to help user."
+        helpIconText="This is a help icon hint text to help user."
+        disabled={disabled}
+        error={error}
+        cols={10}
+        errorMessage="This is an error message."
+        hintText="This is a hint text to help user."
+      />
+      <div style={{ height: 100 }}></div>
     </div>
   );
 };

@@ -56,26 +56,6 @@ const NumberInput = ({
       flexDirection="column"
       gap={8}
       width="100%"
-      // @TODO: V1 - Add overall keyboard navigation
-      // DONT REMOVE
-      // tabIndex={0}
-      // onKeyDown={(e) => {
-      //   if (disabled) return;
-      //   if (
-      //     e.key === "ArrowUp" &&
-      //     (typeof max !== "number" || value + (step ?? 1) <= max)
-      //   ) {
-      //     onChange({ target: { value: String(value + (step ?? 1)) } } as any);
-      //     e.preventDefault();
-      //   }
-      //   if (
-      //     e.key === "ArrowDown" &&
-      //     (typeof min !== "number" || value - (step ?? 1) >= min)
-      //   ) {
-      //     onChange({ target: { value: String(value - (step ?? 1)) } } as any);
-      //     e.preventDefault();
-      //   }
-      // }}
     >
       <Block display="flex" alignItems="center" gap={4}>
         <Text
