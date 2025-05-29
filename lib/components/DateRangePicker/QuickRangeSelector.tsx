@@ -23,7 +23,6 @@ const StyledContainer = styled.div`
 
 const StyledTrigger = styled.div<{ $isOpen: boolean }>`
   ${dateRangePickerTokens.quickRange.trigger}
-  ${props => props.$isOpen ? '' : dateRangePickerTokens.quickRange.triggerHover}
 `;
 
 const StyledTriggerContent = styled.div`

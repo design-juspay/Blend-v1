@@ -14,6 +14,9 @@ import CalendarGrid from './CalendarGrid';
 import QuickRangeSelector from './QuickRangeSelector';
 import TimeSelector from './TimeSelector';
 import dateRangePickerTokens from './dateRangePicker.tokens';
+import { SwitchSize } from '../Switch/types';
+import { Switch } from '../Switch/Switch';
+import { FOUNDATION_THEME } from '../../tokens';
 
 const StyledContainer = styled.div<{ $isDisabled: boolean }>`
   ${dateRangePickerTokens.base.container}
@@ -96,7 +99,7 @@ const StyledFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 16px 0;
-  border-top: 1px solid ${dateRangePickerTokens.calendar.container.borderColor};
+  border-top: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
   margin-top: 16px;
 `;
 
@@ -105,22 +108,8 @@ const StyledToggleContainer = styled.div`
   align-items: center;
 `;
 
-const StyledToggle = styled.div<{ $isActive: boolean }>`
-  ${dateRangePickerTokens.toggle.container}
-  background-color: ${props => 
-    props.$isActive 
-      ? dateRangePickerTokens.calendar.startDate.backgroundColor
-      : dateRangePickerTokens.calendar.dayName.color
-  };
-`;
-
-const StyledToggleThumb = styled.div<{ $isActive: boolean }>`
-  ${dateRangePickerTokens.toggle.thumb}
-  ${props => props.$isActive && dateRangePickerTokens.toggle.thumbActive}
-`;
-
 const StyledToggleLabel = styled.span`
-  margin-left: 8px;
+  margin-left: 4px;
   ${dateRangePickerTokens.text.value}
 `;
 
@@ -521,12 +510,11 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
                   <StyledFooter>
                     <StyledToggleContainer>
-                      <StyledToggle
-                        $isActive={showTimePickerState}
-                        onClick={() => setShowTimePickerState(!showTimePickerState)}
-                      >
-                        <StyledToggleThumb $isActive={showTimePickerState} />
-                      </StyledToggle>
+                    <Switch
+                        checked={showTimePickerState}
+                        onChange={setShowTimePickerState}
+                        size={SwitchSize.MEDIUM}
+                      />
                       <StyledToggleLabel>Time Ranges</StyledToggleLabel>
                     </StyledToggleContainer>
 

@@ -63,7 +63,6 @@ type DateRangePickerTokens = {
   };
   quickRange: {
     trigger: CSSObject;
-    triggerHover: CSSObject;
   };
   toggle: {
     container: CSSObject;
@@ -92,23 +91,12 @@ const dateRangePickerTokens: DateRangePickerTokens = {
       fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`,
       color: FOUNDATION_THEME.colors.gray[700],
       cursor: "pointer",
-      transition: "border-color 0.2s ease-in-out",
-      "&:hover": {
-        borderColor: FOUNDATION_THEME.colors.gray[400],
-      },
-      "&:focus": {
-        outline: "none",
-        borderColor: FOUNDATION_THEME.colors.primary[500],
-        boxShadow: `0 0 0 2px ${FOUNDATION_THEME.colors.primary[200]}`,
-      },
     },
   },
   input: {
     [DateRangePickerVariant.PRIMARY]: {
-      borderColor: FOUNDATION_THEME.colors.gray[300],
     },
     [DateRangePickerVariant.SECONDARY]: {
-      borderColor: FOUNDATION_THEME.colors.gray[200],
       backgroundColor: FOUNDATION_THEME.colors.gray[50],
     },
     sizes: {
@@ -241,12 +229,10 @@ const dateRangePickerTokens: DateRangePickerTokens = {
       "&:focus": {
         outline: "none",
         boxShadow: `0 0 0 2px ${FOUNDATION_THEME.colors.primary[200]}`,
-        borderColor: FOUNDATION_THEME.colors.primary[500],
       },
     },
     activeButton: {
       backgroundColor: FOUNDATION_THEME.colors.primary[50],
-      borderColor: FOUNDATION_THEME.colors.primary[500],
       color: FOUNDATION_THEME.colors.primary[700],
     },
   },
@@ -264,7 +250,6 @@ const dateRangePickerTokens: DateRangePickerTokens = {
       color: FOUNDATION_THEME.colors.gray[700],
       "&:focus": {
         outline: "none",
-        borderColor: FOUNDATION_THEME.colors.primary[500],
         boxShadow: `0 0 0 2px ${FOUNDATION_THEME.colors.primary[200]}`,
       },
     },
@@ -345,11 +330,7 @@ const dateRangePickerTokens: DateRangePickerTokens = {
       alignItems: "center",
       cursor: "pointer",
       width: "100%",
-      transition: "border-color 0.2s ease-in-out",
-    },
-    triggerHover: {
-      borderColor: FOUNDATION_THEME.colors.gray[400],
-    },
+    }
   },
   toggle: {
     container: {
