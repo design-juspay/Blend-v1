@@ -172,70 +172,70 @@ const Select = ({
   );
 };
 
-type TriggerProps = {
-  size?: SelectMenuSize;
-  allowMultiSelect?: boolean;
-  selected: string | string[];
-  onSelectChange: (value: string | string[]) => void;
-  placeholder: string;
-  valueLabelMap: Record<string, string>;
-  getLabelsForSelectedValues: (values: string[]) => string[];
-};
+// type TriggerProps = {
+//   size?: SelectMenuSize;
+//   allowMultiSelect?: boolean;
+//   selected: string | string[];
+//   onSelectChange: (value: string | string[]) => void;
+//   placeholder: string;
+//   valueLabelMap: Record<string, string>;
+//   getLabelsForSelectedValues: (values: string[]) => string[];
+// };
 
-const Trigger = ({
-  size = SelectMenuSize.LARGE,
-  allowMultiSelect = false,
-  selected,
-  onSelectChange,
-  placeholder,
-  valueLabelMap,
-  getLabelsForSelectedValues,
-}: TriggerProps) => {
-  return (
-    <PrimitiveButton
-      display="flex"
-      width="100%"
-      flexGrow={1}
-      alignItems="center"
-      overflow="hidden"
-      borderRadius={8}
-      boxShadow={FOUNDATION_THEME.shadows.xs}
-      justifyContent="space-between"
-      paddingX={selectTokens.trigger.selectedValue.padding[size].x}
-      paddingY={selectTokens.trigger.selectedValue.padding[size].y}
-      backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-      border={`1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`}
-      _hover={{
-        backgroundColor: FOUNDATION_THEME.colors.gray[50],
-      }}
-      _focus={{
-        border: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-      }}
-      _active={{
-        backgroundColor: FOUNDATION_THEME.colors.gray[50],
-        border: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-      }}
-    >
-      <Text
-        as="span"
-        variant={
-          selectTokens.trigger.selectedValue.font.size[size] as VariantType
-        }
-        color={selectTokens.trigger.selectedValue.color}
-        truncate
-      >
-        {allowMultiSelect
-          ? Array.isArray(selected) && selected.length > 0
-            ? getLabelsForSelectedValues(selected).join(", ")
-            : placeholder
-          : valueLabelMap[selected as string] || placeholder}
-      </Text>
+// const Trigger = ({
+//   size = SelectMenuSize.LARGE,
+//   allowMultiSelect = false,
+//   selected,
+//   onSelectChange,
+//   placeholder,
+//   valueLabelMap,
+//   getLabelsForSelectedValues,
+// }: TriggerProps) => {
+//   return (
+//     <PrimitiveButton
+//       display="flex"
+//       width="100%"
+//       flexGrow={1}
+//       alignItems="center"
+//       overflow="hidden"
+//       borderRadius={8}
+//       boxShadow={FOUNDATION_THEME.shadows.xs}
+//       justifyContent="space-between"
+//       paddingX={selectTokens.trigger.selectedValue.padding[size].x}
+//       paddingY={selectTokens.trigger.selectedValue.padding[size].y}
+//       backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+//       border={`1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`}
+//       _hover={{
+//         backgroundColor: FOUNDATION_THEME.colors.gray[50],
+//       }}
+//       _focus={{
+//         border: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+//       }}
+//       _active={{
+//         backgroundColor: FOUNDATION_THEME.colors.gray[50],
+//         border: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+//       }}
+//     >
+//       <Text
+//         as="span"
+//         variant={
+//           selectTokens.trigger.selectedValue.font.size[size] as VariantType
+//         }
+//         color={selectTokens.trigger.selectedValue.color}
+//         truncate
+//       >
+//         {allowMultiSelect
+//           ? Array.isArray(selected) && selected.length > 0
+//             ? getLabelsForSelectedValues(selected).join(", ")
+//             : placeholder
+//           : valueLabelMap[selected as string] || placeholder}
+//       </Text>
 
-      <Block size={20} contentCentered borderRadius={4}>
-        <ChevronDownIcon size={16} color={FOUNDATION_THEME.colors.gray[400]} />
-      </Block>
-    </PrimitiveButton>
-  );
-};
+//       <Block size={20} contentCentered borderRadius={4}>
+//         <ChevronDownIcon size={16} color={FOUNDATION_THEME.colors.gray[400]} />
+//       </Block>
+//     </PrimitiveButton>
+//   );
+// };
 
 export default Select;

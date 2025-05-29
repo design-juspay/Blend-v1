@@ -35,6 +35,7 @@ export type PrimitiveTextProps = {
   paddingY?: CSSObject["padding"];
   fontSize?: CSSObject["fontSize"];
   truncate?: boolean;
+  userSelect?: CSSObject["userSelect"];
 };
 
 export type TextProps = PrimitiveTextProps &
@@ -62,6 +63,7 @@ const blockedProps = [
   "paddingY",
   "fontSize",
   "truncate",
+  "userSelect",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -106,6 +108,8 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
     styles.paddingTop = props.paddingY;
     styles.paddingBottom = props.paddingY;
   }
+
+  if (props.userSelect) styles.userSelect = props.userSelect;
 
   // Truncation
   if (props.truncate) {

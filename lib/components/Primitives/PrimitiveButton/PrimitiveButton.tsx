@@ -127,7 +127,6 @@ const blockedProps = [
   "outlineWidth",
   "outlineColor",
   "variant",
-  "disabled",
   "_hover",
   "_focus",
   "_active",

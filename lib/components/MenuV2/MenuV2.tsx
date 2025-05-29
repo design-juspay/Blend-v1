@@ -10,6 +10,8 @@ import MenuGroupLabel from "./MenuGroupLabel";
 import MenuGroupSeperator from "./MenuGroupSeperator";
 import Item from "./MenuItem";
 
+
+
 export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
   color: "black",
@@ -46,7 +48,7 @@ const MenuV2 = ({
   const filteredItems = filterMenuGroups(items, searchText);
 
   return (
-    <RadixMenu.Root modal={asModal} open>
+    <RadixMenu.Root modal={asModal}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         sideOffset={sideOffset}
