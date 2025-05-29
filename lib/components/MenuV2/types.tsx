@@ -167,6 +167,26 @@ export const dummyMenuItems: MenuV2GroupType[] = [
             subLabel: "Receive updates via email",
             slot1: <Settings2 size={13} />,
             onClick: () => alert("Email Notifications"),
+            subMenu: [
+              {
+                label: "Slack",
+                subLabel: "Connect your Slack workspace",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect Slack"),
+              },
+              {
+                label: "GitHub",
+                subLabel: "Link your GitHub repositories",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect GitHub"),
+              },
+              {
+                label: "Google Drive",
+                subLabel: "Sync with Google Drive",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect Google Drive"),
+              },
+            ],
           },
           {
             label: "Push Notifications",

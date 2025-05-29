@@ -45,16 +45,6 @@ export type SelectMenuProps = {
   allowMultiSelect?: boolean;
 };
 
-// export enum SelectMenuItemV2Variant {
-//   DEFAULT = "default",
-//   ACTION = "action",
-// }
-
-// export enum SelectMenuItemActionType {
-//   PRIMARY = "primary",
-//   DANGER = "danger",
-// }
-
 export type SelectMenuItemType = {
   label: string;
   value: string;
