@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { Trash, User } from "lucide-react";
 
 export enum SelectMenuAlignment {
   START = "start",
@@ -95,6 +95,13 @@ export const dummyMenuItems: SelectMenuGroupType[] = [
           {
             label: "Delete Account",
             value: "delete-account",
+            slot1: <Trash size={13} />,
+            subMenu: [
+              {
+                label: "Are you sure?",
+                value: "are-you-sure",
+              },
+            ],
           },
         ],
       },

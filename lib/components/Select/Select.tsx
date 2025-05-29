@@ -6,6 +6,7 @@ import { ChevronDownIcon, HelpCircleIcon, X } from "lucide-react";
 import {
   dummyMenuItems,
   SelectMenuGroupType,
+  SelectMenuItemType,
   SelectMenuSize,
   SelectMenuVariant,
 } from "./types";
@@ -28,6 +29,27 @@ type SelectProps = {
   allowMultiSelect?: boolean;
 };
 
+const map = function getValueLabelMap(
+  groups: SelectMenuGroupType[]
+): Record<string, string> {
+  const map: Record<string, string> = {};
+
+  function traverse(items: SelectMenuItemType[]) {
+    for (const item of items) {
+      map[item.value] = item.label;
+      if (item.subMenu) {
+        traverse(item.subMenu);
+      }
+    }
+  }
+
+  for (const group of groups) {
+    traverse(group.items);
+  }
+
+  return map;
+};
+
 const Select = ({
   items = dummyMenuItems,
   variant = SelectMenuVariant.CONTAINER,
@@ -42,7 +64,14 @@ const Select = ({
   onSelectChange,
   allowMultiSelect = false,
 }: SelectProps) => {
-  console.log(subLabel);
+
+
+  const valueLabelMap = map(items);
+
+  const getLabelsForSelectedValues = (values: string[]) => {
+    return values.map((val) => valueLabelMap[val] || val);
+  };
+
   return (
     <Block display="flex" flexDirection="column" gap={8} width="100%">
       <Block display="flex" width={"100%"} alignItems="center" gap={8}>
@@ -110,9 +139,9 @@ const Select = ({
               >
                 {allowMultiSelect
                   ? Array.isArray(selected) && selected.length > 0
-                    ? selected.join(", ")
+                    ? getLabelsForSelectedValues(selected).join(", ")
                     : placeholder
-                  : selected || placeholder}
+                  : valueLabelMap[selected as string] || placeholder}
               </Text>
 
               <Block size={20} contentCentered borderRadius={4}>
