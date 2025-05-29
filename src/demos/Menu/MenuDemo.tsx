@@ -11,6 +11,7 @@ import Block from "../../../lib/components/Primitives/Block/Block";
 import MenuV2 from "../../../lib/components/MenuV2/MenuV2";
 import Select from "../../../lib/components/Select/Select";
 import React, { useState } from "react";
+import { SelectMenuVariant } from "../../../lib/components/Select/types";
 
 const dummyItems: MenuGroupType[] = [
   {
@@ -87,6 +88,7 @@ const MenuDemo = () => {
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
+            variant={SelectMenuVariant.NO_CONTAINER}
             label="Select an option"
             selected={selectedOption}
             onSelectChange={(value) => {
@@ -109,15 +111,6 @@ const MenuDemo = () => {
             {multiSelected.length > 0 ? multiSelected.join(", ") : "None"}
           </div>
         </div>
-        <Menu
-          // enableSearch
-          items={dummyItems}
-          trigger={<Button text="Open Menu" onClick={() => {}} />}
-        />
-        <Dropdown
-          items={dummyItems}
-          slot={<Info size={14} color={"black"} />}
-        />
       </Block>
     </div>
   );
