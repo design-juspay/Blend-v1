@@ -33,7 +33,8 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref
   ) => {
-    const uniqueId = id || React.useId();
+    const generatedId = React.useId();
+    const uniqueId = id || generatedId;
     
 
 

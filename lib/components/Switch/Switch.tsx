@@ -20,7 +20,8 @@ export const Switch = ({
   name,
   value,
 }: SwitchProps) => {
-  const uniqueId = id || React.useId();
+  const generatedId = React.useId();
+  const uniqueId = id || generatedId;
 
   const handleToggle = () => {
     if (disabled) return;

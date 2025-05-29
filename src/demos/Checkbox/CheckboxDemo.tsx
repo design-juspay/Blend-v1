@@ -25,7 +25,12 @@ const CheckboxDemo = () => {
     withSlot: false,
   });
 
-  const [parentChild, setParentChild] = useState({
+  const [parentChild, setParentChild] = useState<{
+    parent: boolean | 'indeterminate';
+    child1: boolean;
+    child2: boolean;
+    child3: boolean;
+  }>({
     parent: false,
     child1: false,
     child2: false,
@@ -40,9 +45,9 @@ const CheckboxDemo = () => {
     } else if (!child1 && !child2 && !child3) {
       setParentChild(prev => ({ ...prev, parent: false }));
     } else {
-      setParentChild(prev => ({ ...prev, parent: 'indeterminate' as any }));
+      setParentChild(prev => ({ ...prev, parent: 'indeterminate' }));
     }
-  }, [parentChild.child1, parentChild.child2, parentChild.child3]);
+  }, [parentChild]);
 
   // Handle parent checkbox change
   const handleParentChange = (checked: boolean | 'indeterminate') => {

@@ -21,7 +21,16 @@ export const Radio = ({
   slot,
   name,
 }: RadioProps) => {
-  const uniqueId = id || React.useId();
+  const generatedId = React.useId();
+  const uniqueId = id || generatedId;
+  
+  // Determine if this is a controlled component
+  const isControlled = checked !== undefined;
+  
+  // For controlled components, use checked; for uncontrolled, use defaultChecked
+  const inputProps = isControlled 
+    ? { checked: checked } 
+    : { defaultChecked: defaultChecked };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
@@ -29,6 +38,9 @@ export const Radio = ({
       onChange(e.target.checked);
     }
   };
+
+  // Get the current checked state for styling purposes
+  const currentChecked = isControlled ? checked : defaultChecked;
 
   return (
     <Block display="flex" flexDirection="column">
@@ -38,15 +50,14 @@ export const Radio = ({
           id={uniqueId}
           name={name}
           value={value}
-          checked={checked}
-          defaultChecked={defaultChecked}
+          {...inputProps}
           disabled={disabled}
           required={required}
           onChange={handleChange}
-          data-state={getRadioDataState(checked || false)}
+          data-state={getRadioDataState(currentChecked || false)}
           size={size}
           $isDisabled={disabled}
-          $isChecked={checked || false}
+          $isChecked={currentChecked || false}
           $error={error}
         />
         
