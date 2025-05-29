@@ -90,6 +90,8 @@ type StyledBlockProps = StateStyles & {
   overflow?: CSSObject["overflow"];
   overflowX?: CSSObject["overflowX"];
   overflowY?: CSSObject["overflowY"];
+  whiteSpace?: CSSObject["whiteSpace"];
+  transition?: CSSObject["transition"];
 
   // Shortcuts
   contentCentered?: boolean;
@@ -152,6 +154,8 @@ const blockedProps = [
   "overflow",
   "overflowX",
   "overflowY",
+  "whiteSpace",
+  "transition",
   // Positioning
   "position",
   "inset",
@@ -282,6 +286,8 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.overflow !== undefined) styles.overflow = props.overflow;
   if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
   if (props.overflowY !== undefined) styles.overflowY = props.overflowY;
+  if (props.whiteSpace !== undefined) styles.whiteSpace = props.whiteSpace;
+  if (props.transition !== undefined) styles.transition = props.transition;
 
   if (props.cursor !== undefined) styles.cursor = props.cursor;
 

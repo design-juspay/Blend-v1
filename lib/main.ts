@@ -1,7 +1,7 @@
-export * from './components/Button';
-export * from './components/ButtonGroup';
-export * from './components/Tabs';
-export * from './components/SplitTag'
+export * from "./components/Button";
+export * from "./components/ButtonGroup";
+export * from "./components/Tabs";
+export * from "./components/SplitTag";
 export * from "./components/Alert";
 export * from "./components/Tags";
 export * from "./components/Breadcrumb";
@@ -17,3 +17,4 @@ export * from "./components/Radio";
 export * from "./components/Switch";
 export * from "./components/Dropdown/Dropdown";
 export * from "./components/Snackbar";
+export * from "./components/Charts";
