@@ -10,7 +10,7 @@ export const StyledCheckboxRoot = styled(CheckboxPrimitive.Root)<{
   $error?: boolean;
 }>`
   all: unset; /* Reset all styles for better cross-browser consistency */
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
@@ -41,7 +41,11 @@ export const StyledCheckboxRoot = styled(CheckboxPrimitive.Root)<{
     height: ${checkboxTokens.sizes[size].root.height};
   `}
   
+  /* Reset all margin and padding */
+  margin: 0;
+  padding: 0;
   margin-right: ${checkboxTokens.spacing.checkboxMarginRight};
+  flex-shrink: 0;
   
   /* Improved focus styles for better accessibility */
   &:focus-visible {
@@ -129,4 +133,20 @@ export const StyledLabel = styled.label<{
   cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  
+  /* Reset any inherited spacing that could affect alignment */
+  & > span {
+    line-height: 1;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Reset any nested spans as well */
+  & span {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 `; 

@@ -36,7 +36,16 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     const generatedId = React.useId();
     const uniqueId = id || generatedId;
     
+    // Determine if this is a controlled component
+    const isControlled = checked !== undefined;
+    
+    // For controlled components, use checked; for uncontrolled, use defaultChecked
+    const inputProps = isControlled 
+      ? { checked: checked === 'indeterminate' ? false : checked } 
+      : { defaultChecked: defaultChecked };
 
+    // Get the current checked state for styling and data purposes
+    const currentChecked = isControlled ? checked : defaultChecked;
 
     return (
       <Block display="flex" flexDirection="column">
@@ -44,24 +53,23 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
           <StyledCheckboxRoot
             ref={ref}
             id={uniqueId}
-            checked={checked === 'indeterminate' ? false : checked}
-            defaultChecked={defaultChecked}
+            {...inputProps}
             onCheckedChange={onCheckedChange}
             disabled={disabled}
             required={required}
             value={value}
-            data-state={getCheckboxDataState(checked || false)}
+            data-state={getCheckboxDataState(currentChecked || false)}
             data-error={error}
             size={size}
             $isDisabled={disabled}
-            $checked={checked || false}
+            $checked={currentChecked || false}
             $error={error}
           >
             <StyledCheckboxIndicator
               forceMount={checked === 'indeterminate' ? true : undefined}
               size={size}
             >
-              {checked && (
+              {currentChecked && (
                 <Block 
                   as="span" 
                   display="flex"
@@ -70,7 +78,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
                   width="100%"
                   height="100%"
                 >
-                  {checked === 'indeterminate' ? (
+                  {currentChecked === 'indeterminate' ? (
                     <Minus 
                       size={extractPixelValue(checkboxTokens.sizes[size].icon.width)}
                       color={checkboxTokens.icon.color} 

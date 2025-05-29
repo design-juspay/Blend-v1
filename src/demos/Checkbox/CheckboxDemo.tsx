@@ -25,6 +25,13 @@ const CheckboxDemo = () => {
     withSlot: false,
   });
 
+  const [formStates, setFormStates] = useState({
+    weeklyNewsletter: false,
+    productUpdates: false,
+    termsOfService: false,
+    shareAnalytics: false,
+  });
+
   const [parentChild, setParentChild] = useState<{
     parent: boolean | 'indeterminate';
     child1: boolean;
@@ -47,7 +54,7 @@ const CheckboxDemo = () => {
     } else {
       setParentChild(prev => ({ ...prev, parent: 'indeterminate' }));
     }
-  }, [parentChild]);
+  }, [parentChild.child1, parentChild.child2, parentChild.child3]);
 
   // Handle parent checkbox change
   const handleParentChange = (checked: boolean | 'indeterminate') => {
@@ -242,17 +249,27 @@ const CheckboxDemo = () => {
             Newsletter Preferences
           </PrimitiveText>
           
-          <Checkbox subtext="Get weekly updates about new features and improvements">
+          <Checkbox 
+            checked={formStates.weeklyNewsletter}
+            onCheckedChange={(checked) => setFormStates(prev => ({ ...prev, weeklyNewsletter: checked === true }))}
+            subtext="Get weekly updates about new features and improvements"
+          >
             Weekly Newsletter
           </Checkbox>
           
-          <Checkbox subtext="Receive notifications about product updates and releases">
+          <Checkbox 
+            checked={formStates.productUpdates}
+            onCheckedChange={(checked) => setFormStates(prev => ({ ...prev, productUpdates: checked === true }))}
+            subtext="Receive notifications about product updates and releases"
+          >
             Product Updates
           </Checkbox>
           
           <Checkbox 
             required 
             error
+            checked={formStates.termsOfService}
+            onCheckedChange={(checked) => setFormStates(prev => ({ ...prev, termsOfService: checked === true }))}
             subtext="You must agree to our terms of service to continue"
           >
             I agree to the Terms of Service
@@ -260,6 +277,8 @@ const CheckboxDemo = () => {
           
           <Checkbox 
             size={CheckboxSize.SMALL}
+            checked={formStates.shareAnalytics}
+            onCheckedChange={(checked) => setFormStates(prev => ({ ...prev, shareAnalytics: checked === true }))}
             subtext="Optional: Help us improve by sharing usage analytics"
           >
             Share Analytics Data
