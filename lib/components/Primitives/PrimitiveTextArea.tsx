@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import styled, { css, CSSObject } from "styled-components";
+import { FOUNDATION_THEME } from "../../tokens";
 
 type StateStyles = {
   _hover?: PrimitiveTextareaProps;
@@ -299,6 +300,10 @@ const getStyles = (props: PrimitiveTextareaProps): CSSObject => {
   if (props.cursor !== undefined) styles.cursor = props.cursor;
 
   if (props.resize !== undefined) styles.resize = props.resize;
+
+  styles.scrollPadding = 6;
+  styles.scrollbarWidth = "thin";
+  styles.scrollbarColor = `${FOUNDATION_THEME.colors.gray[300]} transparent`;
 
   return styles;
 };

@@ -1,39 +1,12 @@
-import Block from "../Primitives/Block/Block";
-import PrimitiveInput from "../Primitives/PrimitiveInput/PrimitiveInput";
+import Block from "../../Primitives/Block/Block";
+import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { useRef, useState, useEffect } from "react";
-import { FOUNDATION_THEME } from "../../tokens";
-import Text from "../Text/Text";
-import { TooltipSize } from "../Tooltip/types";
-import { Tooltip } from "../Tooltip";
-import { File, HelpCircleIcon, Search } from "lucide-react";
-import { Tag, TagSize, TagShape } from "../Tags";
+import { FOUNDATION_THEME } from "../../../tokens";
 
-enum InputSize {
-  MEDIUM = "medium",
-  LARGE = "large",
-}
-
-export enum InputVariant {
-  SEARCH = "search",
-  TEXT = "text",
-}
-
-type InputProps = {
-  variant?: InputVariant;
-  label: string;
-  sublabel?: string;
-  hintText?: string;
-  helpIconHintText?: string;
-  error?: boolean;
-  errorMessage?: string;
-  disabled?: boolean;
-  size?: InputSize;
-  leftSlot?: React.ReactNode;
-  rightSlot?: React.ReactNode;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-};
+import textInputTokens from "./textInput.tokens";
+import InputLabels from "../utils/InputLabels/InputLabels";
+import InputFooter from "../utils/InputFooter/InputFooter";
+import { InputSize, InputVariant, InputProps } from "./types";
 
 const SearchInput = ({
   size = InputSize.MEDIUM,
@@ -83,7 +56,7 @@ const SearchInput = ({
   );
 };
 
-const Input = ({
+const TextInput = ({
   variant = InputVariant.TEXT,
   size = InputSize.MEDIUM,
   leftSlot,
@@ -98,6 +71,7 @@ const Input = ({
   sublabel,
   value,
   onChange,
+  name,
 }: InputProps) => {
   if (variant === InputVariant.SEARCH) {
     return (
@@ -138,52 +112,27 @@ const Input = ({
     }
   }, [leftSlot, rightSlot]);
 
-  const paddingX = size === InputSize.MEDIUM ? 12 : 14;
-  const paddingY = size === InputSize.MEDIUM ? 8 : 10;
+  // @TODO: Reconsider the type of unitTokens in FOUNDATION_THEME
+  const paddingX = textInputTokens.input.padding.x[size] as number;
+  const paddingY = textInputTokens.input.padding.y[size] as number;
+  const GAP = textInputTokens.input.gap as number;
 
-  const paddingInlineStart = leftSlot ? paddingX + leftSlotWidth + 8 : paddingX;
-  const paddingInlineEnd = rightSlot ? paddingX + rightSlotWidth + 8 : paddingX;
+  const paddingInlineStart = leftSlot
+    ? paddingX + leftSlotWidth + GAP
+    : paddingX;
+  const paddingInlineEnd = rightSlot
+    ? paddingX + rightSlotWidth + GAP
+    : paddingX;
+
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
-      <Block display="flex" alignItems="center" gap={4}>
-        <Text
-          as="label"
-          variant="body.md"
-          fontWeight={500}
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[400]
-              : FOUNDATION_THEME.colors.gray[700]
-          }
-          style={{ margin: 0, padding: 0 }}
-        >
-          {label}
-        </Text>
-        {sublabel && (
-          <Text
-            variant="body.md"
-            fontWeight={400}
-            color={
-              disabled
-                ? FOUNDATION_THEME.colors.gray[300]
-                : FOUNDATION_THEME.colors.gray[400]
-            }
-            margin={0}
-          >
-            (optional)
-          </Text>
-        )}
-        {helpIconHintText && (
-          <Block contentCentered size={16}>
-            <Tooltip content={helpIconHintText} size={TooltipSize.SMALL}>
-              <HelpCircleIcon
-                size={14}
-                color={FOUNDATION_THEME.colors.gray[400]}
-              />
-            </Tooltip>
-          </Block>
-        )}
-      </Block>
+      <InputLabels
+        label={label}
+        sublabel={sublabel}
+        helpIconHintText={helpIconHintText}
+        disabled={disabled}
+        name={name}
+      />
       <Block position="relative" width={"100%"}>
         {leftSlot && (
           <Block
@@ -197,20 +146,11 @@ const Input = ({
             {leftSlot}
           </Block>
         )}
-        {rightSlot && (
-          <Block
-            ref={rightSlotRef}
-            position="absolute"
-            top={paddingY}
-            right={paddingX}
-            bottom={paddingY}
-            contentCentered
-          >
-            {rightSlot}
-          </Block>
-        )}
+
         <PrimitiveInput
           value={value}
+          type="text"
+          name={name}
           onChange={onChange}
           paddingInlineStart={paddingInlineStart}
           paddingInlineEnd={paddingInlineEnd}
@@ -229,43 +169,47 @@ const Input = ({
           _hover={{
             border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
           }}
-          color={FOUNDATION_THEME.colors.gray[800]}
+          color={
+            disabled
+              ? FOUNDATION_THEME.colors.gray[300]
+              : FOUNDATION_THEME.colors.gray[800]
+          }
           _focusVisible={{
             border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
             outline: "none !important",
           }}
           _focus={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
+            border: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
             outline: "none !important",
           }}
           disabled={disabled}
           _disabled={{
-            backgroundColor: FOUNDATION_THEME.colors.gray[200],
+            backgroundColor: FOUNDATION_THEME.colors.gray[50],
             border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
             cursor: "not-allowed",
           }}
         />
+        {rightSlot && (
+          <Block
+            ref={rightSlotRef}
+            position="absolute"
+            top={paddingY}
+            right={paddingX}
+            bottom={paddingY}
+            contentCentered
+          >
+            {rightSlot}
+          </Block>
+        )}
       </Block>
-      {error && errorMessage && (
-        <Text variant="body.md" color={FOUNDATION_THEME.colors.red[500]}>
-          {errorMessage}
-        </Text>
-      )}
-      {hintText && !error && (
-        <Text
-          variant="body.md"
-          fontWeight={400}
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[500]
-          }
-        >
-          {hintText}
-        </Text>
-      )}
+      <InputFooter
+        error={error}
+        errorMessage={errorMessage}
+        hintText={hintText}
+        disabled={disabled}
+      />
     </Block>
   );
 };
 
-export default Input;
+export default TextInput;

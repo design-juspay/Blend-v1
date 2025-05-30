@@ -36,6 +36,8 @@ export type PrimitiveTextProps = {
   fontSize?: CSSObject["fontSize"];
   truncate?: boolean;
   userSelect?: CSSObject["userSelect"];
+  name?: CSSObject["name"];
+  htmlFor?: CSSObject["htmlFor"];
 };
 
 export type TextProps = PrimitiveTextProps &

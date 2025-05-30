@@ -12,7 +12,8 @@ import {
   SelectMenuProps,
   SelectMenuSide,
 } from "./types";
-import Input, { InputVariant } from "../Input/Input";
+import TextInput from "../Inputs/TextInput/TextInput";
+import { InputVariant } from "../Inputs/TextInput/types";
 
 const Content = styled(RadixMenu.Content)(() => ({
   backgroundColor: "white",
@@ -464,7 +465,7 @@ const SelectMenu = ({
             top={0}
             zIndex={1000}
           >
-            <Input
+            <TextInput
               variant={InputVariant.SEARCH}
               label="Search"
               placeholder="Search"
