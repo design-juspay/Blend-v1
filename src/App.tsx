@@ -19,6 +19,7 @@ import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
+import ChartDemo from "./demos/Charts";
 import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 
@@ -125,6 +126,11 @@ function App() {
       id: "switch",
       name: "Switch",
       component: <SwitchDemo />,
+    },
+    {
+      id: "charts",
+      name: "Charts",
+      component: <ChartDemo />,
     },
   ];
 
