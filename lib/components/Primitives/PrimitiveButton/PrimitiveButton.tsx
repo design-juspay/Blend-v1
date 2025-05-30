@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css, CSSObject } from "styled-components";
 
+// State-specific style overrides
 type StateStyles = {
   _hover?: PrimitiveButtonProps;
   _focus?: PrimitiveButtonProps;
@@ -9,6 +10,7 @@ type StateStyles = {
   _visited?: PrimitiveButtonProps;
 };
 
+// Base props type
 type PrimitiveButtonProps = StateStyles & {
   // Spacing
   padding?: CSSObject["padding"];
@@ -28,7 +30,7 @@ type PrimitiveButtonProps = StateStyles & {
   // Sizing
   width?: CSSObject["width"];
   height?: CSSObject["height"];
-  size?: CSSObject["width"] | CSSObject["height"]; // utility prop to set both width and height
+  size?: CSSObject["width"] | CSSObject["height"];
   minWidth?: CSSObject["minWidth"];
   maxWidth?: CSSObject["maxWidth"];
   minHeight?: CSSObject["minHeight"];
@@ -75,6 +77,7 @@ type PrimitiveButtonProps = StateStyles & {
   disabled?: boolean;
 };
 
+// Prevent these props from reaching the DOM
 const blockedProps = [
   "padding",
   "paddingX",
@@ -124,7 +127,6 @@ const blockedProps = [
   "outlineWidth",
   "outlineColor",
   "variant",
-  "disabled",
   "_hover",
   "_focus",
   "_active",
@@ -134,6 +136,7 @@ const blockedProps = [
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
 
+// Convert props to CSSObject
 const getStyles = (props: PrimitiveButtonProps): CSSObject => {
   const styles: CSSObject = {
     appearance: "none",
@@ -150,94 +153,87 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
     styles.justifyContent = props.justifyContent ?? "center";
     styles.alignItems = props.alignItems ?? "center";
   } else {
-    if (props.display !== undefined) styles.display = props.display;
-    if (props.justifyContent !== undefined)
-      styles.justifyContent = props.justifyContent;
-    if (props.alignItems !== undefined) styles.alignItems = props.alignItems;
+    if (props.display) styles.display = props.display;
+    if (props.justifyContent) styles.justifyContent = props.justifyContent;
+    if (props.alignItems) styles.alignItems = props.alignItems;
   }
 
-  if (props.gap !== undefined) styles.gap = props.gap;
+  if (props.gap) styles.gap = props.gap;
 
   // Spacing
-  if (props.padding !== undefined) styles.padding = props.padding;
-  if (props.paddingX !== undefined) {
+  if (props.padding) styles.padding = props.padding;
+  if (props.paddingX) {
     styles.paddingLeft = props.paddingX;
     styles.paddingRight = props.paddingX;
   }
-  if (props.paddingY !== undefined) {
+  if (props.paddingY) {
     styles.paddingTop = props.paddingY;
     styles.paddingBottom = props.paddingY;
   }
-  if (props.margin !== undefined) styles.margin = props.margin;
-  if (props.marginX !== undefined) {
+  if (props.margin) styles.margin = props.margin;
+  if (props.marginX) {
     styles.marginLeft = props.marginX;
     styles.marginRight = props.marginX;
   }
-  if (props.marginY !== undefined) {
+  if (props.marginY) {
     styles.marginTop = props.marginY;
     styles.marginBottom = props.marginY;
   }
 
   // Sizing
-  if (props.size !== undefined) {
+  if (props.size) {
     styles.width = props.size;
     styles.height = props.size;
   } else {
-    styles.width = props.width ?? "fit-content";
-    if (props.height !== undefined) styles.height = props.height;
+    if (props.width) styles.width = props.width;
+    if (props.height) styles.height = props.height;
   }
 
-  if (props.minWidth !== undefined) styles.minWidth = props.minWidth;
-  if (props.maxWidth !== undefined) styles.maxWidth = props.maxWidth;
-  if (props.minHeight !== undefined) styles.minHeight = props.minHeight;
-  if (props.maxHeight !== undefined) styles.maxHeight = props.maxHeight;
+  if (props.minWidth) styles.minWidth = props.minWidth;
+  if (props.maxWidth) styles.maxWidth = props.maxWidth;
+  if (props.minHeight) styles.minHeight = props.minHeight;
+  if (props.maxHeight) styles.maxHeight = props.maxHeight;
 
   // Flex
-  if (props.flexGrow !== undefined) styles.flexGrow = props.flexGrow;
-  if (props.flexShrink !== undefined) styles.flexShrink = props.flexShrink;
-  if (props.flexBasis !== undefined) styles.flexBasis = props.flexBasis;
+  if (props.flexGrow) styles.flexGrow = props.flexGrow;
+  if (props.flexShrink) styles.flexShrink = props.flexShrink;
+  if (props.flexBasis) styles.flexBasis = props.flexBasis;
 
   // Position
-  if (props.position !== undefined) styles.position = props.position;
-  if (props.top !== undefined) styles.top = props.top;
-  if (props.right !== undefined) styles.right = props.right;
-  if (props.bottom !== undefined) styles.bottom = props.bottom;
-  if (props.left !== undefined) styles.left = props.left;
-  if (props.zIndex !== undefined) styles.zIndex = props.zIndex;
+  if (props.position) styles.position = props.position;
+  if (props.top) styles.top = props.top;
+  if (props.right) styles.right = props.right;
+  if (props.bottom) styles.bottom = props.bottom;
+  if (props.left) styles.left = props.left;
+  if (props.zIndex) styles.zIndex = props.zIndex;
 
   // Visual
-  if (props.backgroundColor !== undefined)
-    styles.backgroundColor = props.backgroundColor;
-  if (props.color !== undefined) styles.color = props.color;
-  if (props.border !== undefined) styles.border = props.border;
-  if (props.borderTop !== undefined) styles.borderTop = props.borderTop;
-  if (props.borderRight !== undefined) styles.borderRight = props.borderRight;
-  if (props.borderBottom !== undefined)
-    styles.borderBottom = props.borderBottom;
-  if (props.borderLeft !== undefined) styles.borderLeft = props.borderLeft;
-  if (props.borderRadius !== undefined)
-    styles.borderRadius = props.borderRadius;
-  if (props.boxShadow !== undefined) styles.boxShadow = props.boxShadow;
-  if (props.textAlign !== undefined) styles.textAlign = props.textAlign;
-  if (props.whiteSpace !== undefined) styles.whiteSpace = props.whiteSpace;
-  if (props.overflow !== undefined) styles.overflow = props.overflow;
-  if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
-  if (props.overflowY !== undefined) styles.overflowY = props.overflowY;
+  if (props.backgroundColor) styles.backgroundColor = props.backgroundColor;
+  if (props.color) styles.color = props.color;
+  if (props.border) styles.border = props.border;
+  if (props.borderTop) styles.borderTop = props.borderTop;
+  if (props.borderRight) styles.borderRight = props.borderRight;
+  if (props.borderBottom) styles.borderBottom = props.borderBottom;
+  if (props.borderLeft) styles.borderLeft = props.borderLeft;
+  if (props.borderRadius) styles.borderRadius = props.borderRadius;
+  if (props.boxShadow) styles.boxShadow = props.boxShadow;
+  if (props.textAlign) styles.textAlign = props.textAlign;
+  if (props.whiteSpace) styles.whiteSpace = props.whiteSpace;
+  if (props.overflow) styles.overflow = props.overflow;
+  if (props.overflowX) styles.overflowX = props.overflowX;
+  if (props.overflowY) styles.overflowY = props.overflowY;
 
   // Outline
-  if (props.outline !== undefined) styles.outline = props.outline;
-  if (props.outlineOffset !== undefined)
-    styles.outlineOffset = props.outlineOffset;
-  if (props.outlineStyle !== undefined)
-    styles.outlineStyle = props.outlineStyle;
-  if (props.outlineWidth !== undefined)
-    styles.outlineWidth = props.outlineWidth;
-  if (props.outlineColor !== undefined)
-    styles.outlineColor = props.outlineColor;
+  if (props.outline) styles.outline = props.outline;
+  if (props.outlineOffset) styles.outlineOffset = props.outlineOffset;
+  if (props.outlineStyle) styles.outlineStyle = props.outlineStyle;
+  if (props.outlineWidth) styles.outlineWidth = props.outlineWidth;
+  if (props.outlineColor) styles.outlineColor = props.outlineColor;
 
   return styles;
 };
 
+// Map state props to CSS pseudo-selectors
 const stateToSelector: Record<keyof StateStyles, string> = {
   _hover: "&:hover",
   _focus: "&:focus",
@@ -246,17 +242,15 @@ const stateToSelector: Record<keyof StateStyles, string> = {
   _visited: "&:visited",
 };
 
+// Styled button
 const StyledButton = styled.button.withConfig({
   shouldForwardProp,
 })<PrimitiveButtonProps>((props) => {
   const base = getStyles(props);
-
   const stateStyles = Object.entries(stateToSelector).reduce(
     (acc, [key, selector]) => {
       const stateProps = props[key as keyof StateStyles];
-      if (stateProps) {
-        acc[selector] = getStyles(stateProps);
-      }
+      if (stateProps) acc[selector] = getStyles(stateProps);
       return acc;
     },
     {} as CSSObject
@@ -265,12 +259,14 @@ const StyledButton = styled.button.withConfig({
   return css({ ...base, ...stateStyles });
 });
 
+// Exported props
 export type ButtonProps = PrimitiveButtonProps &
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
     children?: React.ReactNode;
     className?: string;
   };
 
+// Component
 const PrimitiveButton: React.FC<ButtonProps> = ({ children, ...rest }) => {
   return (
     <StyledButton className={rest.className} {...rest}>

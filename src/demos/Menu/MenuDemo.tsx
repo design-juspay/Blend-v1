@@ -8,6 +8,10 @@ import {
   MenuItemVariant,
 } from "../../../lib/components/Menu/Menu";
 import Block from "../../../lib/components/Primitives/Block/Block";
+import MenuV2 from "../../../lib/components/MenuV2/MenuV2";
+import Select from "../../../lib/components/Select/Select";
+import { useState } from "react";
+import { SelectMenuVariant } from "../../../lib/components/Select/types";
 
 const dummyItems: MenuGroupType[] = [
   {
@@ -66,6 +70,10 @@ const dummyItems: MenuGroupType[] = [
 ];
 
 const MenuDemo = () => {
+  // Add state for Select demo
+  const [selectedOption, setSelectedOption] = useState("");
+  // Add state for multi-select demo
+  const [multiSelected, setMultiSelected] = useState<string[]>([]);
   return (
     <div style={{ padding: "20px" }}>
       <h2>Menu Component</h2>
@@ -76,19 +84,39 @@ const MenuDemo = () => {
         gap={100}
         style={{ marginTop: "20px" }}
       >
-        <Menu
-          // enableSearch
-          items={dummyItems}
-          trigger={<Button text="Open Menu" onClick={() => {}} />}
-        />
-
-        <Dropdown
-          items={dummyItems}
-          slot={<Info size={14} color={"black"} />}
-        />
+        <MenuV2 trigger={<Button text="Open MenuV2" onClick={() => {}} />} />
+        <p style={{ color: "black" }}>{selectedOption}</p>
+        <div style={{ width: "300px" }}>
+          <Select
+            placeholder="Gateway"
+            // variant={SelectMenuVariant.NO_CONTAINER}
+            label="Select an option"
+            selected={selectedOption}
+            onSelectChange={(value) => {
+              if (typeof value === "string") setSelectedOption(value);
+            }}
+          />
+        </div>
+        {/* Multi-select demo */}
+        <div style={{ width: "300px" }}>
+          <Select
+            label="Multi Select"
+            placeholder="Gateway"
+            allowMultiSelect
+            selected={multiSelected}
+            onSelectChange={(value) =>
+              Array.isArray(value) && setMultiSelected(value)
+            }
+          />
+          <div style={{ marginTop: 8, color: "black" }}>
+            Selected:{" "}
+            {multiSelected.length > 0 ? multiSelected.join(", ") : "None"}
+          </div>
+        </div>
       </Block>
     </div>
   );
 };
 
 export default MenuDemo;
+
