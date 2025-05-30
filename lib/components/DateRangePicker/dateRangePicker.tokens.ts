@@ -285,6 +285,13 @@ const dateRangePickerTokens: DateRangePickerTokens = {
     },
     content: {
       padding: FOUNDATION_THEME.unit[4],
+      width: '100%',
+      zIndex: 1000,
+      backgroundColor: FOUNDATION_THEME.colors.gray[0],
+      borderRadius: FOUNDATION_THEME.border.radius[6],
+      boxShadow: FOUNDATION_THEME.shadows.lg,
+      overflowY: "auto",
+      overflowX: "hidden",
     },
     item: {
       width: "100%",

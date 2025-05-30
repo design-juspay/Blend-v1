@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { styled } from 'styled-components';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { DateRangePreset } from './types';
 import { getPresetLabel } from './utils';
 import dateRangePickerTokens from './dateRangePicker.tokens';
 import Block from '../Primitives/Block/Block';
-import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
 
 type QuickRangeSelectorProps = {
   isOpen: boolean;
@@ -18,10 +18,46 @@ type QuickRangeSelectorProps = {
   disablePastDates?: boolean;
 }
 
+const StyledTrigger = styled.button<{ $isOpen: boolean }>`
+  ${dateRangePickerTokens.quickRange.trigger}
+  width: 100%;
+  background: transparent;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  &:focus {
+    outline: none;
+  }
+`;
 
-  const StyledTrigger = styled(Block)<{ $isOpen: boolean }>`
-    ${dateRangePickerTokens.quickRange.trigger}
-  `;
+const StyledContent = styled(DropdownMenu.Content)`
+  ${dateRangePickerTokens.dropdown.content}
+
+`;
+
+const StyledItem = styled(DropdownMenu.Item)<{ $isActive: boolean }>`
+  ${dateRangePickerTokens.dropdown.item}
+  ${dateRangePickerTokens.text.value}
+  ${props => props.$isActive && dateRangePickerTokens.dropdown.activeItem}
+  
+  display: block;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  
+  &:focus {
+    outline: none;
+  }
+  
+  &[data-highlighted] {
+    ${props => !props.$isActive && `
+      background-color: rgba(0, 0, 0, 0.05);
+    `}
+  }
+`;
 
 const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
   (
@@ -79,37 +115,36 @@ const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
 
     const filteredPresets = getFilteredPresets();
 
+    const handlePresetSelect = (preset: DateRangePreset) => {
+      onPresetSelect(preset);
+    };
+
     return (
       <Block position='relative' width='100%' ref={ref} className={className}>
-        <StyledTrigger $isOpen={isOpen} onClick={onToggle}>
-          <Block display='flex' alignItems='center' justifyContent='space-between' width='100%' style={{...dateRangePickerTokens.text.value}}>
-            <Block as='span'>{activePresetLabel}</Block>
-            {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </Block>
-        </StyledTrigger>
+        <DropdownMenu.Root open={isOpen} onOpenChange={onToggle}>
+          <DropdownMenu.Trigger asChild>
+            <StyledTrigger $isOpen={isOpen}>
+              <Block as='span' style={{...dateRangePickerTokens.text.value}}>
+                {activePresetLabel}
+              </Block>
+              {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </StyledTrigger>
+          </DropdownMenu.Trigger>
 
-        {isOpen && (
-          <Block style={{...dateRangePickerTokens.dropdown.container}}>
-            <Block style={{...dateRangePickerTokens.dropdown.content}}>
+          <DropdownMenu.Portal>
+            <StyledContent align="start" sideOffset={4}>
               {filteredPresets.map((preset) => (
-                <PrimitiveButton
+                <StyledItem
                   key={preset}
-                  onClick={() => {
-                    onPresetSelect(preset);
-                    onToggle();
-                  }}
-                  style={{
-                    ...dateRangePickerTokens.dropdown.item,
-                    ...dateRangePickerTokens.text.value,
-                    ...(preset === activePreset && dateRangePickerTokens.dropdown.activeItem),
-                  }}
+                  $isActive={preset === activePreset}
+                  onSelect={() => handlePresetSelect(preset)}
                 >
                   {getPresetLabel(preset)}
-                </PrimitiveButton>
+                </StyledItem>
               ))}
-            </Block>
-          </Block>
-        )}
+            </StyledContent>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </Block>
     );
   }

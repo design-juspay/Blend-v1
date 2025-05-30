@@ -352,7 +352,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       >
         <Block display='flex'>
           {showPresets && (
-            <Block width={128} ref={quickRangeRef}>
+            <Block width={132} ref={quickRangeRef}>
               <QuickRangeSelector
                 isOpen={isQuickRangeOpen}
                 onToggle={() => !isDisabled && setIsQuickRangeOpen(!isQuickRangeOpen)}
