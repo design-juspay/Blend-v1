@@ -5,7 +5,7 @@ import { DateRangePreset } from './types';
 import { getPresetLabel } from './utils';
 import dateRangePickerTokens from './dateRangePicker.tokens';
 
-interface QuickRangeSelectorProps {
+type QuickRangeSelectorProps = {
   isOpen: boolean;
   onToggle: () => void;
   activePreset: DateRangePreset;
