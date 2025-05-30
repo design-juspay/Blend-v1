@@ -14,13 +14,18 @@ import Text, { VariantType } from "../Text/Text";
 import selectTokens from "./select.token";
 import { Tooltip, TooltipSize } from "../Tooltip";
 
+export enum SelectionTagType {
+  COUNT = "count",
+  TEXT = "text",
+}
+
 type SelectProps = {
   label: string;
   subLabel?: string;
   hintText?: string;
   required?: boolean;
   helpIconText?: string;
-  placeholder?: string;
+  placeholder: string;
   size?: SelectMenuSize;
   items?: SelectMenuGroupType[];
   variant?: SelectMenuVariant;
@@ -28,6 +33,7 @@ type SelectProps = {
   onSelectChange: (value: string | string[]) => void;
   allowMultiSelect?: boolean;
   enableSearch?: boolean;
+  selectionTagType?: SelectionTagType;
 };
 
 const map = function getValueLabelMap(
@@ -65,6 +71,7 @@ const Select = ({
   onSelectChange,
   allowMultiSelect = false,
   enableSearch = false,
+  selectionTagType = SelectionTagType.COUNT,
 }: SelectProps) => {
   const valueLabelMap = map(items);
 
@@ -106,6 +113,7 @@ const Select = ({
       <Block display="flex" width={"100%"}>
         <Block width="100%" display="flex" alignItems="center">
           <SelectMenu
+            placeholder={placeholder}
             enableSearch={enableSearch}
             items={items}
             selected={selected}
@@ -146,24 +154,66 @@ const Select = ({
                   outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
                 }}
               >
-                <Text
-                  as="span"
-                  variant={
-                    selectTokens.trigger.selectedValue.font.size[
-                      size
-                    ] as VariantType
-                  }
-                  color={selectTokens.trigger.selectedValue.color}
-                  truncate
-                >
-                  {allowMultiSelect
-                    ? Array.isArray(selected) && selected.length > 0
-                      ? getLabelsForSelectedValues(selected).join(", ")
-                      : placeholder
-                    : valueLabelMap[selected as string] || placeholder}
-                </Text>
+                {allowMultiSelect === false && (
+                  <Block as="span">
+                    {selected ? (
+                      <Text
+                        variant="body.md"
+                        fontWeight={500}
+                        color={FOUNDATION_THEME.colors.gray[700]}
+                      >
+                        {valueLabelMap[selected as string]}
+                      </Text>
+                    ) : (
+                      <Text
+                        variant="body.md"
+                        fontWeight={500}
+                        color={FOUNDATION_THEME.colors.gray[600]}
+                      >
+                        {placeholder}
+                      </Text>
+                    )}
+                  </Block>
+                )}
+                {allowMultiSelect && (
+                  <Text
+                    variant={
+                      selectTokens.trigger.selectedValue.font.size[
+                        size
+                      ] as VariantType
+                    }
+                    color={selectTokens.trigger.selectedValue.color}
+                    truncate
+                    style={{
+                      display: "flex",
+                      gap: 4,
+                    }}
+                  >
+                    <Text
+                      as="span"
+                      variant={
+                        selectTokens.trigger.selectedValue.font.size[
+                          size
+                        ] as VariantType
+                      }
+                      fontWeight={500}
+                      color={FOUNDATION_THEME.colors.gray[700]}
+                    >
+                      {placeholder}
+                    </Text>
+                    <Text
+                      truncate
+                      as="span"
+                      color={FOUNDATION_THEME.colors.gray[400]}
+                    >
+                      {getLabelsForSelectedValues(selected as string[]).join(
+                        ", "
+                      )}
+                    </Text>
+                  </Text>
+                )}
 
-                <Block size={20} contentCentered borderRadius={4}>
+                <Block size={20} contentCentered>
                   <ChevronDownIcon
                     size={16}
                     color={FOUNDATION_THEME.colors.gray[400]}

@@ -44,6 +44,7 @@ export type SelectMenuProps = {
   onSelect?: (value: string | string[]) => void;
   allowMultiSelect?: boolean;
   enableSearch?: boolean;
+  placeholder: string;
 };
 
 export type SelectMenuItemType = {

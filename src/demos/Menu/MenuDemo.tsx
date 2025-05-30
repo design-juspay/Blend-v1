@@ -10,7 +10,7 @@ import {
 import Block from "../../../lib/components/Primitives/Block/Block";
 import MenuV2 from "../../../lib/components/MenuV2/MenuV2";
 import Select from "../../../lib/components/Select/Select";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SelectMenuVariant } from "../../../lib/components/Select/types";
 
 const dummyItems: MenuGroupType[] = [
@@ -71,7 +71,7 @@ const dummyItems: MenuGroupType[] = [
 
 const MenuDemo = () => {
   // Add state for Select demo
-  const [selectedOption, setSelectedOption] = useState("profile-settings");
+  const [selectedOption, setSelectedOption] = useState("");
   // Add state for multi-select demo
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
   return (
@@ -88,7 +88,8 @@ const MenuDemo = () => {
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
-            variant={SelectMenuVariant.NO_CONTAINER}
+            placeholder="Gateway"
+            // variant={SelectMenuVariant.NO_CONTAINER}
             label="Select an option"
             selected={selectedOption}
             onSelectChange={(value) => {
@@ -100,6 +101,7 @@ const MenuDemo = () => {
         <div style={{ width: "300px" }}>
           <Select
             label="Multi Select"
+            placeholder="Gateway"
             allowMultiSelect
             selected={multiSelected}
             onSelectChange={(value) =>

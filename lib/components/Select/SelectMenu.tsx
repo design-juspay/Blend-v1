@@ -352,16 +352,6 @@ const Label = styled(RadixMenu.Label)(() => ({
   userSelect: "none",
 }));
 
-// const SearchInput = styled.input(() => ({
-//   padding: "6px 8px",
-//   width: "100%",
-//   borderRadius: 4,
-//   border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-//   marginBottom: 10,
-
-//   height: 40,
-// }));
-
 // Utility: Recursively filter menu items and groups by search text
 function filterMenuGroups(
   groups: SelectMenuGroupType[],
@@ -445,6 +435,7 @@ const SelectMenu = ({
   onSelect,
   allowMultiSelect = false,
   enableSearch = true,
+  placeholder,
 }: SelectMenuProps) => {
   const [searchText, setSearchText] = useState<string>("");
 
@@ -473,12 +464,6 @@ const SelectMenu = ({
             top={0}
             zIndex={1000}
           >
-            {/* <SearchInput
-              placeholder="Search"
-              onKeyDown={(e) => e.stopPropagation()}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            /> */}
             <Input
               variant={InputVariant.SEARCH}
               label="Search"

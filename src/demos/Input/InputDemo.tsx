@@ -47,7 +47,8 @@ const InputDemo: React.FC = () => {
       <Input
         label="Full Name"
         value={value}
-        leftSlot={<Search size={16} color="black" />}
+        // leftSlot={<Search size={16} color="black" />}
+        leftSlot={<Tag text="Tag" />}
         // variant={InputVariant.SEARCH}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Enter your full name"
