@@ -53,7 +53,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     );
 
     const renderFullBreadcrumb = () => (
-      <StyledBreadcrumbContainer ref={ref as any}>
+      <StyledBreadcrumbContainer ref={ref}>
         <StyledBreadcrumbList>
           {processedItems.map((item, index) => 
             renderBreadcrumbItem(
@@ -71,7 +71,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       const { firstItems, moreItems, lastItems } = splitBreadcrumbItems(processedItems);
 
       return (
-        <StyledBreadcrumbContainer ref={ref as any}>
+        <StyledBreadcrumbContainer ref={ref}>
           <StyledBreadcrumbList>
             {firstItems.map((item, index) => 
               renderBreadcrumbItem(item, index, false, `first-${index}`)

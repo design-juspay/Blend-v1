@@ -11,7 +11,7 @@ export const StyledRadioInput = styled.input<{
 }>`
   appearance: none;
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
@@ -38,7 +38,10 @@ export const StyledRadioInput = styled.input<{
     height: ${radioTokens.sizes[size].radio.height};
   `}
   
+  margin: 0;
+  padding: 0;
   margin-right: ${radioTokens.spacing.radioMarginRight};
+  flex-shrink: 0;
   
   /* Inner dot indicator */
   &::after {
@@ -87,6 +90,22 @@ export const StyledRadioLabel = styled.label<{
   cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  
+  /* Reset any inherited spacing that could affect alignment */
+  & > span {
+    line-height: 1;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Reset any nested spans as well */
+  & span {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 `;
 
 export const StyledRadioGroupLabel = styled.div`
