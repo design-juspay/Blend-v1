@@ -162,4 +162,6 @@ const Charts: React.FC<ChartsProps> = ({
   );
 };
 
+Charts.displayName = "Charts";
+
 export default Charts;

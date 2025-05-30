@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, ButtonType, ButtonSize } from "../../../lib/components/Button";
 import {
   Charts,
