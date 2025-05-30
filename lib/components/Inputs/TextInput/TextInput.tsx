@@ -72,10 +72,12 @@ const TextInput = ({
   value,
   onChange,
   name,
+  required = false,
 }: InputProps) => {
   if (variant === InputVariant.SEARCH) {
     return (
       <SearchInput
+        required={required}
         size={size}
         leftSlot={leftSlot}
         rightSlot={rightSlot}
@@ -132,6 +134,7 @@ const TextInput = ({
         helpIconHintText={helpIconHintText}
         disabled={disabled}
         name={name}
+        required={required}
       />
       <Block position="relative" width={"100%"}>
         {leftSlot && (
@@ -148,6 +151,7 @@ const TextInput = ({
         )}
 
         <PrimitiveInput
+          required={required}
           value={value}
           type="text"
           name={name}

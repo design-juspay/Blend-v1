@@ -11,6 +11,7 @@ type InputLabelsProps = {
   disabled?: boolean;
   helpIconHintText?: string;
   name?: string;
+  required?: boolean;
 };
 
 /**
@@ -19,6 +20,7 @@ type InputLabelsProps = {
  * @param {string} sublabel - The sublabel for the input field.
  * @param {boolean} disabled - Whether the input field is disabled.
  * @param {string} helpIconHintText - The hint text for the help icon.
+ * @param {boolean} required - Whether the input field is required.
  */
 const InputLabels = ({
   label,
@@ -26,14 +28,10 @@ const InputLabels = ({
   disabled,
   helpIconHintText,
   name,
+  required,
 }: InputLabelsProps) => {
   return (
-    <Block
-      display="flex"
-      alignItems="center"
-      gap={4}
-      width={"100%"}
-    >
+    <Block display="flex" alignItems="center" gap={4} width={"100%"}>
       <Text
         as="label"
         htmlFor={name}
@@ -48,6 +46,9 @@ const InputLabels = ({
       >
         {label}
       </Text>
+      {required && (
+        <sup style={{ color: FOUNDATION_THEME.colors.red[500] }}>*</sup>
+      )}
       {sublabel && (
         <Text
           variant="body.md"
@@ -62,6 +63,7 @@ const InputLabels = ({
           ({sublabel})
         </Text>
       )}
+
       {helpIconHintText && (
         <Block contentCentered size={16}>
           <Tooltip content={helpIconHintText} size={TooltipSize.SMALL}>

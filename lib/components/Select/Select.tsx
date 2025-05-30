@@ -13,6 +13,7 @@ import {
 import Text, { VariantType } from "../Text/Text";
 import selectTokens from "./select.token";
 import { Tooltip, TooltipSize } from "../Tooltip";
+import React from "react";
 
 export enum SelectionTagType {
   COUNT = "count",
@@ -201,18 +202,37 @@ const Select = ({
                     >
                       {placeholder}
                     </Text>
-                    <Text
-                      truncate
-                      as="span"
-                      color={FOUNDATION_THEME.colors.gray[400]}
-                    >
-                      {getLabelsForSelectedValues(selected as string[]).join(
-                        ", "
-                      )}
-                    </Text>
+                    {selected.length && (
+                      <React.Fragment>
+                        {selectionTagType === SelectionTagType.TEXT ? (
+                          <Text
+                            truncate
+                            as="span"
+                            color={FOUNDATION_THEME.colors.gray[400]}
+                          >
+                            {getLabelsForSelectedValues(
+                              selected as string[]
+                            ).join(", ")}
+                          </Text>
+                        ) : (
+                          <Block
+                            as="span"
+                            backgroundColor={
+                              FOUNDATION_THEME.colors.primary[600]
+                            }
+                            color={FOUNDATION_THEME.colors.gray[0]}
+                            borderRadius={4}
+                            paddingX={4}
+                            fontSize={12}
+                            contentCentered
+                          >
+                            {selected.length}
+                          </Block>
+                        )}
+                      </React.Fragment>
+                    )}
                   </Text>
                 )}
-
                 <Block size={20} contentCentered>
                   <ChevronDownIcon
                     size={16}

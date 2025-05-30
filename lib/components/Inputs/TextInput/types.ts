@@ -9,6 +9,7 @@ export enum InputVariant {
 }
 
 export type InputProps = {
+  required?: boolean;
   variant?: InputVariant;
   label: string;
   sublabel?: string;

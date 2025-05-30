@@ -108,6 +108,15 @@ type StyledBlockProps = StateStyles & {
 
   // Cursor
   cursor?: CSSObject["cursor"];
+
+  //font
+  fontSize?: CSSObject["fontSize"];
+  fontWeight?: CSSObject["fontWeight"];
+  lineHeight?: CSSObject["lineHeight"];
+  letterSpacing?: CSSObject["letterSpacing"];
+  textAlign?: CSSObject["textAlign"];
+  textTransform?: CSSObject["textTransform"];
+  textOverflow?: CSSObject["textOverflow"];
 };
 
 const blockedProps = [
@@ -183,6 +192,14 @@ const blockedProps = [
   "_active",
   "_disabled",
   "_visited",
+
+  //font
+  "fontSize",
+  "fontWeight",
+  "lineHeight",
+  "letterSpacing",
+  "textAlign",
+  "textTransform",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -305,6 +322,17 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.transition !== undefined) styles.transition = props.transition;
 
   if (props.cursor !== undefined) styles.cursor = props.cursor;
+
+  if (props.fontSize !== undefined) styles.fontSize = props.fontSize;
+  if (props.fontWeight !== undefined) styles.fontWeight = props.fontWeight;
+  if (props.lineHeight !== undefined) styles.lineHeight = props.lineHeight;
+  if (props.letterSpacing !== undefined)
+    styles.letterSpacing = props.letterSpacing;
+  if (props.textAlign !== undefined) styles.textAlign = props.textAlign;
+  if (props.textTransform !== undefined)
+    styles.textTransform = props.textTransform;
+  if (props.textOverflow !== undefined)
+    styles.textOverflow = props.textOverflow;
 
   return styles;
 };

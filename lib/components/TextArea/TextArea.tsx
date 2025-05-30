@@ -32,6 +32,7 @@ const TextArea = ({
         sublabel={sublabel}
         disabled={disabled}
         helpIconHintText={helpIconHintText}
+        required={required}
       />
       <Block>
         <PrimitiveTextarea

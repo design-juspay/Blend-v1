@@ -36,6 +36,7 @@ const NumberInput = ({
         disabled={disabled}
         helpIconHintText={helpIconHintText}
         name={name}
+        required={required}
       />
       <Block
         position="relative"
