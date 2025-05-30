@@ -9,6 +9,7 @@ import TabsDemo from "./demos/Tabs/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
+import AvatarDemo from "./demos/Avatar/AvatarDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
@@ -18,6 +19,8 @@ import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
+import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
+import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 import InputDemo from "./demos/Input/InputDemo";
 
@@ -30,10 +33,15 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
+  const [selectedCategory, setSelectedCategory] = useState<string>("daterangepicker");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
+    {
+      id: "stat-cards",
+      name: "Stat Cards",
+      component: <StatCardDemo />,
+    },
     {
       id: "buttons",
       name: "Buttons",
@@ -85,6 +93,11 @@ function App() {
       component: <AccordionDemo />,
     },
     {
+      id: "avatar",
+      name: "Avatar",
+      component: <AvatarDemo />,
+    },
+    {
       id: "avatar-group",
       name: "Avatar Group",
       component: <AvatarGroupDemo />,
@@ -118,6 +131,11 @@ function App() {
       id: "input",
       name: "Input",
       component: <InputDemo />,
+    },
+    {
+      id: "daterangepicker",
+      name: "Date Range Picker",
+      component: <DateRangePickerDemo />,
     },
   ];
 

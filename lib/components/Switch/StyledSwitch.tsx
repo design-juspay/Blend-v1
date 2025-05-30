@@ -16,6 +16,16 @@ export const StyledSwitchRoot = styled.button<{
   cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
   transition: background-color ${switchTokens.transition.duration} ${switchTokens.transition.easing};
   
+  /* Reset all margin and padding */
+  margin: 0;
+  padding: 0;
+  margin-right: ${switchTokens.spacing.switchMarginRight};
+  
+  /* Prevent any inherited spacing */
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  
   ${({ size }) => css`
     width: ${switchTokens.sizes[size].root.width};
     height: ${switchTokens.sizes[size].root.height};
@@ -31,8 +41,6 @@ export const StyledSwitchRoot = styled.button<{
       ? switchTokens.background.enabled 
       : switchTokens.background.inactive;
   }};
-  
-  margin-right: ${switchTokens.spacing.switchMarginRight};
   
   /* Improved focus styles for better accessibility */
   &:focus-visible {
@@ -83,6 +91,22 @@ export const StyledSwitchLabel = styled.label<{
   cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  
+  /* Reset any inherited spacing that could affect alignment */
+  & > span {
+    line-height: 1;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Reset any nested spans as well */
+  & span {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 `;
 
 export const StyledSwitchGroupLabel = styled.div`

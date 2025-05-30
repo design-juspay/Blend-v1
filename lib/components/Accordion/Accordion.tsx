@@ -19,7 +19,6 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       accordionType = AccordionType.NO_BORDER,
       defaultValue,
       value,
-      isCollapsible = true,
       isMultiple = false,
       onValueChange,
     },
@@ -41,7 +40,6 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const commonProps = {
       ref: ref,
       $accordionType: accordionType,
-      collapsible: isCollapsible,
     };
 
     return isMultiple ? (
@@ -57,6 +55,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     ) : (
       <StyledAccordionRoot
         type="single"
+        collapsible={true}
         value={value as string | undefined}
         defaultValue={defaultValue as string | undefined}
         onValueChange={onValueChange as ((value: string) => void) | undefined}
