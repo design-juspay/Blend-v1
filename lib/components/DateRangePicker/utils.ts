@@ -36,7 +36,8 @@ export const parseDate = (dateString: string, format: string): Date | null => {
     
     if (formatParts.length !== dateParts.length) return null;
 
-    let day = 1, month = 1, year = new Date().getFullYear(), hours = 0, minutes = 0;
+    let day = 1, month = 1, year = new Date().getFullYear(), hours = 0;
+    const minutes = 0;
     
     formatParts.forEach((part, index) => {
       const value = parseInt(dateParts[index]);
@@ -47,7 +48,7 @@ export const parseDate = (dateString: string, format: string): Date | null => {
         case 'mm': month = value; break;
         case 'yyyy': year = value; break;
         case 'hh': hours = value; break;
-        case 'mm': minutes = value; break;
+        default: break;
       }
     });
 
@@ -114,69 +115,83 @@ export const getPresetDateRange = (preset: DateRangePreset): DateRange => {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
   switch (preset) {
-    case DateRangePreset.TODAY:
+    case DateRangePreset.TODAY: {
       return { startDate: today, endDate: today };
+    }
     
-    case DateRangePreset.YESTERDAY:
+    case DateRangePreset.YESTERDAY: {
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
       return { startDate: yesterday, endDate: yesterday };
+    }
     
-    case DateRangePreset.TOMORROW:
+    case DateRangePreset.TOMORROW: {
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
       return { startDate: tomorrow, endDate: tomorrow };
+    }
     
-    case DateRangePreset.LAST_1_HOUR:
+    case DateRangePreset.LAST_1_HOUR: {
       const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
       return { startDate: oneHourAgo, endDate: now };
+    }
     
-    case DateRangePreset.LAST_6_HOURS:
+    case DateRangePreset.LAST_6_HOURS: {
       const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
       return { startDate: sixHoursAgo, endDate: now };
+    }
     
-    case DateRangePreset.LAST_7_DAYS:
+    case DateRangePreset.LAST_7_DAYS: {
       const sevenDaysAgo = new Date(today);
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
       return { startDate: sevenDaysAgo, endDate: today };
+    }
     
-    case DateRangePreset.LAST_30_DAYS:
+    case DateRangePreset.LAST_30_DAYS: {
       const thirtyDaysAgo = new Date(today);
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
       return { startDate: thirtyDaysAgo, endDate: today };
+    }
     
-    case DateRangePreset.LAST_3_MONTHS:
+    case DateRangePreset.LAST_3_MONTHS: {
       const threeMonthsAgo = new Date(today);
       threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
       return { startDate: threeMonthsAgo, endDate: today };
+    }
     
-    case DateRangePreset.LAST_12_MONTHS:
+    case DateRangePreset.LAST_12_MONTHS: {
       const twelveMonthsAgo = new Date(today);
       twelveMonthsAgo.setFullYear(twelveMonthsAgo.getFullYear() - 1);
       return { startDate: twelveMonthsAgo, endDate: today };
+    }
     
-    case DateRangePreset.NEXT_7_DAYS:
+    case DateRangePreset.NEXT_7_DAYS: {
       const sevenDaysLater = new Date(today);
       sevenDaysLater.setDate(sevenDaysLater.getDate() + 6);
       return { startDate: today, endDate: sevenDaysLater };
+    }
     
-    case DateRangePreset.NEXT_30_DAYS:
+    case DateRangePreset.NEXT_30_DAYS: {
       const thirtyDaysLater = new Date(today);
       thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 29);
       return { startDate: today, endDate: thirtyDaysLater };
+    }
     
-    case DateRangePreset.NEXT_3_MONTHS:
+    case DateRangePreset.NEXT_3_MONTHS: {
       const threeMonthsLater = new Date(today);
       threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
       return { startDate: today, endDate: threeMonthsLater };
+    }
     
-    case DateRangePreset.NEXT_12_MONTHS:
+    case DateRangePreset.NEXT_12_MONTHS: {
       const twelveMonthsLater = new Date(today);
       twelveMonthsLater.setFullYear(twelveMonthsLater.getFullYear() + 1);
       return { startDate: today, endDate: twelveMonthsLater };
+    }
     
-    default:
+    default: {
       return { startDate: today, endDate: today };
+    }
   }
 };
 
