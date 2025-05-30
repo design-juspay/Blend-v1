@@ -1,11 +1,12 @@
 import Block from "../Primitives/Block/Block";
 import PrimitiveInput from "../Primitives/PrimitiveInput/PrimitiveInput";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
 import { TooltipSize } from "../Tooltip/types";
 import { Tooltip } from "../Tooltip";
-import { HelpCircleIcon } from "lucide-react";
+import { File, HelpCircleIcon, Search } from "lucide-react";
+import { Tag, TagSize, TagShape } from "../Tags";
 
 enum InputSize {
   MEDIUM = "medium",
@@ -84,8 +85,15 @@ const SearchInput = ({
 const Input = ({
   variant = InputVariant.TEXT,
   size = InputSize.MEDIUM,
-  leftSlot,
-  rightSlot,
+  leftSlot = <File size={14} color={FOUNDATION_THEME.colors.gray[400]} />,
+  rightSlot = (
+    <Tag
+      text="Right"
+      onClick={() => alert("right")}
+      size={TagSize.XS}
+      shape={TagShape.ROUNDED}
+    />
+  ),
   error = false,
   errorMessage,
   hintText,
@@ -116,6 +124,31 @@ const Input = ({
       />
     );
   }
+
+  const leftSlotRef = useRef<HTMLDivElement>(null);
+  const rightSlotRef = useRef<HTMLDivElement>(null);
+
+  const [leftSlotWidth, setLeftSlotWidth] = useState(0);
+  const [rightSlotWidth, setRightSlotWidth] = useState(0);
+
+  useEffect(() => {
+    if (leftSlotRef.current) {
+      setLeftSlotWidth(leftSlotRef.current.offsetWidth);
+    } else {
+      setLeftSlotWidth(0);
+    }
+    if (rightSlotRef.current) {
+      setRightSlotWidth(rightSlotRef.current.offsetWidth);
+    } else {
+      setRightSlotWidth(0);
+    }
+  }, [leftSlot, rightSlot]);
+
+  const paddingX = size === InputSize.MEDIUM ? 12 : 14;
+  const paddingY = size === InputSize.MEDIUM ? 8 : 10;
+
+  const paddingInlineStart = leftSlot ? paddingX + leftSlotWidth + 8 : paddingX;
+  const paddingInlineEnd = rightSlot ? paddingX + rightSlotWidth + 8 : paddingX;
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
       <Block display="flex" alignItems="center" gap={4}>
@@ -158,12 +191,38 @@ const Input = ({
         )}
       </Block>
       <Block position="relative" width={"100%"}>
+        {leftSlot && (
+          <Block
+            ref={leftSlotRef}
+            position="absolute"
+            top={paddingY}
+            left={paddingX}
+            bottom={paddingY}
+            contentCentered
+          >
+            {leftSlot}
+          </Block>
+        )}
+        {rightSlot && (
+          <Block
+            ref={rightSlotRef}
+            position="absolute"
+            top={paddingY}
+            right={paddingX}
+            bottom={paddingY}
+            contentCentered
+          >
+            {rightSlot}
+          </Block>
+        )}
         <PrimitiveInput
           value={value}
           onChange={onChange}
+          paddingInlineStart={paddingInlineStart}
+          paddingInlineEnd={paddingInlineEnd}
+          paddingTop={paddingY}
+          paddingBottom={paddingY}
           placeholder={placeholder}
-          paddingX={12}
-          paddingY={8}
           borderRadius={8}
           boxShadow={FOUNDATION_THEME.shadows.sm}
           border={
