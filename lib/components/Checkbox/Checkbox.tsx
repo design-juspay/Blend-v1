@@ -33,6 +33,8 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref
   ) => {
+    // TODO: This is a temporary fix to avoid the warning about useId.
+    // We need to find a better solution to handle the id.
     const generatedId = React.useId();
     const uniqueId = id || generatedId;
     
