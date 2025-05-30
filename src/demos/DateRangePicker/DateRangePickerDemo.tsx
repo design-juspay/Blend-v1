@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DateRangePicker } from '../../../lib/components/DateRangePicker';
-import { DateRange, DateRangePickerVariant } from '../../../lib/components/DateRangePicker/types';
+import { DateRange } from '../../../lib/components/DateRangePicker/types';
 
 const DateRangePickerDemo = () => {
   const [basicRange, setBasicRange] = useState<DateRange>({
@@ -118,23 +118,6 @@ const DateRangePickerDemo = () => {
             Start: {pastOnlyRange.startDate.toLocaleDateString()}<br />
             End: {pastOnlyRange.endDate.toLocaleDateString()}
           </div>
-        </section>
-
-        {/* Secondary Variant */}
-        <section>
-          <h2 style={{ marginBottom: '1rem', fontSize: '1.5rem', fontWeight: '600' }}>
-            Secondary Variant
-          </h2>
-          <p style={{ marginBottom: '1rem', color: '#666' }}>
-            DateRangePicker with secondary styling variant.
-          </p>
-          <DateRangePicker
-            value={basicRange}
-            onChange={setBasicRange}
-            variant={DateRangePickerVariant.SECONDARY}
-            showPresets={false}
-            ariaLabel="Secondary variant date picker"
-          />
         </section>
 
         {/* Disabled State */}

@@ -17,11 +17,6 @@ export enum DateRangePreset {
   NEXT_12_MONTHS = 'next12Months',
 }
 
-export enum DateRangePickerVariant {
-  PRIMARY = 'primary',
-  SECONDARY = 'secondary',
-}
-
 export type DateRange = {
   startDate: Date;
   endDate: Date;
@@ -31,7 +26,6 @@ export type DateRange = {
 export type DateRangePickerProps = {
   value?: DateRange;
   onChange?: (range: DateRange) => void;
-  variant?: DateRangePickerVariant;
   showTimePicker?: boolean;
   showPresets?: boolean;
   placeholder?: string;

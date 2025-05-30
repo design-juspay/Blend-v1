@@ -1,6 +1,5 @@
 import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
-import { DateRangePickerVariant } from "./types";
 
 type DateRangePickerTokens = {
   base: {
@@ -8,8 +7,6 @@ type DateRangePickerTokens = {
     input: CSSObject;
   };
   input: {
-    [K in DateRangePickerVariant]: CSSObject;
-  } & {
     sizes: {
       sm: CSSObject;
       md: CSSObject;
@@ -93,11 +90,6 @@ const dateRangePickerTokens: DateRangePickerTokens = {
     },
   },
   input: {
-    [DateRangePickerVariant.PRIMARY]: {
-    },
-    [DateRangePickerVariant.SECONDARY]: {
-      backgroundColor: FOUNDATION_THEME.colors.gray[50],
-    },
     sizes: {
       sm: {
         fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,

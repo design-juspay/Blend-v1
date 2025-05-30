@@ -17,13 +17,14 @@ import dateRangePickerTokens from './dateRangePicker.tokens';
 import { SwitchSize } from '../Switch/types';
 import { Switch } from '../Switch/Switch';
 import { FOUNDATION_THEME } from '../../tokens';
+import Block from '../Primitives/Block/Block';
 
-const StyledContainer = styled.div<{ $isDisabled: boolean }>`
+const StyledContainer = styled(Block)<{ $isDisabled: boolean }>`
   ${dateRangePickerTokens.base.container}
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
 `;
 
-const StyledFlexContainer = styled.div`
+const StyledFlexContainer = styled(Block)`
   display: flex;
   flex-direction: column;
   
@@ -32,7 +33,7 @@ const StyledFlexContainer = styled.div`
   }
 `;
 
-const StyledQuickRangeContainer = styled.div`
+const StyledQuickRangeContainer = styled(Block)`
   position: relative;
   width: 100%;
   margin-bottom: 8px;
@@ -45,7 +46,7 @@ const StyledQuickRangeContainer = styled.div`
   }
 `;
 
-const StyledMainInputContainer = styled.div`
+const StyledMainInputContainer = styled(Block)`
   position: relative;
   
   @media (min-width: 640px) {
@@ -53,7 +54,7 @@ const StyledMainInputContainer = styled.div`
   }
 `;
 
-const StyledTrigger = styled.div<{ $isDisabled: boolean; $showPresets: boolean }>`
+const StyledTrigger = styled(Block)<{ $isDisabled: boolean; $showPresets: boolean }>`
   ${dateRangePickerTokens.base.input}
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
   height: 40px;
@@ -64,15 +65,15 @@ const StyledTrigger = styled.div<{ $isDisabled: boolean; $showPresets: boolean }
   }
 `;
 
-const StyledCalendarContainer = styled.div`
+const StyledCalendarContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.container}
 `;
 
-const StyledCalendarContent = styled.div`
+const StyledCalendarContent = styled(Block)`
   padding: ${dateRangePickerTokens.calendar.gridContainer.padding};
 `;
 
-const StyledInputRow = styled.div`
+const StyledInputRow = styled(Block)`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -83,18 +84,18 @@ const StyledInput = styled.input`
   ${dateRangePickerTokens.timePicker.input}
 `;
 
-const StyledLabel = styled.div`
+const StyledLabel = styled(Block)`
   width: 96px;
   ${dateRangePickerTokens.text.label}
 `;
 
-const StyledScrollableCalendar = styled.div`
+const StyledScrollableCalendar = styled(Block)`
   margin-top: 16px;
   max-height: 300px;
   overflow-y: auto;
 `;
 
-const StyledFooter = styled.div`
+const StyledFooter = styled(Block)`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -103,7 +104,7 @@ const StyledFooter = styled.div`
   margin-top: 16px;
 `;
 
-const StyledToggleContainer = styled.div`
+const StyledToggleContainer = styled(Block)`
   display: flex;
   align-items: center;
 `;
@@ -113,12 +114,12 @@ const StyledToggleLabel = styled.span`
   ${dateRangePickerTokens.text.value}
 `;
 
-const StyledButtonGroup = styled.div`
+const StyledButtonGroup = styled(Block)`
   display: flex;
   gap: 8px;
 `;
 
-const StyledTriggerContent = styled.div`
+const StyledTriggerContent = styled(Block)`
   ${dateRangePickerTokens.text.value}
   flex: 1;
   display: flex;
@@ -126,7 +127,7 @@ const StyledTriggerContent = styled.div`
   justify-content: space-between;
 `;
 
-const StyledIconAndText = styled.div`
+const StyledIconAndText = styled(Block)`
   display: flex;
   align-items: center;
 `;
@@ -398,7 +399,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const renderTrigger = () => {
       if (triggerElement) {
         return (
-          <div
+          <Block
             ref={triggerRef}
             onClick={handleToggleOpen}
             style={{ 
@@ -407,7 +408,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             }}
           >
             {triggerElement}
-          </div>
+          </Block>
         );
       }
 
