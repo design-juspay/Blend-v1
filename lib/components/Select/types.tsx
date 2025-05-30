@@ -99,6 +99,44 @@ export const dummyMenuItems: SelectMenuGroupType[] = [
   },
   {
     groupLabel: "Preferences",
+    showSeparator: true,
+    items: [
+      {
+        label: "Theme Settings",
+        value: "theme-settings",
+        subLabel: "Customize your appearance",
+      },
+      {
+        label: "Notifications",
+        value: "notifications",
+      },
+      {
+        label: "Privacy",
+        value: "privacy",
+      },
+    ],
+  },
+  {
+    groupLabel: "Preferences",
+    showSeparator: false,
+    items: [
+      {
+        label: "Theme Settings",
+        value: "theme-settings",
+        subLabel: "Customize your appearance",
+      },
+      {
+        label: "Notifications",
+        value: "notifications",
+      },
+      {
+        label: "Privacy",
+        value: "privacy",
+      },
+    ],
+  },
+  {
+    groupLabel: "Preferences",
     showSeparator: false,
     items: [
       {

@@ -1,123 +1,57 @@
-import Block from "../Primitives/Block/Block";
-import PrimitiveInput from "../Primitives/PrimitiveInput/PrimitiveInput";
-import { useRef, useState, useEffect } from "react";
+import { HelpCircleIcon } from "lucide-react";
 import { FOUNDATION_THEME } from "../../tokens";
+import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
-import { TooltipSize } from "../Tooltip/types";
-import { Tooltip } from "../Tooltip";
-import { File, HelpCircleIcon, Search } from "lucide-react";
-import { Tag, TagSize, TagShape } from "../Tags";
+import { Tooltip, TooltipSize } from "../Tooltip";
+import Select from "../Select/Select";
+import PrimitiveInput from "../Primitives/PrimitiveInput/PrimitiveInput";
+import { useEffect } from "react";
+import { useRef, useState } from "react";
+import { SelectMenuVariant } from "../Select/types";
 
 enum InputSize {
   MEDIUM = "medium",
   LARGE = "large",
 }
-
-export enum InputVariant {
-  SEARCH = "search",
-  TEXT = "text",
-}
-
-type InputProps = {
-  variant?: InputVariant;
+type DropdownInputProps = {
   label: string;
+  options: string[];
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  dropdownValue: string;
+  onDropdownChange: (value: string) => void;
+  placeholder?: string;
+  dropdownPlaceholder?: string;
+  disabled?: boolean;
   sublabel?: string;
-  hintText?: string;
   helpIconHintText?: string;
   error?: boolean;
   errorMessage?: string;
-  disabled?: boolean;
+  hintText?: string;
   size?: InputSize;
   leftSlot?: React.ReactNode;
   rightSlot?: React.ReactNode;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
 };
 
-const SearchInput = ({
-  size = InputSize.MEDIUM,
-  leftSlot,
-  rightSlot,
-  error = false,
-  errorMessage = "This is an error message",
-  hintText = "This is a hint text to help user.",
-  helpIconHintText = "This is a help icon hint text to help user.",
-  disabled = false,
+const DropdownInput = ({
   label,
-  placeholder = "Enter",
-  sublabel,
+  options,
   value,
   onChange,
-}: Omit<InputProps, "variant">) => {
-  return (
-    <Block position="relative" width={"100%"}>
-      <PrimitiveInput
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        paddingX={12}
-        paddingY={8}
-        border="none"
-        outline="none"
-        width={"100%"}
-        borderBottom={
-          error
-            ? `1px solid ${FOUNDATION_THEME.colors.red[500]} !important`
-            : `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
-        }
-        _hover={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-        }}
-        _focusVisible={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          outline: "none !important",
-        }}
-        _focus={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          outline: "none !important",
-        }}
-      />
-    </Block>
-  );
-};
-
-const Input = ({
-  variant = InputVariant.TEXT,
-  size = InputSize.MEDIUM,
-  leftSlot,
-  rightSlot,
-  error = false,
+  dropdownValue,
+  onDropdownChange,
+  placeholder,
+  dropdownPlaceholder,
+  disabled,
+  sublabel,
+  helpIconHintText,
+  error,
   errorMessage,
   hintText,
-  helpIconHintText,
-  disabled = false,
-  label,
-  placeholder = "Enter",
-  sublabel,
-  value,
-  onChange,
-}: InputProps) => {
-  if (variant === InputVariant.SEARCH) {
-    return (
-      <SearchInput
-        size={size}
-        leftSlot={leftSlot}
-        rightSlot={rightSlot}
-        error={error}
-        errorMessage={errorMessage}
-        hintText={hintText}
-        helpIconHintText={helpIconHintText}
-        disabled={disabled}
-        label={label}
-        placeholder={placeholder}
-        sublabel={sublabel}
-        value={value}
-        onChange={onChange}
-      />
-    );
-  }
-
+  leftSlot,
+  rightSlot,
+  size = InputSize.LARGE,
+}: DropdownInputProps) => {
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
 
@@ -141,7 +75,9 @@ const Input = ({
   const paddingY = size === InputSize.MEDIUM ? 8 : 10;
 
   const paddingInlineStart = leftSlot ? paddingX + leftSlotWidth + 8 : paddingX;
-  const paddingInlineEnd = rightSlot ? paddingX + rightSlotWidth + 8 : paddingX;
+  const paddingInlineEnd = rightSlot
+    ? paddingX + rightSlotWidth + 8
+    : paddingX + 50;
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
       <Block display="flex" alignItems="center" gap={4}>
@@ -183,31 +119,29 @@ const Input = ({
           </Block>
         )}
       </Block>
-      <Block position="relative" width={"100%"}>
-        {leftSlot && (
-          <Block
-            ref={leftSlotRef}
-            position="absolute"
-            top={paddingY}
-            left={paddingX}
-            bottom={paddingY}
-            contentCentered
-          >
-            {leftSlot}
-          </Block>
-        )}
-        {rightSlot && (
-          <Block
-            ref={rightSlotRef}
-            position="absolute"
-            top={paddingY}
-            right={paddingX}
-            bottom={paddingY}
-            contentCentered
-          >
-            {rightSlot}
-          </Block>
-        )}
+
+      <Block position="relative">
+        {/* <Select
+          placeholder="United States"
+          label="Country"
+          selected={dropdownValue}
+          allowMultiSelect={false}
+          onSelectChange={(value) =>
+            onDropdownChange(Array.isArray(value) ? value[0] : value)
+          }
+        /> */}
+        <Block position="absolute" right={0} top={0}>
+          <Select
+            placeholder="Code"
+            variant={SelectMenuVariant.NO_CONTAINER}
+            label="Country"
+            selected={dropdownValue}
+            allowMultiSelect={false}
+            onSelectChange={(value) =>
+              onDropdownChange(Array.isArray(value) ? value[0] : value)
+            }
+          />
+        </Block>
         <PrimitiveInput
           value={value}
           onChange={onChange}
@@ -267,4 +201,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default DropdownInput;

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Input, { InputVariant } from "../../../lib/components/Input/Input";
 import NumberInput from "../../../lib/components/NumberInput/NumberInput";
 import TextArea from "../../../lib/components/TextArea/TextArea";
+import DropdownInput from "../../../lib/components/DropdownInput/DropdownInput";
+import { Tag, TagShape } from "../../../lib/main";
+import { Search } from "lucide-react";
 
 const InputDemo: React.FC = () => {
   const [value, setValue] = useState("");
@@ -10,6 +13,8 @@ const InputDemo: React.FC = () => {
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [numberValue, setNumberValue] = useState<number>(0);
+  const [dropdownValue, setDropdownValue] = useState<string>("");
+  const [dropDownText, setDropDownText] = useState<string>("");
 
   return (
     <div
@@ -42,6 +47,7 @@ const InputDemo: React.FC = () => {
       <Input
         label="Full Name"
         value={value}
+        leftSlot={<Search size={16} color="black" />}
         // variant={InputVariant.SEARCH}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Enter your full name"
@@ -76,7 +82,7 @@ const InputDemo: React.FC = () => {
         errorMessage="This is an error message."
         placeholder="Enter your number"
         max={100}
-        min={0}
+        // min={0}
         step={5}
       />
       <div style={{ height: 100 }}></div>
@@ -95,6 +101,16 @@ const InputDemo: React.FC = () => {
         hintText="This is a hint text to help user."
       />
       <div style={{ height: 100 }}></div>
+      <p style={{ color: "black" }}>Value: {dropDownText}</p>
+      <p style={{ color: "black" }}>Value: {dropdownValue}</p>
+      <DropdownInput
+        label="Country"
+        options={["United States", "Canada", "Mexico"]}
+        value={dropDownText}
+        onChange={(e) => setDropDownText(e.target.value)}
+        dropdownValue={dropdownValue}
+        onDropdownChange={(value) => setDropdownValue(value)}
+      />
     </div>
   );
 };
