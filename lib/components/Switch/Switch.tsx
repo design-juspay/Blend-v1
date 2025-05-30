@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SwitchProps, SwitchSize } from './types';
 import { getSwitchDataState } from './utils';
 import { StyledSwitchRoot, StyledSwitchThumb, StyledSwitchLabel } from './StyledSwitch';
@@ -9,6 +9,7 @@ import switchTokens from './token';
 export const Switch = ({
   id,
   checked,
+  defaultChecked = false,
   onChange,
   disabled = false,
   required = false,
@@ -20,12 +21,33 @@ export const Switch = ({
   name,
   value,
 }: SwitchProps) => {
-  const uniqueId = id || React.useId();
+  // TODO: This is a temporary fix to avoid the warning about useId.
+  // We need to find a better solution to handle the id.
+  const generatedId = React.useId();
+  const uniqueId = id || generatedId;
+
+  // Determine if this is a controlled component
+  const isControlled = checked !== undefined;
+  
+  // Internal state for uncontrolled mode
+  const [internalChecked, setInternalChecked] = useState(defaultChecked);
+  
+  // Get the current checked state
+  const currentChecked = isControlled ? checked : internalChecked;
 
   const handleToggle = () => {
     if (disabled) return;
+    
+    const newChecked = !currentChecked;
+    
+    // Update internal state if uncontrolled
+    if (!isControlled) {
+      setInternalChecked(newChecked);
+    }
+    
+    // Call onChange callback
     if (onChange) {
-      onChange(!checked);
+      onChange(newChecked);
     }
   };
 
@@ -36,20 +58,20 @@ export const Switch = ({
           type="button"
           role="switch"
           id={uniqueId}
-          aria-checked={checked}
+          aria-checked={currentChecked}
           disabled={disabled}
           onClick={handleToggle}
-          data-state={getSwitchDataState(checked || false)}
+          data-state={getSwitchDataState(currentChecked || false)}
           size={size}
           $isDisabled={disabled}
-          $isChecked={checked || false}
+          $isChecked={currentChecked || false}
           $error={error}
           value={value}
           name={name}
         >
           <StyledSwitchThumb
             size={size}
-            $isChecked={checked || false}
+            $isChecked={currentChecked || false}
           />
         </StyledSwitchRoot>
         

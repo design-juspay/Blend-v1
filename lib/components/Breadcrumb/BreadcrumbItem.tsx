@@ -32,7 +32,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
     if (isActiveItem) {
       return (
         <StyledBreadcrumbSpan
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLSpanElement>}
           $isActive={true}
           aria-current="page"
         >
@@ -44,7 +44,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
     if (href) {
       return (
         <StyledBreadcrumbLink
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLAnchorElement>}
           href={href}
           $isActive={false}
         >
@@ -55,7 +55,7 @@ export const BreadcrumbItem = forwardRef<HTMLElement, BreadcrumbItemInternalProp
 
     return (
       <StyledBreadcrumbLink
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLButtonElement>}
         as="button"
         onClick={onClick}
         $isActive={false}

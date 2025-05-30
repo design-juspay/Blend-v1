@@ -25,7 +25,12 @@ const CheckboxDemo = () => {
     withSlot: false,
   });
 
-  const [parentChild, setParentChild] = useState({
+  const [parentChild, setParentChild] = useState<{
+    parent: boolean | 'indeterminate';
+    child1: boolean;
+    child2: boolean;
+    child3: boolean;
+  }>({
     parent: false,
     child1: false,
     child2: false,
@@ -33,16 +38,16 @@ const CheckboxDemo = () => {
   });
 
   // Update parent checkbox state based on children
+  const { child1, child2, child3 } = parentChild;
   React.useEffect(() => {
-    const { child1, child2, child3 } = parentChild;
     if (child1 && child2 && child3) {
       setParentChild(prev => ({ ...prev, parent: true }));
     } else if (!child1 && !child2 && !child3) {
       setParentChild(prev => ({ ...prev, parent: false }));
     } else {
-      setParentChild(prev => ({ ...prev, parent: 'indeterminate' as any }));
+      setParentChild(prev => ({ ...prev, parent: 'indeterminate' }));
     }
-  }, [parentChild.child1, parentChild.child2, parentChild.child3]);
+  }, [child1, child2, child3]);
 
   // Handle parent checkbox change
   const handleParentChange = (checked: boolean | 'indeterminate') => {
@@ -217,48 +222,6 @@ const CheckboxDemo = () => {
               Option 3
             </Checkbox>
           </Block>
-        </Block>
-      </Block>
-
-      {/* Form Example */}
-      <Block marginBottom="40px">
-        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0">
-          Form Example
-        </PrimitiveText>
-        <Block 
-          padding="24px" 
-          backgroundColor="#f8f9fa" 
-          borderRadius="8px"
-          display="flex" 
-          flexDirection="column" 
-          gap="16px"
-        >
-          <PrimitiveText as="h3" fontSize="16px" fontWeight={600} margin="0 0 12px 0">
-            Newsletter Preferences
-          </PrimitiveText>
-          
-          <Checkbox subtext="Get weekly updates about new features and improvements">
-            Weekly Newsletter
-          </Checkbox>
-          
-          <Checkbox subtext="Receive notifications about product updates and releases">
-            Product Updates
-          </Checkbox>
-          
-          <Checkbox 
-            required 
-            error
-            subtext="You must agree to our terms of service to continue"
-          >
-            I agree to the Terms of Service
-          </Checkbox>
-          
-          <Checkbox 
-            size={CheckboxSize.SMALL}
-            subtext="Optional: Help us improve by sharing usage analytics"
-          >
-            Share Analytics Data
-          </Checkbox>
         </Block>
       </Block>
     </Block>

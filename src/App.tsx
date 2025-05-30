@@ -9,6 +9,7 @@ import TabsDemo from "./demos/Tabs/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
+import AvatarDemo from "./demos/Avatar/AvatarDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
@@ -19,6 +20,7 @@ import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
 import ChartDemo from "./demos/Charts";
+import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 
 // Component categories
@@ -30,10 +32,16 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("stat-cards");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
+    {
+      id: "stat-cards",
+      name: "Stat Cards",
+      component: <StatCardDemo />,
+    },
     {
       id: "buttons",
       name: "Buttons",
@@ -83,6 +91,11 @@ function App() {
       id: "accordion",
       name: "Accordion",
       component: <AccordionDemo />,
+    },
+    {
+      id: "avatar",
+      name: "Avatar",
+      component: <AvatarDemo />,
     },
     {
       id: "avatar-group",
