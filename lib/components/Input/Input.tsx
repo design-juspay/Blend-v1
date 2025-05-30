@@ -51,7 +51,7 @@ const SearchInput = ({
   onChange,
 }: Omit<InputProps, "variant">) => {
   return (
-    <Block position="relative" width={"100%"}>
+    <Block position="relative" width={"100%"} height={40}>
       <PrimitiveInput
         value={value}
         onChange={onChange}
@@ -60,6 +60,7 @@ const SearchInput = ({
         paddingY={8}
         border="none"
         outline="none"
+        height={40}
         width={"100%"}
         borderBottom={
           error

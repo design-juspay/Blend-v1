@@ -12,6 +12,7 @@ import {
   SelectMenuProps,
   SelectMenuSide,
 } from "./types";
+import Input, { InputVariant } from "../Input/Input";
 
 const Content = styled(RadixMenu.Content)(() => ({
   backgroundColor: "white",
@@ -23,10 +24,10 @@ const Content = styled(RadixMenu.Content)(() => ({
   minWidth: 200,
   width: "var(--radix-dropdown-menu-trigger-width)",
   maxHeight: 400,
-  scrollbarWidth: "thin",
+  scrollbarWidth: "none",
+  scrollbarColor: "transparent transparent",
   border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
   overflowY: "auto",
-  scrollbarColor: `${FOUNDATION_THEME.colors.gray[200]} ${FOUNDATION_THEME.colors.gray[0]}`,
 }));
 
 const StyledItem = styled(RadixMenu.Item)<{ selected: boolean }>(
@@ -198,6 +199,8 @@ const Separator = styled(RadixMenu.Separator)(() => ({
   height: 1,
   backgroundColor: "#eee",
   margin: "6px 0",
+  width: "calc(100% + 12px)",
+  marginLeft: "-6px",
 }));
 
 const Item = ({
@@ -294,7 +297,7 @@ const Item = ({
               variant="body.md"
               color={
                 isSelected
-                  ? FOUNDATION_THEME.colors.primary[600]
+                  ? FOUNDATION_THEME.colors.gray[700]
                   : FOUNDATION_THEME.colors.gray[600]
               }
               fontWeight={500}
@@ -303,11 +306,6 @@ const Item = ({
               {item.label}
             </Text>
           </Block>
-          {allowMultiSelect && isSelected && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              <Check size={16} color={FOUNDATION_THEME.colors.primary[600]} />
-            </Block>
-          )}
           {item.slot2 && (
             <Block flexShrink={0} height="auto" contentCentered>
               {item.slot2}
@@ -321,6 +319,15 @@ const Item = ({
           {item.slot4 && (
             <Block flexShrink={0} height="auto" contentCentered>
               {item.slot4}
+            </Block>
+          )}
+          {isSelected && (
+            <Block flexShrink={0} height="auto" contentCentered>
+              <Check
+                strokeWidth={2.5}
+                size={16}
+                color={FOUNDATION_THEME.colors.gray[600]}
+              />
             </Block>
           )}
         </Block>
@@ -345,17 +352,15 @@ const Label = styled(RadixMenu.Label)(() => ({
   userSelect: "none",
 }));
 
-const SearchInput = styled.input(() => ({
-  padding: "6px 8px",
-  borderRadius: 4,
-  border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-  width: "100%",
-  marginBottom: 10,
-  position: "sticky",
-  top: 0,
-  zIndex: 1000,
-  height: 40,
-}));
+// const SearchInput = styled.input(() => ({
+//   padding: "6px 8px",
+//   width: "100%",
+//   borderRadius: 4,
+//   border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+//   marginBottom: 10,
+
+//   height: 40,
+// }));
 
 // Utility: Recursively filter menu items and groups by search text
 function filterMenuGroups(
@@ -439,6 +444,7 @@ const SelectMenu = ({
   selected,
   onSelect,
   allowMultiSelect = false,
+  enableSearch = true,
 }: SelectMenuProps) => {
   const [searchText, setSearchText] = useState<string>("");
 
@@ -456,14 +462,32 @@ const SelectMenu = ({
         align={alignment}
         style={{
           maxHeight: maxHeight ? `${maxHeight}px` : "auto",
+          paddingTop: enableSearch ? 40 : 0,
         }}
       >
-        <SearchInput
-          placeholder="Search"
-          onKeyDown={(e) => e.stopPropagation()}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
+        {true && (
+          <Block
+            width="calc(100% + 12px)"
+            marginLeft="-6px"
+            position="sticky"
+            top={0}
+            zIndex={1000}
+          >
+            {/* <SearchInput
+              placeholder="Search"
+              onKeyDown={(e) => e.stopPropagation()}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            /> */}
+            <Input
+              variant={InputVariant.SEARCH}
+              label="Search"
+              placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </Block>
+        )}
         {filteredItems &&
           filteredItems.map((group, groupId) => (
             <React.Fragment key={groupId}>

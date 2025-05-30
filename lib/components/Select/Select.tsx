@@ -27,6 +27,7 @@ type SelectProps = {
   selected: string | string[];
   onSelectChange: (value: string | string[]) => void;
   allowMultiSelect?: boolean;
+  enableSearch?: boolean;
 };
 
 const map = function getValueLabelMap(
@@ -63,12 +64,18 @@ const Select = ({
   selected,
   onSelectChange,
   allowMultiSelect = false,
+  enableSearch = false,
 }: SelectProps) => {
   const valueLabelMap = map(items);
 
   const getLabelsForSelectedValues = (values: string[]) => {
     return values.map((val) => valueLabelMap[val] || val);
   };
+
+  const showCancelButton =
+    variant === SelectMenuVariant.CONTAINER &&
+    allowMultiSelect &&
+    selected.length > 0;
 
   return (
     <Block display="flex" flexDirection="column" gap={8} width="100%">
@@ -97,70 +104,95 @@ const Select = ({
         )}
       </Block>
       <Block display="flex" width={"100%"}>
-        <SelectMenu
-          items={items}
-          selected={selected}
-          onSelect={onSelectChange}
-          allowMultiSelect={allowMultiSelect}
-          trigger={
+        <Block width="100%" display="flex" alignItems="center">
+          <SelectMenu
+            enableSearch={enableSearch}
+            items={items}
+            selected={selected}
+            onSelect={onSelectChange}
+            allowMultiSelect={allowMultiSelect}
+            trigger={
+              <PrimitiveButton
+                display="flex"
+                width="100%"
+                flexGrow={1}
+                alignItems="center"
+                overflow="hidden"
+                borderRadius={`8px ${showCancelButton ? 0 : 8}px ${
+                  showCancelButton ? 0 : 8
+                }px 8px`}
+                boxShadow={
+                  variant === SelectMenuVariant.CONTAINER
+                    ? FOUNDATION_THEME.shadows.xs
+                    : undefined
+                }
+                justifyContent="space-between"
+                paddingX={selectTokens.trigger.selectedValue.padding[size].x}
+                paddingY={selectTokens.trigger.selectedValue.padding[size].y}
+                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                outline={
+                  variant === SelectMenuVariant.CONTAINER
+                    ? `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
+                    : undefined
+                }
+                _hover={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[50],
+                }}
+                _focus={{
+                  outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+                }}
+                _active={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[50],
+                  outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+                }}
+              >
+                <Text
+                  as="span"
+                  variant={
+                    selectTokens.trigger.selectedValue.font.size[
+                      size
+                    ] as VariantType
+                  }
+                  color={selectTokens.trigger.selectedValue.color}
+                  truncate
+                >
+                  {allowMultiSelect
+                    ? Array.isArray(selected) && selected.length > 0
+                      ? getLabelsForSelectedValues(selected).join(", ")
+                      : placeholder
+                    : valueLabelMap[selected as string] || placeholder}
+                </Text>
+
+                <Block size={20} contentCentered borderRadius={4}>
+                  <ChevronDownIcon
+                    size={16}
+                    color={FOUNDATION_THEME.colors.gray[400]}
+                  />
+                </Block>
+              </PrimitiveButton>
+            }
+          />
+          {allowMultiSelect && selected.length > 0 && (
             <PrimitiveButton
-              display="flex"
-              width="100%"
-              flexGrow={1}
-              alignItems="center"
-              overflow="hidden"
-              borderRadius={8}
-              boxShadow={
-                variant === SelectMenuVariant.CONTAINER
-                  ? FOUNDATION_THEME.shadows.xs
-                  : undefined
-              }
-              justifyContent="space-between"
-              paddingX={selectTokens.trigger.selectedValue.padding[size].x}
-              paddingY={selectTokens.trigger.selectedValue.padding[size].y}
+              borderRadius={`0 8px 8px 0`}
               backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-              outline={
-                variant === SelectMenuVariant.CONTAINER
-                  ? `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
-                  : undefined
-              }
               _hover={{
-                backgroundColor: FOUNDATION_THEME.colors.gray[50],
+                backgroundColor: FOUNDATION_THEME.colors.gray[25],
               }}
               _focus={{
+                backgroundColor: FOUNDATION_THEME.colors.gray[25],
                 outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
               }}
-              _active={{
-                backgroundColor: FOUNDATION_THEME.colors.gray[50],
-                outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-              }}
+              contentCentered
+              height={"100%"}
+              style={{ aspectRatio: 1 }}
+              onClick={() => onSelectChange([])}
+              outline={`1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`}
             >
-              <Text
-                as="span"
-                variant={
-                  selectTokens.trigger.selectedValue.font.size[
-                    size
-                  ] as VariantType
-                }
-                color={selectTokens.trigger.selectedValue.color}
-                truncate
-              >
-                {allowMultiSelect
-                  ? Array.isArray(selected) && selected.length > 0
-                    ? getLabelsForSelectedValues(selected).join(", ")
-                    : placeholder
-                  : valueLabelMap[selected as string] || placeholder}
-              </Text>
-
-              <Block size={20} contentCentered borderRadius={4}>
-                <ChevronDownIcon
-                  size={16}
-                  color={FOUNDATION_THEME.colors.gray[400]}
-                />
-              </Block>
+              <X size={16} color={FOUNDATION_THEME.colors.gray[400]} />
             </PrimitiveButton>
-          }
-        />
+          )}
+        </Block>
       </Block>
 
       {variant === SelectMenuVariant.CONTAINER && hintText && (
