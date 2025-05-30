@@ -24,36 +24,6 @@ const StyledContainer = styled(Block)<{ $isDisabled: boolean }>`
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
 `;
 
-const StyledFlexContainer = styled(Block)`
-  display: flex;
-  flex-direction: column;
-  
-  @media (min-width: 640px) {
-    flex-direction: row;
-  }
-`;
-
-const StyledQuickRangeContainer = styled(Block)`
-  position: relative;
-  width: 100%;
-  margin-bottom: 8px;
-  height: 40px;
-  
-  @media (min-width: 640px) {
-    width: 128px;
-    margin-bottom: 0;
-    margin-right: 0;
-  }
-`;
-
-const StyledMainInputContainer = styled(Block)`
-  position: relative;
-  
-  @media (min-width: 640px) {
-    min-width: 384px;
-  }
-`;
-
 const StyledTrigger = styled(Block)<{ $isDisabled: boolean; $showPresets: boolean }>`
   ${dateRangePickerTokens.base.input}
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
@@ -69,54 +39,8 @@ const StyledCalendarContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.container}
 `;
 
-const StyledCalendarContent = styled(Block)`
-  padding: ${dateRangePickerTokens.calendar.gridContainer.padding};
-`;
-
-const StyledInputRow = styled(Block)`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-`;
-
 const StyledInput = styled.input`
   ${dateRangePickerTokens.timePicker.input}
-`;
-
-const StyledLabel = styled(Block)`
-  width: 96px;
-  ${dateRangePickerTokens.text.label}
-`;
-
-const StyledScrollableCalendar = styled(Block)`
-  margin-top: 16px;
-  max-height: 300px;
-  overflow-y: auto;
-`;
-
-const StyledFooter = styled(Block)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-top: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  margin-top: 16px;
-`;
-
-const StyledToggleContainer = styled(Block)`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledToggleLabel = styled.span`
-  margin-left: 4px;
-  ${dateRangePickerTokens.text.value}
-`;
-
-const StyledButtonGroup = styled(Block)`
-  display: flex;
-  gap: 8px;
 `;
 
 const StyledTriggerContent = styled(Block)`
@@ -127,10 +51,6 @@ const StyledTriggerContent = styled(Block)`
   justify-content: space-between;
 `;
 
-const StyledIconAndText = styled(Block)`
-  display: flex;
-  align-items: center;
-`;
 
 const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (
@@ -209,21 +129,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }, []);
-
-    // Scroll to current month when calendar opens
-    useEffect(() => {
-      if (isOpen && calendarScrollRef.current) {
-        setTimeout(() => {
-          const currentMonthElement = calendarScrollRef.current?.querySelector(
-            `[data-current-month="true"]`
-          );
-
-          if (currentMonthElement) {
-            currentMonthElement.scrollIntoView({ behavior: 'auto', block: 'start' });
-          }
-        }, 0);
-      }
-    }, [isOpen]);
 
     // Format the date display for the input
     const formatDateDisplay = () => {
@@ -425,10 +330,10 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           tabIndex={isDisabled ? -1 : 0}
         >
           <StyledTriggerContent>
-            <StyledIconAndText>
+            <Block display='flex' alignItems='center'>
               <Calendar size={14} style={{ marginRight: '6px' }} />
               <span>{formatDateDisplay()}</span>
-            </StyledIconAndText>
+            </Block>
             {isOpen ? (
               <ChevronUp size={14} style={{ marginLeft: '8px' }} />
             ) : (
@@ -445,9 +350,9 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         $isDisabled={isDisabled}
         className={className}
       >
-        <StyledFlexContainer>
+        <Block display='flex'>
           {showPresets && (
-            <StyledQuickRangeContainer ref={quickRangeRef}>
+            <Block width={128} ref={quickRangeRef}>
               <QuickRangeSelector
                 isOpen={isQuickRangeOpen}
                 onToggle={() => !isDisabled && setIsQuickRangeOpen(!isQuickRangeOpen)}
@@ -457,18 +362,18 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                 disableFutureDates={disableFutureDates}
                 disablePastDates={disablePastDates}
               />
-            </StyledQuickRangeContainer>
+            </Block>
           )}
 
-          <StyledMainInputContainer ref={dropdownRef}>
+          <Block minWidth={384} ref={dropdownRef}>
             {renderTrigger()}
 
             {isOpen && (
               <StyledCalendarContainer ref={calendarRef}>
-                <StyledCalendarContent>
-                  <div>
-                    <StyledInputRow>
-                      <StyledLabel>Start</StyledLabel>
+                <Block>
+                  <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`}}>
+                    <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                      <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>Start</Block>
                       <StyledInput
                         type="text"
                         placeholder="DD/MM/YYYY"
@@ -478,13 +383,13 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                       {showTimePickerState && (
                         <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
                       )}
-                    </StyledInputRow>
+                    </Block>
 
                     {(!allowSingleDateSelection || 
                         (allowSingleDateSelection && 
                         selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
-                      <StyledInputRow>
-                        <StyledLabel>End</StyledLabel>
+                      <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                        <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>End</Block>
                         <StyledInput
                           type="text"
                           placeholder="DD/MM/YYYY"
@@ -494,11 +399,18 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                         {showTimePickerState && (
                           <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
                         )}
-                      </StyledInputRow>
+                      </Block>
                     )}
-                  </div>
+                  </Block>
 
-                  <StyledScrollableCalendar ref={calendarScrollRef}>
+                  <Block 
+                    style={{
+                      marginTop: FOUNDATION_THEME.unit[16], 
+                      maxHeight: '300px', 
+                      overflowY: 'auto',
+                    }} 
+                    ref={calendarScrollRef}
+                  >
                     <CalendarGrid
                       selectedRange={selectedRange}
                       onDateSelect={handleDateSelectCallback}
@@ -507,38 +419,38 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                       disableFutureDates={disableFutureDates}
                       disablePastDates={disablePastDates}
                     />
-                  </StyledScrollableCalendar>
+                  </Block>
 
-                  <StyledFooter>
-                    <StyledToggleContainer>
+                  <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`} marginTop={FOUNDATION_THEME.unit[16]}>
+                    <Block display='flex' alignItems='center'>
                     <Switch
                         checked={showTimePickerState}
                         onChange={setShowTimePickerState}
                         size={SwitchSize.MEDIUM}
                       />
-                      <StyledToggleLabel>Time Ranges</StyledToggleLabel>
-                    </StyledToggleContainer>
+                      <Block as='span' marginLeft={FOUNDATION_THEME.unit[4]} style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
+                    </Block>
 
-                    <StyledButtonGroup>
+                    <Block display='flex' gap={FOUNDATION_THEME.unit[8]}>
                       <Button
                         buttonType={ButtonType.SECONDARY}
-                        size={ButtonSize.MEDIUM}
+                        size={ButtonSize.SMALL}
                         onClick={handleCancel}
                         text="Cancel"
                       />    
                       <Button
                         buttonType={ButtonType.PRIMARY}
-                        size={ButtonSize.MEDIUM}
+                        size={ButtonSize.SMALL}
                         onClick={handleApply}
                         text="Apply"
                       />
-                    </StyledButtonGroup>
-                  </StyledFooter>
-                </StyledCalendarContent>
+                    </Block>
+                  </Block>
+                </Block>
               </StyledCalendarContainer>
             )}
-          </StyledMainInputContainer>
-        </StyledFlexContainer>
+          </Block>
+        </ Block>
       </StyledContainer>
     );
   }

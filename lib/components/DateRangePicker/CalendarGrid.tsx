@@ -2,8 +2,9 @@ import { forwardRef, useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
 import { DateRange } from './types';
 import dateRangePickerTokens from './dateRangePicker.tokens';
+import Block from '../Primitives/Block/Block';
 
-interface CalendarGridProps {
+type CalendarGridProps = {
   selectedRange: DateRange;
   onDateSelect: (range: DateRange) => void;
   today: Date;
@@ -12,36 +13,36 @@ interface CalendarGridProps {
   disablePastDates?: boolean;
 }
 
-const StyledGridContainer = styled.div`
+const StyledGridContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.gridContainer}
 `;
 
-const StyledMonthContainer = styled.div`
+const StyledMonthContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.monthContainer}
 `;
 
-const StyledMonthHeader = styled.div`
+const StyledMonthHeader = styled(Block)`
   ${dateRangePickerTokens.calendar.monthHeader}
 `;
 
-const StyledDayNamesContainer = styled.div`
+const StyledDayNamesContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.dayNamesContainer}
 `;
 
-const StyledDayName = styled.div`
+const StyledDayName = styled(Block)`
   ${dateRangePickerTokens.calendar.dayName}
   ${dateRangePickerTokens.text.dayName}
 `;
 
-const StyledWeekRow = styled.div`
+const StyledWeekRow = styled(Block)`
   ${dateRangePickerTokens.calendar.weekRow}
 `;
 
-const StyledEmptyCell = styled.div`
+const StyledEmptyCell = styled(Block)`
   ${dateRangePickerTokens.calendar.emptyCell}
 `;
 
-const StyledDayCell = styled.div<{
+const StyledDayCell = styled(Block)<{
   $isStart: boolean;
   $isEnd: boolean;
   $isRangeDay: boolean;
@@ -70,7 +71,7 @@ const StyledDayCell = styled.div<{
   }};
 `;
 
-const StyledTodayIndicator = styled.div`
+const StyledTodayIndicator = styled(Block)`
   ${dateRangePickerTokens.calendar.todayIndicator}
 `;
 
@@ -91,7 +92,7 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
     // Scroll to current month when component mounts
     useEffect(() => {
       if (currentMonthRef.current) {
-        currentMonthRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        currentMonthRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
     }, []);
 
@@ -104,9 +105,7 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
 
     for (let year = startYear; year <= endYear; year++) {
       const monthStart = year === startYear ? startMonth : 0;
-      const monthEnd = year === endYear ? 11 : 11;
-
-      for (let month = monthStart; month <= monthEnd; month++) {
+      for (let month = monthStart; month <= 11; month++) {
         months.push({ month, year });
       }
     }

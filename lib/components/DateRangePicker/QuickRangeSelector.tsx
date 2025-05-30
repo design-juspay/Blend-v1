@@ -4,6 +4,8 @@ import { styled } from 'styled-components';
 import { DateRangePreset } from './types';
 import { getPresetLabel } from './utils';
 import dateRangePickerTokens from './dateRangePicker.tokens';
+import Block from '../Primitives/Block/Block';
+import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
 
 type QuickRangeSelectorProps = {
   isOpen: boolean;
@@ -16,36 +18,10 @@ type QuickRangeSelectorProps = {
   disablePastDates?: boolean;
 }
 
-const StyledContainer = styled.div`
-  position: relative;
-  width: 100%;
-`;
 
-const StyledTrigger = styled.div<{ $isOpen: boolean }>`
-  ${dateRangePickerTokens.quickRange.trigger}
-`;
-
-const StyledTriggerContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  ${dateRangePickerTokens.text.value}
-`;
-
-const StyledDropdown = styled.div`
-  ${dateRangePickerTokens.dropdown.container}
-`;
-
-const StyledDropdownContent = styled.div`
-  ${dateRangePickerTokens.dropdown.content}
-`;
-
-const StyledDropdownItem = styled.button<{ $isActive: boolean }>`
-  ${dateRangePickerTokens.dropdown.item}
-  ${dateRangePickerTokens.text.value}
-  ${props => props.$isActive && dateRangePickerTokens.dropdown.activeItem}
-`;
+  const StyledTrigger = styled(Block)<{ $isOpen: boolean }>`
+    ${dateRangePickerTokens.quickRange.trigger}
+  `;
 
 const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
   (
@@ -104,33 +80,37 @@ const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
     const filteredPresets = getFilteredPresets();
 
     return (
-      <StyledContainer ref={ref} className={className}>
+      <Block position='relative' width='100%' ref={ref} className={className}>
         <StyledTrigger $isOpen={isOpen} onClick={onToggle}>
-          <StyledTriggerContent>
-            <span>{activePresetLabel}</span>
+          <Block display='flex' alignItems='center' justifyContent='space-between' width='100%' style={{...dateRangePickerTokens.text.value}}>
+            <Block as='span'>{activePresetLabel}</Block>
             {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </StyledTriggerContent>
+          </Block>
         </StyledTrigger>
 
         {isOpen && (
-          <StyledDropdown>
-            <StyledDropdownContent>
+          <Block style={{...dateRangePickerTokens.dropdown.container}}>
+            <Block style={{...dateRangePickerTokens.dropdown.content}}>
               {filteredPresets.map((preset) => (
-                <StyledDropdownItem
+                <PrimitiveButton
                   key={preset}
-                  $isActive={preset === activePreset}
                   onClick={() => {
                     onPresetSelect(preset);
                     onToggle();
                   }}
+                  style={{
+                    ...dateRangePickerTokens.dropdown.item,
+                    ...dateRangePickerTokens.text.value,
+                    ...(preset === activePreset && dateRangePickerTokens.dropdown.activeItem),
+                  }}
                 >
                   {getPresetLabel(preset)}
-                </StyledDropdownItem>
+                </PrimitiveButton>
               ))}
-            </StyledDropdownContent>
-          </StyledDropdown>
+            </Block>
+          </Block>
         )}
-      </StyledContainer>
+      </Block>
     );
   }
 );
