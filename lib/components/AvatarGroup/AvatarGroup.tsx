@@ -12,7 +12,25 @@ import {
 import { positionMenu, createMenuItems, filterAvatars } from './avatarGroupUtils';
 
 // Temporarily stubbed Menu component until implemented fully
-const Menu = ({ items, hasSearch, searchPlaceholder, searchTerm, onSearchTermChange, onItemClick }: any) => (
+type MenuProps = {
+  items: MenuItemProps[];
+  hasSearch?: boolean;
+  searchPlaceholder?: string;
+  searchTerm: string;
+  onSearchTermChange: (term: string) => void;
+  onItemClick: (item: MenuItemProps) => void;
+}
+
+type MenuItemProps = {
+  id: string;
+  text: string;
+  hasSlotL?: boolean;
+  slotL?: React.ReactNode;
+  onClick?: () => void;
+  data?: { isSelected?: boolean };
+}
+
+const Menu = ({ items, hasSearch, searchPlaceholder, searchTerm, onSearchTermChange, onItemClick }: MenuProps) => (
   <div style={{ width: '320px', background: 'white', border: '1px solid #e2e8f0', padding: '8px', borderRadius: '4px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' }}>
     {hasSearch && (
       <input 
@@ -24,7 +42,7 @@ const Menu = ({ items, hasSearch, searchPlaceholder, searchTerm, onSearchTermCha
       />
     )}
     <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
-      {items.map((item: any) => (
+      {items.map((item: MenuItemProps) => (
         <div 
           key={item.id} 
           onClick={() => onItemClick(item)}
@@ -272,7 +290,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
               searchPlaceholder="Search avatars..."
               searchTerm={searchTerm}
               onSearchTermChange={handleSearchChange}
-              onItemClick={(item: any) => {
+              onItemClick={(item: MenuItemProps) => {
                 if (item.id) {
                   handleSelect(item.id);
                 }

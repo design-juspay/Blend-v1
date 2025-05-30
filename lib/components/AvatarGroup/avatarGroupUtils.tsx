@@ -1,5 +1,6 @@
 import React, { RefObject } from 'react';
 import { AvatarData } from './types';
+import { AvatarProps, AvatarSize } from '../Avatar/types';
 
 // Temporary type definition until Menu component is fully implemented
 interface MenuItemProps {
@@ -8,7 +9,7 @@ interface MenuItemProps {
   hasSlotL?: boolean;
   slotL?: React.ReactNode;
   onClick?: () => void;
-  data?: Record<string, any>;
+  data?: Record<string, boolean | string | number>;
 }
 
 /**
@@ -50,7 +51,7 @@ export const createMenuItems = (
   avatars: AvatarData[],
   selectedIds: (string | number)[],
   onSelect: (id: string | number) => void,
-  AvatarComponent: React.ComponentType<any>
+  AvatarComponent: React.ComponentType<AvatarProps>
 ): MenuItemProps[] => {
   return avatars.map((avatar): MenuItemProps => {
     const isSelected = selectedIds.includes(avatar.id);
@@ -61,7 +62,7 @@ export const createMenuItems = (
       hasSlotL: true,
       slotL: (
         <AvatarComponent
-          size="sm" // Always use small size in menu
+          size={AvatarSize.SM} // Always use small size in menu
           src={avatar.src}
           alt={avatar.alt}
           fallback={avatar.fallback}
