@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useEffect, useRef, useCallback } from 'react';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { styled } from 'styled-components';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { DateRangePickerProps, DateRangePreset, DateRange } from './types';
 import {
   formatDate,
@@ -24,7 +25,7 @@ const StyledContainer = styled(Block)<{ $isDisabled: boolean }>`
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
 `;
 
-const StyledTrigger = styled(Block)<{ $isDisabled: boolean; $showPresets: boolean }>`
+const StyledTrigger = styled.button<{ $isDisabled: boolean; $showPresets: boolean }>`
   ${dateRangePickerTokens.base.input}
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
   height: 40px;
@@ -35,7 +36,7 @@ const StyledTrigger = styled(Block)<{ $isDisabled: boolean; $showPresets: boolea
   }
 `;
 
-const StyledCalendarContainer = styled(Block)`
+const StyledCalendarContainer = styled(DropdownMenu.Content)`
   ${dateRangePickerTokens.calendar.container}
 `;
 
@@ -50,7 +51,6 @@ const StyledTriggerContent = styled(Block)`
   align-items: center;
   justify-content: space-between;
 `;
-
 
 const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (
@@ -86,11 +86,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const [startDate, setStartDate] = useState(formatDate(selectedRange.startDate, dateFormat));
     const [endDate, setEndDate] = useState(formatDate(selectedRange.endDate, dateFormat));
 
-    const calendarRef = useRef<HTMLDivElement>(null);
     const quickRangeRef = useRef<HTMLDivElement>(null);
-    const calendarScrollRef = useRef<HTMLDivElement>(null);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLDivElement>(null);
 
     const today = new Date();
 
@@ -104,31 +100,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         setEndTime(formatDate(value.endDate, 'HH:mm'));
       }
     }, [value, dateFormat]);
-
-    // Handle click outside to close dropdowns
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (!dropdownRef.current) return;
-
-        const isOutsideDropdown = !dropdownRef.current.contains(event.target as Node);
-        const isOutsideCalendar =
-          calendarRef.current && !calendarRef.current.contains(event.target as Node);
-        const isOutsideQuickRange =
-          quickRangeRef.current && !quickRangeRef.current.contains(event.target as Node);
-        const isOutsideTrigger =
-          triggerRef.current && !triggerRef.current.contains(event.target as Node);
-
-        if (isOutsideDropdown && isOutsideCalendar && isOutsideQuickRange && isOutsideTrigger) {
-          setIsOpen(false);
-          setIsQuickRangeOpen(false);
-        }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
 
     // Format the date display for the input
     const formatDateDisplay = () => {
@@ -164,13 +135,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
       return `${startDateStr}, ${startTimeStr} - ${endDateStr}, ${endTimeStr}`;
     };
-
-    const handleToggleOpen = () => {
-      if (!isDisabled) {
-        setIsOpen(!isOpen);
-      }
-    };
-
+    
     // Handle date selection from calendar
     const handleDateSelect = useCallback((range: DateRange) => {
       // Preserve time when selecting dates
@@ -193,21 +158,17 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     // Handle preset selection
     const handlePresetSelect = useCallback((preset: DateRangePreset) => {
       const range = getPresetDateRange(preset);
-
-      // Preserve time when selecting presets
-      if (showTimePickerState) {
-        const [startHour, startMinute] = startTime.split(':').map(Number);
-        range.startDate.setHours(startHour, startMinute);
-
-        const [endHour, endMinute] = endTime.split(':').map(Number);
-        range.endDate.setHours(endHour, endMinute);
-      }
-
       setSelectedRange(range);
+      setActivePreset(preset);
       setStartDate(formatDate(range.startDate, dateFormat));
       setEndDate(formatDate(range.endDate, dateFormat));
-      setActivePreset(preset);
-    }, [startTime, endTime, dateFormat, showTimePickerState]);
+      setStartTime(formatDate(range.startDate, 'HH:mm'));
+      setEndTime(formatDate(range.endDate, 'HH:mm'));
+      
+      if (preset !== DateRangePreset.CUSTOM) {
+        onChange?.(range);
+      }
+    }, [dateFormat, onChange]);
 
     // Handle start date input change
     const handleStartDateChange = useCallback((value: string) => {
@@ -304,43 +265,42 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const renderTrigger = () => {
       if (triggerElement) {
         return (
-          <Block
-            ref={triggerRef}
-            onClick={handleToggleOpen}
-            style={{ 
-              opacity: isDisabled ? 0.5 : 1, 
-              cursor: isDisabled ? 'not-allowed' : 'pointer' 
-            }}
-          >
-            {triggerElement}
-          </Block>
+          <DropdownMenu.Trigger asChild>
+            <Block
+              style={{ 
+                opacity: isDisabled ? 0.5 : 1, 
+                cursor: isDisabled ? 'not-allowed' : 'pointer' 
+              }}
+            >
+              {triggerElement}
+            </Block>
+          </DropdownMenu.Trigger>
         );
       }
 
       return (
-        <StyledTrigger
-          onClick={handleToggleOpen}
-          ref={triggerRef}
-          $isDisabled={isDisabled}
-          $showPresets={showPresets}
-          aria-label={ariaLabel}
-          aria-expanded={isOpen}
-          aria-disabled={isDisabled}
-          role="button"
-          tabIndex={isDisabled ? -1 : 0}
-        >
-          <StyledTriggerContent>
-            <Block display='flex' alignItems='center'>
-              <Calendar size={14} style={{ marginRight: '6px' }} />
-              <span>{formatDateDisplay()}</span>
-            </Block>
-            {isOpen ? (
-              <ChevronUp size={14} style={{ marginLeft: '8px' }} />
-            ) : (
-              <ChevronDown size={14} style={{ marginLeft: '8px' }} />
-            )}
-          </StyledTriggerContent>
-        </StyledTrigger>
+        <DropdownMenu.Trigger asChild>
+          <StyledTrigger
+            $isDisabled={isDisabled}
+            $showPresets={showPresets}
+            aria-label={ariaLabel}
+            aria-expanded={isOpen}
+            aria-disabled={isDisabled}
+            disabled={isDisabled}
+          >
+            <StyledTriggerContent>
+              <Block display='flex' alignItems='center'>
+                <Calendar size={14} style={{ marginRight: '6px' }} />
+                <span>{formatDateDisplay()}</span>
+              </Block>
+              {isOpen ? (
+                <ChevronUp size={14} style={{ marginLeft: '8px' }} />
+              ) : (
+                <ChevronDown size={14} style={{ marginLeft: '8px' }} />
+              )}
+            </StyledTriggerContent>
+          </StyledTrigger>
+        </DropdownMenu.Trigger>
       );
     };
 
@@ -365,92 +325,103 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             </Block>
           )}
 
-          <Block minWidth={384} ref={dropdownRef}>
-            {renderTrigger()}
+          <Block minWidth={384}>
+            <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
+              {renderTrigger()}
 
-            {isOpen && (
-              <StyledCalendarContainer ref={calendarRef}>
-                <Block>
-                  <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`}}>
-                    <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
-                      <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>Start</Block>
-                      <StyledInput
-                        type="text"
-                        placeholder="DD/MM/YYYY"
-                        value={startDate}
-                        onChange={handleStartDateChangeCallback}
-                      />
-                      {showTimePickerState && (
-                        <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
-                      )}
-                    </Block>
-
-                    {(!allowSingleDateSelection || 
-                        (allowSingleDateSelection && 
-                        selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
+              <DropdownMenu.Portal>
+                <StyledCalendarContainer 
+                  align="start" 
+                  sideOffset={4}
+                  onInteractOutside={(e) => {
+                    if (quickRangeRef.current?.contains(e.target as Node)) {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  <Block>
+                    <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`}}>
                       <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
-                        <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>End</Block>
+                        <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>Start</Block>
                         <StyledInput
                           type="text"
                           placeholder="DD/MM/YYYY"
-                          value={endDate}
-                          onChange={handleEndDateChangeCallback}
+                          value={startDate}
+                          onChange={handleStartDateChangeCallback}
                         />
                         {showTimePickerState && (
-                          <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
+                          <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
                         )}
                       </Block>
-                    )}
-                  </Block>
 
-                  <Block 
-                    style={{
-                      marginTop: FOUNDATION_THEME.unit[16], 
-                      maxHeight: '300px', 
-                      overflowY: 'auto',
-                    }} 
-                    ref={calendarScrollRef}
-                  >
-                    <CalendarGrid
-                      selectedRange={selectedRange}
-                      onDateSelect={handleDateSelectCallback}
-                      today={today}
-                      allowSingleDateSelection={allowSingleDateSelection}
-                      disableFutureDates={disableFutureDates}
-                      disablePastDates={disablePastDates}
-                    />
-                  </Block>
-
-                  <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`} marginTop={FOUNDATION_THEME.unit[16]}>
-                    <Block display='flex' alignItems='center'>
-                    <Switch
-                        checked={showTimePickerState}
-                        onChange={setShowTimePickerState}
-                        size={SwitchSize.MEDIUM}
-                      />
-                      <Block as='span' marginLeft={FOUNDATION_THEME.unit[4]} style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
+                      {(!allowSingleDateSelection || 
+                          (allowSingleDateSelection && 
+                          selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
+                        <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                          <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>End</Block>
+                          <StyledInput
+                            type="text"
+                            placeholder="DD/MM/YYYY"
+                            value={endDate}
+                            onChange={handleEndDateChangeCallback}
+                          />
+                          {showTimePickerState && (
+                            <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
+                          )}
+                        </Block>
+                      )}
                     </Block>
 
-                    <Block display='flex' gap={FOUNDATION_THEME.unit[8]}>
-                      <Button
-                        buttonType={ButtonType.SECONDARY}
-                        size={ButtonSize.SMALL}
-                        onClick={handleCancel}
-                        text="Cancel"
-                      />    
-                      <Button
-                        buttonType={ButtonType.PRIMARY}
-                        size={ButtonSize.SMALL}
-                        onClick={handleApply}
-                        text="Apply"
+                    <Block 
+                      style={{
+                        marginTop: FOUNDATION_THEME.unit[16], 
+                        maxHeight: '300px', 
+                        overflowY: 'auto',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                      }} 
+                    >
+                      <CalendarGrid
+                        selectedRange={selectedRange}
+                        onDateSelect={handleDateSelectCallback}
+                        today={today}
+                        allowSingleDateSelection={allowSingleDateSelection}
+                        disableFutureDates={disableFutureDates}
+                        disablePastDates={disablePastDates}
                       />
                     </Block>
+
+                    <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`} marginTop={FOUNDATION_THEME.unit[16]}>
+                      <Block display='flex' alignItems='center'>
+                      <Switch
+                          checked={showTimePickerState}
+                          onChange={setShowTimePickerState}
+                          size={SwitchSize.MEDIUM}
+                        />
+                        <Block as='span' marginLeft={FOUNDATION_THEME.unit[4]} style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
+                      </Block>
+
+                      <Block display='flex' gap={FOUNDATION_THEME.unit[8]}>
+                        <Button
+                          buttonType={ButtonType.SECONDARY}
+                          size={ButtonSize.SMALL}
+                          onClick={handleCancel}
+                          text="Cancel"
+                        />    
+                        <Button
+                          buttonType={ButtonType.PRIMARY}
+                          size={ButtonSize.SMALL}
+                          onClick={handleApply}
+                          text="Apply"
+                        />
+                      </Block>
+                    </Block>
                   </Block>
-                </Block>
-              </StyledCalendarContainer>
-            )}
+                </StyledCalendarContainer>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
           </Block>
-        </ Block>
+        </Block>
       </StyledContainer>
     );
   }

@@ -119,15 +119,13 @@ const dateRangePickerTokens: DateRangePickerTokens = {
   },
   calendar: {
     container: {
-      position: "absolute",
-      zIndex: 10,
-      marginTop: FOUNDATION_THEME.unit[4],
       width: "auto",
       minWidth: '398px',
       backgroundColor: FOUNDATION_THEME.colors.gray[0],
       border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
       borderRadius: FOUNDATION_THEME.border.radius[8],
       boxShadow: FOUNDATION_THEME.shadows.lg,
+      zIndex: 1000,
     },
     gridContainer: {
       maxHeight: '400px',
