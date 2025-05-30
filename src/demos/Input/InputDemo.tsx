@@ -5,7 +5,7 @@ import TextArea from "../../../lib/components/TextArea/TextArea";
 import DropdownInput from "../../../lib/components/DropdownInput/DropdownInput";
 import { Tag, TagShape } from "../../../lib/main";
 import { Search } from "lucide-react";
-
+import UnitInput from "../../../lib/components/UnitInput/UnitInput";
 const InputDemo: React.FC = () => {
   const [value, setValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
@@ -15,6 +15,7 @@ const InputDemo: React.FC = () => {
   const [numberValue, setNumberValue] = useState<number>(0);
   const [dropdownValue, setDropdownValue] = useState<string>("");
   const [dropDownText, setDropDownText] = useState<string>("");
+  const [unitValue, setUnitValue] = useState<number>(0);
 
   return (
     <div
@@ -112,6 +113,23 @@ const InputDemo: React.FC = () => {
         dropdownValue={dropdownValue}
         onDropdownChange={(value) => setDropdownValue(value)}
       />
+
+      <div style={{ height: 100 }}></div>
+      <p style={{ color: "black" }}>Value: {unitValue}</p>
+      <div style={{ width: 200 }}>
+        <UnitInput
+          value={unitValue}
+          onChange={(e) => setUnitValue(Number(e.target.value))}
+          label="Unit Input"
+          error={error}
+          errorMessage="This is an error message."
+          placeholder="Enter your number"
+          min={0}
+          step={100000000}
+          disabled={disabled}
+        />
+      </div>
+      <div style={{ height: 400 }}></div>
     </div>
   );
 };
