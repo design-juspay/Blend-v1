@@ -17,3 +17,4 @@ export * from "./components/Radio";
 export * from "./components/Switch";
 export * from "./components/Dropdown/Dropdown";
 export * from "./components/Snackbar";
+export * from "./components/DateRangePicker"
