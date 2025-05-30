@@ -77,6 +77,8 @@ type StyledBlockProps = StateStyles & {
 
   // Background
   backgroundColor?: CSSObject["backgroundColor"];
+  backgroundImage?: CSSObject["backgroundImage"];
+  backgroundSize?: CSSObject["backgroundSize"];
 
   // Border
   border?: CSSObject["border"];
@@ -90,6 +92,9 @@ type StyledBlockProps = StateStyles & {
   overflow?: CSSObject["overflow"];
   overflowX?: CSSObject["overflowX"];
   overflowY?: CSSObject["overflowY"];
+
+  // Transitions
+  transition?: CSSObject["transition"];
 
   // Shortcuts
   contentCentered?: boolean;
@@ -142,6 +147,8 @@ const blockedProps = [
   "size",
   "contentCentered",
   "backgroundColor",
+  "backgroundImage",
+  "backgroundSize",
   "border",
   "borderTop",
   "borderBottom",
@@ -152,6 +159,7 @@ const blockedProps = [
   "overflow",
   "overflowX",
   "overflowY",
+  "transition",
   // Positioning
   "position",
   "inset",
@@ -270,6 +278,10 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
 
   if (props.backgroundColor !== undefined)
     styles.backgroundColor = props.backgroundColor;
+  if (props.backgroundImage !== undefined)
+    styles.backgroundImage = props.backgroundImage;
+  if (props.backgroundSize !== undefined)
+    styles.backgroundSize = props.backgroundSize;
 
   if (props.border !== undefined) styles.border = props.border;
   if (props.borderTop !== undefined) styles.borderTop = props.borderTop;
@@ -282,6 +294,8 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.overflow !== undefined) styles.overflow = props.overflow;
   if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
   if (props.overflowY !== undefined) styles.overflowY = props.overflowY;
+
+  if (props.transition !== undefined) styles.transition = props.transition;
 
   if (props.cursor !== undefined) styles.cursor = props.cursor;
 
