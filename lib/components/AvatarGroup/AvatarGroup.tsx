@@ -12,7 +12,7 @@ import {
 import { positionMenu, createMenuItems, filterAvatars } from './avatarGroupUtils';
 
 // Temporarily stubbed Menu component until implemented fully
-interface MenuProps {
+type MenuProps = {
   items: MenuItemProps[];
   hasSearch?: boolean;
   searchPlaceholder?: string;
@@ -21,7 +21,7 @@ interface MenuProps {
   onItemClick: (item: MenuItemProps) => void;
 }
 
-interface MenuItemProps {
+type MenuItemProps = {
   id: string;
   text: string;
   hasSlotL?: boolean;
