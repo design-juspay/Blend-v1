@@ -9,6 +9,7 @@ import TabsDemo from "./demos/Tabs/TabsDemo";
 import TextDemo from "./demos/Text/TextDemo";
 import AlertDemo from "./demos/Alert/AlertDemo";
 import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
+import AvatarDemo from "./demos/Avatar/AvatarDemo";
 import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
 import ModalDemo from "./demos/Modal/ModalDemo";
 import AccordionDemo from "./demos/Accordion/AccordionDemo";
@@ -89,6 +90,11 @@ function App() {
       id: "accordion",
       name: "Accordion",
       component: <AccordionDemo />,
+    },
+    {
+      id: "avatar",
+      name: "Avatar",
+      component: <AvatarDemo />,
     },
     {
       id: "avatar-group",
