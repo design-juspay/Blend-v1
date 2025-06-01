@@ -43,7 +43,6 @@ const NumberInput = ({
         width={"100%"}
         display="flex"
         borderRadius={8}
-        overflow="hidden"
       >
         <PrimitiveInput
           name={name}

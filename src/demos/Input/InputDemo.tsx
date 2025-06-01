@@ -7,10 +7,13 @@ import UnitInput from "../../../lib/components/UnitInput/UnitInput";
 import { InputSize } from "../../../lib/components/Inputs/TextInput/types";
 import { NumberInputSize } from "../../../lib/components/Inputs/NumberInput/types";
 import { NumberInputSize as UnitInputSize } from "../../../lib/components/UnitInput/types";
-import OTPInput from "../../../lib/components/Inputs/OTPInput/OTPInput";
-import { Tag } from "../../../lib/main";
+import { Tag, TagColor, TagShape, TagSize } from "../../../lib/main";
 import { User2 } from "lucide-react";
 import SearchInput from "../../../lib/components/Inputs/SearchInput/SearchInput";
+import OTP from "../../../lib/components/Inputs/OTP/OTP";
+import DropdownInput from "../../../lib/components/Inputs/DropdownInput/DropdownInput";
+import { SelectMenuGroupType } from "../../../lib/components/Select/types";
+import Select from "../../../lib/components/Select/Select";
 
 // DropdownInput InputSize is not exported, so define a compatible enum here
 const DropdownInputSize = {
@@ -30,6 +33,43 @@ const InputDemo: React.FC = () => {
   const [unitValue, setUnitValue] = useState<number>(0);
   const [inputSize, setInputSize] = useState<InputSize>(InputSize.MEDIUM);
   const [otp1, setOtp1] = useState("");
+  const [selectedInput, setSelectedInput] = useState<string>("text");
+
+  const items: SelectMenuGroupType[] = [
+    {
+      groupLabel: "Americas",
+      items: [
+        { label: "US", value: "US" },
+        { label: "CA", value: "CA" },
+        { label: "AU", value: "AU" },
+      ],
+    },
+    {
+      groupLabel: "Europe",
+      items: [
+        { label: "UK", value: "UK" },
+        { label: "DE", value: "DE" },
+      ],
+    },
+    {
+      groupLabel: "Asia",
+      items: [
+        { label: "JP", value: "JP" },
+        { label: "CN", value: "CN" },
+        { label: "IN", value: "IN" },
+      ],
+    },
+  ];
+
+  const inputOptions = [
+    { label: "Text Input", value: "text" },
+    { label: "Number Input", value: "number" },
+    { label: "Dropdown Input", value: "dropdown" },
+    { label: "Search Input", value: "search" },
+    { label: "OTP Input", value: "otp" },
+    { label: "Text Area", value: "textarea" },
+    { label: "Unit Input", value: "unit" },
+  ];
 
   return (
     <div
@@ -40,6 +80,24 @@ const InputDemo: React.FC = () => {
         maxWidth: 400,
       }}
     >
+      <div style={{ marginBottom: 16 }}>
+        <Select
+          label="Input Type"
+          placeholder="Select input type"
+          items={[
+            {
+              groupLabel: "Input Types",
+              items: inputOptions.map((opt) => ({
+                label: opt.label,
+                value: opt.value,
+              })),
+            },
+          ]}
+          selected={selectedInput}
+          onSelectChange={(val) => setSelectedInput(val as string)}
+          required={false}
+        />
+      </div>
       <div style={{ marginBottom: 16 }}>
         <label style={{ marginRight: 8, color: "black" }}>
           <input
@@ -81,108 +139,171 @@ const InputDemo: React.FC = () => {
           Lg
         </label>
       </div>
-      <p style={{ color: "black" }}>Value: {value}</p>
-      <TextInput
-        label="Full Name"
-        name="textInput"
-        required
-        disabled={disabled}
-        size={inputSize}
-        value={value}
-        error={error}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Enter your full name"
-        errorMessage="Name is required."
-        hintText="Please enter your legal name as per your documents."
-        helpIconHintText="This will be used for verification."
-        rightSlot={<User2 color="black" size={14} />}
-        leftSlot={<User2 color="black" size={14} />}
-      />
-
-      <div style={{ height: 100 }}></div>
-      <SearchInput
-        placeholder="Search"
-        label="Search"
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        error={error}
-      />
-      <div style={{ height: 100 }}></div>
-      <p style={{ color: "black" }}>Value: {numberValue}</p>
-      <NumberInput
-        required
-        name="numberInput"
-        value={numberValue}
-        onChange={(e) => setNumberValue(Number(e.target.value))}
-        label="Number Input"
-        hintText="This is a hint text to help user."
-        helpIconHintText="This is a help icon hint text to help user."
-        disabled={disabled}
-        sublabel="This is a sublabel to help user."
-        error={error}
-        errorMessage="This is an error message."
-        placeholder="Enter your number"
-        max={100}
-        // min={0}
-        step={5}
-        size={
-          inputSize === InputSize.MEDIUM
-            ? NumberInputSize.MEDIUM
-            : NumberInputSize.LARGE
-        }
-      />
-      <div style={{ height: 100 }}></div>
-      <p style={{ color: "black" }}>Value: {numberValue}</p>
-      <TextArea
-        required
-        placeholder="Enter your text"
-        value={textAreaValue}
-        onChange={(e) => setTextAreaValue(e.target.value)}
-        label="Text Area"
-        helpIconHintText="This is a hint text to help user."
-        helpIconText="This is a help icon hint text to help user."
-        disabled={disabled}
-        error={error}
-        cols={10}
-        errorMessage="This is an error message."
-        hintText="This is a hint text to help user."
-      />
-      <div style={{ height: 100 }}></div>
-      <p style={{ color: "black" }}>Value: {dropDownText}</p>
-      <p style={{ color: "black" }}>Value: {dropdownValue}</p>
-      <OTPInput
-        length={6}
-        label="Your Label"
-        sublabel="optional"
-        hintText="This is a hint text to help user."
-        value={otp1}
-        onChange={setOtp1}
-        required
-      />
-
-      <div style={{ height: 100 }}></div>
-      <p style={{ color: "black" }}>Value: {unitValue}</p>
-      <div style={{ width: "100%" }}>
-        <UnitInput
-          value={unitValue}
-          onChange={(e) => setUnitValue(Number(e.target.value))}
-          label="Unit Input"
-          error={error}
-          errorMessage="This is an error message."
-          placeholder="Enter your number"
-          min={0}
-          step={100000000}
-          disabled={disabled}
-          hintText="This is a hint text to help user."
-          helpIconHintText="This is a help icon hint text to help "
-          size={
-            inputSize === InputSize.MEDIUM
-              ? UnitInputSize.MEDIUM
-              : UnitInputSize.LARGE
-          }
-        />
-      </div>
-      <div style={{ height: 400 }}></div>
+      {selectedInput === "dropdown" && (
+        <div style={{ marginTop: 0 }}>
+          <p style={{ color: "black" }}>Dropdown Text: {dropDownText}</p>
+          <p style={{ color: "black", marginBottom: 20 }}>
+            Dropdown Value: {dropdownValue}
+          </p>
+          <DropdownInput
+            slot={
+              <Tag
+                size={TagSize.XS}
+                text="Global Search"
+                color={TagColor.PURPLE}
+                shape={TagShape.ROUNDED}
+              />
+            }
+            size={inputSize}
+            label="Dropdown Input"
+            sublabel="This is a sublabel to help user."
+            required
+            error={error}
+            errorMessage="This is an error message."
+            hintText="This is a hint text to help user."
+            disabled={disabled}
+            helpIconHintText="This is a help icon hint text to help user."
+            name="dropdownInput"
+            value={dropDownText}
+            onChange={(e) => setDropDownText(e.target.value)}
+            dropDownValue={dropdownValue}
+            onDropDownChange={setDropdownValue}
+            placeholder="Country"
+            dropDownItems={items}
+          />
+        </div>
+      )}
+      {selectedInput === "text" && (
+        <>
+          <p style={{ color: "black" }}>Value: {value}</p>
+          <TextInput
+            label="Full Name"
+            name="textInput"
+            required
+            disabled={disabled}
+            size={inputSize}
+            value={value}
+            error={error}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Enter your full name"
+            errorMessage="Name is required."
+            hintText="Please enter your legal name as per your documents."
+            helpIconHintText="This will be used for verification."
+            rightSlot={<User2 color="black" size={14} />}
+          />
+        </>
+      )}
+      {selectedInput === "search" && (
+        <>
+          <div style={{ height: 100 }}></div>
+          <SearchInput
+            rightSlot={
+              <Tag
+                size={TagSize.XS}
+                text="Global Search"
+                color={TagColor.PURPLE}
+                shape={TagShape.ROUNDED}
+              />
+            }
+            placeholder="Search"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            error={error}
+          />
+        </>
+      )}
+      {selectedInput === "number" && (
+        <>
+          <p style={{ color: "black" }}>Value: {numberValue}</p>
+          <NumberInput
+            required
+            name="numberInput"
+            value={numberValue}
+            onChange={(e) => setNumberValue(Number(e.target.value))}
+            label="Number Input"
+            hintText="This is a hint text to help user."
+            helpIconHintText="This is a help icon hint text to help user."
+            disabled={disabled}
+            sublabel="This is a sublabel to help user."
+            error={error}
+            errorMessage="This is an error message."
+            placeholder="Enter your number"
+            max={100}
+            step={5}
+            size={
+              inputSize === InputSize.MEDIUM
+                ? NumberInputSize.MEDIUM
+                : NumberInputSize.LARGE
+            }
+          />
+        </>
+      )}
+      {selectedInput === "otp" && (
+        <div style={{ marginTop: 100 }}>
+          <p style={{ color: "black", marginBottom: 50 }}>Value: {otp1}</p>
+          <OTP
+            form="otp1"
+            value={otp1}
+            onChange={(e) => setOtp1(e)}
+            label="OTP"
+            sublabel="optional"
+            required
+            helpIconHintText="This is a help icon hint text to help user."
+            hintText="This is a hint text to help user."
+            error={error}
+            errorMessage="This is an error message."
+            disabled={disabled}
+          />
+        </div>
+      )}
+      {selectedInput === "textarea" && (
+        <>
+          <p style={{ color: "black" }}>Value: {textAreaValue}</p>
+          <TextArea
+            required
+            placeholder="Enter your text"
+            value={textAreaValue}
+            onChange={(e) => setTextAreaValue(e.target.value)}
+            label="Text Area"
+            helpIconHintText="This is a hint text to help user."
+            helpIconText="This is a help icon hint text to help user."
+            disabled={disabled}
+            error={error}
+            cols={10}
+            errorMessage="This is an error message."
+            hintText="This is a hint text to help user."
+          />
+        </>
+      )}
+      {selectedInput === "unit" && (
+        <>
+          <p style={{ color: "black" }}>Value: {unitValue} kgs</p>
+          <div style={{ width: "100%" }}>
+            <UnitInput
+              unit="kgs"
+              value={unitValue}
+              onChange={(e) => setUnitValue(Number(e.target.value))}
+              label="Unit Input"
+              name="unitInput"
+              sublabel="This is a sublabel to help user."
+              required
+              error={error}
+              errorMessage="This is an error message."
+              placeholder="Enter your number"
+              min={0}
+              step={1000}
+              disabled={disabled}
+              hintText="This is a hint text to help user."
+              helpIconHintText="This is a help icon hint text to help "
+              size={
+                inputSize === InputSize.MEDIUM
+                  ? UnitInputSize.MEDIUM
+                  : UnitInputSize.LARGE
+              }
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

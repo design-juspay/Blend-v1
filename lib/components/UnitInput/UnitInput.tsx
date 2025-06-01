@@ -26,7 +26,7 @@ const UnitInput = ({
   hintText,
   leftSlot,
   rightSlot = <Weight size={16} color={FOUNDATION_THEME.colors.gray[400]} />,
-  unit = "kgs",
+  unit,
   unitPosition = UnitPosition.RIGHT,
   name,
 }: UnitInputProps) => {
@@ -145,6 +145,7 @@ const UnitInput = ({
         helpIconHintText={helpIconHintText}
         disabled={disabled}
         name={name}
+        required={required}
       />
       <Block
         position="relative"
@@ -207,7 +208,11 @@ const UnitInput = ({
           _hover={{
             border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
           }}
-          color={disabled ? FOUNDATION_THEME.colors.gray[300] : FOUNDATION_THEME.colors.gray[800]}
+          color={
+            disabled
+              ? FOUNDATION_THEME.colors.gray[300]
+              : FOUNDATION_THEME.colors.gray[800]
+          }
           _focusVisible={{
             border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
             outline: "none !important",

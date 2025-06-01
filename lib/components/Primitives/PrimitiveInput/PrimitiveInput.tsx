@@ -205,6 +205,8 @@ const stateToSelector: Record<keyof StateStyles, string> = {
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   PrimitiveInputProps & {
     as?: "input" | "textarea";
+    key?: string | number;
+    ref?: React.Ref<HTMLInputElement>;
   };
 
 const getStyles = (props: PrimitiveInputProps): CSSObject => {

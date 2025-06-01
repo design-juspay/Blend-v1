@@ -1,202 +1,244 @@
-import { HelpCircleIcon } from "lucide-react";
-import { FOUNDATION_THEME } from "../../tokens";
-import Block from "../Primitives/Block/Block";
-import Text from "../Text/Text";
-import { Tooltip, TooltipSize } from "../Tooltip";
-import Select from "../Select/Select";
-import PrimitiveInput from "../Primitives/PrimitiveInput/PrimitiveInput";
-import { useEffect } from "react";
-import { useRef, useState } from "react";
-import { SelectMenuVariant } from "../Select/types";
+import React, { useEffect, useRef, useState } from "react";
+import Block from "../../Primitives/Block/Block";
+import InputLabels from "../utils/InputLabels/InputLabels";
+import InputFooter from "../utils/InputFooter/InputFooter";
+import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
+import textInputTokens from "../TextInput/textInput.tokens";
+import { InputSize } from "../TextInput/types";
+import { FOUNDATION_THEME } from "../../../tokens";
+import { ChevronDown } from "lucide-react";
+import SelectMenu from "../../Select/SelectMenu";
+import {
+  SelectMenuAlignment,
+  SelectMenuGroupType,
+  SelectMenuItemType,
+} from "../../Select/types";
+import PrimitiveButton from "../../Primitives/PrimitiveButton/PrimitiveButton";
+import Text from "../../Text/Text";
 
-enum InputSize {
-  MEDIUM = "medium",
-  LARGE = "large",
-}
 type DropdownInputProps = {
   label: string;
-  options: string[];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  dropdownValue: string;
-  onDropdownChange: (value: string) => void;
-  placeholder?: string;
-  dropdownPlaceholder?: string;
-  disabled?: boolean;
   sublabel?: string;
+  disabled?: boolean;
   helpIconHintText?: string;
+  name?: string;
+  required?: boolean;
   error?: boolean;
   errorMessage?: string;
   hintText?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  slot?: React.ReactNode;
   size?: InputSize;
-  leftSlot?: React.ReactNode;
-  rightSlot?: React.ReactNode;
+  placeholder?: string;
+  dropDownValue?: string;
+  onDropDownChange?: (value: string) => void;
+  dropDownItems: SelectMenuGroupType[];
+};
+
+const map = function getValueLabelMap(
+  groups: SelectMenuGroupType[]
+): Record<string, string> {
+  const map: Record<string, string> = {};
+
+  function traverse(items: SelectMenuItemType[]) {
+    for (const item of items) {
+      map[item.value] = item.label;
+      if (item.subMenu) {
+        traverse(item.subMenu);
+      }
+    }
+  }
+
+  for (const group of groups) {
+    traverse(group.items);
+  }
+
+  return map;
 };
 
 const DropdownInput = ({
   label,
-  options,
-  value,
-  onChange,
-  dropdownValue,
-  onDropdownChange,
-  placeholder,
-  dropdownPlaceholder,
-  disabled,
   sublabel,
+  disabled,
   helpIconHintText,
+  name,
+  required,
   error,
   errorMessage,
   hintText,
-  leftSlot,
-  rightSlot,
-  size = InputSize.LARGE,
+  value,
+  onChange,
+  slot,
+  size = InputSize.MEDIUM,
+  placeholder,
+  dropDownValue,
+  onDropDownChange,
+  dropDownItems,
 }: DropdownInputProps) => {
-  const leftSlotRef = useRef<HTMLDivElement>(null);
-  const rightSlotRef = useRef<HTMLDivElement>(null);
+  const slotRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [leftSlotWidth, setLeftSlotWidth] = useState(0);
-  const [rightSlotWidth, setRightSlotWidth] = useState(0);
+  const valueLabelMap = map(dropDownItems);
 
+  const [slotWidth, setSlotWidth] = useState<number>(0);
+  const [dropdownWidth, setDropdownWidth] = useState<number>(0);
   useEffect(() => {
-    if (leftSlotRef.current) {
-      setLeftSlotWidth(leftSlotRef.current.offsetWidth);
+    if (slotRef.current) {
+      setSlotWidth(slotRef.current.offsetWidth);
     } else {
-      setLeftSlotWidth(0);
+      setSlotWidth(0);
     }
-    if (rightSlotRef.current) {
-      setRightSlotWidth(rightSlotRef.current.offsetWidth);
+
+    if (dropdownRef.current) {
+      setDropdownWidth(dropdownRef.current.offsetWidth);
     } else {
-      setRightSlotWidth(0);
+      setDropdownWidth(0);
     }
-  }, [leftSlot, rightSlot]);
+  }, [slot, dropDownValue]);
 
-  const paddingX = size === InputSize.MEDIUM ? 12 : 14;
-  const paddingY = size === InputSize.MEDIUM ? 8 : 10;
+  // @TODO: Reconsider the type of unitTokens in FOUNDATION_THEME
+  const paddingX = textInputTokens.input.padding.x[size];
+  const paddingY = textInputTokens.input.padding.y[size];
+  const GAP = textInputTokens.input.gap;
 
-  const paddingInlineStart = leftSlot ? paddingX + leftSlotWidth + 8 : paddingX;
-  const paddingInlineEnd = rightSlot
-    ? paddingX + rightSlotWidth + 8
-    : paddingX + 50;
+  const paddingInlineStart = paddingX + (slotWidth ? slotWidth + GAP : 0);
+  const paddingInlineEnd =
+    paddingX + (dropdownWidth ? dropdownWidth + 2 * GAP : 0);
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
-      <Block display="flex" alignItems="center" gap={4}>
-        <Text
-          as="label"
-          variant="body.md"
-          fontWeight={500}
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[400]
-              : FOUNDATION_THEME.colors.gray[700]
-          }
-          style={{ margin: 0, padding: 0 }}
-        >
-          {label}
-        </Text>
-        {sublabel && (
-          <Text
-            variant="body.md"
-            fontWeight={400}
-            color={
-              disabled
-                ? FOUNDATION_THEME.colors.gray[300]
-                : FOUNDATION_THEME.colors.gray[400]
-            }
-            margin={0}
+      <InputLabels
+        label={label}
+        sublabel={sublabel}
+        disabled={disabled}
+        helpIconHintText={helpIconHintText}
+        name={name}
+        required={required}
+      />
+      <Block position="relative" width={"100%"}>
+        {slot && (
+          <Block
+            ref={slotRef}
+            position="absolute"
+            top={paddingY}
+            left={paddingX}
+            bottom={paddingY}
+            contentCentered
           >
-            (optional)
-          </Text>
-        )}
-        {helpIconHintText && (
-          <Block contentCentered size={16}>
-            <Tooltip content={helpIconHintText} size={TooltipSize.SMALL}>
-              <HelpCircleIcon
-                size={14}
-                color={FOUNDATION_THEME.colors.gray[400]}
-              />
-            </Tooltip>
+            {slot}
           </Block>
         )}
-      </Block>
-
-      <Block position="relative">
-        {/* <Select
-          placeholder="United States"
-          label="Country"
-          selected={dropdownValue}
-          allowMultiSelect={false}
-          onSelectChange={(value) =>
-            onDropdownChange(Array.isArray(value) ? value[0] : value)
-          }
-        /> */}
-        <Block position="absolute" right={0} top={0}>
-          <Select
-            placeholder="Code"
-            variant={SelectMenuVariant.NO_CONTAINER}
-            label="Country"
-            selected={dropdownValue}
-            allowMultiSelect={false}
-            onSelectChange={(value) =>
-              onDropdownChange(Array.isArray(value) ? value[0] : value)
-            }
-          />
-        </Block>
         <PrimitiveInput
+          required={required}
           value={value}
+          type="text"
+          name={name}
           onChange={onChange}
           paddingInlineStart={paddingInlineStart}
           paddingInlineEnd={paddingInlineEnd}
           paddingTop={paddingY}
           paddingBottom={paddingY}
           placeholder={placeholder}
-          borderRadius={8}
+          borderRadius={textInputTokens.input.border.radius}
           boxShadow={FOUNDATION_THEME.shadows.sm}
           border={
             error
-              ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-              : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
+              ? `1px solid ${textInputTokens.input.border.color.error}`
+              : `1px solid ${textInputTokens.input.border.color.default}`
           }
           outline="none"
           width={"100%"}
           _hover={{
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
+            border: `1px solid ${textInputTokens.input.border.color.hover}`,
           }}
-          color={FOUNDATION_THEME.colors.gray[800]}
-          _focusVisible={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-            outline: "none !important",
-          }}
+          color={
+            disabled
+              ? textInputTokens.input.color.disabled
+              : textInputTokens.input.color.default
+          }
+          // @TODO: Confirm use case in v1
+          // _focusVisible={{
+          //   border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
+          //   outline: "none !important",
+          // }}
           _focus={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
+            border: `1px solid ${textInputTokens.input.border.color.focus} !important`,
             outline: "none !important",
           }}
           disabled={disabled}
           _disabled={{
-            backgroundColor: FOUNDATION_THEME.colors.gray[200],
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            backgroundColor: textInputTokens.input.backgroundColor.disabled,
+            border: `1px solid ${textInputTokens.input.border.color.disabled}`,
             cursor: "not-allowed",
           }}
         />
-      </Block>
-      {error && errorMessage && (
-        <Text variant="body.md" color={FOUNDATION_THEME.colors.red[500]}>
-          {errorMessage}
-        </Text>
-      )}
-      {hintText && !error && (
-        <Text
-          variant="body.md"
-          fontWeight={400}
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[500]
-          }
+        <Block
+          ref={dropdownRef}
+          position="absolute"
+          right={14}
+          top={paddingX}
+          bottom={paddingX}
+          width={"fit-content"}
+          contentCentered
         >
-          {hintText}
-        </Text>
-      )}
+          <SelectMenu
+            items={dropDownItems}
+            placeholder="US"
+            enableSearch={false}
+            alignment={SelectMenuAlignment.END}
+            alignOffset={-(paddingX + 2)}
+            sideOffset={paddingX}
+            selected={dropDownValue}
+            onSelect={(value) =>
+              onDropDownChange?.(Array.isArray(value) ? value[0] : value)
+            }
+            trigger={
+              <PrimitiveButton
+                disabled={disabled}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                gap={4}
+                backgroundColor={"transparent"}
+              >
+                {/* <Text
+                  variant="body.sm"
+                  color={FOUNDATION_THEME.colors.gray[500]}
+                >
+                  {getLabelsForSelectedValues([dropDownValue])}
+                </Text> */}
+                {dropDownValue ? (
+                  <Text
+                    variant="body.md"
+                    fontWeight={500}
+                    color={FOUNDATION_THEME.colors.gray[700]}
+                  >
+                    {valueLabelMap[dropDownValue as string]}
+                  </Text>
+                ) : (
+                  <Text
+                    variant="body.md"
+                    fontWeight={500}
+                    color={FOUNDATION_THEME.colors.gray[600]}
+                  >
+                    {placeholder}
+                  </Text>
+                )}
+                <ChevronDown
+                  size={12}
+                  color={FOUNDATION_THEME.colors.gray[500]}
+                />
+              </PrimitiveButton>
+            }
+          ></SelectMenu>
+        </Block>
+      </Block>
+      <InputFooter
+        error={error}
+        errorMessage={errorMessage}
+        hintText={hintText}
+        disabled={disabled}
+      />
     </Block>
   );
 };

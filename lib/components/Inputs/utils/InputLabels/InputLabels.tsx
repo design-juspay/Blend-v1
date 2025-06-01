@@ -3,7 +3,6 @@ import { FOUNDATION_THEME } from "../../../../tokens";
 import Block from "../../../Primitives/Block/Block";
 import Text from "../../../Text/Text";
 import { Tooltip, TooltipSize } from "../../../Tooltip";
-import PrimitiveInput from "../../../Primitives/PrimitiveInput/PrimitiveInput";
 
 type InputLabelsProps = {
   label: string;

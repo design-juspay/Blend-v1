@@ -25,20 +25,6 @@ const TextInput = ({
   name,
   required = false,
 }: InputProps) => {
-  // if (variant === InputVariant.SEARCH) {
-  //   return (
-  //     <SearchInput
-  //       name={name}
-  //       leftSlot={leftSlot}
-  //       rightSlot={rightSlot}
-  //       error={error}
-  //       label={label}
-  //       placeholder={placeholder}
-  //       value={value}
-  //       onChange={onChange}
-  //     />
-  //   );
-  // }
 
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
@@ -122,6 +108,7 @@ const TextInput = ({
               ? textInputTokens.input.color.disabled
               : textInputTokens.input.color.default
           }
+          // @TODO: Confirm use case in v1
           // _focusVisible={{
           //   border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
           //   outline: "none !important",

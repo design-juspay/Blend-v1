@@ -26,7 +26,7 @@ export type UnitInputProps = {
   hintText?: string;
   leftSlot?: React.ReactNode;
   rightSlot?: React.ReactNode;
-  unit?: string;
+  unit: string;
   unitPosition?: UnitPosition;
   name?: string;
 };

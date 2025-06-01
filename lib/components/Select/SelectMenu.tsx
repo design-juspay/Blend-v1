@@ -466,7 +466,6 @@ const SelectMenu = ({
             paddingBottom={10}
           >
             <SearchInput
-              label="Search"
               placeholder="Search"
               value={searchText}
               onChange={(e) => {

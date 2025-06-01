@@ -5,14 +5,8 @@ type SearchInputTokens = {
   input: {
     gap: number;
     padding: {
-      x: {
-        md: number;
-        lg: number;
-      };
-      y: {
-        md: number;
-        lg: number;
-      };
+      x: number;
+      y: number;
     };
     border: {
       radius: number;
@@ -43,14 +37,8 @@ const searchInputTokens: Readonly<SearchInputTokens> = {
   input: {
     gap: 8,
     padding: {
-      x: {
-        md: 12,
-        lg: 14,
-      },
-      y: {
-        md: 8,
-        lg: 10,
-      },
+      x: 8,
+      y: 10,
     },
     border: {
       radius: 8,

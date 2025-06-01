@@ -7,7 +7,7 @@ import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import Text, { VariantType } from "../Text/Text";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
-import { AddToastOptions, CustomToastProps } from "./types";
+import { AddToastOptions, CustomToastProps, SnackbarVariant } from "./types";
 import snackbarTokens from "./snackbar.tokens";
 
 const StyledToast: React.FC<CustomToastProps> = ({
@@ -101,17 +101,35 @@ const StyledToast: React.FC<CustomToastProps> = ({
   );
 };
 
-export const addSnackbar = (options: AddToastOptions) => {
+/**
+ * @description
+ * Add a snackbar to the Snackbar component
+ *
+ * @param {string} header - The header of the snackbar
+ * @param {string} description - The description of the snackbar
+ * @param {SnackbarVariant} variant - The variant of the snackbar
+ * @param {() => void} onClose - The function to call when the snackbar is closed
+ * @param {() => void} actionButton - The function to call when the action button is clicked
+ *
+ * @returns {void}
+ */
+export const addSnackbar = ({
+  header,
+  description,
+  variant = SnackbarVariant.INFO,
+  onClose,
+  actionButton,
+}: AddToastOptions) => {
   return sonnerToast.custom((t) => (
     <StyledToast
-      header={options.header}
-      description={options.description}
-      variant={options.variant}
+      header={header}
+      description={description}
+      variant={variant}
       onClose={() => {
         sonnerToast.dismiss(t);
-        options.onClose?.();
+        onClose?.();
       }}
-      actionButton={options.actionButton}
+      actionButton={actionButton}
     />
   ));
 };
