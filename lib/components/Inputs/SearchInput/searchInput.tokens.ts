@@ -1,9 +1,9 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
 
-type TextInputTokens = {
+type SearchInputTokens = {
   input: {
-    gap:number;
+    gap: number;
     padding: {
       x: {
         md: number;
@@ -22,25 +22,24 @@ type TextInputTokens = {
         focus: CSSObject["borderColor"];
         error: CSSObject["borderColor"];
         disabled: CSSObject["borderColor"];
-      }
-    }
+      };
+    };
     boxShadow: CSSObject["boxShadow"];
     color: {
       default: CSSObject["color"];
       disabled: CSSObject["color"];
-    }
+    };
     backgroundColor: {
       default: CSSObject["backgroundColor"];
       disabled: CSSObject["backgroundColor"];
-    }
+    };
   };
 };
-
 
 // @TODO: Replace with FOUNDATION_THEME Token
 // Not dont yet because of some issue with type of unit tokens
 // Ignored for now due to potential breaking changes to other components
-const textInputTokens: Readonly<TextInputTokens> = {
+const searchInputTokens: Readonly<SearchInputTokens> = {
   input: {
     gap: 8,
     padding: {
@@ -61,7 +60,7 @@ const textInputTokens: Readonly<TextInputTokens> = {
         focus: FOUNDATION_THEME.colors.primary[500],
         error: FOUNDATION_THEME.colors.red[500],
         disabled: FOUNDATION_THEME.colors.gray[200],
-      }
+      },
     },
     color: {
       default: FOUNDATION_THEME.colors.gray[800],
@@ -71,8 +70,8 @@ const textInputTokens: Readonly<TextInputTokens> = {
       default: FOUNDATION_THEME.colors.gray[0],
       disabled: FOUNDATION_THEME.colors.gray[50],
     },
-    boxShadow: FOUNDATION_THEME.shadows.sm
+    boxShadow: FOUNDATION_THEME.shadows.sm,
   },
 };
 
-export default textInputTokens;
+export default searchInputTokens;

@@ -33,20 +33,51 @@ export const itemBaseStyle: CSSObject = {
   },
 };
 
-const StyledItem = styled(RadixMenu.Item)(() => ({
-  ...itemBaseStyle,
-}));
+const getHoverBgColor = (item: MenuItemV2Type): string => {
+  if (item.variant === MenuItemV2Variant.ACTION) {
+    if (item.actionType === MenuItemV2ActionType.DANGER) {
+      return (
+        FOUNDATION_THEME.colors.red[50] ||
+        FOUNDATION_THEME.colors.gray[50] ||
+        ""
+      );
+    }
+    // PRIMARY or undefined
+    return (
+      FOUNDATION_THEME.colors.primary[50] ||
+      FOUNDATION_THEME.colors.gray[50] ||
+      ""
+    );
+  }
+  return FOUNDATION_THEME.colors.gray[50] || "";
+};
+
+const StyledItem = styled(RadixMenu.Item)<{ $hoverBg: string }>(
+  ({ $hoverBg }) => ({
+    ...itemBaseStyle,
+    "&:hover": {
+      backgroundColor: $hoverBg,
+    },
+    "&[data-highlighted]": {
+      border: "none",
+      outline: "none",
+      backgroundColor: $hoverBg,
+    },
+  })
+);
 
 const Item = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
   if (item.subMenu) {
     return <SubMenu item={item} idx={idx} />;
   }
+  const hoverBg = getHoverBgColor(item);
   return (
     <StyledItem
       onClick={item.onClick}
       asChild
       disabled={item.disabled}
       key={idx}
+      $hoverBg={hoverBg}
     >
       <Block
         padding="6px"

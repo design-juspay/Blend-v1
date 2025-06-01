@@ -3,34 +3,36 @@ import Text from "../Text/Text";
 import styled, { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 import { dummyMenuItems, MenuV2Props, MenuAlignment, MenuSide } from "./types";
-import { useState } from "react";
+import React, { useState } from "react";
 import { filterMenuGroups } from "./utils";
-import SearchInput from "./MenuSearchInput";
 import MenuGroupLabel from "./MenuGroupLabel";
 import MenuGroupSeperator from "./MenuGroupSeperator";
 import Item from "./MenuItem";
-
-
+import Block from "../Primitives/Block/Block";
+import SearchInput from "../Inputs/SearchInput/SearchInput";
 
 export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
   color: "black",
   borderRadius: 6,
-  padding: "8px 6px",
   boxShadow: FOUNDATION_THEME.shadows.lg,
   zIndex: 9999,
   minWidth: 200,
   maxWidth: 280,
   overflowY: "auto",
-  scrollbarWidth: "thin",
-  scrollbarColor: `${FOUNDATION_THEME.colors.gray[200]} ${FOUNDATION_THEME.colors.gray[0]}`,
+  overflowX: "hidden",
+  scrollbarWidth: "none",
+  scrollbarColor: "transparent transparent",
+  padding: "0px 6px",
 };
 
 const Content = styled(RadixMenu.Content)(() => ({
   ...contentBaseStyle,
 }));
 
-const Group = styled(RadixMenu.Group)(() => ({}));
+// const Group = styled(RadixMenu.Group)(() => ({
+//   padding: "8px 6px",
+// }));
 
 const MenuV2 = ({
   trigger,
@@ -42,6 +44,7 @@ const MenuV2 = ({
   alignOffset = 0,
   collisonBoundaryRef,
   maxHeight,
+  enableSearch = true,
 }: MenuV2Props) => {
   const [searchText, setSearchText] = useState<string>("");
 
@@ -60,15 +63,25 @@ const MenuV2 = ({
           maxHeight: maxHeight ? `${maxHeight}px` : "auto",
         }}
       >
-        <SearchInput
-          placeholder="Search"
-          onKeyDown={(e) => e.stopPropagation()}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
+        {enableSearch && (
+          <Block
+            width="calc(100% + 12px)"
+            marginLeft="-6px"
+            position="sticky"
+            top={0}
+            zIndex={1000}
+          >
+            <SearchInput
+              label="Search"
+              placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </Block>
+        )}
         {filteredItems &&
           filteredItems.map((group, groupId) => (
-            <Group key={groupId}>
+            <React.Fragment key={groupId}>
               {group.label && (
                 <MenuGroupLabel>
                   <Text
@@ -89,7 +102,7 @@ const MenuV2 = ({
               {groupId !== filteredItems.length - 1 && group.showSeparator && (
                 <MenuGroupSeperator />
               )}
-            </Group>
+            </React.Fragment>
           ))}
       </Content>
     </RadixMenu.Root>

@@ -88,6 +88,7 @@ const MenuDemo = () => {
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
+            enableSearch={true}
             placeholder="Gateway"
             // variant={SelectMenuVariant.NO_CONTAINER}
             label="Select an option"
@@ -98,9 +99,11 @@ const MenuDemo = () => {
           />
         </div>
         {/* Multi-select demo */}
-        <div style={{ width: "300px" }}>
+        <div >
           <Select
+            enableSearch={true}
             label="Multi Select"
+            variant={SelectMenuVariant.NO_CONTAINER}
             placeholder="Gateway"
             allowMultiSelect
             selected={multiSelected}
@@ -108,10 +111,10 @@ const MenuDemo = () => {
               Array.isArray(value) && setMultiSelected(value)
             }
           />
-          <div style={{ marginTop: 8, color: "black" }}>
-            Selected:{" "}
-            {multiSelected.length > 0 ? multiSelected.join(", ") : "None"}
-          </div>
+        </div>
+        <div style={{ marginTop: 8, color: "black" }}>
+          Selected:{" "}
+          {multiSelected.length > 0 ? multiSelected.join(", ") : "None"}
         </div>
       </Block>
     </div>

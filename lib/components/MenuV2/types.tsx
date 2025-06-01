@@ -24,6 +24,7 @@ export type MenuV2Props = {
   alignOffset?: number;
   collisonBoundaryRef?: Element | null | Array<Element | null>;
   maxHeight?: number;
+  enableSearch?: boolean;
 };
 
 export enum MenuItemV2Variant {
@@ -134,6 +135,8 @@ export const dummyMenuItems: MenuV2GroupType[] = [
         subMenu: [
           {
             label: "Slack",
+            variant: MenuItemV2Variant.ACTION,
+            actionType: MenuItemV2ActionType.PRIMARY,
             subLabel: "Connect your Slack workspace",
             slot1: <Settings2 size={13} />,
             onClick: () => alert("Connect Slack"),
@@ -160,17 +163,21 @@ export const dummyMenuItems: MenuV2GroupType[] = [
       {
         label: "Notifications",
         subLabel: "Configure your notification preferences",
+        actionType: MenuItemV2ActionType.DANGER,
         slot1: <Settings2 size={13} />,
         subMenu: [
           {
             label: "Email Notifications",
+            variant: MenuItemV2Variant.ACTION,
+            actionType: MenuItemV2ActionType.PRIMARY,
             subLabel: "Receive updates via email",
             slot1: <Settings2 size={13} />,
             onClick: () => alert("Email Notifications"),
             subMenu: [
               {
                 label: "Slack",
-                subLabel: "Connect your Slack workspace",
+                variant: MenuItemV2Variant.ACTION,
+                actionType: MenuItemV2ActionType.DANGER,
                 slot1: <Settings2 size={13} />,
                 onClick: () => alert("Connect Slack"),
               },

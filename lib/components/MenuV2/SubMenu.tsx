@@ -14,16 +14,49 @@ import { ChevronRightIcon } from "lucide-react";
 
 export const Sub = styled(RadixMenu.Sub)(() => ({
   padding: 0,
-  margin: 0,
   listStyle: "none",
+  margin: "0px 6px",
 }));
 
-const SubTrigger = styled(RadixMenu.SubTrigger)(() => ({
-  ...itemBaseStyle,
-}));
+const getHoverBgColor = (item: MenuItemV2Type): string => {
+  console.log(item);
+  if (item.variant === MenuItemV2Variant.ACTION) {
+    if (item.actionType === MenuItemV2ActionType.DANGER) {
+
+      return (
+        FOUNDATION_THEME.colors.red[50] ||
+        FOUNDATION_THEME.colors.gray[50] ||
+        ""
+      );
+    }
+    // PRIMARY or undefined
+    return (
+      FOUNDATION_THEME.colors.primary[50] ||
+      FOUNDATION_THEME.colors.gray[50] ||
+      ""
+    );
+  }
+  return FOUNDATION_THEME.colors.gray[50] || "";
+};
+
+const SubTrigger = styled(RadixMenu.SubTrigger)<{ $hoverBg: string }>(
+  ({ $hoverBg }) => ({
+    ...itemBaseStyle,
+    "&:hover": {
+      backgroundColor: $hoverBg,
+    },
+    "&[data-highlighted]": {
+      border: "none",
+      outline: "none",
+      backgroundColor: $hoverBg,
+    },
+  })
+);
 
 const SubContent = styled(RadixMenu.SubContent)(() => ({
   ...contentBaseStyle,
+  paddingTop: 10,
+  paddingBottom: 10,
 }));
 
 export const SubMenu = ({
@@ -33,9 +66,10 @@ export const SubMenu = ({
   item: MenuItemV2Type;
   idx: number;
 }) => {
+  const hoverBg = getHoverBgColor(item);
   return (
     <Sub key={idx}>
-      <SubTrigger asChild>
+      <SubTrigger asChild $hoverBg={hoverBg}>
         <Block
           padding="6px"
           display="flex"

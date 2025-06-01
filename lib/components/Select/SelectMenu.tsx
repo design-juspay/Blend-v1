@@ -12,8 +12,7 @@ import {
   SelectMenuProps,
   SelectMenuSide,
 } from "./types";
-import TextInput from "../Inputs/TextInput/TextInput";
-import { InputVariant } from "../Inputs/TextInput/types";
+import SearchInput from "../Inputs/SearchInput/SearchInput";
 
 const Content = styled(RadixMenu.Content)(() => ({
   backgroundColor: "white",
@@ -351,6 +350,7 @@ const Item = ({
 const Label = styled(RadixMenu.Label)(() => ({
   padding: "6px 8px",
   userSelect: "none",
+  textTransform: "uppercase",
 }));
 
 // Utility: Recursively filter menu items and groups by search text
@@ -454,23 +454,25 @@ const SelectMenu = ({
         align={alignment}
         style={{
           maxHeight: maxHeight ? `${maxHeight}px` : "auto",
-          paddingTop: enableSearch ? 40 : 0,
         }}
       >
-        {true && (
+        {enableSearch && (
           <Block
             width="calc(100% + 12px)"
             marginLeft="-6px"
             position="sticky"
             top={0}
             zIndex={1000}
+            paddingBottom={10}
           >
-            <TextInput
-              variant={InputVariant.SEARCH}
+            <SearchInput
               label="Search"
               placeholder="Search"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                e.stopPropagation();
+                setSearchText(e.target.value);
+              }}
             />
           </Block>
         )}

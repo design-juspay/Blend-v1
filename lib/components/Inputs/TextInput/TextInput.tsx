@@ -6,58 +6,9 @@ import { FOUNDATION_THEME } from "../../../tokens";
 import textInputTokens from "./textInput.tokens";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
-import { InputSize, InputVariant, InputProps } from "./types";
-
-const SearchInput = ({
-  size = InputSize.MEDIUM,
-  leftSlot,
-  rightSlot,
-  error = false,
-  errorMessage = "This is an error message",
-  hintText = "This is a hint text to help user.",
-  helpIconHintText = "This is a help icon hint text to help user.",
-  disabled = false,
-  label,
-  placeholder = "Enter",
-  sublabel,
-  value,
-  onChange,
-}: Omit<InputProps, "variant">) => {
-  return (
-    <Block position="relative" width={"100%"} height={40}>
-      <PrimitiveInput
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        paddingX={12}
-        paddingY={8}
-        border="none"
-        outline="none"
-        height={40}
-        width={"100%"}
-        borderBottom={
-          error
-            ? `1px solid ${FOUNDATION_THEME.colors.red[500]} !important`
-            : `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
-        }
-        _hover={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-        }}
-        _focusVisible={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          outline: "none !important",
-        }}
-        _focus={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          outline: "none !important",
-        }}
-      />
-    </Block>
-  );
-};
+import { InputSize, InputProps } from "./types";
 
 const TextInput = ({
-  variant = InputVariant.TEXT,
   size = InputSize.MEDIUM,
   leftSlot,
   rightSlot,
@@ -74,26 +25,20 @@ const TextInput = ({
   name,
   required = false,
 }: InputProps) => {
-  if (variant === InputVariant.SEARCH) {
-    return (
-      <SearchInput
-        required={required}
-        size={size}
-        leftSlot={leftSlot}
-        rightSlot={rightSlot}
-        error={error}
-        errorMessage={errorMessage}
-        hintText={hintText}
-        helpIconHintText={helpIconHintText}
-        disabled={disabled}
-        label={label}
-        placeholder={placeholder}
-        sublabel={sublabel}
-        value={value}
-        onChange={onChange}
-      />
-    );
-  }
+  // if (variant === InputVariant.SEARCH) {
+  //   return (
+  //     <SearchInput
+  //       name={name}
+  //       leftSlot={leftSlot}
+  //       rightSlot={rightSlot}
+  //       error={error}
+  //       label={label}
+  //       placeholder={placeholder}
+  //       value={value}
+  //       onChange={onChange}
+  //     />
+  //   );
+  // }
 
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
@@ -115,9 +60,9 @@ const TextInput = ({
   }, [leftSlot, rightSlot]);
 
   // @TODO: Reconsider the type of unitTokens in FOUNDATION_THEME
-  const paddingX = textInputTokens.input.padding.x[size] as number;
-  const paddingY = textInputTokens.input.padding.y[size] as number;
-  const GAP = textInputTokens.input.gap as number;
+  const paddingX = textInputTokens.input.padding.x[size];
+  const paddingY = textInputTokens.input.padding.y[size];
+  const GAP = textInputTokens.input.gap;
 
   const paddingInlineStart = leftSlot
     ? paddingX + leftSlotWidth + GAP
@@ -125,7 +70,6 @@ const TextInput = ({
   const paddingInlineEnd = rightSlot
     ? paddingX + rightSlotWidth + GAP
     : paddingX;
-
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
       <InputLabels
@@ -161,35 +105,35 @@ const TextInput = ({
           paddingTop={paddingY}
           paddingBottom={paddingY}
           placeholder={placeholder}
-          borderRadius={8}
+          borderRadius={textInputTokens.input.border.radius}
           boxShadow={FOUNDATION_THEME.shadows.sm}
           border={
             error
-              ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-              : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
+              ? `1px solid ${textInputTokens.input.border.color.error}`
+              : `1px solid ${textInputTokens.input.border.color.default}`
           }
           outline="none"
           width={"100%"}
           _hover={{
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
+            border: `1px solid ${textInputTokens.input.border.color.hover}`,
           }}
           color={
             disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[800]
+              ? textInputTokens.input.color.disabled
+              : textInputTokens.input.color.default
           }
-          _focusVisible={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-            outline: "none !important",
-          }}
+          // _focusVisible={{
+          //   border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
+          //   outline: "none !important",
+          // }}
           _focus={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
+            border: `1px solid ${textInputTokens.input.border.color.focus} !important`,
             outline: "none !important",
           }}
           disabled={disabled}
           _disabled={{
-            backgroundColor: FOUNDATION_THEME.colors.gray[50],
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            backgroundColor: textInputTokens.input.backgroundColor.disabled,
+            border: `1px solid ${textInputTokens.input.border.color.disabled}`,
             cursor: "not-allowed",
           }}
         />

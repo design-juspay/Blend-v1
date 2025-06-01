@@ -3,14 +3,13 @@ export enum InputSize {
   LARGE = "lg",
 }
 
-export enum InputVariant {
-  SEARCH = "search",
-  TEXT = "text",
-}
+// export enum InputVariant {
+//   SEARCH = "search",
+//   TEXT = "text",
+// }
 
 export type InputProps = {
   required?: boolean;
-  variant?: InputVariant;
   label: string;
   sublabel?: string;
   hintText?: string;
