@@ -23,6 +23,7 @@ import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
 import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 import InputDemo from "./demos/Input/InputDemo";
+import MultiValueInput from "../lib/components/Inputs/MultiValueInput/MultiValueInput";
 
 // Component categories
 type ComponentCategory = {
@@ -33,7 +34,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
+  const [selectedCategory, setSelectedCategory] = useState<string>("input");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [

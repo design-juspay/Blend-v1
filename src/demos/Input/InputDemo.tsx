@@ -1,25 +1,19 @@
 import React, { useState } from "react";
+import { User2 } from "lucide-react";
 import TextInput from "../../../lib/components/Inputs/TextInput/TextInput";
 import NumberInput from "../../../lib/components/Inputs/NumberInput/NumberInput";
 import TextArea from "../../../lib/components/TextArea/TextArea";
-
 import UnitInput from "../../../lib/components/UnitInput/UnitInput";
 import { InputSize } from "../../../lib/components/Inputs/TextInput/types";
 import { NumberInputSize } from "../../../lib/components/Inputs/NumberInput/types";
 import { NumberInputSize as UnitInputSize } from "../../../lib/components/UnitInput/types";
 import { Tag, TagColor, TagShape, TagSize } from "../../../lib/main";
-import { User2 } from "lucide-react";
 import SearchInput from "../../../lib/components/Inputs/SearchInput/SearchInput";
-import OTP from "../../../lib/components/Inputs/OTP/OTP";
+import OTP from "../../../lib/components/Inputs/OTPInput/OTP";
 import DropdownInput from "../../../lib/components/Inputs/DropdownInput/DropdownInput";
 import { SelectMenuGroupType } from "../../../lib/components/Select/types";
 import Select from "../../../lib/components/Select/Select";
-
-// DropdownInput InputSize is not exported, so define a compatible enum here
-const DropdownInputSize = {
-  MEDIUM: "medium",
-  LARGE: "large",
-} as const;
+import MultiValueInput from "../../../lib/components/Inputs/MultiValueInput/MultiValueInput";
 
 const InputDemo: React.FC = () => {
   const [value, setValue] = useState("");
@@ -33,7 +27,27 @@ const InputDemo: React.FC = () => {
   const [unitValue, setUnitValue] = useState<number>(0);
   const [inputSize, setInputSize] = useState<InputSize>(InputSize.MEDIUM);
   const [otp1, setOtp1] = useState("");
-  const [selectedInput, setSelectedInput] = useState<string>("text");
+  const [selectedInput, setSelectedInput] =
+    useState<string>("multi-value-input");
+  const [tags, setTags] = useState<string[]>([
+    "Tag 1",
+    "Tag 2",
+    "Tag 3",
+    "Tag 4",
+    "Tag 5",
+    "Tag 6",
+    "Tag 7",
+    "Tag 8",
+    "Tag 9",
+    "Tag 10",
+    "Tag 11",
+    "Tag 12",
+    "Tag 13",
+    "Tag 14",
+    "Tag 15",
+    "Tag 16",
+    "Tag 17",
+  ]);
 
   const items: SelectMenuGroupType[] = [
     {
@@ -69,6 +83,7 @@ const InputDemo: React.FC = () => {
     { label: "OTP Input", value: "otp" },
     { label: "Text Area", value: "textarea" },
     { label: "Unit Input", value: "unit" },
+    { label: "Multi Value Input", value: "multi-value-input" },
   ];
 
   return (
@@ -300,6 +315,27 @@ const InputDemo: React.FC = () => {
                   ? UnitInputSize.MEDIUM
                   : UnitInputSize.LARGE
               }
+            />
+          </div>
+        </>
+      )}
+      {selectedInput === "multi-value-input" && (
+        <>
+          <p style={{ color: "black" }}>Value: {unitValue} kgs</p>
+          <div style={{ width: "100%" }}>
+            <MultiValueInput
+              label="Multi Value Input"
+              sublabel="This is a sublabel to help user."
+              disabled={disabled}
+              error={error}
+              errorMessage="This is an error message."
+              hintText="This is a hint text to help user."
+              helpIconHintText="This is a help icon hint text to help user."
+              required
+              tags={tags}
+              onTagAdd={(tag) => setTags([...tags, tag])}
+              onTagRemove={(tag) => setTags(tags.filter((t) => t !== tag))}
+              size={inputSize}
             />
           </div>
         </>
