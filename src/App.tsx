@@ -19,6 +19,7 @@ import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
+import ChartDemo from "./demos/Charts";
 import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
 import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
@@ -131,6 +132,11 @@ function App() {
       id: "input",
       name: "Input",
       component: <InputDemo />,
+    },
+    {
+      id: "charts",
+      name: "Charts",
+      component: <ChartDemo />,
     },
     {
       id: "daterangepicker",
