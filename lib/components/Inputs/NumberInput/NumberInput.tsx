@@ -38,12 +38,7 @@ const NumberInput = ({
         name={name}
         required={required}
       />
-      <Block
-        position="relative"
-        width={"100%"}
-        display="flex"
-        borderRadius={8}
-      >
+      <Block position="relative" width={"100%"} display="flex" borderRadius={8}>
         <PrimitiveInput
           name={name}
           type="number"
@@ -113,7 +108,7 @@ const NumberInput = ({
             onClick={() =>
               onChange({
                 target: { value: String(value + (step ?? 1)) },
-              } as any)
+              } as React.ChangeEvent<HTMLInputElement>)
             }
             backgroundColor={FOUNDATION_THEME.colors.gray[0]}
             flexGrow={1}
@@ -135,7 +130,7 @@ const NumberInput = ({
             onClick={() =>
               onChange({
                 target: { value: String(value - (step ?? 1)) },
-              } as any)
+              } as React.ChangeEvent<HTMLInputElement>)
             }
             backgroundColor={FOUNDATION_THEME.colors.gray[0]}
             flexGrow={1}

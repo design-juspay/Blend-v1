@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Block from "../../Primitives/Block/Block";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
@@ -164,7 +164,6 @@ const DropdownInput = ({
         >
           <SelectMenu
             items={dropDownItems}
-            placeholder="US"
             enableSearch={false}
             alignment={SelectMenuAlignment.END}
             alignOffset={-(paddingX + 2)}

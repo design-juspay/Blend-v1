@@ -249,9 +249,9 @@ const Item = ({
       } else {
         newSelected.push(item.value);
       }
-      onSelect && onSelect(newSelected);
+      if (onSelect) onSelect(newSelected);
     } else {
-      onSelect && onSelect(item.value);
+      if (onSelect) onSelect(item.value);
     }
     if (item.onClick) item.onClick();
   };
@@ -435,7 +435,6 @@ const SelectMenu = ({
   onSelect,
   allowMultiSelect = false,
   enableSearch = false,
-  placeholder,
 }: SelectMenuProps) => {
   const [searchText, setSearchText] = useState<string>("");
 

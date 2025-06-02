@@ -44,7 +44,6 @@ export type SelectMenuProps = {
   onSelect?: (value: string | string[]) => void;
   allowMultiSelect?: boolean;
   enableSearch?: boolean;
-  placeholder: string;
 };
 
 export type SelectMenuItemType = {
@@ -148,17 +147,4 @@ export const dummyMenuItemsLong: SelectMenuGroupType[] = Array.from(
   })
 );
 
-type SelectProps = {
-  label: string;
-  subLabel?: string;
-  hintText?: string;
-  required?: boolean;
-  helpIconText?: string;
-  placeholder?: string;
-  size?: SelectMenuSize;
-  items?: SelectMenuGroupType[];
-  variant?: SelectMenuVariant;
-  selected: string | string[];
-  onSelectChange: (value: string | string[]) => void;
-  allowMultiSelect?: boolean;
-};
+

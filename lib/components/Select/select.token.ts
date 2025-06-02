@@ -1,6 +1,45 @@
+import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 
-const selectTokens = {
+type SelectTokenTypes = {
+  trigger: {
+    container: {
+      gap: CSSObject["gap"];
+    };
+    label: {
+      color: CSSObject["color"];
+      fontWeight: CSSObject["fontWeight"];
+      fontSize: CSSObject["fontSize"];
+    };
+    selectedValue: {
+      color: CSSObject["color"];
+      font: {
+        weight: CSSObject["fontWeight"];
+        size: {
+          sm: CSSObject["fontSize"];
+          md: CSSObject["fontSize"];
+          lg: CSSObject["fontSize"];
+        };
+      };
+      padding: {
+        sm: {
+          x: CSSObject["padding"];
+          y: CSSObject["padding"];
+        };
+        md: {
+          x: CSSObject["padding"];
+          y: CSSObject["padding"];
+        };
+        lg: {
+          x: CSSObject["padding"];
+          y: CSSObject["padding"];
+        };
+      };
+    };
+  };
+};
+
+const selectTokens: Readonly<SelectTokenTypes> = {
   trigger: {
     container: {
       gap: FOUNDATION_THEME.unit[8],

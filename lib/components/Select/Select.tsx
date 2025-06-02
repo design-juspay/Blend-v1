@@ -13,7 +13,7 @@ import {
 import Text, { VariantType } from "../Text/Text";
 import selectTokens from "./select.token";
 import { Tooltip, TooltipSize } from "../Tooltip";
-import React, { useRef } from "react";
+import React from "react";
 
 export enum SelectionTagType {
   COUNT = "count",
@@ -123,7 +123,6 @@ const Select = ({
       <Block display="flex" width={"100%"}>
         <Block width="100%" display="flex" alignItems="center">
           <SelectMenu
-            placeholder={placeholder}
             enableSearch={enableSearch}
             items={items}
             selected={selected}

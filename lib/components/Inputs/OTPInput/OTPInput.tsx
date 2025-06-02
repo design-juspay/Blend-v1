@@ -29,7 +29,7 @@ const OTPInput = ({
 }: OTPProps) => {
   const length = 6;
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
-  const [_, setActiveIndex] = useState<number>(-1);
+  const [, setActiveIndex] = useState<number>(-1);
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {

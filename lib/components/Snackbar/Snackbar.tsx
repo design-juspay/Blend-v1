@@ -101,18 +101,6 @@ const StyledToast: React.FC<CustomToastProps> = ({
   );
 };
 
-/**
- * @description
- * Add a snackbar to the Snackbar component
- *
- * @param {string} header - The header of the snackbar
- * @param {string} description - The description of the snackbar
- * @param {SnackbarVariant} variant - The variant of the snackbar
- * @param {() => void} onClose - The function to call when the snackbar is closed
- * @param {() => void} actionButton - The function to call when the action button is clicked
- *
- * @returns {void}
- */
 export const addSnackbar = ({
   header,
   description,
