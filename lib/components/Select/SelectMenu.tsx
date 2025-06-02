@@ -23,7 +23,6 @@ const Content = styled(RadixMenu.Content)(() => ({
   zIndex: 9999,
   minWidth: 200,
   width: "var(--radix-dropdown-menu-trigger-width)",
-  maxHeight: 400,
   scrollbarWidth: "none",
   scrollbarColor: "transparent transparent",
   border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
@@ -435,7 +434,7 @@ const SelectMenu = ({
   selected,
   onSelect,
   allowMultiSelect = false,
-  enableSearch = true,
+  enableSearch = false,
   placeholder,
 }: SelectMenuProps) => {
   const [searchText, setSearchText] = useState<string>("");

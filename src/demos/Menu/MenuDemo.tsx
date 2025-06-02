@@ -1,8 +1,13 @@
-import { ChevronRightIcon, CopyIcon, FileIcon, Info, PlusIcon, SettingsIcon } from "lucide-react";
-import { Button } from "../../../lib/components/Button";
-import Dropdown from "../../../lib/components/Dropdown/Dropdown";
 import {
-  Menu,
+  ChevronRightIcon,
+  CopyIcon,
+  FileIcon,
+  PlusIcon,
+  SettingsIcon,
+  User,
+} from "lucide-react";
+import { Button } from "../../../lib/components/Button";
+import {
   MenuGroupType,
   MenuItemActionType,
   MenuItemVariant,
@@ -11,7 +16,7 @@ import Block from "../../../lib/components/Primitives/Block/Block";
 import MenuV2 from "../../../lib/components/MenuV2/MenuV2";
 import Select from "../../../lib/components/Select/Select";
 import { useState } from "react";
-import { SelectMenuVariant } from "../../../lib/components/Select/types";
+import { MenuAlignment } from "../../../lib/components/MenuV2/types";
 
 const dummyItems: MenuGroupType[] = [
   {
@@ -84,11 +89,17 @@ const MenuDemo = () => {
         gap={100}
         style={{ marginTop: "20px" }}
       >
-        <MenuV2 trigger={<Button text="Open MenuV2" onClick={() => {}} />} />
+        <MenuV2
+          alignment={MenuAlignment.END}
+          enableSearch={false}
+          trigger={<Button text="Open MenuV2" onClick={() => {}} />}
+        />
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
-            enableSearch={true}
+            slot={<User size={16} />}
+            // enableSearch={true}
+            enableSearch={false}
             placeholder="Gateway"
             // variant={SelectMenuVariant.NO_CONTAINER}
             label="Select an option"
@@ -99,11 +110,12 @@ const MenuDemo = () => {
           />
         </div>
         {/* Multi-select demo */}
-        <div >
+        <div style={{ width: "300px" }}>
           <Select
             enableSearch={true}
             label="Multi Select"
-            variant={SelectMenuVariant.NO_CONTAINER}
+            slot={<User size={16} />}
+            // variant={SelectMenuVariant.NO_CONTAINER}
             placeholder="Gateway"
             allowMultiSelect
             selected={multiSelected}
@@ -122,4 +134,3 @@ const MenuDemo = () => {
 };
 
 export default MenuDemo;
-

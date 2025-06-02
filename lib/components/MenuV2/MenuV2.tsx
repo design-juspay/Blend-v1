@@ -30,9 +30,7 @@ const Content = styled(RadixMenu.Content)(() => ({
   ...contentBaseStyle,
 }));
 
-// const Group = styled(RadixMenu.Group)(() => ({
-//   padding: "8px 6px",
-// }));
+
 
 const MenuV2 = ({
   trigger,
@@ -61,6 +59,7 @@ const MenuV2 = ({
         collisionBoundary={collisonBoundaryRef}
         style={{
           maxHeight: maxHeight ? `${maxHeight}px` : "auto",
+          paddingTop: 10,
         }}
       >
         {enableSearch && (
@@ -72,7 +71,6 @@ const MenuV2 = ({
             zIndex={1000}
           >
             <SearchInput
-              label="Search"
               placeholder="Search"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}

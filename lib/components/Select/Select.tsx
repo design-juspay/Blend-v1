@@ -13,7 +13,7 @@ import {
 import Text, { VariantType } from "../Text/Text";
 import selectTokens from "./select.token";
 import { Tooltip, TooltipSize } from "../Tooltip";
-import React from "react";
+import React, { useRef } from "react";
 
 export enum SelectionTagType {
   COUNT = "count",
@@ -35,6 +35,7 @@ type SelectProps = {
   allowMultiSelect?: boolean;
   enableSearch?: boolean;
   selectionTagType?: SelectionTagType;
+  slot?: React.ReactNode;
 };
 
 const map = function getValueLabelMap(
@@ -67,12 +68,13 @@ const Select = ({
   required = true,
   helpIconText = "Help icon text",
   placeholder = "Select an option",
-  size = SelectMenuSize.LARGE,
+  size = SelectMenuSize.MEDIUM,
   selected,
   onSelectChange,
   allowMultiSelect = false,
   enableSearch = false,
   selectionTagType = SelectionTagType.COUNT,
+  slot,
 }: SelectProps) => {
   const valueLabelMap = map(items);
 
@@ -118,160 +120,167 @@ const Select = ({
           )}
         </Block>
       )}
-      {/* <Block display="flex" width={"100%"}> */}
-
-      <SelectMenu
-        placeholder={placeholder}
-        enableSearch={enableSearch}
-        items={items}
-        selected={selected}
-        onSelect={onSelectChange}
-        allowMultiSelect={allowMultiSelect}
-        trigger={
-          <PrimitiveButton
-            display="flex"
-            width={variant === SelectMenuVariant.CONTAINER ? "100%" : "auto"}
-            flexGrow={1}
-            alignItems="center"
-            gap={8}
-            overflow="hidden"
-            borderRadius={`8px ${showCancelButton ? 0 : 8}px ${
-              showCancelButton ? 0 : 8
-            }px 8px`}
-            boxShadow={
-              variant === SelectMenuVariant.CONTAINER
-                ? FOUNDATION_THEME.shadows.xs
-                : undefined
-            }
-            justifyContent="space-between"
-            paddingX={selectTokens.trigger.selectedValue.padding[size].x}
-            paddingY={selectTokens.trigger.selectedValue.padding[size].y}
-            backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-            outline={
-              variant === SelectMenuVariant.CONTAINER
-                ? `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
-                : undefined
-            }
-            _hover={{
-              backgroundColor: FOUNDATION_THEME.colors.gray[50],
-            }}
-            _focus={{
-              outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-            }}
-            _active={{
-              backgroundColor: FOUNDATION_THEME.colors.gray[50],
-              outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-            }}
-          >
-            {allowMultiSelect === false && (
-              <Block as="span">
-                {selected ? (
-                  <Text
-                    variant="body.md"
-                    fontWeight={500}
-                    color={FOUNDATION_THEME.colors.gray[700]}
-                  >
-                    {valueLabelMap[selected as string]}
-                  </Text>
-                ) : (
-                  <Text
-                    variant="body.md"
-                    fontWeight={500}
-                    color={FOUNDATION_THEME.colors.gray[600]}
-                  >
-                    {placeholder}
-                  </Text>
-                )}
-              </Block>
-            )}
-            {allowMultiSelect && (
-              <Text
-                variant={
-                  selectTokens.trigger.selectedValue.font.size[
-                    size
-                  ] as VariantType
+      <Block display="flex" width={"100%"}>
+        <Block width="100%" display="flex" alignItems="center">
+          <SelectMenu
+            placeholder={placeholder}
+            enableSearch={enableSearch}
+            items={items}
+            selected={selected}
+            onSelect={onSelectChange}
+            allowMultiSelect={allowMultiSelect}
+            trigger={
+              <PrimitiveButton
+                display="flex"
+                width={
+                  variant === SelectMenuVariant.CONTAINER ? "100%" : "auto"
                 }
-                color={selectTokens.trigger.selectedValue.color}
-                truncate
-                style={{
-                  display: "flex",
-                  gap: 4,
+                flexGrow={1}
+                alignItems="center"
+                gap={8}
+                overflow="hidden"
+                borderRadius={`8px ${showCancelButton ? 0 : 8}px ${
+                  showCancelButton ? 0 : 8
+                }px 8px`}
+                boxShadow={
+                  variant === SelectMenuVariant.CONTAINER
+                    ? FOUNDATION_THEME.shadows.xs
+                    : undefined
+                }
+                justifyContent="space-between"
+                paddingX={selectTokens.trigger.selectedValue.padding[size].x}
+                paddingY={selectTokens.trigger.selectedValue.padding[size].y}
+                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                outline={
+                  variant === SelectMenuVariant.CONTAINER
+                    ? `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
+                    : undefined
+                }
+                _hover={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[50],
+                }}
+                _focus={{
+                  outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+                }}
+                _active={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[50],
+                  outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
                 }}
               >
-                <Text
-                  as="span"
-                  variant={
-                    selectTokens.trigger.selectedValue.font.size[
-                      size
-                    ] as VariantType
-                  }
-                  fontWeight={500}
-                  color={FOUNDATION_THEME.colors.gray[700]}
-                >
-                  {placeholder}
-                </Text>
-                {selected && selected.length > 0 && (
-                  <React.Fragment>
-                    {selectionTagType === SelectionTagType.TEXT ? (
+                <Block as="span" display="flex" alignItems="center" gap={4}>
+                  {slot && <Block contentCentered>{slot}</Block>}
+                  {allowMultiSelect === false && (
+                    <Block as="span">
+                      {selected ? (
+                        <Text
+                          variant="body.md"
+                          fontWeight={500}
+                          color={FOUNDATION_THEME.colors.gray[700]}
+                        >
+                          {valueLabelMap[selected as string]}
+                        </Text>
+                      ) : (
+                        <Text
+                          variant="body.md"
+                          fontWeight={500}
+                          color={FOUNDATION_THEME.colors.gray[600]}
+                        >
+                          {placeholder}
+                        </Text>
+                      )}
+                    </Block>
+                  )}
+                  {allowMultiSelect && (
+                    <Text
+                      variant={
+                        selectTokens.trigger.selectedValue.font.size[
+                          size
+                        ] as VariantType
+                      }
+                      color={selectTokens.trigger.selectedValue.color}
+                      truncate
+                      style={{
+                        display: "flex",
+                        gap: 4,
+                      }}
+                    >
                       <Text
-                        truncate
                         as="span"
-                        color={FOUNDATION_THEME.colors.gray[400]}
+                        variant={
+                          selectTokens.trigger.selectedValue.font.size[
+                            size
+                          ] as VariantType
+                        }
+                        fontWeight={500}
+                        color={FOUNDATION_THEME.colors.gray[700]}
                       >
-                        {getLabelsForSelectedValues(selected as string[]).join(
-                          ", "
-                        )}
+                        {placeholder}
                       </Text>
-                    ) : (
-                      <Block
-                        as="span"
-                        backgroundColor={FOUNDATION_THEME.colors.primary[600]}
-                        color={FOUNDATION_THEME.colors.gray[0]}
-                        borderRadius={4}
-                        paddingX={4}
-                        fontSize={12}
-                        contentCentered
-                      >
-                        {selected.length}
-                      </Block>
-                    )}
-                  </React.Fragment>
-                )}
-              </Text>
+                      {selected && selected.length > 0 && (
+                        <React.Fragment>
+                          {selectionTagType === SelectionTagType.TEXT ? (
+                            <Text
+                              truncate
+                              as="span"
+                              color={FOUNDATION_THEME.colors.gray[400]}
+                            >
+                              {getLabelsForSelectedValues(
+                                selected as string[]
+                              ).join(", ")}
+                            </Text>
+                          ) : (
+                            <Block
+                              as="span"
+                              backgroundColor={
+                                FOUNDATION_THEME.colors.primary[600]
+                              }
+                              color={FOUNDATION_THEME.colors.gray[0]}
+                              borderRadius={4}
+                              paddingX={4}
+                              fontSize={12}
+                              contentCentered
+                            >
+                              {selected.length}
+                            </Block>
+                          )}
+                        </React.Fragment>
+                      )}
+                    </Text>
+                  )}
+                </Block>
+                <Block size={20} contentCentered>
+                  <ChevronDownIcon
+                    size={16}
+                    color={FOUNDATION_THEME.colors.gray[400]}
+                  />
+                </Block>
+              </PrimitiveButton>
+            }
+          />
+          {variant === SelectMenuVariant.CONTAINER &&
+            allowMultiSelect &&
+            selected.length > 0 && (
+              <PrimitiveButton
+                borderRadius={`0 8px 8px 0`}
+                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                _hover={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[25],
+                }}
+                _focus={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[25],
+                  outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+                }}
+                contentCentered
+                height={"100%"}
+                style={{ aspectRatio: 1 }}
+                onClick={() => onSelectChange([])}
+                outline={`1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`}
+              >
+                <X size={16} color={FOUNDATION_THEME.colors.gray[400]} />
+              </PrimitiveButton>
             )}
-            <Block size={20} contentCentered>
-              <ChevronDownIcon
-                size={16}
-                color={FOUNDATION_THEME.colors.gray[400]}
-              />
-            </Block>
-          </PrimitiveButton>
-        }
-      />
-      {variant === SelectMenuVariant.CONTAINER &&
-        allowMultiSelect &&
-        selected.length > 0 && (
-          <PrimitiveButton
-            borderRadius={`0 8px 8px 0`}
-            backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-            _hover={{
-              backgroundColor: FOUNDATION_THEME.colors.gray[25],
-            }}
-            _focus={{
-              backgroundColor: FOUNDATION_THEME.colors.gray[25],
-              outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-            }}
-            contentCentered
-            height={"100%"}
-            style={{ aspectRatio: 1 }}
-            onClick={() => onSelectChange([])}
-            outline={`1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`}
-          >
-            <X size={16} color={FOUNDATION_THEME.colors.gray[400]} />
-          </PrimitiveButton>
-        )}
-      {/* </Block> */}
-      {/* </Block> */}
+        </Block>
+      </Block>
 
       {variant === SelectMenuVariant.CONTAINER && hintText && (
         <Text variant="body.md" color={FOUNDATION_THEME.colors.gray[400]}>
