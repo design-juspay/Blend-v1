@@ -1,4 +1,4 @@
-export enum NumberInputSize {
+export enum UnitInputSize {
   MEDIUM = "md",
   LARGE = "lg",
 }
@@ -17,7 +17,7 @@ export type UnitInputProps = {
   error?: boolean;
   errorMessage?: string;
   required?: boolean;
-  size?: NumberInputSize;
+  size?: UnitInputSize;
   disabled?: boolean;
   placeholder?: string;
   label: string;

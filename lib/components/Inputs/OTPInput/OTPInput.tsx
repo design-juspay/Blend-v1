@@ -13,7 +13,7 @@ import textInputTokens from "../TextInput/textInput.tokens";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { OTPProps } from "./types";
 
-const OTP = ({
+const OTPInput = ({
   label,
   sublabel,
   disabled,
@@ -181,4 +181,4 @@ const OTP = ({
   );
 };
 
-export default OTP;
+export default OTPInput;

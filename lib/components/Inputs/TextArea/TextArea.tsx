@@ -1,8 +1,8 @@
-import { FOUNDATION_THEME } from "../../tokens";
-import Block from "../Primitives/Block/Block";
-import PrimitiveTextarea from "../Primitives/PrimitiveTextArea";
-import InputLabels from "../Inputs/utils/InputLabels/InputLabels";
-import InputFooter from "../Inputs/utils/InputFooter/InputFooter";
+import { FOUNDATION_THEME } from "../../../tokens";
+import Block from "../../Primitives/Block/Block";
+import PrimitiveTextarea from "../../Primitives/PrimitiveTextArea";
+import InputLabels from "../utils/InputLabels/InputLabels";
+import InputFooter from "../utils/InputFooter/InputFooter";
 import { TextAreaProps } from "./types";
 
 const TextArea = ({

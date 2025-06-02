@@ -16,7 +16,7 @@ const MultiValueInput = ({
   error,
   errorMessage,
   hintText,
-  tags = ["Tag 1", "Tag 2", "Tag 3"],
+  tags,
   onTagAdd,
   onTagRemove,
   size = InputSize.MEDIUM,
@@ -72,7 +72,9 @@ const MultiValueInput = ({
         paddingY={paddingY}
         onClick={handleContainerClick}
         border={
-          isFocused
+          error
+            ? `1px solid ${textInputTokens.input.border.color.error}`
+            : isFocused
             ? `1px solid ${textInputTokens.input.border.color.focus}`
             : `1px solid ${textInputTokens.input.border.color.default}`
         }
@@ -90,9 +92,8 @@ const MultiValueInput = ({
           />
         ))}
         <PrimitiveInput
-          width={"100%"}
           ref={inputRef}
-          paddingInlineStart={paddingX}
+          paddingInlineStart={2}
           paddingInlineEnd={paddingX}
           borderRadius={textInputTokens.input.border.radius}
           outline="none"

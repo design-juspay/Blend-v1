@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { User2 } from "lucide-react";
-import TextInput from "../../../lib/components/Inputs/TextInput/TextInput";
-import NumberInput from "../../../lib/components/Inputs/NumberInput/NumberInput";
-import TextArea from "../../../lib/components/TextArea/TextArea";
-import UnitInput from "../../../lib/components/UnitInput/UnitInput";
-import { InputSize } from "../../../lib/components/Inputs/TextInput/types";
-import { NumberInputSize } from "../../../lib/components/Inputs/NumberInput/types";
-import { NumberInputSize as UnitInputSize } from "../../../lib/components/UnitInput/types";
-import { Tag, TagColor, TagShape, TagSize } from "../../../lib/main";
-import SearchInput from "../../../lib/components/Inputs/SearchInput/SearchInput";
-import OTP from "../../../lib/components/Inputs/OTPInput/OTP";
-import DropdownInput from "../../../lib/components/Inputs/DropdownInput/DropdownInput";
 import { SelectMenuGroupType } from "../../../lib/components/Select/types";
+import {
+  DropdownInput,
+  InputSize,
+  MultiValueInput,
+  NumberInput,
+  NumberInputSize,
+  OTPInput,
+  SearchInput,
+  Tag,
+  TagColor,
+  TagShape,
+  TagSize,
+  TextInput,
+  UnitInput,
+  UnitInputSize,
+  TextArea,
+} from "../../../lib/main";
+
 import Select from "../../../lib/components/Select/Select";
-import MultiValueInput from "../../../lib/components/Inputs/MultiValueInput/MultiValueInput";
 
 const InputDemo: React.FC = () => {
   const [value, setValue] = useState("");
@@ -256,7 +262,7 @@ const InputDemo: React.FC = () => {
       {selectedInput === "otp" && (
         <div style={{ marginTop: 100 }}>
           <p style={{ color: "black", marginBottom: 50 }}>Value: {otp1}</p>
-          <OTP
+          <OTPInput
             form="otp1"
             value={otp1}
             onChange={(e) => setOtp1(e)}

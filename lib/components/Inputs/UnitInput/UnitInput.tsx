@@ -1,12 +1,12 @@
 import { Weight } from "lucide-react";
-import { FOUNDATION_THEME } from "../../tokens";
-import Block from "../Primitives/Block/Block";
-import Text from "../Text/Text";
-import PrimitiveInput from "../Primitives/PrimitiveInput/PrimitiveInput";
 import { useEffect, useRef, useState } from "react";
-import InputFooter from "../Inputs/utils/InputFooter/InputFooter";
-import InputLabels from "../Inputs/utils/InputLabels/InputLabels";
-import { NumberInputSize, UnitInputProps, UnitPosition } from "./types";
+import { UnitInputSize, UnitInputProps, UnitPosition } from "./types";
+import { FOUNDATION_THEME } from "../../../tokens";
+import Text from "../../Text/Text";
+import Block from "../../Primitives/Block/Block";
+import InputLabels from "../utils/InputLabels/InputLabels";
+import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
+import InputFooter from "../utils/InputFooter/InputFooter";
 
 const UnitInput = ({
   value,
@@ -18,7 +18,7 @@ const UnitInput = ({
   errorMessage,
   required,
   disabled,
-  size = NumberInputSize.MEDIUM,
+  size = UnitInputSize.MEDIUM,
   placeholder,
   sublabel,
   helpIconHintText,
@@ -30,8 +30,8 @@ const UnitInput = ({
   unitPosition = UnitPosition.RIGHT,
   name,
 }: UnitInputProps) => {
-  const paddingX = size === NumberInputSize.MEDIUM ? 12 : 14;
-  const paddingY = size === NumberInputSize.MEDIUM ? 8 : 10;
+  const paddingX = size === UnitInputSize.MEDIUM ? 12 : 14;
+  const paddingY = size === UnitInputSize.MEDIUM ? 8 : 10;
 
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
