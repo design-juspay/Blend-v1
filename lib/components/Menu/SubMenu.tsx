@@ -8,7 +8,7 @@ import {
 import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
-import { contentBaseStyle } from "./MenuV2";
+import { contentBaseStyle } from "./Menu";
 import Item, { itemBaseStyle } from "./MenuItem";
 import { ChevronRightIcon } from "lucide-react";
 
@@ -19,10 +19,8 @@ export const Sub = styled(RadixMenu.Sub)(() => ({
 }));
 
 const getHoverBgColor = (item: MenuItemV2Type): string => {
-  console.log(item);
   if (item.variant === MenuItemV2Variant.ACTION) {
     if (item.actionType === MenuItemV2ActionType.DANGER) {
-
       return (
         FOUNDATION_THEME.colors.red[50] ||
         FOUNDATION_THEME.colors.gray[50] ||
