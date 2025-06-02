@@ -7,40 +7,6 @@ import Text from "../Text/Text";
 import styled from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 
-const SectionContainer = styled(Block)`
-  width: 100%;
-  padding: 12px 8px;
-`;
-
-const SectionHeader = styled(Block)<{ $isCollapsible: boolean }>`
-  height: 32px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  padding: 0 12px;
-  user-select: none;
-
-  &:focus {
-    background-color: ${FOUNDATION_THEME.colors.gray[100]};
-    outline: none;
-    ring: 0;
-  }
-
-  ${({ $isCollapsible }) =>
-    $isCollapsible &&
-    `
-    cursor: pointer;
-  `}
-`;
-
-const SectionList = styled(Block)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
 const ChevronIcon = styled(ChevronRight)<{ $isOpen: boolean }>`
   width: 16px;
   height: 16px;
@@ -127,15 +93,28 @@ const Section = ({
   const isCollapsible = section.isCollapsible !== false;
 
   return (
-    <SectionContainer
+    <Block
+      width="100%"
+      padding="12px 8px"
       ref={sectionRef}
       data-state={isOpen ? "open" : "closed"}
       key={`section-${sectionIndex}`}
     >
       {section.label && (
-        <SectionHeader
+        <Block
+          height="32px"
+          display="flex"
+          alignItems="center"
+          gap="8px"
+          marginBottom="8px"
+          padding="0 12px"
+          // userSelect="none"
+          _focus={{
+            backgroundColor: FOUNDATION_THEME.colors.gray[100],
+          }}
+          cursor={isCollapsible ? "pointer" : undefined}
           ref={headerRef}
-          $isCollapsible={isCollapsible}
+          // $isCollapsible={isCollapsible}
           onClick={isCollapsible ? toggleSection : undefined}
           onKeyDown={isCollapsible ? handleKeyDown : undefined}
           role={isCollapsible ? "button" : undefined}
@@ -153,12 +132,17 @@ const Section = ({
             {section.label.toUpperCase()}
           </Text>
           {isCollapsible && <ChevronIcon $isOpen={isOpen} aria-hidden="true" />}
-        </SectionHeader>
+        </Block>
       )}
 
       {section.items && isOpen && (
-        <SectionList
-          as="ul"
+        <ul
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+          }}
           id={`section-content-${sectionIndex}`}
           role="menu"
           aria-label={`${section.label} menu`}
@@ -171,9 +155,9 @@ const Section = ({
               onNavigate={handleItemNavigation}
             />
           ))}
-        </SectionList>
+        </ul>
       )}
-    </SectionContainer>
+    </Block>
   );
 };
 

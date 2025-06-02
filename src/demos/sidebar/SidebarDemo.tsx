@@ -212,12 +212,22 @@ const SidebarDemo = () => {
   const tenants = [
     {
       label: "Juspay",
-      icon: <IndianRupee style={{ width: "16px", height: "16px" }} />,
+      icon: (
+        <IndianRupee
+          style={{ width: "16px", height: "16px" }}
+          color={FOUNDATION_THEME.colors.gray[600]}
+        />
+      ),
       id: "juspay",
     },
     {
       label: "Razorpay",
-      icon: <UserIcon style={{ width: "16px", height: "16px" }} />,
+      icon: (
+        <UserIcon
+          style={{ width: "16px", height: "16px" }}
+          color={FOUNDATION_THEME.colors.gray[600]}
+        />
+      ),
       id: "razorpay",
     },
   ];

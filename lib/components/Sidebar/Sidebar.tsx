@@ -10,76 +10,6 @@ import Text from "../Text/Text";
 import { FOUNDATION_THEME } from "../../tokens";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-const SidebarWrapper = styled(Block)`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background-color: ${FOUNDATION_THEME.colors.gray[25]};
-`;
-
-const SidebarContainer = styled(Block)<{ $isExpanded: boolean }>`
-  max-width: ${({ $isExpanded }) => ($isExpanded ? "300px" : "0")};
-  width: 100%;
-  border-right: ${({ $isExpanded }) =>
-    $isExpanded ? `1px solid ${FOUNDATION_THEME.colors.gray[200]}` : "none"};
-  display: flex;
-  will-change: transform;
-  transition-duration: 150ms;
-  animation: slide-in-from-left 0.3s ease-out;
-`;
-
-const TenantContainer = styled(Block)`
-  width: fit-content;
-  height: 100%;
-  border-right: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  background-color: ${FOUNDATION_THEME.colors.gray[25]};
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
-  padding: 10px;
-`;
-
-const TenantButton = styled.button<{ $isActive: boolean }>`
-  border: none;
-  background-color: transparent;
-  width: 32px;
-  height: 32px;
-  border-radius: ${FOUNDATION_THEME.border.radius[4]};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: 1px solid
-    ${({ $isActive }) =>
-      $isActive
-        ? FOUNDATION_THEME.colors.primary[500]
-        : FOUNDATION_THEME.colors.gray[150]};
-  transition-duration: 75ms;
-`;
-
-const PrimarySidebarContainer = styled(Block)`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
-const MerchantSwitcherContainer = styled(Block)`
-  width: 100%;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: ${FOUNDATION_THEME.colors.gray[25]};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 8px;
-`;
-
 const DirectoryContainer = styled(Block)`
   flex: 1;
   overflow-y: auto;
@@ -89,32 +19,6 @@ const DirectoryContainer = styled(Block)`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-`;
-
-const FooterContainer = styled(Block)`
-  width: 100%;
-  background-color: ${FOUNDATION_THEME.colors.gray[25]};
-  height: 64px;
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 8px;
-  border-top: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-`;
-
-const GradientBlurContainer = styled(Block)`
-  position: absolute;
-  left: 0;
-  top: -65px;
-  right: 0;
-  height: 64px;
-  transform: rotate(180deg);
-  pointer-events: none;
-  z-index: 10;
 `;
 
 const MainContentContainer = styled(Block)`
@@ -129,32 +33,6 @@ const MainContentContainer = styled(Block)`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-`;
-
-const TopbarWrapper = styled(Block)`
-  width: 100%;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border-bottom: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  background-color: ${FOUNDATION_THEME.colors.gray[0]};
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 32px;
-`;
-
-const CollapsedMerchantContainer = styled(Block)`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: fit-content;
-  flex-shrink: 0;
-`;
-
-const ContentArea = styled(Block)`
-  padding: 24px;
 `;
 
 const SimpleDropdown = ({
@@ -253,30 +131,95 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
     return (
-      <SidebarWrapper ref={ref}>
-        <SidebarContainer $isExpanded={isExpanded}>
+      <Block
+        ref={ref}
+        width="100%"
+        height="100%"
+        display="flex"
+        backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+      >
+        <Block
+          maxWidth={isExpanded ? "300px" : "0"}
+          width="100%"
+          borderRight={
+            isExpanded
+              ? `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
+              : "none"
+          }
+          display="flex"
+          style={{
+            willChange: "transform",
+            transitionDuration: "150ms",
+            animation: "slide-in-from-left 0.3s ease-out",
+          }}
+        >
           {isExpanded && (
             <>
               {/* TENANTS SIDE BAR _ SECONDARY SIDE BAR */}
-              <TenantContainer>
+              <Block
+                width="fit-content"
+                height="100%"
+                borderRight={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
+                backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+                display="flex"
+                flexDirection="column"
+                gap="16px"
+                alignItems="center"
+                padding="10px"
+              >
                 {tenants &&
                   tenants.map((tenant, index) => (
                     // TODO: Add theme config
-                    <TenantButton
+                    <Block
+                      border="none"
+                      backgroundColor="transparent"
+                      width="32px"
+                      height="32px"
+                      borderRadius={FOUNDATION_THEME.border.radius[4]}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      cursor="pointer"
+                      style={{
+                        outline: `1px solid ${
+                          activeTenant === tenant.label
+                            ? FOUNDATION_THEME.colors.primary[500]
+                            : FOUNDATION_THEME.colors.gray[150]
+                        }`,
+                        transitionDuration: "75ms",
+                      }}
                       onClick={() => setActiveTenant?.(tenant.label)}
-                      $isActive={activeTenant === tenant.label}
                       key={index}
                     >
                       {tenant.icon}
-                    </TenantButton>
+                    </Block>
                   ))}
-              </TenantContainer>
+              </Block>
 
               {/* PRIMARY SIDE BAR */}
-              <PrimarySidebarContainer>
+              <Block
+                width="100%"
+                height="100%"
+                display="flex"
+                flexDirection="column"
+                position="relative"
+              >
                 {/* MERCHANT SWITCHER  */}
-                <MerchantSwitcherContainer>
+                <Block
+                  width="100%"
+                  height="64px"
+                  position="sticky"
+                  top="0"
+                  zIndex="10"
+                  backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  gap="12px"
+                  padding="0 8px"
+                >
                   {merchants.length > 1 ? (
+                    // TODO: Change this with our own component
                     <SimpleDropdown
                       placeholder="Select Merchant"
                       selectedOption={activeMerchant}
@@ -308,7 +251,7 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                     size={ButtonSize.SMALL}
                     leadingIcon={PanelsTopLeft}
                   />
-                </MerchantSwitcherContainer>
+                </Block>
 
                 {/* DIRECTORY */}
                 <DirectoryContainer>
@@ -316,16 +259,34 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                 </DirectoryContainer>
 
                 <SidebarFooter footer={footer} />
-              </PrimarySidebarContainer>
+              </Block>
             </>
           )}
-        </SidebarContainer>
+        </Block>
 
         <MainContentContainer>
           {/* TOPBAR  */}
-          <TopbarWrapper>
+          <Block
+            width="100%"
+            height="64px"
+            position="sticky"
+            top="0"
+            zIndex="10"
+            borderBottom={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
+            backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+            display="flex"
+            alignItems="center"
+            gap="16px"
+            padding="0 32px"
+          >
             {isExpanded === false && (
-              <CollapsedMerchantContainer>
+              <Block
+                display="flex"
+                alignItems="center"
+                gap="16px"
+                width="fit-content"
+                flexShrink={0}
+              >
                 <Button
                   onClick={() => setIsExpanded(!isExpanded)}
                   style={{ flexShrink: 0 }}
@@ -335,6 +296,7 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                   leadingIcon={PanelsTopLeft}
                 />
                 {merchants.length > 1 ? (
+                  // TODO: Change this with our own component
                   <SimpleDropdown
                     placeholder="Select Merchant"
                     selectedOption={activeMerchant}
@@ -358,26 +320,49 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                     {activeMerchant}
                   </Text>
                 )}
-              </CollapsedMerchantContainer>
+              </Block>
             )}
             <Block flexGrow={1}>{topbar}</Block>
-          </TopbarWrapper>
+          </Block>
 
-          <ContentArea>{children}</ContentArea>
+          <Block padding="24px">{children}</Block>
         </MainContentContainer>
-      </SidebarWrapper>
+      </Block>
     );
   }
 );
 
 const SidebarFooter = ({ footer }: { footer: React.ReactNode }) => {
   return (
-    <FooterContainer>
-      <GradientBlurContainer aria-hidden={true}>
+    <Block
+      width="100%"
+      backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+      height="64px"
+      position="sticky"
+      bottom="0"
+      zIndex="10"
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      gap="12px"
+      padding="0 8px"
+      borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
+    >
+      <Block
+        aria-hidden={true}
+        position="absolute"
+        left="0"
+        top="-65px"
+        right="0"
+        height="64px"
+        style={{ transform: "rotate(180deg)" }}
+        pointerEvents="none"
+        zIndex="10"
+      >
         <GradientBlur />
-      </GradientBlurContainer>
+      </Block>
       {footer}
-    </FooterContainer>
+    </Block>
   );
 };
 

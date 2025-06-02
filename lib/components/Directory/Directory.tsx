@@ -6,6 +6,7 @@ import { DirectoryProps } from "./types";
 import Section from "./Section";
 import Block from "../Primitives/Block/Block";
 import styled from "styled-components";
+import { handleSectionNavigation } from "./utils";
 
 const StyledNav = styled(Block)`
   &::-webkit-scrollbar {
@@ -23,27 +24,6 @@ const Directory = ({ directoryData, className }: DirectoryProps) => {
       createRef<HTMLDivElement | null>()
     );
   }, [directoryData]);
-
-  const handleSectionNavigation = (
-    direction: "up" | "down",
-    currentIndex: number
-  ) => {
-    const nextIndex =
-      direction === "up"
-        ? Math.max(0, currentIndex - 1)
-        : Math.min(directoryData.length - 1, currentIndex + 1);
-
-    if (nextIndex !== currentIndex) {
-      const nextSection = document.querySelectorAll("[data-state]")[nextIndex];
-      const headerToFocus = nextSection?.querySelector(
-        '[role="button"]'
-      ) as HTMLElement;
-
-      if (headerToFocus) {
-        headerToFocus.focus();
-      }
-    }
-  };
 
   return (
     <StyledNav
@@ -65,7 +45,13 @@ const Directory = ({ directoryData, className }: DirectoryProps) => {
           key={sectionIndex}
           section={section}
           sectionIndex={sectionIndex}
-          onNavigateBetweenSections={handleSectionNavigation}
+          onNavigateBetweenSections={(direction, currentIndex) =>
+            handleSectionNavigation(
+              direction,
+              currentIndex,
+              directoryData.length
+            )
+          }
         />
       ))}
     </StyledNav>

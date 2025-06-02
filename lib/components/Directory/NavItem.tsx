@@ -5,10 +5,7 @@ import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
 import styled from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
-
-const StyledListItem = styled(Block)`
-  width: 100%;
-`;
+import { handleKeyDown } from "./utils";
 
 const StyledElement = styled(Block)<{ $isLink?: boolean }>`
   background-color: inherit;
@@ -24,6 +21,7 @@ const StyledElement = styled(Block)<{ $isLink?: boolean }>`
   border-radius: ${FOUNDATION_THEME.border.radius[4]};
   transition: background-color 0.2s;
   user-select: none;
+  cursor: pointer;
 
   &:hover,
   &:focus {
@@ -31,13 +29,6 @@ const StyledElement = styled(Block)<{ $isLink?: boolean }>`
     outline: none;
     ring: 0;
   }
-`;
-
-const StyledContentWrapper = styled(Block)`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
 `;
 
 const ChevronWrapper = styled(Block)<{ $isExpanded: boolean }>`
@@ -71,12 +62,17 @@ const NestedList = styled(Block)`
   }
 `;
 
-type ElementType = HTMLButtonElement | HTMLAnchorElement;
-
 const NavItem = ({ item, index, onNavigate }: NavItemProps) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const hasChildren = item.items && item.items.length > 0;
-  const itemRef = React.useRef<ElementType>(null);
+  const itemRef = React.useRef<HTMLButtonElement | HTMLAnchorElement>(null);
+
+  const refCallback = React.useCallback(
+    (node: HTMLButtonElement | HTMLAnchorElement | null) => {
+      itemRef.current = node;
+    },
+    []
+  );
 
   const handleClick = () => {
     if (hasChildren) {
@@ -86,49 +82,43 @@ const NavItem = ({ item, index, onNavigate }: NavItemProps) => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleClick();
-    } else if (e.key === "ArrowRight" && hasChildren && !isExpanded) {
-      e.preventDefault();
-      setIsExpanded(true);
-    } else if (e.key === "ArrowLeft" && hasChildren && isExpanded) {
-      e.preventDefault();
-      setIsExpanded(false);
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
-      onNavigate("down", index);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      onNavigate("up", index);
-    }
-  };
-
   const Element = item.href ? "a" : "button";
   const elementProps = item.href ? { href: item.href } : {};
 
   return (
-    <StyledListItem as="li">
+    <li style={{ width: "100%" }}>
       <StyledElement
         as={Element}
         $isLink={!!item.href}
         {...elementProps}
-        // @ts-expect-error - Complex ref typing for polymorphic component
-        ref={itemRef}
+        ref={refCallback}
         onClick={handleClick}
-        onKeyDown={handleKeyDown}
+        onKeyDown={(e: React.KeyboardEvent) =>
+          handleKeyDown(e, {
+            hasChildren,
+            isExpanded,
+            setIsExpanded,
+            handleClick,
+            index,
+            onNavigate,
+          })
+        }
         aria-expanded={hasChildren ? isExpanded : undefined}
         role={!item.href ? "button" : undefined}
         tabIndex={0}
       >
-        <StyledContentWrapper>
+        <Block
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
+          gap="8px"
+        >
           {item.leftSlot && <Block aria-hidden="true">{item.leftSlot}</Block>}
           <Text as="span" variant="body.md">
             {item.label}
           </Text>
           {item.rightSlot && <Block aria-hidden="true">{item.rightSlot}</Block>}
-        </StyledContentWrapper>
+        </Block>
         {hasChildren && (
           <ChevronWrapper $isExpanded={isExpanded} aria-hidden="true">
             <ChevronDown />
@@ -173,7 +163,7 @@ const NavItem = ({ item, index, onNavigate }: NavItemProps) => {
             ))}
         </NestedList>
       )}
-    </StyledListItem>
+    </li>
   );
 };
 
