@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { Trash, User } from "lucide-react";
 import { Button } from "../../../lib/components/Button";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Menu from "../../../lib/components/Menu/Menu";
@@ -11,6 +11,66 @@ const MenuDemo = () => {
   const [selectedOption, setSelectedOption] = useState("");
   // Add state for multi-select demo
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
+
+  const dummyMenuItems = [
+    {
+      groupLabel: "Account GGWP",
+      showSeparator: true,
+      items: [
+        {
+          label: "Profile Settings",
+          value: "profile-settings",
+          slot1: <User size={13} />,
+        },
+        {
+          label: "Billing & Subscription",
+          value: "billing-subscription",
+          subLabel: "Manage your payment methods and plans",
+        },
+        {
+          label: "Sign Out",
+          value: "sign-out",
+        },
+        {
+          label: "Delete Account",
+          value: "delete-account",
+          subMenu: [
+            {
+              label: "Delete Account",
+              value: "delete-account",
+              slot1: <Trash size={13} />,
+              subMenu: [
+                {
+                  label: "Are you sure?",
+                  value: "are-you-sure",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      groupLabel: "Preferences",
+      showSeparator: true,
+      items: [
+        {
+          label: "Theme Settings",
+          value: "theme-settings",
+          subLabel: "Customize your appearance",
+        },
+        {
+          label: "Notifications",
+          value: "notifications",
+        },
+        {
+          label: "Privacy",
+          value: "privacy",
+        },
+      ],
+    },
+  ];
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>Menu Component</h2>
@@ -29,6 +89,7 @@ const MenuDemo = () => {
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
+            items={dummyMenuItems}
             slot={<User size={16} />}
             // enableSearch={true}
             enableSearch={false}
@@ -44,6 +105,7 @@ const MenuDemo = () => {
         {/* Multi-select demo */}
         <div style={{ width: "300px" }}>
           <Select
+            items={dummyMenuItems}
             enableSearch={true}
             label="Multi Select"
             slot={<User size={16} />}
