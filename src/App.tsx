@@ -32,7 +32,8 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("daterangepicker");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("daterangepicker");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
