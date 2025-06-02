@@ -1,10 +1,10 @@
 import { ChevronDownIcon } from "lucide-react";
 import { FOUNDATION_THEME } from "../../tokens";
-import Menu, { MenuGroupType } from "../Menu/Menu";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import Text from "../Text/Text";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
+import { Menu, MenuAlignment, MenuV2GroupType } from "../Menu";
 
 const Dropdown = ({
   label = "Your Label",
@@ -17,7 +17,7 @@ const Dropdown = ({
   optionalLabel?: string;
   hintText?: string;
   slot?: React.ReactNode;
-  items: MenuGroupType[];
+  items: MenuV2GroupType[];
 }) => {
   return (
     <Block display="flex" flexDirection="column" gap={10}>
@@ -37,7 +37,7 @@ const Dropdown = ({
       </Block>
       <Menu
         items={items}
-        align="start"
+        alignment={MenuAlignment.START}
         trigger={
           <PrimitiveButton
             backgroundColor={FOUNDATION_THEME.colors.gray[0]}

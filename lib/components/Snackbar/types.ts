@@ -8,7 +8,7 @@ export enum SnackbarVariant {
 export type AddToastOptions = {
   header: string;
   description?: string;
-  variant: SnackbarVariant;
+  variant?: SnackbarVariant;
   onClose?: () => void;
   actionButton?: {
     label: string;

@@ -19,10 +19,12 @@ import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
 import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
+import ChartDemo from "./demos/Charts";
 import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
 import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 import DataTableDemo from "./demos/DataTable/DataTableDemo";
+import InputDemo from "./demos/Input/InputDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -126,6 +128,16 @@ function App() {
       id: "switch",
       name: "Switch",
       component: <SwitchDemo />,
+    },
+    {
+      id: "input",
+      name: "Input",
+      component: <InputDemo />,
+    },
+    {
+      id: "charts",
+      name: "Charts",
+      component: <ChartDemo />,
     },
     {
       id: "daterangepicker",

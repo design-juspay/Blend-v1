@@ -1,22 +1,30 @@
 import React from "react";
-import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
+import PrimitiveText, {
+  PrimitiveTextProps,
+} from "../Primitives/PrimitiveText/PrimitiveText";
 import { JSX } from "react";
 import { FOUNDATION_THEME } from "../../tokens";
-import { CSSObject } from "styled-components";
 
 export type SemanticTagType = keyof Pick<
   JSX.IntrinsicElements,
-  "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "code" | "q" | "small" | "label"
+  | "p"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "span"
+  | "code"
+  | "q"
+  | "small"
+  | "label"
 >;
 
-export type TextProps = {
+export type TextProps = PrimitiveTextProps & {
   children: React.ReactNode;
   variant?: VariantType;
   as?: SemanticTagType;
-  color?: CSSObject["color"];
-  fontWeight?: CSSObject["fontWeight"];
-  fontSize?: CSSObject["fontSize"];
-  truncate?: boolean;
+  style?: React.CSSProperties;
 };
 
 export type VariantType =
@@ -85,6 +93,8 @@ const Text = ({
   fontWeight,
   fontSize,
   truncate,
+  style,
+  ...rest
 }: TextProps) => {
   const Tag = getSemanticTag(variant, as);
 
@@ -96,6 +106,7 @@ const Text = ({
         fontSize={fontSize}
         fontWeight={fontWeight}
         color={color ?? "inherit"}
+        style={style}
       >
         {children}
       </PrimitiveText>
@@ -111,6 +122,8 @@ const Text = ({
       fontWeight={fontWeight}
       color={color ?? "inherit"}
       truncate={truncate}
+      style={style}
+      {...rest}
     >
       {children}
     </PrimitiveText>

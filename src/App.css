@@ -318,6 +318,8 @@ body {
   overflow-y: auto;
   min-width: 0; /* Fix for flexbox children overflow */
   width: calc(100% - 280px);
+  height: 100vh;
+  max-height: 100vh;
 }
 
 /* When sidebar is closed, main content takes full width */

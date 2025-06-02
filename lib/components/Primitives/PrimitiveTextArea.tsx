@@ -1,17 +1,19 @@
-import React, { JSX, forwardRef } from "react";
+import React, { forwardRef } from "react";
 import styled, { css, CSSObject } from "styled-components";
-
-type SpacingValue = string | number;
+import { FOUNDATION_THEME } from "../../tokens";
 
 type StateStyles = {
-  _hover?: StyledBlockProps;
-  _focus?: StyledBlockProps;
-  _active?: StyledBlockProps;
-  _disabled?: StyledBlockProps;
-  _visited?: StyledBlockProps;
+  _hover?: PrimitiveTextareaProps;
+  _focus?: PrimitiveTextareaProps;
+  _active?: PrimitiveTextareaProps;
+  _disabled?: PrimitiveTextareaProps;
+  _visited?: PrimitiveTextareaProps;
+  _focusVisible?: PrimitiveTextareaProps;
+  _focusWithin?: PrimitiveTextareaProps;
+  _focusActive?: PrimitiveTextareaProps;
 };
 
-type StyledBlockProps = StateStyles & {
+type PrimitiveTextareaProps = StateStyles & {
   color?: CSSObject["color"];
 
   // Positioning
@@ -26,22 +28,24 @@ type StyledBlockProps = StateStyles & {
   opacity?: CSSObject["opacity"];
 
   // Padding
-  padding?: SpacingValue;
-  paddingTop?: SpacingValue;
-  paddingBottom?: SpacingValue;
-  paddingLeft?: SpacingValue;
-  paddingRight?: SpacingValue;
-  paddingX?: SpacingValue;
-  paddingY?: SpacingValue;
+  padding?: CSSObject["padding"];
+  paddingTop?: CSSObject["paddingTop"];
+  paddingBottom?: CSSObject["paddingBottom"];
+  paddingLeft?: CSSObject["paddingLeft"];
+  paddingRight?: CSSObject["paddingRight"];
+  paddingX?: CSSObject["padding"];
+  paddingY?: CSSObject["padding"];
+  paddingInlineStart?: CSSObject["paddingInlineStart"];
+  paddingInlineEnd?: CSSObject["paddingInlineEnd"];
 
   // Margin
-  margin?: SpacingValue;
-  marginTop?: SpacingValue;
-  marginBottom?: SpacingValue;
-  marginLeft?: SpacingValue;
-  marginRight?: SpacingValue;
-  marginX?: SpacingValue;
-  marginY?: SpacingValue;
+  margin?: CSSObject["margin"];
+  marginTop?: CSSObject["marginTop"];
+  marginBottom?: CSSObject["marginBottom"];
+  marginLeft?: CSSObject["marginLeft"];
+  marginRight?: CSSObject["marginRight"];
+  marginX?: CSSObject["margin"];
+  marginY?: CSSObject["margin"];
 
   // Layout / Flexbox
   display?: CSSObject["display"];
@@ -80,12 +84,9 @@ type StyledBlockProps = StateStyles & {
   minHeight?: CSSObject["minHeight"];
   maxWidth?: CSSObject["maxWidth"];
   maxHeight?: CSSObject["maxHeight"];
-  size?: SpacingValue;
 
   // Background
   backgroundColor?: CSSObject["backgroundColor"];
-  backgroundImage?: CSSObject["backgroundImage"];
-  backgroundSize?: CSSObject["backgroundSize"];
 
   // Border
   border?: CSSObject["border"];
@@ -99,10 +100,6 @@ type StyledBlockProps = StateStyles & {
   overflow?: CSSObject["overflow"];
   overflowX?: CSSObject["overflowX"];
   overflowY?: CSSObject["overflowY"];
-  whiteSpace?: CSSObject["whiteSpace"];
-
-  // Transitions
-  transition?: CSSObject["transition"];
 
   // Shortcuts
   contentCentered?: boolean;
@@ -110,18 +107,15 @@ type StyledBlockProps = StateStyles & {
   // Cursor
   cursor?: CSSObject["cursor"];
 
-  //font
-  fontSize?: CSSObject["fontSize"];
-  fontWeight?: CSSObject["fontWeight"];
-  lineHeight?: CSSObject["lineHeight"];
-  letterSpacing?: CSSObject["letterSpacing"];
-  textAlign?: CSSObject["textAlign"];
-  textTransform?: CSSObject["textTransform"];
-  textOverflow?: CSSObject["textOverflow"];
+  // Placeholder
+  placeholderStyles?: CSSObject;
+
+  // Resize
+  resize?: CSSObject["resize"];
 };
 
 const blockedProps = [
-  // All base props
+  // Similar blocked list as input
   "padding",
   "paddingTop",
   "paddingBottom",
@@ -129,6 +123,8 @@ const blockedProps = [
   "paddingRight",
   "paddingX",
   "paddingY",
+  "paddingInlineStart",
+  "paddingInlineEnd",
   "margin",
   "marginTop",
   "marginBottom",
@@ -161,11 +157,8 @@ const blockedProps = [
   "minHeight",
   "maxWidth",
   "maxHeight",
-  "size",
   "contentCentered",
   "backgroundColor",
-  "backgroundImage",
-  "backgroundSize",
   "border",
   "borderTop",
   "borderBottom",
@@ -176,9 +169,6 @@ const blockedProps = [
   "overflow",
   "overflowX",
   "overflowY",
-  "whiteSpace",
-  "transition",
-  // Positioning
   "position",
   "inset",
   "top",
@@ -188,29 +178,34 @@ const blockedProps = [
   "zIndex",
   "pointerEvents",
   "opacity",
-  // Pseudo states
   "_hover",
   "_focus",
   "_active",
   "_disabled",
   "_visited",
-
-  //font
-  "fontSize",
-  "fontWeight",
-  "lineHeight",
-  "letterSpacing",
-  "textAlign",
-  "textTransform",
+  "_focusVisible",
+  "placeholderStyles",
+  "resize",
 ];
 
-const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
+const stateToSelector: Record<keyof StateStyles, string> = {
+  _hover: "&:hover",
+  _focus: "&:focus",
+  _focusVisible: "&:focus-visible",
+  _focusWithin: "&:focus-within",
+  _active: "&:active",
+  _disabled: "&:disabled",
+  _visited: "&:visited",
+  _focusActive: "&:focus-active",
+};
 
-const getStyles = (props: StyledBlockProps): CSSObject => {
+export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> &
+  PrimitiveTextareaProps;
+
+const getStyles = (props: PrimitiveTextareaProps): CSSObject => {
   const styles: CSSObject = {};
 
   if (props.color !== undefined) styles.color = props.color;
-
   if (props.position !== undefined) styles.position = props.position;
   if (props.inset !== undefined) styles.inset = props.inset;
   if (props.top !== undefined) styles.top = props.top;
@@ -233,13 +228,8 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     if (props.alignItems !== undefined) styles.alignItems = props.alignItems;
   }
 
-  if (props.size !== undefined) {
-    styles.width = props.size;
-    styles.height = props.size;
-  } else {
-    if (props.width !== undefined) styles.width = props.width;
-    if (props.height !== undefined) styles.height = props.height;
-  }
+  if (props.width !== undefined) styles.width = props.width;
+  if (props.height !== undefined) styles.height = props.height;
 
   if (props.padding !== undefined) styles.padding = props.padding;
   if (props.paddingTop !== undefined) styles.paddingTop = props.paddingTop;
@@ -248,6 +238,10 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.paddingLeft !== undefined) styles.paddingLeft = props.paddingLeft;
   if (props.paddingRight !== undefined)
     styles.paddingRight = props.paddingRight;
+  if (props.paddingInlineStart !== undefined)
+    styles.paddingInlineStart = props.paddingInlineStart;
+  if (props.paddingInlineEnd !== undefined)
+    styles.paddingInlineEnd = props.paddingInlineEnd;
   if (props.paddingX !== undefined) {
     styles.paddingLeft = props.paddingX;
     styles.paddingRight = props.paddingX;
@@ -272,20 +266,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
     styles.marginBottom = props.marginY;
   }
 
-  if (props.flexDirection !== undefined)
-    styles.flexDirection = props.flexDirection;
-  if (props.flexWrap !== undefined) styles.flexWrap = props.flexWrap;
-  if (props.flexGrow !== undefined) styles.flexGrow = props.flexGrow;
-  if (props.flexShrink !== undefined) styles.flexShrink = props.flexShrink;
-  if (props.flexBasis !== undefined) styles.flexBasis = props.flexBasis;
-  if (props.gap !== undefined) styles.gap = props.gap;
-  if (props.rowGap !== undefined) styles.rowGap = props.rowGap;
-  if (props.columnGap !== undefined) styles.columnGap = props.columnGap;
-  if (props.alignContent !== undefined)
-    styles.alignContent = props.alignContent;
-  if (props.alignSelf !== undefined) styles.alignSelf = props.alignSelf;
-  if (props.justifySelf !== undefined) styles.justifySelf = props.justifySelf;
-
   if (props.borderRadius !== undefined)
     styles.borderRadius = props.borderRadius;
   if (props.borderTopLeftRadius !== undefined)
@@ -304,10 +284,6 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
 
   if (props.backgroundColor !== undefined)
     styles.backgroundColor = props.backgroundColor;
-  if (props.backgroundImage !== undefined)
-    styles.backgroundImage = props.backgroundImage;
-  if (props.backgroundSize !== undefined)
-    styles.backgroundSize = props.backgroundSize;
 
   if (props.border !== undefined) styles.border = props.border;
   if (props.borderTop !== undefined) styles.borderTop = props.borderTop;
@@ -320,38 +296,21 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.overflow !== undefined) styles.overflow = props.overflow;
   if (props.overflowX !== undefined) styles.overflowX = props.overflowX;
   if (props.overflowY !== undefined) styles.overflowY = props.overflowY;
-  if (props.whiteSpace !== undefined) styles.whiteSpace = props.whiteSpace;
-  if (props.transition !== undefined) styles.transition = props.transition;
-
-  if (props.transition !== undefined) styles.transition = props.transition;
 
   if (props.cursor !== undefined) styles.cursor = props.cursor;
 
-  if (props.fontSize !== undefined) styles.fontSize = props.fontSize;
-  if (props.fontWeight !== undefined) styles.fontWeight = props.fontWeight;
-  if (props.lineHeight !== undefined) styles.lineHeight = props.lineHeight;
-  if (props.letterSpacing !== undefined)
-    styles.letterSpacing = props.letterSpacing;
-  if (props.textAlign !== undefined) styles.textAlign = props.textAlign;
-  if (props.textTransform !== undefined)
-    styles.textTransform = props.textTransform;
-  if (props.textOverflow !== undefined)
-    styles.textOverflow = props.textOverflow;
+  if (props.resize !== undefined) styles.resize = props.resize;
+
+  styles.scrollPadding = 6;
+  styles.scrollbarWidth = "thin";
+  styles.scrollbarColor = `${FOUNDATION_THEME.colors.gray[300]} transparent`;
 
   return styles;
 };
 
-const stateToSelector: Record<keyof StateStyles, string> = {
-  _hover: "&:hover",
-  _focus: "&:focus",
-  _active: "&:active",
-  _disabled: "&:disabled",
-  _visited: "&:visited",
-};
-
-const StyledBlock = styled.div.withConfig({
-  shouldForwardProp,
-})<StyledBlockProps>((props) => {
+const StyledTextarea = styled.textarea.withConfig({
+  shouldForwardProp: (prop) => !blockedProps.includes(prop),
+})<TextareaProps>((props) => {
   const base = getStyles(props);
 
   const stateStyles = Object.entries(stateToSelector).reduce(
@@ -365,48 +324,35 @@ const StyledBlock = styled.div.withConfig({
     {} as CSSObject
   );
 
-  return css({ ...base, ...stateStyles });
-});
+  const placeholderStyle = props.placeholderStyles
+    ? {
+        "::placeholder": props.placeholderStyles,
+        "::-webkit-input-placeholder": props.placeholderStyles,
+        "::-moz-placeholder": props.placeholderStyles,
+        ":-ms-input-placeholder": props.placeholderStyles,
+        ":-moz-placeholder": props.placeholderStyles,
+      }
+    : {};
 
-type SemanticTagType = keyof Pick<
-  JSX.IntrinsicElements,
-  | "div"
-  | "section"
-  | "article"
-  | "header"
-  | "footer"
-  | "main"
-  | "span"
-  | "nav"
-  | "hr"
->;
-
-export type BlockProps = StyledBlockProps &
-  Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
-    children?: React.ReactNode;
-    as?: SemanticTagType;
-    ref?: React.Ref<HTMLElement>;
+  const outline: CSSObject = {
+    "&:focus-visible": {
+      outline: "none !important",
+    },
   };
 
-/**
- * Block Component
- * @description
- * The Block component is a primitive component that renders a styled div element.
- * It is used to create consistent spacing and layout patterns across the application.
- *
- * @todo
- * - Add support for focus-visible outline
- */
-const Block = forwardRef<HTMLDivElement, BlockProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <StyledBlock ref={ref} {...rest}>
-        {children}
-      </StyledBlock>
-    );
-  }
-);
+  return css({
+    ...base,
+    ...placeholderStyle,
+    ...stateStyles,
+    ...outline,
+  });
+});
 
-Block.displayName = "Block";
+const PrimitiveTextarea: React.FC<TextareaProps> = forwardRef<
+  HTMLTextAreaElement,
+  TextareaProps
+>((props, ref) => {
+  return <StyledTextarea {...props} ref={ref} />;
+});
 
-export default Block;
+export default PrimitiveTextarea;
