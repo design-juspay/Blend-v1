@@ -152,7 +152,6 @@ const UnitInput = ({
         width={"100%"}
         display="flex"
         borderRadius={8}
-        overflow="hidden"
       >
         {leftSlot && (
           <Block

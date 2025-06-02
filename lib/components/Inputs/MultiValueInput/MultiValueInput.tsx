@@ -7,6 +7,7 @@ import textInputTokens from "../TextInput/textInput.tokens";
 import { InputSize } from "../TextInput/types";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { MultiValueInputProps } from "./types";
+import { FOUNDATION_THEME } from "../../../tokens";
 
 const MultiValueInput = ({
   label,
@@ -71,6 +72,7 @@ const MultiValueInput = ({
         paddingX={paddingX}
         paddingY={paddingY}
         onClick={handleContainerClick}
+        boxShadow={FOUNDATION_THEME.shadows.sm}
         border={
           error
             ? `1px solid ${textInputTokens.input.border.color.error}`
@@ -81,7 +83,6 @@ const MultiValueInput = ({
         _hover={{
           border: `1px solid ${textInputTokens.input.border.color.hover}`,
         }}
-        overflow="clip"
       >
         {tags?.map((tag) => (
           <Tag

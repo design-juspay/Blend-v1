@@ -17,6 +17,7 @@ import {
   UnitInput,
   UnitInputSize,
   TextArea,
+  UnitPosition,
 } from "../../../lib/main";
 
 import Select from "../../../lib/components/Select/Select";
@@ -314,6 +315,7 @@ const InputDemo: React.FC = () => {
               min={0}
               step={1000}
               disabled={disabled}
+              unitPosition={UnitPosition.LEFT}
               hintText="This is a hint text to help user."
               helpIconHintText="This is a help icon hint text to help "
               size={
