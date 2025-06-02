@@ -1,14 +1,16 @@
-import { forwardRef, useState } from "react";
-import { SidebarProps } from "./types";
-import Directory from "../Directory/Directory";
-import { Button, ButtonSize, ButtonSubType, ButtonType } from "../Button";
-import { PanelsTopLeft, ChevronDown } from "lucide-react";
-import GradientBlur from "../GradientBlur/GradientBlur";
+import React, { forwardRef, useState } from "react";
+import { PanelsTopLeft } from "lucide-react";
 import styled from "styled-components";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
+import Button from "../Button/Button";
+import { ButtonSize, ButtonSubType, ButtonType } from "../Button";
+import Directory from "../Directory/Directory";
+import { SidebarProps } from "./types";
+import GradientBlur from "../GradientBlur/GradientBlur";
 import { FOUNDATION_THEME } from "../../tokens";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { Select } from "../Select";
+import { SelectMenuVariant } from "../Select/types";
 
 const DirectoryContainer = styled(Block)`
   flex: 1;
@@ -34,83 +36,6 @@ const MainContentContainer = styled(Block)`
   -ms-overflow-style: none;
   scrollbar-width: none;
 `;
-
-const SimpleDropdown = ({
-  placeholder,
-  selectedOption,
-  items,
-  onSelect,
-  width = "100%",
-}: {
-  placeholder: string;
-  selectedOption?: string;
-  items: Array<{ label: string; icon?: React.ReactNode }>;
-  onSelect: (value: string) => void;
-  width?: string;
-}) => {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <Block
-          as="span"
-          width={width}
-          backgroundColor={FOUNDATION_THEME.colors.gray[50]}
-          padding="8px 12px"
-          borderRadius={FOUNDATION_THEME.border.radius[4]}
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          cursor="pointer"
-        >
-          <Text
-            variant="body.sm"
-            fontWeight={400}
-            color={FOUNDATION_THEME.colors.gray[600]}
-          >
-            {selectedOption || placeholder}
-          </Text>
-          <ChevronDown size={16} />
-        </Block>
-      </DropdownMenu.Trigger>
-
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          style={{
-            backgroundColor: "white",
-            borderRadius: "4px",
-            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-            overflow: "hidden",
-            minWidth: "150px",
-          }}
-        >
-          {items.map((item, index) => (
-            <DropdownMenu.Item
-              key={index}
-              onClick={() => onSelect(item.label)}
-              style={{
-                padding: "8px 12px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                outline: "none",
-              }}
-              onSelect={(e) => {
-                e.preventDefault();
-                onSelect(item.label);
-              }}
-            >
-              {item.icon}
-              <Text variant="body.sm" color={FOUNDATION_THEME.colors.gray[600]}>
-                {item.label}
-              </Text>
-            </DropdownMenu.Item>
-          ))}
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
-  );
-};
 
 const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   (
@@ -219,20 +144,25 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                   padding="0 8px"
                 >
                   {merchants.length > 1 ? (
-                    // TODO: Change this with our own component
-                    <SimpleDropdown
+                    <Select
+                      label=""
                       placeholder="Select Merchant"
-                      selectedOption={activeMerchant}
-                      items={merchants.map((merchant) => ({
-                        label: merchant.label,
-                        icon: merchant.icon,
-                      }))}
-                      onSelect={(value) => {
-                        if (setActiveMerchant) {
+                      variant={SelectMenuVariant.NO_CONTAINER}
+                      items={[
+                        {
+                          items: merchants.map((merchant) => ({
+                            label: merchant.label,
+                            value: merchant.label,
+                            slot1: merchant.icon,
+                          })),
+                        },
+                      ]}
+                      selected={activeMerchant || ""}
+                      onSelectChange={(value) => {
+                        if (setActiveMerchant && typeof value === "string") {
                           setActiveMerchant(value);
                         }
                       }}
-                      width="100%"
                     />
                   ) : (
                     <Text
@@ -296,20 +226,25 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                   leadingIcon={PanelsTopLeft}
                 />
                 {merchants.length > 1 ? (
-                  // TODO: Change this with our own component
-                  <SimpleDropdown
+                  <Select
+                    label=""
                     placeholder="Select Merchant"
-                    selectedOption={activeMerchant}
-                    items={merchants.map((merchant) => ({
-                      label: merchant.label,
-                      icon: merchant.icon,
-                    }))}
-                    onSelect={(value) => {
-                      if (setActiveMerchant) {
+                    variant={SelectMenuVariant.NO_CONTAINER}
+                    items={[
+                      {
+                        items: merchants.map((merchant) => ({
+                          label: merchant.label,
+                          value: merchant.label,
+                          slot1: merchant.icon,
+                        })),
+                      },
+                    ]}
+                    selected={activeMerchant || ""}
+                    onSelectChange={(value) => {
+                      if (setActiveMerchant && typeof value === "string") {
                         setActiveMerchant(value);
                       }
                     }}
-                    width="100%"
                   />
                 ) : (
                   <Text

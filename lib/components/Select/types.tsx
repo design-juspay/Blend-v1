@@ -1,5 +1,3 @@
-import { Trash, User } from "lucide-react";
-
 export enum SelectMenuAlignment {
   START = "start",
   CENTER = "center",
@@ -60,65 +58,6 @@ export type SelectMenuItemType = {
   subMenu?: SelectMenuItemType[];
 };
 
-export const dummyMenuItems: SelectMenuGroupType[] = [
-  {
-    groupLabel: "Account GGWP",
-    showSeparator: true,
-    items: [
-      {
-        label: "Profile Settings",
-        value: "profile-settings",
-        slot1: <User size={13} />,
-      },
-      {
-        label: "Billing & Subscription",
-        value: "billing-subscription",
-        subLabel: "Manage your payment methods and plans",
-      },
-      {
-        label: "Sign Out",
-        value: "sign-out",
-      },
-      {
-        label: "Delete Account",
-        value: "delete-account",
-        subMenu: [
-          {
-            label: "Delete Account",
-            value: "delete-account",
-            slot1: <Trash size={13} />,
-            subMenu: [
-              {
-                label: "Are you sure?",
-                value: "are-you-sure",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    groupLabel: "Preferences",
-    showSeparator: true,
-    items: [
-      {
-        label: "Theme Settings",
-        value: "theme-settings",
-        subLabel: "Customize your appearance",
-      },
-      {
-        label: "Notifications",
-        value: "notifications",
-      },
-      {
-        label: "Privacy",
-        value: "privacy",
-      },
-    ],
-  },
-];
-
 export const dummyMenuItemsLong: SelectMenuGroupType[] = Array.from(
   { length: 5 },
   (_, groupIndex) => ({
@@ -146,5 +85,3 @@ export const dummyMenuItemsLong: SelectMenuGroupType[] = Array.from(
     }),
   })
 );
-
-

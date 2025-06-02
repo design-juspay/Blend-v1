@@ -4,7 +4,6 @@ import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import { ChevronDownIcon, HelpCircleIcon, X } from "lucide-react";
 import {
-  dummyMenuItems,
   SelectMenuGroupType,
   SelectMenuItemType,
   SelectMenuSize,
@@ -28,7 +27,7 @@ type SelectProps = {
   helpIconText?: string;
   placeholder: string;
   size?: SelectMenuSize;
-  items?: SelectMenuGroupType[];
+  items: SelectMenuGroupType[];
   variant?: SelectMenuVariant;
   selected: string | string[];
   onSelectChange: (value: string | string[]) => void;
@@ -60,7 +59,7 @@ const map = function getValueLabelMap(
 };
 
 const Select = ({
-  items = dummyMenuItems,
+  items,
   variant = SelectMenuVariant.CONTAINER,
   label = "Your favorite color",
   subLabel = "Select an option",
