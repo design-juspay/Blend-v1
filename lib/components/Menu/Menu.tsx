@@ -1,305 +1,281 @@
-import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
-import styled from "styled-components";
-import Block from "../Primitives/Block/Block";
+import * as RadixMenu from "@radix-ui/react-dropdown-menu";
 import Text from "../Text/Text";
+import { Settings2 } from "lucide-react";
+import { Tag, TagColor, TagShape, TagSize } from "../Tags";
+
+import styled, { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
+import {  MenuV2Props, MenuAlignment, MenuSide, MenuV2GroupType, MenuItemV2Variant, MenuItemV2ActionType } from "./types";
+import React, { useState } from "react";
+import { filterMenuGroups } from "./utils";
+import MenuGroupLabel from "./MenuGroupLabel";
+import MenuGroupSeperator from "./MenuGroupSeperator";
+import Item from "./MenuItem";
+import Block from "../Primitives/Block/Block";
+import SearchInput from "../Inputs/SearchInput/SearchInput";
 
-// --- Styled Components ---
-
-const Content = styled(RadixDropdownMenu.Content)(() => ({
+export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
   color: "black",
   borderRadius: 6,
-  padding: "8px 0",
   boxShadow: FOUNDATION_THEME.shadows.lg,
   zIndex: 9999,
   minWidth: 200,
   maxWidth: 280,
-}));
-
-const SubContent = styled(RadixDropdownMenu.SubContent)(() => ({
-  backgroundColor: "white",
-  color: "black",
-  borderRadius: 6,
-  padding: "8px 0",
-  boxShadow: FOUNDATION_THEME.shadows.lg,
-  zIndex: 9999,
-  minWidth: 200,
-  maxWidth: 280,
-}));
-
-const Separator = styled(RadixDropdownMenu.Separator)(() => ({
-  height: 1,
-  backgroundColor: "#eee",
-  margin: "6px 0",
-}));
-
-const StyledItem = styled.div<{ disabled?: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 8px;
-  border-radius: 4px;
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-
-  &:hover {
-    background-color: ${FOUNDATION_THEME.colors.primary[50]};
-  }
-
-  &[data-highlighted] {
-    outline: none;
-    border: none;
-    background-color: ${FOUNDATION_THEME.colors.primary[50]};
-  }
-
-  &:active {
-    outline: none;
-    border: none;
-    background-color: ${FOUNDATION_THEME.colors.primary[50]};
-  }
-`;
-
-// --- Types ---
-
-export enum MenuItemVariant {
-  DEFAULT = "default",
-  ACTION = "action",
-  MULTISELECT = "multiselect",
-}
-
-export enum MenuItemActionType {
-  PRIMARY = "primary",
-  DANGER = "danger",
-}
-
-export type MenuItemType = {
-  variant?: MenuItemVariant;
-  text: string;
-  actionType?: MenuItemActionType;
-  icon?: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  subMenu?: MenuGroupType;
-  slot1?: React.ReactNode;
-  slot2?: React.ReactNode;
-  slot3?: React.ReactNode;
-  slot4?: React.ReactNode;
+  overflowY: "auto",
+  overflowX: "hidden",
+  scrollbarWidth: "none",
+  scrollbarColor: "transparent transparent",
+  padding: "0px 6px",
 };
 
-export type MenuGroupType = {
-  label?: string;
-  showSeparator?: boolean;
-  items: MenuItemType[];
-};
+const Content = styled(RadixMenu.Content)(() => ({
+  ...contentBaseStyle,
+}));
 
-type MenuProps = {
-  trigger: React.ReactNode;
-  side?: "left" | "right" | "bottom" | "top";
-  align?: "start" | "center" | "end";
-  items: MenuGroupType[];
-};
+const dummyMenuItems: MenuV2GroupType[] = [
+  {
+    label: "Account GGWP",
+    showSeparator: true,
+    items: [
+      {
+        label: "Profile Settings",
+        onClick: () => alert("Profile Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Billing & Subscription",
+        // subLabel: "Manage your payment methods and plans",
+        onClick: () => alert("Billing"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Sign Out",
+        // subLabel: "Sign out of your account",
+        onClick: () => alert("Sign Out"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.ACTION,
+        actionType: MenuItemV2ActionType.PRIMARY,
+      },
+      {
+        label: "Delete Account",
+        // subLabel: "Permanently delete your account and all data",
+        onClick: () => alert("Delete Account"),
+        slot1: <Settings2 size={13} />,
+        // slot2: <Terminal size={13} />,
+        slot3: (
+          <Tag
+            shape={TagShape.ROUNDED}
+            color={TagColor.ERROR}
+            size={TagSize.XS}
+            text="Permanent"
+          />
+        ),
+        variant: MenuItemV2Variant.ACTION,
+        actionType: MenuItemV2ActionType.DANGER,
+      },
+    ],
+  },
+  {
+    label: "Workspace",
+    showSeparator: true,
+    items: [
+      {
+        label: "Workspace Settings",
+        // subLabel: "Configure workspace preferences",
+        onClick: () => alert("Workspace Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Members & Permissions",
+        // subLabel: "Manage team members and their roles",
+        onClick: () => alert("Members"),
+        slot1: <Settings2 size={13} />,
+        slot2: (
+          <Tag
+            shape={TagShape.ROUNDED}
+            color={TagColor.SUCCESS}
+            size={TagSize.XS}
+            text="8 members"
+          />
+        ),
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Integrations",
+        subLabel: "Connect third-party apps and services",
+        slot1: <Settings2 size={13} />,
+        subMenu: [
+          {
+            label: "Slack",
+            variant: MenuItemV2Variant.ACTION,
+            actionType: MenuItemV2ActionType.PRIMARY,
+            subLabel: "Connect your Slack workspace",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Connect Slack"),
+          },
+          {
+            label: "GitHub",
+            subLabel: "Link your GitHub repositories",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Connect GitHub"),
+          },
+          {
+            label: "Google Drive",
+            subLabel: "Sync with Google Drive",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Connect Google Drive"),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Preferences",
+    items: [
+      {
+        label: "Notifications",
+        subLabel: "Configure your notification preferences",
+        actionType: MenuItemV2ActionType.DANGER,
+        slot1: <Settings2 size={13} />,
+        subMenu: [
+          {
+            label: "Email Notifications",
+            variant: MenuItemV2Variant.ACTION,
+            actionType: MenuItemV2ActionType.PRIMARY,
+            subLabel: "Receive updates via email",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Email Notifications"),
+            subMenu: [
+              {
+                label: "Slack",
+                variant: MenuItemV2Variant.ACTION,
+                actionType: MenuItemV2ActionType.DANGER,
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect Slack"),
+              },
+              {
+                label: "GitHub",
+                subLabel: "Link your GitHub repositories",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect GitHub"),
+              },
+              {
+                label: "Google Drive",
+                subLabel: "Sync with Google Drive",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect Google Drive"),
+              },
+            ],
+          },
+          {
+            label: "Push Notifications",
+            subLabel: "Get notifications on your device",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Push Notifications"),
+          },
+          {
+            label: "Slack Notifications",
+            subLabel: "Receive alerts in Slack",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Slack Notifications"),
+          },
+        ],
+      },
+      {
+        label: "Theme",
+        subLabel: "Customize your interface appearance",
+        onClick: () => alert("Theme Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Language & Region",
+        subLabel: "Set your language and timezone",
+        onClick: () => alert("Language Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+    ],
+  },
+];
 
-// --- Component ---
 
-export const Menu = ({
+const Menu = ({
   trigger,
-  side = "bottom",
-  align = "center",
-  items,
-}: MenuProps) => {
+  items = dummyMenuItems,
+  asModal = false,
+  alignment = MenuAlignment.CENTER,
+  side = MenuSide.BOTTOM,
+  sideOffset = 8,
+  alignOffset = 0,
+  collisonBoundaryRef,
+  maxHeight,
+  enableSearch = true,
+}: MenuV2Props) => {
+  const [searchText, setSearchText] = useState<string>("");
+
+  const filteredItems = filterMenuGroups(items, searchText);
+
   return (
-    <RadixDropdownMenu.Root modal={false}>
-      <RadixDropdownMenu.Trigger asChild>{trigger}</RadixDropdownMenu.Trigger>
+    <RadixMenu.Root modal={asModal}>
+      <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
+        sideOffset={sideOffset}
+        alignOffset={alignOffset}
         side={side}
-        align={align}
-        loop
-        avoidCollisions
-        sideOffset={8}
-        style={{ padding: 6 }}
+        align={alignment}
+        collisionBoundary={collisonBoundaryRef}
+        style={{
+          maxHeight: maxHeight ? `${maxHeight}px` : "auto",
+          paddingTop: 10,
+        }}
       >
-        {items.map((group, groupIndex) => (
-          <div key={groupIndex}>
-            {group.label && (
-              <RadixDropdownMenu.Label asChild>
-                <Block
-                  display="flex"
-                  alignItems="center"
-                  paddingX={8}
-                  paddingY={6}
-                >
+        {enableSearch && (
+          <Block
+            width="calc(100% + 12px)"
+            marginLeft="-6px"
+            position="sticky"
+            top={0}
+            zIndex={1000}
+          >
+            <SearchInput
+              placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </Block>
+        )}
+        {filteredItems &&
+          filteredItems.map((group, groupId) => (
+            <React.Fragment key={groupId}>
+              {group.label && (
+                <MenuGroupLabel>
                   <Text
-                    variant="body.md"
-                    fontWeight={500}
-                    color={FOUNDATION_THEME.colors.gray[500]}
+                    variant="body.sm"
+                    color={FOUNDATION_THEME.colors.gray[400]}
                   >
                     {group.label}
                   </Text>
-                </Block>
-              </RadixDropdownMenu.Label>
-            )}
-
-            {group.items.map((item, itemIndex) =>
-              // HAS SUBMENU
-              item.subMenu && item.subMenu.items.length > 0 ? (
-                <RadixDropdownMenu.Sub key={itemIndex}>
-                  <RadixDropdownMenu.SubTrigger asChild>
-                    <StyledItem>
-                      <Block
-                        display="flex"
-                        flexGrow={1}
-                        alignItems="center"
-                        gap={8}
-                      >
-                        {item.slot1 && (
-                          <Block size={16} contentCentered>
-                            {item.slot1}
-                          </Block>
-                        )}
-                        <Block display="flex" flexGrow={1} alignItems="center">
-                          <Text
-                            variant="body.md"
-                            color={
-                              item.variant === MenuItemVariant.ACTION
-                                ? item.actionType ===
-                                    MenuItemActionType.PRIMARY ||
-                                  !item.actionType
-                                  ? FOUNDATION_THEME.colors.primary[600]
-                                  : FOUNDATION_THEME.colors.red[600]
-                                : FOUNDATION_THEME.colors.gray[600]
-                            }
-                            fontWeight={500}
-                            truncate
-                          >
-                            {item.text}
-                          </Text>
-                        </Block>
-                        {item.slot2 && (
-                          <Block size={16} contentCentered>
-                            {item.slot2}
-                          </Block>
-                        )}
-                        {item.slot3 && (
-                          <Block size={16} contentCentered>
-                            {item.slot3}
-                          </Block>
-                        )}
-                        {item.slot4 && (
-                          <Block size={16} contentCentered>
-                            {item.slot4}
-                          </Block>
-                        )}
-                      </Block>
-                    </StyledItem>
-                  </RadixDropdownMenu.SubTrigger>
-
-                  <RadixDropdownMenu.Portal>
-                    <SubContent avoidCollisions style={{ padding: 6 }}>
-                      {item.subMenu.items.map((subItem, subIndex) => (
-                        <RadixDropdownMenu.Item
-                          asChild
-                          key={subIndex}
-                          disabled={subItem.disabled}
-                          onClick={
-                            subItem.disabled ? undefined : subItem.onClick
-                          }
-                        >
-                          <StyledItem disabled={subItem.disabled}>
-                            {subItem.slot1 && (
-                              <Block size={16} contentCentered>
-                                {subItem.slot1}
-                              </Block>
-                            )}
-                            <Block
-                              display="flex"
-                              flexGrow={1}
-                              alignItems="center"
-                            >
-                              <Text
-                                variant="body.md"
-                                color={
-                                  subItem.variant === MenuItemVariant.ACTION
-                                    ? subItem.actionType ===
-                                      MenuItemActionType.PRIMARY
-                                      ? FOUNDATION_THEME.colors.primary[600]
-                                      : FOUNDATION_THEME.colors.red[600]
-                                    : FOUNDATION_THEME.colors.gray[600]
-                                }
-                                fontWeight={500}
-                                truncate
-                              >
-                                {subItem.text}
-                              </Text>
-                            </Block>
-                          </StyledItem>
-                        </RadixDropdownMenu.Item>
-                      ))}
-                    </SubContent>
-                  </RadixDropdownMenu.Portal>
-                </RadixDropdownMenu.Sub>
-              ) : (
-                <RadixDropdownMenu.Item
-                  asChild
-                  key={itemIndex}
-                  disabled={item.disabled}
-                  onClick={item.disabled ? undefined : item.onClick}
-                >
-                  <StyledItem disabled={item.disabled}>
-                    {item.slot1 && (
-                      <Block size={16} contentCentered>
-                        {item.slot1}
-                      </Block>
-                    )}
-                    <Block
-                      display="flex"
-                      flexGrow={1}
-                      alignItems="center"
-                      maxWidth="100%"
-                      overflow="hidden"
-                    >
-                      <Text
-                        variant="body.md"
-                        color={
-                          item.variant === MenuItemVariant.ACTION
-                            ? item.actionType === MenuItemActionType.PRIMARY ||
-                              !item.actionType
-                              ? FOUNDATION_THEME.colors.primary[600]
-                              : FOUNDATION_THEME.colors.red[600]
-                            : FOUNDATION_THEME.colors.gray[600]
-                        }
-                        fontWeight={500}
-                        truncate
-                      >
-                        {item.text}
-                      </Text>
-                    </Block>
-                    {item.slot2 && (
-                      <Block size={16} contentCentered>
-                        {item.slot2}
-                      </Block>
-                    )}
-                    {item.slot3 && (
-                      <Block size={16} contentCentered>
-                        {item.slot3}
-                      </Block>
-                    )}
-                    {item.slot4 && (
-                      <Block size={16} contentCentered>
-                        {item.slot4}
-                      </Block>
-                    )}
-                  </StyledItem>
-                </RadixDropdownMenu.Item>
-              )
-            )}
-
-            {group.showSeparator && <Separator />}
-          </div>
-        ))}
+                </MenuGroupLabel>
+              )}
+              {group.items.map((item, itemIndex) => (
+                <Item
+                  key={`${groupId}-${itemIndex}`}
+                  item={item}
+                  idx={itemIndex}
+                />
+              ))}
+              {groupId !== filteredItems.length - 1 && group.showSeparator && (
+                <MenuGroupSeperator />
+              )}
+            </React.Fragment>
+          ))}
       </Content>
-    </RadixDropdownMenu.Root>
+    </RadixMenu.Root>
   );
 };
 

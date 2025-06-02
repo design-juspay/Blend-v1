@@ -7,7 +7,7 @@ import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import Text, { VariantType } from "../Text/Text";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
-import { AddToastOptions, CustomToastProps } from "./types";
+import { AddToastOptions, CustomToastProps, SnackbarVariant } from "./types";
 import snackbarTokens from "./snackbar.tokens";
 
 const StyledToast: React.FC<CustomToastProps> = ({
@@ -101,17 +101,23 @@ const StyledToast: React.FC<CustomToastProps> = ({
   );
 };
 
-export const addSnackbar = (options: AddToastOptions) => {
+export const addSnackbar = ({
+  header,
+  description,
+  variant = SnackbarVariant.INFO,
+  onClose,
+  actionButton,
+}: AddToastOptions) => {
   return sonnerToast.custom((t) => (
     <StyledToast
-      header={options.header}
-      description={options.description}
-      variant={options.variant}
+      header={header}
+      description={description}
+      variant={variant}
       onClose={() => {
         sonnerToast.dismiss(t);
-        options.onClose?.();
+        onClose?.();
       }}
-      actionButton={options.actionButton}
+      actionButton={actionButton}
     />
   ));
 };
