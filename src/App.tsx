@@ -20,6 +20,7 @@ import RadioDemo from "./demos/Radio/RadioDemo";
 import SwitchDemo from "./demos/Switch/SwitchDemo";
 import MenuDemo from "./demos/Menu/MenuDemo";
 import ChartDemo from "./demos/Charts";
+import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
 import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 
@@ -33,7 +34,7 @@ type ComponentCategory = {
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedCategory, setSelectedCategory] =
-    useState<string>("stat-cards");
+    useState<string>("daterangepicker");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [
@@ -131,6 +132,11 @@ function App() {
       id: "charts",
       name: "Charts",
       component: <ChartDemo />,
+    },
+    {
+      id: "daterangepicker",
+      name: "Date Range Picker",
+      component: <DateRangePickerDemo />,
     },
   ];
 
