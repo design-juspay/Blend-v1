@@ -119,8 +119,14 @@ const Select = ({
           )}
         </Block>
       )}
-      <Block display="flex" width={"100%"}>
-        <Block width="100%" display="flex" alignItems="center">
+      <Block display="flex">
+        <Block
+          width={
+            variant === SelectMenuVariant.CONTAINER ? "100%" : "min-content"
+          }
+          display="flex"
+          alignItems="center"
+        >
           <SelectMenu
             enableSearch={enableSearch}
             items={items}
@@ -130,9 +136,12 @@ const Select = ({
             trigger={
               <PrimitiveButton
                 display="flex"
-                width={
-                  variant === SelectMenuVariant.CONTAINER ? "100%" : "auto"
-                }
+                width={"100%"}
+                // width={
+                //   variant === SelectMenuVariant.CONTAINER
+                //     ? "100%"
+                //     : "min-content"
+                // }
                 flexGrow={1}
                 alignItems="center"
                 gap={8}
