@@ -1,4 +1,3 @@
-
 import { SortDirection, SortConfig } from './types';
 
 export function filterData<T extends Record<string, any>>(
@@ -50,49 +49,30 @@ export function filterData<T extends Record<string, any>>(
   });
 }
 
-export function sortData<T extends Record<string, any>>(
+export const sortData = <T extends Record<string, unknown>>(
   data: T[],
-  sortConfig: SortConfig | null
-): T[] {
-  if (!sortConfig || sortConfig.direction === SortDirection.NONE) {
-    return data;
-  }
-  
+  sortConfig: SortConfig
+): T[] => {
   return [...data].sort((a, b) => {
     const aValue = a[sortConfig.field];
     const bValue = b[sortConfig.field];
-    
-    // Handle strings
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      return sortConfig.direction === SortDirection.ASCENDING
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue);
-    }
-    
-    // Handle numbers
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return sortConfig.direction === SortDirection.ASCENDING
-        ? aValue - bValue
-        : bValue - aValue;
-    }
-    
-    // Handle dates
-    const isDate = (value: unknown): value is Date => value instanceof Date;
-    if (isDate(aValue) && isDate(bValue)) {
-      return sortConfig.direction === SortDirection.ASCENDING
-        ? aValue.getTime() - bValue.getTime()
-        : bValue.getTime() - aValue.getTime();
-    }
-    
-    // Default: use string comparison
-    const strA = String(aValue);
-    const strB = String(bValue);
-    
-    return sortConfig.direction === SortDirection.ASCENDING
-      ? strA.localeCompare(strB)
-      : strB.localeCompare(strA);
+
+    // Handle null/undefined values
+    if (aValue == null && bValue == null) return 0;
+    if (aValue == null) return 1;
+    if (bValue == null) return -1;
+
+    // Convert to strings for comparison if they're not numbers
+    const aCompare = typeof aValue === 'number' ? aValue : String(aValue).toLowerCase();
+    const bCompare = typeof bValue === 'number' ? bValue : String(bValue).toLowerCase();
+
+    let result = 0;
+    if (aCompare < bCompare) result = -1;
+    else if (aCompare > bCompare) result = 1;
+
+    return sortConfig.direction === SortDirection.ASCENDING ? result : -result;
   });
-}
+};
 
 export const formatCurrency = (amount: number, currency = 'INR'): string => {
   return new Intl.NumberFormat('en-IN', {

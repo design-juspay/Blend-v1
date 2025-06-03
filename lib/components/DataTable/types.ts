@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export enum SortDirection {
   ASCENDING = "asc",
   DESCENDING = "desc",
@@ -11,7 +9,8 @@ export type ColumnDefinition<T> = {
   field: keyof T;
   /** Header text to display */
   header: string;
-  renderCell?: (value: any, row: T) => ReactNode;
+  /** Width of the column */
+  width?: string;
   /** Whether column is sortable */
   isSortable?: boolean;
   /** Whether column is initially visible */
@@ -20,8 +19,7 @@ export type ColumnDefinition<T> = {
   canHide?: boolean;
   /** Custom classes to apply to the column */
   className?: string;
-  /** Width of the column */
-  width?: string;
+  renderCell?: (value: unknown, row: T) => React.ReactNode;
 }
 
 export type FilterOption = {

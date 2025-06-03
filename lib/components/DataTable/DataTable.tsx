@@ -10,18 +10,19 @@ import {
   filterData,
   sortData,
 } from './utils';
-// import { DataTableFilters } from './DataTableFilters';
 import { DataTablePagination } from './DataTablePagination';
 import Button from '../Button/Button';
-import { ButtonType } from '../Button/types';
+import { ButtonSize, ButtonType } from '../Button/types';
 import { Checkbox } from '../../main';
 import { CheckboxSize } from '../Checkbox/types';
 import { ColumnManager } from './ColumnManager';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
+import { FOUNDATION_THEME } from '../../tokens';
 
 const Table = styled.table<{ isStriped?: boolean; isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
+  table-layout: fixed;
 `;
 
 const TableHead = styled.thead`
@@ -32,6 +33,9 @@ const TableHeaderCell = styled.th<{ isSortable?: boolean; width?: string }>`
   ${dataTableTokens.th.base}
   ${props => props.isSortable && dataTableTokens.th.sortable}
   ${props => props.width && `width: ${props.width};`}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const TableBody = styled.tbody`
@@ -42,20 +46,18 @@ const TableRow = styled.tr`
   ${dataTableTokens.tr.base}
 `;
 
-const TableCell = styled.td`
+const TableCell = styled.td<{ width?: string }>`
   ${dataTableTokens.td.base}
+  ${props => props.width && `width: ${props.width};`}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 0;
 `;
 
-const SortIcon = styled.span<{ isActive?: boolean }>`
-  ${dataTableTokens.sortIcon.base}
-  ${props => props.isActive && dataTableTokens.sortIcon.active}
-`;
 
 const EmptyStateCell = styled.td`
   ${dataTableTokens.td.base}
-  text-align: center;
-  padding: 16px;
-  color: #6b7280;
 `;
 
 
@@ -81,8 +83,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onPageChange,
     onPageSizeChange,
     onSortChange,
-    // onFilterChange,
-    className,
   }: DataTableProps<T>
 ) => {
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(defaultSort || null);
@@ -93,11 +93,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const [currentPage, setCurrentPage] = useState<number>(pagination?.currentPage || 1);
   const [pageSize, setPageSize] = useState<number>(pagination?.pageSize || 10);
 
-  // Track selected rows
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
   const [selectAll, setSelectAll] = useState(false);
-
-  const [isColumnManagerOpen, setIsColumnManagerOpen] = useState(false);
 
   const totalRows = pagination?.totalRows || data.length;
 
@@ -120,13 +117,11 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     return processedData.slice(startIndex, startIndex + pageSize);
   }, [processedData, currentPage, pageSize]);
 
-  // Reset selection when data changes
   useEffect(() => {
     setSelectedRows({});
     setSelectAll(false);
   }, [data]);
 
-  // Handle select all
   const handleSelectAll = (checked: boolean | 'indeterminate') => {
     // We only care about boolean values for selectAll
     const newSelectAll = checked === true;
@@ -140,7 +135,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     setSelectedRows(newSelectedRows);
   };
 
-  // Handle individual row selection
   const handleRowSelect = (rowId: unknown) => {
     // Ensure rowId is a string for the Record key
     const rowIdStr = String(rowId);
@@ -171,22 +165,18 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
       return;
     }
 
-    // Create CSV headers
     const headers = visibleColumns.map(col => col.header);
     const fields = visibleColumns.map(col => col.field);
 
-    // Create CSV content
     let csvContent = headers.join(',') + '\n';
     selectedData.forEach(row => {
       const rowData = fields.map(field => {
         const value = row[field];
-        // Handle comma in values by wrapping in quotes
         return value != null ? `"${String(value).replace(/"/g, '""')}"` : '';
       });
       csvContent += rowData.join(',') + '\n';
     });
 
-    // Create and download blob
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -213,15 +203,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
   };
 
-  // const handleFilterChange = (filterValues: Record<string, unknown>) => {
-  //   setFilters(filterValues);
-  //   setCurrentPage(1);
-
-  //   if (onFilterChange) {
-  //     onFilterChange(filterValues);
-  //   }
-  // };
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
 
@@ -239,34 +220,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
   };
 
-  // const handleColumnSelection = (items: MenuItemProps | MenuItemProps[]) => {
-  //   const selectedIds = Array.isArray(items)
-  //     ? items.map(item => item.id)
-  //     : [items.id];
-
-  //   const newVisibleColumns = initialColumns.filter(col =>
-  //     selectedIds.includes(String(col.field))
-  //   );
-  //   setVisibleColumns(newVisibleColumns);
-  // };
-
-  // Create column manager menu items
-  // const getColumnMenuItems = () => {
-  //   return initialColumns
-  //     .filter(col => col.canHide !== false)
-  //     .map(column => ({
-  //       id: String(column.field),
-  //       text: column.header,
-  //       type: MenuItemType.MULTI_SELECT,
-  //     }));
-  // };
-
-  // const getSelectedColumnIds = () => {
-  //   return visibleColumns
-  //     .filter(col => col.canHide !== false)
-  //     .map(col => String(col.field));
-  // };
-
   const hasSelectedRows = Object.values(selectedRows).some(selected => selected);
 
   return (
@@ -277,7 +230,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         <Block style={{
           ...dataTableTokens.header.container,
         }}>
-          <Block display='flex' flexDirection='column' >
+          <Block display='flex' flexDirection='column' gap={FOUNDATION_THEME.unit[10]}>
             {title && <PrimitiveText as='h2' style={{
               ...dataTableTokens.header.title,
             }}>{title}</PrimitiveText>}
@@ -293,6 +246,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                   buttonType={ButtonType.SECONDARY}
                   leadingIcon={Download}
                   onClick={exportToCSV}
+                  size={ButtonSize.SMALL}
                 >
                   Export
                 </Button>
@@ -311,7 +265,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
           <TableHead>
             <TableRow>
               <TableHeaderCell isSortable={false}>
-                <Block display='flex' alignItems='center' justifyContent='center'>
+                <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
                   <Checkbox
                     checked={selectAll}
                     onCheckedChange={handleSelectAll}
@@ -324,21 +278,38 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                 <TableHeaderCell
                   key={String(column.field)}
                   isSortable={!!column.isSortable}
-                  width={column.width}
+                  width={column.width || 'auto'}
                   onClick={() => column.isSortable && handleSort(column.field)}
                 >
                   <Block display='flex' alignItems='center' justifyContent='space-between'>
-                    <PrimitiveText as='span'>{column.header}</PrimitiveText>
+                    <PrimitiveText 
+                      as='span' 
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        minWidth: 0,
+                        flex: 1
+                      }}
+                      title={column.header}
+                    >
+                      {column.header}
+                    </PrimitiveText>
                     {column.isSortable && (
-                      <SortIcon isActive={sortConfig?.field === column.field}>
-                        {sortConfig?.field === column.field && sortConfig.direction === SortDirection.ASCENDING ? (
-                          <ChevronUp size={16} />
-                        ) : sortConfig?.field === column.field && sortConfig.direction === SortDirection.DESCENDING ? (
-                          <ChevronDown size={16} />
-                        ) : (
-                          <div style={{ width: 16, height: 16 }} />
-                        )}
-                      </SortIcon>
+                      <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
+                        <ChevronUp 
+                          size={FOUNDATION_THEME.unit[12]} 
+                          style={{ 
+                            opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
+                          }} 
+                        />
+                        <ChevronDown 
+                          size={FOUNDATION_THEME.unit[12]} 
+                          style={{ 
+                            opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
+                          }} 
+                        />
+                      </Block>
                     )}
                   </Block>
                 </TableHeaderCell>
@@ -362,7 +333,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               currentData.map((row) => (
                 <TableRow key={String(row[idField])}>
                   <TableCell>
-                    <Block display='flex' alignItems='center' justifyContent='center'>
+                    <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
                       <Checkbox
                         checked={!!selectedRows[String(row[idField])]}
                         onCheckedChange={() => handleRowSelect(row[idField])}
@@ -372,10 +343,26 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                   </TableCell>
 
                   {visibleColumns.map((column) => (
-                    <TableCell key={`${String(row[idField])}-${String(column.field)}`}>
-                      {column.renderCell
-                        ? column.renderCell(row[column.field], row)
-                        : row[column.field] != null ? String(row[column.field]) : ''}
+                    <TableCell 
+                      key={`${String(row[idField])}-${String(column.field)}`}
+                      width={column.width || 'auto'}
+                    >
+                      <Block 
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          width: '100%'
+                        }}
+                        title={column.renderCell 
+                          ? String(column.renderCell(row[column.field], row)) 
+                          : (row[column.field] != null ? String(row[column.field]) : '')
+                        }
+                      >
+                        {column.renderCell
+                          ? column.renderCell(row[column.field], row)
+                          : row[column.field] != null ? String(row[column.field]) : ''}
+                      </Block>
                     </TableCell>
                   ))}
 

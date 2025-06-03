@@ -45,14 +45,15 @@ const DataTableDemo = () => {
           </div>
         ),
         isSortable: true,
-        width: '250px'
+        width: '150px'
       },
       { 
         id: 'email',
         field: 'email',
         header: 'Email',
         accessor: (row) => row.email as string,
-        isSortable: true
+        isSortable: true,
+        width: '200px'
       },
       { 
         id: 'role',

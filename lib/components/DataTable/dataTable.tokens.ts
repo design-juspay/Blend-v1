@@ -53,16 +53,15 @@ const dataTableTokens: DataTableToken = {
       justifyContent: "space-between",
       alignItems: "flex-start",
       marginBottom: FOUNDATION_THEME.unit[16],
-      flexDirection: "column",
       gap: FOUNDATION_THEME.unit[16],
       "@media (min-width: 768px)": {
         flexDirection: "row",
       },
     },
     title: {
-      fontSize: FOUNDATION_THEME.font.size.body.lg.fontSize,
+      fontSize: FOUNDATION_THEME.font.size.heading.md.fontSize,
       fontWeight: 600,
-      color: FOUNDATION_THEME.colors.gray[900],
+      color: FOUNDATION_THEME.colors.gray[800],
     },
     description: {
       fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
@@ -94,7 +93,7 @@ const dataTableTokens: DataTableToken = {
   },
   th: {
     base: {
-      padding: `${FOUNDATION_THEME.unit[4]}px ${FOUNDATION_THEME.unit[8]}px`,
+      padding: `${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[8]}`,
       textAlign: "left",
       fontWeight: 600,
       color: FOUNDATION_THEME.colors.gray[400],
@@ -117,10 +116,11 @@ const dataTableTokens: DataTableToken = {
   },
   td: {
     base: {
-      padding: `${FOUNDATION_THEME.unit[8]}px ${FOUNDATION_THEME.unit[12]}px`,
+      padding: `${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[12]}`,
       fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
-      color: FOUNDATION_THEME.colors.gray[800],
-      fontWeight: 500,
+      color: FOUNDATION_THEME.colors.gray[500],
+      fontWeight: FOUNDATION_THEME.font.weight[500],
+      borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[150]}`,
     },
   },
   pagination: {
@@ -128,7 +128,7 @@ const dataTableTokens: DataTableToken = {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      padding: `${FOUNDATION_THEME.unit[4]}px ${FOUNDATION_THEME.unit[16]}px`,
+      padding: `${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[16]}`,
       borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[150]}`,
       height: FOUNDATION_THEME.unit[48],
     },

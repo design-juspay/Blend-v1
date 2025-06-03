@@ -1,64 +1,11 @@
-import { useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
-import { styled } from 'styled-components';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { useMemo } from 'react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { FOUNDATION_THEME } from '../../tokens';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
-
-const PageSizeTrigger = styled(PrimitiveButton)<{ isOpen?: boolean }>`
-  border: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  border-radius: ${FOUNDATION_THEME.border.radius[2]};
-  background-color: ${FOUNDATION_THEME.colors.gray[0]};
-  min-width: 60px;
-
-  &:hover {
-    background-color: ${FOUNDATION_THEME.colors.gray[50]};
-  }
-
-  &[data-state="open"] {
-    background-color: ${FOUNDATION_THEME.colors.gray[50]};
-  }
-`;
-
-const DropdownContent = styled(DropdownMenu.Content)`
-  min-width: 60px;
-  background-color: ${FOUNDATION_THEME.colors.gray[0]};
-  border: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  border-radius: ${FOUNDATION_THEME.border.radius[2]}px;
-  box-shadow: 0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2);
-  padding: ${FOUNDATION_THEME.unit[4]}px;
-  z-index: 1000;
-`;
-
-const DropdownItem = styled(DropdownMenu.Item)`
-  padding: ${FOUNDATION_THEME.unit[6]}px ${FOUNDATION_THEME.unit[8]}px;
-  border-radius: ${FOUNDATION_THEME.border.radius[2]};
-  cursor: pointer;
-  font-size: ${FOUNDATION_THEME.font.size.body.sm.fontSize}px;
-  outline: none;
-
-  &:hover {
-    background-color: ${FOUNDATION_THEME.colors.gray[50]};
-  }
-
-  &[data-highlighted] {
-    background-color: ${FOUNDATION_THEME.colors.gray[50]};
-  }
-`;
-
-const PageNumbersContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${FOUNDATION_THEME.unit[4]}px;
-`;
-
-const PageEllipsis = styled.span`
-  padding: ${FOUNDATION_THEME.unit[6]}px ${FOUNDATION_THEME.unit[4]}px;
-  color: ${FOUNDATION_THEME.colors.gray[400]};
-  font-size: ${FOUNDATION_THEME.font.size.body.sm.fontSize}px;
-`;
+import Menu from '../Menu/Menu';
+import { MenuAlignment } from '../Menu/types';
 
 type DataTablePaginationProps = {
   currentPage: number;
@@ -77,11 +24,8 @@ export function DataTablePagination({
   onPageChange,
   onPageSizeChange,
 }: DataTablePaginationProps) {
-  const [pageSizeOpen, setPageSizeOpen] = useState(false);
   
   const totalPages = Math.ceil(totalRows / pageSize);
-  const startRow = (currentPage - 1) * pageSize + 1;
-  const endRow = Math.min(currentPage * pageSize, totalRows);
 
   const getPageNumbers = () => {
     const pages = [];
@@ -127,69 +71,66 @@ export function DataTablePagination({
   
   const pageNumbers = useMemo(getPageNumbers, [currentPage, totalPages]);
   
+  const pageSizeMenuItems = [
+    {
+      groupLabel: "Rows per page",
+      showSeparator: false,
+      items: pageSizeOptions.map(size => ({
+        label: `${size}`,
+        value: String(size),
+        onClick: () => onPageSizeChange(size),
+      })),
+    },
+  ];
+  
   return (
     <Block 
       display="flex" 
       justifyContent="space-between" 
       alignItems="center" 
-      padding={`${FOUNDATION_THEME.unit[16]}px ${FOUNDATION_THEME.unit[24]}px`}
+      height={`${FOUNDATION_THEME.unit[48]}`}
+      padding={`${FOUNDATION_THEME.unit[16]}`}
       borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
       backgroundColor={FOUNDATION_THEME.colors.gray[25]}
     >
       <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[8]}>
         <PrimitiveText 
           as="span" 
-          fontSize={FOUNDATION_THEME.font.size.body.sm.fontSize}
+          fontSize={FOUNDATION_THEME.font.size.body.md.fontSize}
           color={FOUNDATION_THEME.colors.gray[600]}
         >
           Rows per page:
         </PrimitiveText>
-        <DropdownMenu.Root open={pageSizeOpen} onOpenChange={setPageSizeOpen}>
-          <DropdownMenu.Trigger asChild>
-            <PageSizeTrigger
+        
+        <Menu
+          alignment={MenuAlignment.START}
+          enableSearch={false}
+          items={pageSizeMenuItems}
+
+          trigger={
+            <PrimitiveButton
               contentCentered
               gap={FOUNDATION_THEME.unit[4]}
               paddingX={FOUNDATION_THEME.unit[8]}
               paddingY={FOUNDATION_THEME.unit[4]}
+              border="none"
+              borderRadius={FOUNDATION_THEME.border.radius[2]}
+              backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+              _hover={{
+                backgroundColor: FOUNDATION_THEME.colors.gray[50],
+              }}
+              color={FOUNDATION_THEME.colors.gray[600]}
+              style={{
+                fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+              }}
             >
               {pageSize}
-              {pageSizeOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </PageSizeTrigger>
-          </DropdownMenu.Trigger>
-
-          <DropdownMenu.Portal>
-            <DropdownContent
-              side="top"
-              align="start"
-              sideOffset={4}
-              avoidCollisions={true}
-              collisionPadding={8}
-            >
-              {pageSizeOptions.map((size) => (
-                <DropdownItem
-                  key={size}
-                  onClick={() => {
-                    onPageSizeChange(size);
-                    setPageSizeOpen(false);
-                  }}
-                >
-                  {size}
-                </DropdownItem>
-              ))}
-            </DropdownContent>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+            </PrimitiveButton>
+          }
+        />
       </Block>
-
-      <PrimitiveText 
-        as="span" 
-        fontSize={FOUNDATION_THEME.font.size.body.sm.fontSize}
-        color={FOUNDATION_THEME.colors.gray[600]}
-      >
-        {startRow}-{endRow} of {totalRows}
-      </PrimitiveText>
       
-      <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[8]}>
+      <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[4]}>
         <PrimitiveButton
           contentCentered
           size={32}
@@ -203,10 +144,10 @@ export function DataTablePagination({
             backgroundColor: currentPage === 1 ? "transparent" : FOUNDATION_THEME.colors.gray[50],
           }}
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={FOUNDATION_THEME.unit[16]} />
         </PrimitiveButton>
 
-        <PageNumbersContainer>
+        <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[4]}>
           {pageNumbers.map((page, index) => 
             typeof page === 'number' ? (
               <PrimitiveButton
@@ -214,23 +155,26 @@ export function DataTablePagination({
                 contentCentered
                 minWidth={32}
                 height={32}
-                backgroundColor={currentPage === page ? FOUNDATION_THEME.colors.primary[100] : "transparent"}
-                color={currentPage === page ? FOUNDATION_THEME.colors.primary[700] : FOUNDATION_THEME.colors.gray[600]}
-                borderRadius={FOUNDATION_THEME.border.radius[2]}
+                backgroundColor={currentPage === page ? FOUNDATION_THEME.colors.gray[100] : "transparent"}
+                color={currentPage === page ? FOUNDATION_THEME.colors.gray[700] : FOUNDATION_THEME.colors.gray[600]}
+                borderRadius={FOUNDATION_THEME.border.radius[8]}
                 onClick={() => onPageChange(page)}
                 _hover={{
-                  backgroundColor: currentPage === page ? FOUNDATION_THEME.colors.primary[100] : FOUNDATION_THEME.colors.gray[50],
+                  backgroundColor: currentPage === page ? FOUNDATION_THEME.colors.gray[100] : FOUNDATION_THEME.colors.gray[50],
+                }}
+                style={{
+                  fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
                 }}
               >
                 {page}
               </PrimitiveButton>
             ) : (
-              <PageEllipsis key={index}>
+              <PrimitiveText as="span" key={index} fontSize={FOUNDATION_THEME.font.size.body.sm.fontSize} color={FOUNDATION_THEME.colors.gray[400]} padding={FOUNDATION_THEME.unit[4]}>
                 {page}
-              </PageEllipsis>
+              </PrimitiveText>
             )
           )}
-        </PageNumbersContainer>
+        </Block>
         
         <PrimitiveButton
           contentCentered
@@ -245,7 +189,7 @@ export function DataTablePagination({
             backgroundColor: currentPage === totalPages ? "transparent" : FOUNDATION_THEME.colors.gray[50],
           }}
         >
-          <ArrowRight size={16} />
+          <ArrowRight size={FOUNDATION_THEME.unit[16]} />
         </PrimitiveButton>
       </Block>
     </Block>
