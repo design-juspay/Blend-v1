@@ -29,18 +29,30 @@ const DataTableDemo = () => {
       ][index % 10],
       role: ['Admin', 'User', 'Manager', 'Editor', 'Viewer'][index % 5]
     }));
+
+    type UserRow = {
+      id: number;
+      name: string;
+      joinDate: string;
+      email: string;
+      role: string;
+      number: string;
+      gateway: string;
+      contact: string;
+      status: 'Active' | 'Inactive' | 'Pending'; // Update enum if needed
+    };
+    
   
-    const columns: ColumnDefinition<Record<string, unknown>>[] = [
+    const columns: ColumnDefinition<UserRow>[] = [
       { 
-        id: 'name',
         field: 'name',
         header: 'Name',
-        accessor: (row) => (
+        renderCell: (_value, row) => (
           <div className="flex items-center gap-3">
             <Avatar src={`https://randomuser.me/api/portraits/${row.id % 2 ? 'men' : 'women'}/${row.id % 70}.jpg`} />
             <div>
-              <div className="font-medium text-sm">{row.name as string}</div>
-              <div className="text-xs text-gray-500">Joined in {row.joinDate as string}</div>
+              <div className="font-medium text-sm">{row.name}</div>
+              <div className="text-xs text-gray-500">Joined in {row.joinDate}</div>
             </div>
           </div>
         ),
@@ -48,56 +60,47 @@ const DataTableDemo = () => {
         width: '150px'
       },
       { 
-        id: 'email',
         field: 'email',
         header: 'Email',
-        accessor: (row) => row.email as string,
         isSortable: true,
         width: '200px'
       },
       { 
-        id: 'role',
         field: 'role',
         header: 'Role',
-        accessor: (row) => row.role as string,
         isSortable: true
       },
       { 
-        id: 'number',
         field: 'number',
         header: 'Number',
-        accessor: (row) => row.number as string,
         isSortable: true
       },
       { 
-        id: 'gateway',
         field: 'gateway',
         header: 'Gateway',
-        accessor: (row) => row.gateway as string,
         isSortable: true
       },
       { 
-        id: 'contact',
         field: 'contact',
         header: 'Contact',
-        accessor: (row) => row.contact as string
+        isSortable: true
       },
       {
-        id: 'status',
         field: 'status',
         header: 'Status',
-        accessor: (row) => (
+        renderCell: (_value, row) => (
           <span className={`px-2 py-1 rounded text-xs ${
-            (row.status as string) === 'Active' ? 'bg-green-100 text-green-800' : 
-            (row.status as string) === 'Inactive' ? 'bg-red-100 text-red-800' :
+            row.status === 'Active' ? 'bg-green-100 text-green-800' : 
+            row.status === 'Inactive' ? 'bg-red-100 text-red-800' :
             'bg-yellow-100 text-yellow-800'
           }`}>
-            {row.status as string}
+            {row.status}
           </span>
         ),
         isSortable: true
       },
     ];
+    
   
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -105,13 +108,13 @@ const DataTableDemo = () => {
       field: '',
       direction: SortDirection.NONE
     });
-    const [_filters, setFilters] = useState<Record<string, string[]>>({});
   
     return (
       <div>
         <DataTable
           data={data}
-          columns={columns}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          columns={columns as any}
           idField="id"
           title="User Management"
           description="Complete overview of system users and their roles"
@@ -127,9 +130,6 @@ const DataTableDemo = () => {
           }}
           defaultSort={sortConfig}
           onSortChange={(newSortConfig) => setSortConfig(newSortConfig)}
-          onFilterChange={(filters) => {
-            setFilters(filters);
-          }}
         />
       </div>
     );

@@ -1,53 +1,19 @@
 import { SortDirection, SortConfig } from './types';
 
-export function filterData<T extends Record<string, any>>(
+export const filterData = <T extends Record<string, unknown>>(
   data: T[],
-  filters: Record<string, any>
-): T[] {
-  if (!filters || Object.keys(filters).length === 0) {
-    return data;
-  }
-
-  return data.filter(item => {
-    return Object.keys(filters).every(key => {
-      const filterValue = filters[key];
-      const itemValue = item[key];
-      
-      // Skip empty filters
-      if (!filterValue) return true;
-      
-      // Array filter values
-      if (Array.isArray(filterValue) && filterValue.length > 0) {
-        // Empty filter array means no filtering
-        if (filterValue.length === 0) return true;
-        return filterValue.includes(itemValue);
+  filters: Record<string, unknown>
+): T[] => {
+  return data.filter(row => {
+    return Object.entries(filters).every(([field, filterValue]) => {
+      const cellValue = row[field];
+      if (Array.isArray(filterValue)) {
+        return filterValue.includes(cellValue);
       }
-      
-      // String filter (case insensitive)
-      if (typeof itemValue === 'string' && typeof filterValue === 'string') {
-        return itemValue.toLowerCase().includes(filterValue.toLowerCase());
-      }
-      
-      // Number filter
-      if (typeof itemValue === 'number' && typeof filterValue === 'number') {
-        return itemValue === filterValue;
-      }
-      
-      // Boolean filter
-      if (typeof itemValue === 'boolean') {
-        return itemValue === filterValue;
-      }
-      
-      // Date filter
-      if (itemValue instanceof Date && filterValue instanceof Date) {
-        return itemValue.getTime() === filterValue.getTime();
-      }
-      
-      // Default: equality
-      return itemValue === filterValue;
+      return String(cellValue).toLowerCase().includes(String(filterValue).toLowerCase());
     });
   });
-}
+};
 
 export const sortData = <T extends Record<string, unknown>>(
   data: T[],

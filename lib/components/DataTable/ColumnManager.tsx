@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import { Settings } from 'lucide-react';
 import { styled } from 'styled-components';
 import { FOUNDATION_THEME } from '../../tokens';
@@ -8,6 +7,7 @@ import Menu from '../Menu/Menu';
 import { MenuAlignment } from '../Menu/types';
 import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
 import Block from '../Primitives/Block/Block';
+import { ColumnManagerProps } from './types';
 
 // Styled Components
 const TriggerButton = styled(PrimitiveButton)`
@@ -23,25 +23,11 @@ const TriggerButton = styled(PrimitiveButton)`
   }
 `;
 
-interface ColumnManagerProps<T> {
-  columns: Array<{
-    field: keyof T;
-    header: string;
-    isVisible?: boolean;
-    canHide?: boolean;
-  }>;
-  visibleColumns: Array<{
-    field: keyof T;
-    header: string;
-  }>;
-  onColumnChange: (columns: Array<any>) => void;
-}
-
-export const ColumnManager = forwardRef<HTMLDivElement, ColumnManagerProps<any>>(function ColumnManager<T>({ 
+export const ColumnManager = <T,>({ 
   columns, 
   visibleColumns, 
   onColumnChange 
-}: ColumnManagerProps<T>, ref: React.Ref<HTMLDivElement>) {
+}: ColumnManagerProps<T>) => {
   
   const toggleColumnVisibility = (field: keyof T) => {
     const isCurrentlyVisible = visibleColumns.some(col => col.field === field);
@@ -87,7 +73,7 @@ export const ColumnManager = forwardRef<HTMLDivElement, ColumnManagerProps<any>>
   ];
   
   return (
-    <Block ref={ref}>
+    <Block>
       <Menu
         alignment={MenuAlignment.END}
         enableSearch={false}
@@ -100,6 +86,6 @@ export const ColumnManager = forwardRef<HTMLDivElement, ColumnManagerProps<any>>
       />
     </Block>
   );
-});
+};
 
 ColumnManager.displayName = "ColumnManager"; 

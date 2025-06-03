@@ -6,8 +6,6 @@ import { styled } from 'styled-components';
 import { DataTableProps, SortDirection, SortConfig, ColumnDefinition } from './types';
 import dataTableTokens from './dataTable.tokens';
 import {
-
-  filterData,
   sortData,
 } from './utils';
 import { DataTablePagination } from './DataTablePagination';
@@ -71,7 +69,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     isStriped = false,
     isHoverable = true,
     defaultSort,
-    enableFiltering = true,
     enableColumnManager = true,
     showToolbar = true,
     pagination = {
@@ -86,7 +83,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   }: DataTableProps<T>
 ) => {
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(defaultSort || null);
-  const [filters, _setFilters] = useState<Record<string, unknown>>({});
   const [visibleColumns, setVisibleColumns] = useState<ColumnDefinition<T>[]>(() => {
     return initialColumns.filter(col => col.isVisible !== false);
   });
@@ -101,16 +97,12 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const processedData = useMemo(() => {
     let result = [...data];
 
-    if (enableFiltering && Object.keys(filters).length > 0) {
-      result = filterData(result, filters);
-    }
-
     if (sortConfig && sortConfig.field) {
       result = sortData(result, sortConfig);
     }
 
     return result;
-  }, [data, filters, sortConfig, enableFiltering]);
+  }, [data, sortConfig]);
 
   const currentData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;

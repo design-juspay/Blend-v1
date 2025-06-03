@@ -58,46 +58,52 @@ export type PaginationConfig = {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-export type DataTableProps<T extends Record<string, any>> = {
-  /** Data array from backend */
+export type ColumnManagerProps<T> = {
+  columns: ColumnDefinition<T>[];
+  visibleColumns: ColumnDefinition<T>[];
+  onColumnChange: (columns: ColumnDefinition<T>[]) => void;
+};
+
+export type DataTableProps<T extends Record<string, unknown>> = {
+  /** Array of data objects to display */
   data: T[];
   /** Data summary information */
   summary?: {
     count: number;
     sum?: number;
     totalCount: number;
-    [key: string]: any;
+    [key: string]: unknown;
   };
   /** Column definitions */
   columns: ColumnDefinition<T>[];
-  /** Unique identifier field */
+  /** Field name to use as unique identifier for rows */
   idField: keyof T;
   /** Optional table title */
   title?: string;
-  /** Optional description */
+  /** Optional table description */
   description?: string;
-  /** Whether table rows should be striped */
+  /** Whether to show striped rows */
   isStriped?: boolean;
-  /** Whether rows should highlight on hover */
+  /** Whether to show hover effects on rows */
   isHoverable?: boolean;
-  /** Initial sort configuration */
+  /** Default sort configuration */
   defaultSort?: SortConfig;
-  /** Whether to use client-side filtering */
+  /** Whether to enable filtering */
   enableFiltering?: boolean;
-  /** Whether to enable column management */
+  /** Whether to show column manager */
   enableColumnManager?: boolean;
-  /** Whether to show the table toolbar */
+  /** Whether to show toolbar */
   showToolbar?: boolean;
   /** Pagination configuration */
   pagination?: PaginationConfig;
   /** Callback when page changes */
   onPageChange?: (page: number) => void;
   /** Callback when page size changes */
-  onPageSizeChange?: (pageSize: number) => void;
-  /** Callback when sorting changes */
+  onPageSizeChange?: (size: number) => void;
+  /** Callback when sort changes */
   onSortChange?: (sortConfig: SortConfig) => void;
   /** Callback when filters change */
-  onFilterChange?: (filters: Record<string, any>) => void;
+  onFilterChange?: (filters: Record<string, unknown>) => void;
   /** Optional additional class name */
   className?: string;
 } 
