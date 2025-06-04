@@ -49,39 +49,39 @@ const Content = styled(RadixMenu.Content)(() => ({
   scrollbarColor: "transparent transparent",
 }));
 
-const StyledItem = styled(RadixMenu.Item)<{ isSelected: boolean }>(
-  ({ isSelected }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: 4,
-    padding: "8px 6px",
-    margin: "0px 8px",
+const StyledItem = styled(RadixMenu.Item).withConfig({
+  shouldForwardProp: (prop) => prop !== "isSelected",
+})<{ isSelected: boolean }>(({ isSelected }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: 4,
+  padding: "8px 6px",
+  margin: "0px 8px",
 
-    alignItems: "center",
-    borderRadius: 4,
-    cursor: "pointer",
-    userSelect: "none",
-    backgroundColor: isSelected
-      ? FOUNDATION_THEME.colors.gray[50]
-      : "transparent",
+  alignItems: "center",
+  borderRadius: 4,
+  cursor: "pointer",
+  userSelect: "none",
+  backgroundColor: isSelected
+    ? FOUNDATION_THEME.colors.gray[50]
+    : "transparent",
 
-    // hover effects
-    "&:hover": {
-      backgroundColor: FOUNDATION_THEME.colors.gray[50],
-    },
+  // hover effects
+  "&:hover": {
+    backgroundColor: FOUNDATION_THEME.colors.gray[50],
+  },
 
-    "&[data-disabled]": {
-      opacity: 0.5,
-      cursor: "not-allowed",
-    },
+  "&[data-disabled]": {
+    opacity: 0.5,
+    cursor: "not-allowed",
+  },
 
-    "&[data-highlighted]": {
-      border: "none",
-      outline: "none",
-      backgroundColor: FOUNDATION_THEME.colors.gray[50],
-    },
-  })
-);
+  "&[data-highlighted]": {
+    border: "none",
+    outline: "none",
+    backgroundColor: FOUNDATION_THEME.colors.gray[50],
+  },
+}));
 
 const StyledSubMenu = styled(RadixMenu.Sub)(() => ({
   padding: "8px 6px",
