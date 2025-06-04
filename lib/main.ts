@@ -26,3 +26,4 @@ export * from "./components/Inputs";
 export * from "./components/Select";
 export * from "./components/Menu";
 export * from "./components/Sidebar";
+export * from "./components/MultiSelect";

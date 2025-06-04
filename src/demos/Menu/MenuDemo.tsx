@@ -179,16 +179,16 @@ const MenuDemo = () => {
           <MultiSelect
             selectedValues={mv}
             onChange={handleChange}
-            variant={SelectMenuVariant.NO_CONTAINER}
+            // variant={SelectMenuVariant.NO_CONTAINER}
             items={dummyMenuItems}
-            label="Multi Select"
+            label="Gateway"
             sublabel="Select an option"
             disabled={false}
             helpIconHintText="Help icon text"
             name="multi-select"
             required={true}
             placeholder="Select an option"
-            size={SelectMenuSize.LARGE}
+            size={SelectMenuSize.SMALL}
             hintText="Hint text"
             alignment={SelectMenuAlignment.START}
             minWidth={300}

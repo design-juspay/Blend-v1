@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Block from "../Primitives/Block/Block";
 import {
-  SelectMenuAlignment,
   SelectMenuGroupType,
   SelectMenuItemType,
-  SelectMenuSide,
   SelectMenuSize,
   SelectMenuVariant,
 } from "../Select";
@@ -18,37 +16,7 @@ import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
 import { ChevronDown, User, X } from "lucide-react";
 import selectTokens from "../Select/select.token";
-
-type MultiSelectProps = {
-  selectedValues: string[];
-  onChange: (selectedValue: string) => void;
-  items: SelectMenuGroupType[];
-
-  // labels
-  label: string;
-  sublabel?: string;
-  disabled?: boolean;
-  helpIconHintText?: string;
-  name?: string;
-  required?: boolean;
-  variant?: SelectMenuVariant;
-  selectionTagType?: SelectionTagType;
-  slot?: React.ReactNode;
-  hintText?: string;
-  placeholder: string;
-  size?: SelectMenuSize;
-
-  // dim
-  minWidth?: number;
-  maxWidth?: number;
-  maxHeight?: number;
-
-  // alignment
-  alignment?: SelectMenuAlignment;
-  side?: SelectMenuSide;
-  sideOffset?: number;
-  alignOffset?: number;
-};
+import { MultiSelectProps } from "./types";
 
 const map = function getValueLabelMap(
   groups: SelectMenuGroupType[]
@@ -125,10 +93,10 @@ const MultiSelect = ({
       )}
       <Block display="flex">
         <Block
-          width={
-            variant === SelectMenuVariant.CONTAINER ? "100%" : "auto"
+          width={variant === SelectMenuVariant.CONTAINER ? "100%" : "auto"}
+          maxWidth={
+            variant === SelectMenuVariant.NO_CONTAINER ? "100%" : "auto"
           }
-          maxWidth={variant === SelectMenuVariant.NO_CONTAINER ? "100%" : "auto"}
           display="flex"
           alignItems="center"
         >
@@ -182,34 +150,67 @@ const MultiSelect = ({
                 //   backgroundColor: FOUNDATION_THEME.colors.gray[50],
                 //   outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
                 // }}
+                gap={8}
               >
-                <Block as="span" display="flex" alignItems="center" gap={8}>
-                  {slot && <Block contentCentered>{slot}</Block>}
-                  <Block
-                    as="span"
-                    display="flex"
-                    alignItems="center"
-                    gap={4}
-                    flexGrow={1}
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                  >
+                {slot && <Block as="span" contentCentered>{slot}</Block>}
+                <Block
+                  as="span"
+                  textAlign="left"
+                  style={{
+                    textAlign: "left",
+                    flexGrow: 1,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {variant === SelectMenuVariant.NO_CONTAINER ||
+                    (variant === SelectMenuVariant.CONTAINER &&
+                      selectedValues.length === 0 && (
+                        <Text
+                          as="span"
+                          color={FOUNDATION_THEME.colors.gray[700]}
+                          fontWeight={500}
+                        >
+                          {variant === SelectMenuVariant.CONTAINER
+                            ? placeholder
+                            : label}
+                        </Text>
+                      ))}
+                  {selectedValues.length > 0 && (
                     <Text
+                      as="span"
                       color={
-                        selectedValues.length > 0
-                          ? FOUNDATION_THEME.colors.gray[700]
-                          : FOUNDATION_THEME.colors.gray[600]
+                        variant === SelectMenuVariant.CONTAINER
+                          ? selectionTagType === SelectionTagType.COUNT
+                            ? FOUNDATION_THEME.colors.gray[0]
+                            : FOUNDATION_THEME.colors.gray[700]
+                          : selectionTagType === SelectionTagType.COUNT
+                          ? FOUNDATION_THEME.colors.gray[0]
+                          : FOUNDATION_THEME.colors.gray[400]
                       }
-                      variant="body.md"
-                      style={{ whiteSpace: "nowrap", overflow: "hidden" }}
                       fontWeight={500}
+                      style={{
+                        marginLeft: 8,
+                        backgroundColor:
+                          selectionTagType === SelectionTagType.COUNT
+                            ? FOUNDATION_THEME.colors.primary[600]
+                            : FOUNDATION_THEME.colors.primary[0],
+                        borderRadius: 4,
+                        padding:
+                          selectionTagType === SelectionTagType.COUNT
+                            ? "0px 6px"
+                            : "0px 0px",
+                        height: "100%",
+                      }}
                     >
-                      {selectedValues.length > 0
-                        ? selectedValues.map((v) => valueLabelMap[v]).join(", ")
-                        : placeholder}
+                      {selectionTagType === SelectionTagType.COUNT
+                        ? selectedValues.length
+                        : selectedValues
+                            .map((v) => valueLabelMap[v])
+                            .join(", ")}
                     </Text>
-                  </Block>
+                  )}
                 </Block>
                 <Block
                   as="span"
@@ -217,6 +218,7 @@ const MultiSelect = ({
                   alignItems="center"
                   gap={4}
                   size={20}
+                  flexShrink={0}
                 >
                   <ChevronDown size={16} />
                 </Block>
