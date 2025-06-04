@@ -18,6 +18,7 @@ export type UnitTokensType = Readonly<{
   36: CSSObject["width"];
   40: CSSObject["width"];
   48: CSSObject["width"];
+  52: CSSObject["width"];
   56: CSSObject["width"];
   64: CSSObject["width"];
   auto: CSSObject["width"];
@@ -41,6 +42,7 @@ const unitTokens: UnitTokensType = {
   36: "36px",
   40: "40px",
   48: "48px",
+  52: "52px",
   56: "56px",
   64: "64px",
   auto: "auto",

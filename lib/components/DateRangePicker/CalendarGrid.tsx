@@ -13,35 +13,6 @@ type CalendarGridProps = {
   disablePastDates?: boolean;
 }
 
-const StyledGridContainer = styled(Block)`
-  ${dateRangePickerTokens.calendar.gridContainer}
-`;
-
-const StyledMonthContainer = styled(Block)`
-  ${dateRangePickerTokens.calendar.monthContainer}
-`;
-
-const StyledMonthHeader = styled(Block)`
-  ${dateRangePickerTokens.calendar.monthHeader}
-`;
-
-const StyledDayNamesContainer = styled(Block)`
-  ${dateRangePickerTokens.calendar.dayNamesContainer}
-`;
-
-const StyledDayName = styled(Block)`
-  ${dateRangePickerTokens.calendar.dayName}
-  ${dateRangePickerTokens.text.dayName}
-`;
-
-const StyledWeekRow = styled(Block)`
-  ${dateRangePickerTokens.calendar.weekRow}
-`;
-
-const StyledEmptyCell = styled(Block)`
-  ${dateRangePickerTokens.calendar.emptyCell}
-`;
-
 const StyledDayCell = styled(Block)<{
   $isStart: boolean;
   $isEnd: boolean;
@@ -195,13 +166,11 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
       let week = Array(7).fill(null);
       let dayCounter = 1;
 
-      // Fill in the first week with empty cells before the first day
       for (let i = firstDayOfWeek; i < 7 && dayCounter <= daysInMonth; i++) {
         week[i] = dayCounter++;
       }
       weeks.push(week);
 
-      // Fill in the remaining weeks
       while (dayCounter <= daysInMonth) {
         week = Array(7).fill(null);
         for (let i = 0; i < 7 && dayCounter <= daysInMonth; i++) {
@@ -213,29 +182,29 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
       const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
 
       return (
-        <StyledMonthContainer
+        <Block style={{...dateRangePickerTokens.calendar.gridContainer}}
           key={`month-${year}-${month}`}
           data-month={`${month}-${year}`}
           data-current-month={isCurrentMonth ? 'true' : 'false'}
           ref={isCurrentMonth ? currentMonthRef : null}
         >
-          <StyledMonthHeader>
+          <Block style={{...dateRangePickerTokens.calendar.monthHeader}}>
             {monthNames[month]} {year}
-          </StyledMonthHeader>
+          </Block>
 
-          <StyledDayNamesContainer>
+          <Block style={{...dateRangePickerTokens.calendar.dayNamesContainer}}>
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-              <StyledDayName key={day}>
+              <Block style={{...dateRangePickerTokens.calendar.dayName}}>
                 {day}
-              </StyledDayName>
+              </Block>
             ))}
-          </StyledDayNamesContainer>
+          </Block>
 
           {weeks.map((week, weekIndex) => (
-            <StyledWeekRow key={weekIndex}>
+            <Block style={{...dateRangePickerTokens.calendar.weekRow}} key={weekIndex}>
               {week.map((day, dayIndex) => {
                 if (day === null) {
-                  return <StyledEmptyCell key={dayIndex} />;
+                  return <Block style={{...dateRangePickerTokens.calendar.emptyCell}} key={dayIndex} />;
                 }
 
                 const date = new Date(year, month, day);
@@ -266,16 +235,16 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
                   </StyledDayCell>
                 );
               })}
-            </StyledWeekRow>
+            </Block>
           ))}
-        </StyledMonthContainer>
+        </Block>
       );
     };
 
     return (
-      <StyledGridContainer ref={ref}>
+      <Block style={{...dateRangePickerTokens.calendar.gridContainer}} ref={ref}>
         {months.map(({ year, month }) => renderMonthCalendar(year, month))}
-      </StyledGridContainer>
+      </Block>
     );
   }
 );
