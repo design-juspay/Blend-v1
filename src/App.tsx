@@ -35,7 +35,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("datatable");
+  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [

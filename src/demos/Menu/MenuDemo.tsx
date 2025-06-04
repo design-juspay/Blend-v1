@@ -1,10 +1,161 @@
-import { Trash, User } from "lucide-react";
+import { AlertTriangle, Bell, CreditCard, Lock, LogOut, Palette, Shield,   Trash, User } from "lucide-react";
 import { Button } from "../../../lib/components/Button";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Menu from "../../../lib/components/Menu/Menu";
-import Select from "../../../lib/components/Select/Select";
+import Select, {
+  SelectionTagType,
+} from "../../../lib/components/Select/Select";
 import { useState } from "react";
 import { MenuAlignment } from "../../../lib/components/Menu/types";
+import {
+  SelectMenuAlignment,
+  SelectMenuSize,
+  SelectMenuVariant,
+} from "../../../lib/components/Select/types";
+import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
+import { addSnackbar, Tag } from "../../../lib/main";
+import { FOUNDATION_THEME } from "../../../lib/tokens";
+import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
+
+export const dummyMenuItems = [
+  {
+    groupLabel: "Account",
+    showSeparator: true,
+    items: [
+      {
+        label: "Profile",
+        value: "profile",
+        slot1: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subLabel: "Manage your personal information",
+      },
+      {
+        label: "Security",
+        value: "security",
+        slot1: <Shield size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subMenu: [
+          {
+            label: "Password",
+            value: "password",
+            subLabel: "Change your password",
+          },
+          {
+            label: "Two-Factor Auth",
+            value: "2fa",
+            subLabel: "Enable 2FA for extra security",
+          },
+        ],
+      },
+      {
+        label: "Billing",
+        value: "billing",
+        slot2: <Tag text="Pro" />,
+        slot3: <Tag text="Active" />,
+        slot4: <Tag text="Free" />,
+        slot1: (
+          <CreditCard size={16} color={FOUNDATION_THEME.colors.gray[500]} />
+        ),
+        subMenu: [
+          {
+            label: "Payment Methods",
+            value: "payment-methods",
+            subLabel: "Manage your cards and billing info",
+          },
+          {
+            label: "Subscription",
+            value: "subscription",
+            subLabel: "View and manage your plan",
+          },
+        ],
+      },
+      {
+        label: "Sign Out",
+        value: "sign-out",
+        slot1: <LogOut size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+      },
+      {
+        label: "Delete Account",
+        value: "delete-account",
+        slot1: <Trash size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subMenu: [
+          {
+            label: "Confirm Deletion",
+            value: "confirm-deletion",
+            subLabel: "This action cannot be undone",
+            subMenu: [
+              {
+                label: "Yes, Delete My Account",
+                value: "delete-confirmed",
+                slot1: (
+                  <AlertTriangle
+                    size={16}
+                    color={FOUNDATION_THEME.colors.gray[500]}
+                  />
+                ),
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    groupLabel: "Preferences",
+    showSeparator: true,
+    items: [
+      {
+        label: "Appearance",
+        value: "appearance",
+        slot1: <Palette size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subMenu: [
+          {
+            label: "Theme",
+            value: "theme",
+            subLabel: "Choose light or dark mode",
+          },
+          {
+            label: "Accent Color",
+            value: "accent-color",
+            subLabel: "Customize your interface colors",
+          },
+        ],
+      },
+      {
+        label: "Notifications",
+        value: "notifications",
+        slot1: <Bell size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subMenu: [
+          {
+            label: "Email",
+            value: "email-notifications",
+            subLabel: "Configure email alerts",
+          },
+          {
+            label: "Push",
+            value: "push-notifications",
+            subLabel: "Manage push notifications",
+          },
+        ],
+      },
+      {
+        label: "Privacy",
+        value: "privacy",
+        slot1: <Lock size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subMenu: [
+          {
+            label: "Data Usage",
+            value: "data-usage",
+            subLabel: "Control how your data is used",
+          },
+          {
+            label: "Sharing",
+            value: "sharing",
+            subLabel: "Manage content sharing settings",
+          },
+        ],
+      },
+    ],
+  },
+];
 
 const MenuDemo = () => {
   // Add state for Select demo
@@ -12,68 +163,100 @@ const MenuDemo = () => {
   // Add state for multi-select demo
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
 
-  const dummyMenuItems = [
-    {
-      groupLabel: "Account GGWP",
-      showSeparator: true,
-      items: [
-        {
-          label: "Profile Settings",
-          value: "profile-settings",
-          slot1: <User size={13} />,
-        },
-        {
-          label: "Billing & Subscription",
-          value: "billing-subscription",
-          subLabel: "Manage your payment methods and plans",
-        },
-        {
-          label: "Sign Out",
-          value: "sign-out",
-        },
-        {
-          label: "Delete Account",
-          value: "delete-account",
-          subMenu: [
-            {
-              label: "Delete Account",
-              value: "delete-account",
-              slot1: <Trash size={13} />,
-              subMenu: [
-                {
-                  label: "Are you sure?",
-                  value: "are-you-sure",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      groupLabel: "Preferences",
-      showSeparator: true,
-      items: [
-        {
-          label: "Theme Settings",
-          value: "theme-settings",
-          subLabel: "Customize your appearance",
-        },
-        {
-          label: "Notifications",
-          value: "notifications",
-        },
-        {
-          label: "Privacy",
-          value: "privacy",
-        },
-      ],
-    },
-  ];
+  const [mv, setMv] = useState<string[]>(["profile"]);
+
+  // Controls for container type, size, and selectionTagType
+  const [containerType, setContainerType] = useState<SelectMenuVariant>(
+    SelectMenuVariant.CONTAINER
+  );
+  const [menuSize, setMenuSize] = useState<SelectMenuSize>(
+    SelectMenuSize.SMALL
+  );
+  const [tagType, setTagType] = useState<SelectionTagType>(
+    SelectionTagType.COUNT
+  );
+
+  const handleChange = (value: string) => {
+    if (value === "") {
+      setMv([]);
+      return;
+    }
+    setMv((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+  };
+
+  const [singleSelected, setSingleSelected] = useState("");
+  const handleSingleSelect = (value: string) => {
+    addSnackbar({ header: "value updataed" });
+    if (value === singleSelected) {
+      setSingleSelected("");
+      return;
+    }
+    setSingleSelected(value);
+  };
+
+  // Helper for control dropdowns
+  const controlOptions = {
+    containerType: [
+      { label: "Container", value: SelectMenuVariant.CONTAINER },
+      { label: "No Container", value: SelectMenuVariant.NO_CONTAINER },
+    ],
+    menuSize: [
+      { label: "Small", value: SelectMenuSize.SMALL },
+      { label: "Medium", value: SelectMenuSize.MEDIUM },
+      { label: "Large", value: SelectMenuSize.LARGE },
+    ],
+    tagType: [
+      { label: "Count", value: SelectionTagType.COUNT },
+      { label: "Text", value: SelectionTagType.TEXT },
+    ],
+  };
 
   return (
     <div style={{ padding: "20px" }}>
       <h2>Menu Component</h2>
+      {/* Controls for container type, size, and selectionTagType */}
+      <Block display="flex" gap={24} style={{ marginBottom: 32 }}>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[
+              { groupLabel: undefined, items: controlOptions.containerType },
+            ]}
+            label="Container Type"
+            selected={containerType}
+            onSelectChange={(v) =>
+              typeof v === "string" && setContainerType(v as SelectMenuVariant)
+            }
+            enableSearch={false}
+            placeholder="Container Type"
+          />
+        </div>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[{ groupLabel: undefined, items: controlOptions.menuSize }]}
+            label="Size"
+            selected={menuSize}
+            onSelectChange={(v) =>
+              typeof v === "string" && setMenuSize(v as SelectMenuSize)
+            }
+            enableSearch={false}
+            placeholder="Size"
+          />
+        </div>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[{ groupLabel: undefined, items: controlOptions.tagType }]}
+            label="Selection Tag Type"
+            selected={tagType}
+            onSelectChange={(v) =>
+              typeof v === "string" && setTagType(v as SelectionTagType)
+            }
+            enableSearch={false}
+            placeholder="Selection Tag Type"
+          />
+        </div>
+      </Block>
       <Block
         contentCentered
         display="flex"
@@ -81,6 +264,47 @@ const MenuDemo = () => {
         gap={100}
         style={{ marginTop: "20px" }}
       >
+        <div style={{ width: "400px" }}>
+          <p style={{ color: "black", paddingBottom: 16 }}>
+            Current Selected: {singleSelected ? singleSelected : "None"}
+          </p>
+          <SingleSelect
+            enableSearch={false}
+            selected={singleSelected}
+            onSelect={handleSingleSelect}
+            items={dummyMenuItems}
+            label="Single Select"
+            subLabel="Select an option"
+            placeholder="Select an option"
+            hintText="Hint text"
+            helpIconText="Help icon text"
+            required={true}
+            name="single-select"
+            size={menuSize}
+            variant={containerType}
+          />
+        </div>
+        <div style={{ width: "400px" }}>
+          <MultiSelect
+            selectedValues={mv}
+            onChange={handleChange}
+            variant={containerType}
+            selectionTagType={tagType}
+            size={menuSize}
+            items={dummyMenuItems}
+            label="Gateway"
+            sublabel="Select an option"
+            disabled={false}
+            helpIconHintText="Help icon text"
+            name="multi-select"
+            required={true}
+            placeholder="Select an option"
+            hintText="Hint text"
+            alignment={SelectMenuAlignment.START}
+            minWidth={300}
+            maxWidth={500}
+          />
+        </div>
         <Menu
           alignment={MenuAlignment.END}
           enableSearch={false}
@@ -94,7 +318,8 @@ const MenuDemo = () => {
             // enableSearch={true}
             enableSearch={false}
             placeholder="Gateway"
-            // variant={SelectMenuVariant.NO_CONTAINER}
+            variant={containerType}
+            size={menuSize}
             label="Select an option"
             selected={selectedOption}
             onSelectChange={(value) => {
@@ -116,6 +341,9 @@ const MenuDemo = () => {
             onSelectChange={(value) =>
               Array.isArray(value) && setMultiSelected(value)
             }
+            variant={containerType}
+            size={menuSize}
+            selectionTagType={tagType}
           />
         </div>
         <div style={{ marginTop: 8, color: "black" }}>
