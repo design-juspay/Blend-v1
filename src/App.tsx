@@ -23,6 +23,7 @@ import ChartDemo from "./demos/Charts";
 import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
 import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
+import DataTableDemo from "./demos/DataTable/DataTableDemo";
 import InputDemo from "./demos/Input/InputDemo";
 
 // Component categories
@@ -142,6 +143,11 @@ function App() {
       id: "daterangepicker",
       name: "Date Range Picker",
       component: <DateRangePickerDemo />,
+    },
+    {
+      id: "datatable",
+      name: "Data Table",
+      component: <DataTableDemo />,
     },
   ];
 
