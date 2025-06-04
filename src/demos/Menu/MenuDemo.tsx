@@ -2,7 +2,9 @@ import { AlertTriangle, Bell, CreditCard, Lock, LogOut, Palette, Shield,   Trash
 import { Button } from "../../../lib/components/Button";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Menu from "../../../lib/components/Menu/Menu";
-import Select from "../../../lib/components/Select/Select";
+import Select, {
+  SelectionTagType,
+} from "../../../lib/components/Select/Select";
 import { useState } from "react";
 import { MenuAlignment } from "../../../lib/components/Menu/types";
 import {
@@ -11,8 +13,9 @@ import {
   SelectMenuVariant,
 } from "../../../lib/components/Select/types";
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
-import { Tag } from "../../../lib/main";
+import { addSnackbar, Tag } from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
+import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
 
 export const dummyMenuItems = [
   {
@@ -22,25 +25,25 @@ export const dummyMenuItems = [
       {
         label: "Profile",
         value: "profile",
-        slot1: <User size={16} />,
-        subLabel: "Manage your personal information"
+        slot1: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        subLabel: "Manage your personal information",
       },
       {
         label: "Security",
         value: "security",
-        slot1: <Shield size={16} />,
+        slot1: <Shield size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         subMenu: [
           {
             label: "Password",
             value: "password",
-            subLabel: "Change your password"
+            subLabel: "Change your password",
           },
           {
             label: "Two-Factor Auth",
             value: "2fa",
-            subLabel: "Enable 2FA for extra security"
-          }
-        ]
+            subLabel: "Enable 2FA for extra security",
+          },
+        ],
       },
       {
         label: "Billing",
@@ -48,29 +51,31 @@ export const dummyMenuItems = [
         slot2: <Tag text="Pro" />,
         slot3: <Tag text="Active" />,
         slot4: <Tag text="Free" />,
-        slot1: <CreditCard size={16} />,
+        slot1: (
+          <CreditCard size={16} color={FOUNDATION_THEME.colors.gray[500]} />
+        ),
         subMenu: [
           {
             label: "Payment Methods",
             value: "payment-methods",
-            subLabel: "Manage your cards and billing info"
+            subLabel: "Manage your cards and billing info",
           },
           {
             label: "Subscription",
             value: "subscription",
-            subLabel: "View and manage your plan"
-          }
-        ]
+            subLabel: "View and manage your plan",
+          },
+        ],
       },
       {
         label: "Sign Out",
         value: "sign-out",
-        slot1: <LogOut size={16} />
+        slot1: <LogOut size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
       },
       {
         label: "Delete Account",
         value: "delete-account",
-        slot1: <Trash size={16} color={FOUNDATION_THEME.colors.red[500]} />,
+        slot1: <Trash size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         subMenu: [
           {
             label: "Confirm Deletion",
@@ -80,13 +85,18 @@ export const dummyMenuItems = [
               {
                 label: "Yes, Delete My Account",
                 value: "delete-confirmed",
-                slot1: <AlertTriangle size={16} color={FOUNDATION_THEME.colors.gray[500]} />
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                slot1: (
+                  <AlertTriangle
+                    size={16}
+                    color={FOUNDATION_THEME.colors.gray[500]}
+                  />
+                ),
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     groupLabel: "Preferences",
@@ -95,56 +105,56 @@ export const dummyMenuItems = [
       {
         label: "Appearance",
         value: "appearance",
-        slot1: <Palette size={16} />,
+        slot1: <Palette size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         subMenu: [
           {
             label: "Theme",
             value: "theme",
-            subLabel: "Choose light or dark mode"
+            subLabel: "Choose light or dark mode",
           },
           {
             label: "Accent Color",
             value: "accent-color",
-            subLabel: "Customize your interface colors"
-          }
-        ]
+            subLabel: "Customize your interface colors",
+          },
+        ],
       },
       {
         label: "Notifications",
         value: "notifications",
-        slot1: <Bell size={16} />,
+        slot1: <Bell size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         subMenu: [
           {
             label: "Email",
             value: "email-notifications",
-            subLabel: "Configure email alerts"
+            subLabel: "Configure email alerts",
           },
           {
             label: "Push",
             value: "push-notifications",
-            subLabel: "Manage push notifications"
-          }
-        ]
+            subLabel: "Manage push notifications",
+          },
+        ],
       },
       {
         label: "Privacy",
         value: "privacy",
-        slot1: <Lock size={16} />,
+        slot1: <Lock size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         subMenu: [
           {
             label: "Data Usage",
             value: "data-usage",
-            subLabel: "Control how your data is used"
+            subLabel: "Control how your data is used",
           },
           {
             label: "Sharing",
             value: "sharing",
-            subLabel: "Manage content sharing settings"
-          }
-        ]
-      }
-    ]
-  }
+            subLabel: "Manage content sharing settings",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const MenuDemo = () => {
@@ -154,6 +164,17 @@ const MenuDemo = () => {
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
 
   const [mv, setMv] = useState<string[]>(["profile"]);
+
+  // Controls for container type, size, and selectionTagType
+  const [containerType, setContainerType] = useState<SelectMenuVariant>(
+    SelectMenuVariant.CONTAINER
+  );
+  const [menuSize, setMenuSize] = useState<SelectMenuSize>(
+    SelectMenuSize.SMALL
+  );
+  const [tagType, setTagType] = useState<SelectionTagType>(
+    SelectionTagType.COUNT
+  );
 
   const handleChange = (value: string) => {
     if (value === "") {
@@ -165,9 +186,77 @@ const MenuDemo = () => {
     );
   };
 
+  const [singleSelected, setSingleSelected] = useState("");
+  const handleSingleSelect = (value: string) => {
+    addSnackbar({ header: "value updataed" });
+    if (value === singleSelected) {
+      setSingleSelected("");
+      return;
+    }
+    setSingleSelected(value);
+  };
+
+  // Helper for control dropdowns
+  const controlOptions = {
+    containerType: [
+      { label: "Container", value: SelectMenuVariant.CONTAINER },
+      { label: "No Container", value: SelectMenuVariant.NO_CONTAINER },
+    ],
+    menuSize: [
+      { label: "Small", value: SelectMenuSize.SMALL },
+      { label: "Medium", value: SelectMenuSize.MEDIUM },
+      { label: "Large", value: SelectMenuSize.LARGE },
+    ],
+    tagType: [
+      { label: "Count", value: SelectionTagType.COUNT },
+      { label: "Text", value: SelectionTagType.TEXT },
+    ],
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>Menu Component</h2>
+      {/* Controls for container type, size, and selectionTagType */}
+      <Block display="flex" gap={24} style={{ marginBottom: 32 }}>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[
+              { groupLabel: undefined, items: controlOptions.containerType },
+            ]}
+            label="Container Type"
+            selected={containerType}
+            onSelectChange={(v) =>
+              typeof v === "string" && setContainerType(v as SelectMenuVariant)
+            }
+            enableSearch={false}
+            placeholder="Container Type"
+          />
+        </div>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[{ groupLabel: undefined, items: controlOptions.menuSize }]}
+            label="Size"
+            selected={menuSize}
+            onSelectChange={(v) =>
+              typeof v === "string" && setMenuSize(v as SelectMenuSize)
+            }
+            enableSearch={false}
+            placeholder="Size"
+          />
+        </div>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[{ groupLabel: undefined, items: controlOptions.tagType }]}
+            label="Selection Tag Type"
+            selected={tagType}
+            onSelectChange={(v) =>
+              typeof v === "string" && setTagType(v as SelectionTagType)
+            }
+            enableSearch={false}
+            placeholder="Selection Tag Type"
+          />
+        </div>
+      </Block>
       <Block
         contentCentered
         display="flex"
@@ -176,10 +265,32 @@ const MenuDemo = () => {
         style={{ marginTop: "20px" }}
       >
         <div style={{ width: "400px" }}>
+          <p style={{ color: "black", paddingBottom: 16 }}>
+            Current Selected: {singleSelected ? singleSelected : "None"}
+          </p>
+          <SingleSelect
+            enableSearch={false}
+            selected={singleSelected}
+            onSelect={handleSingleSelect}
+            items={dummyMenuItems}
+            label="Single Select"
+            subLabel="Select an option"
+            placeholder="Select an option"
+            hintText="Hint text"
+            helpIconText="Help icon text"
+            required={true}
+            name="single-select"
+            size={menuSize}
+            variant={containerType}
+          />
+        </div>
+        <div style={{ width: "400px" }}>
           <MultiSelect
             selectedValues={mv}
             onChange={handleChange}
-            // variant={SelectMenuVariant.NO_CONTAINER}
+            variant={containerType}
+            selectionTagType={tagType}
+            size={menuSize}
             items={dummyMenuItems}
             label="Gateway"
             sublabel="Select an option"
@@ -188,10 +299,10 @@ const MenuDemo = () => {
             name="multi-select"
             required={true}
             placeholder="Select an option"
-            size={SelectMenuSize.SMALL}
             hintText="Hint text"
             alignment={SelectMenuAlignment.START}
             minWidth={300}
+            maxWidth={500}
           />
         </div>
         <Menu
@@ -207,7 +318,8 @@ const MenuDemo = () => {
             // enableSearch={true}
             enableSearch={false}
             placeholder="Gateway"
-            variant={SelectMenuVariant.NO_CONTAINER}
+            variant={containerType}
+            size={menuSize}
             label="Select an option"
             selected={selectedOption}
             onSelectChange={(value) => {
@@ -229,6 +341,9 @@ const MenuDemo = () => {
             onSelectChange={(value) =>
               Array.isArray(value) && setMultiSelected(value)
             }
+            variant={containerType}
+            size={menuSize}
+            selectionTagType={tagType}
           />
         </div>
         <div style={{ marginTop: 8, color: "black" }}>

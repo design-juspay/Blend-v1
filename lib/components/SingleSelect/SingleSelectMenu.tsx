@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
-import styled from "styled-components";
 import {
   SelectMenuAlignment,
-  SelectMenuGroupType,
   SelectMenuItemType,
   SelectMenuSide,
 } from "../Select";
-import Block from "../Primitives/Block/Block";
-import Text from "../Text/Text";
+import { SelectMenuGroupType } from "../Select";
 import { FOUNDATION_THEME } from "../../tokens";
-import { Checkbox } from "../Checkbox";
+import styled from "styled-components";
+import Text from "../Text/Text";
+import Block from "../Primitives/Block/Block";
 import { ChevronRight } from "lucide-react";
+import { Checkbox } from "../Checkbox";
 import { SearchInput } from "../Inputs";
 
-type MultiSelectProps = {
+type SingleSelectMenuProps = {
   items: SelectMenuGroupType[];
-  selected: string[];
+  selected: string;
   onSelect: (value: string) => void;
   trigger: React.ReactNode;
   minWidth?: number;
   maxWidth?: number;
   maxHeight?: number;
+  enableSearch?: boolean;
 
   // alignment
   alignment?: SelectMenuAlignment;
@@ -46,14 +47,6 @@ const Content = styled(RadixMenu.Content)(() => ({
   overflowY: "auto",
   scrollbarWidth: "none",
   scrollbarColor: "transparent transparent",
-}));
-
-const Label = styled(RadixMenu.Label)(() => ({
-  margin: "0px 8px",
-  padding: "8px 6px",
-  userSelect: "none",
-  textTransform: "uppercase",
-  overflow: "clip",
 }));
 
 const StyledItem = styled(RadixMenu.Item)<{ isSelected: boolean }>(
@@ -132,7 +125,7 @@ const SubMenu = ({
 }: {
   item: SelectMenuItemType;
   onSelect: (value: string) => void;
-  selected: string[];
+  selected: string;
 }) => {
   return (
     <StyledSubMenu>
@@ -206,7 +199,7 @@ const Item = ({
 }: {
   item: SelectMenuItemType;
   onSelect: (value: string) => void;
-  selected: string[];
+  selected: string;
 }) => {
   if (item.subMenu) {
     return <SubMenu item={item} onSelect={onSelect} selected={selected} />;
@@ -219,7 +212,7 @@ const Item = ({
     onSelect(item.value);
   };
 
-  const isSelected = selected.includes(item.value);
+  const isSelected = selected === item.value;
   return (
     <StyledItem
       isSelected={isSelected}
@@ -246,9 +239,11 @@ const Item = ({
         >
           {item.label}
         </Text>
-        <Block as="span" display="flex" alignItems="center">
-          <Checkbox checked={isSelected} disabled={item.disabled} />
-        </Block>
+        {isSelected && (
+          <Block as="span" display="flex" alignItems="center">
+            <Checkbox checked={isSelected} disabled={item.disabled} />
+          </Block>
+        )}
       </Block>
       {item.subLabel && (
         <Block display="flex" alignItems="center" width="100%">
@@ -271,7 +266,58 @@ const Separator = styled(RadixMenu.Separator)(() => ({
   margin: "8px 0px",
 }));
 
-const MultiSelectMenu = ({
+const Label = styled(RadixMenu.Label)(() => ({
+  margin: "0px 8px",
+  padding: "8px 6px",
+  userSelect: "none",
+  textTransform: "uppercase",
+  overflow: "clip",
+}));
+
+// Utility: Recursively filter menu items and groups by search text
+function filterMenuGroups(
+  groups: SelectMenuGroupType[],
+  searchText: string
+): SelectMenuGroupType[] {
+  if (!searchText) return groups;
+  const lower = searchText.toLowerCase();
+  return groups
+    .map((group: SelectMenuGroupType) => {
+      // TODO: Should we include the whole group if the label matches?
+      // if (group.label && group.label.toLowerCase().includes(lower)) {
+      //   return group;
+      // }
+      const filteredItems = group.items
+        .map((item: SelectMenuItemType) => filterMenuItem(item, lower))
+        .filter(Boolean) as SelectMenuItemType[];
+      if (filteredItems.length === 0) return null;
+      return { ...group, items: filteredItems };
+    })
+    .filter(Boolean) as SelectMenuGroupType[];
+}
+
+function filterMenuItem(
+  item: SelectMenuItemType,
+  lower: string
+): SelectMenuItemType | null {
+  // Check if this item matches
+  const matches =
+    (item.label && item.label.toLowerCase().includes(lower)) ||
+    (item.subLabel && item.subLabel.toLowerCase().includes(lower));
+  // If it has a submenu, filter recursively
+  if (item.subMenu) {
+    const filteredSub = item.subMenu
+      .map((sub: SelectMenuItemType) => filterMenuItem(sub, lower))
+      .filter(Boolean) as SelectMenuItemType[];
+    if (filteredSub.length > 0 || matches) {
+      return { ...item, subMenu: filteredSub };
+    }
+    return null;
+  }
+  return matches ? item : null;
+}
+
+const SingleSelectMenu = ({
   items,
   selected,
   onSelect,
@@ -279,7 +325,7 @@ const MultiSelectMenu = ({
   minWidth,
   maxWidth,
   maxHeight,
-
+  enableSearch,
   // alignment
   alignment = SelectMenuAlignment.CENTER,
   side = SelectMenuSide.BOTTOM,
@@ -289,8 +335,11 @@ const MultiSelectMenu = ({
   // open
   open,
   onOpenChange,
-}: MultiSelectProps) => {
-  const [search, setSearch] = useState("");
+}: SingleSelectMenuProps) => {
+  const [searchText, setSearchText] = useState("");
+
+  const filteredItems = filterMenuGroups(items, searchText);
+
   return (
     <RadixMenu.Root modal={false} open={open} onOpenChange={onOpenChange}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
@@ -308,51 +357,54 @@ const MultiSelectMenu = ({
           maxHeight,
         }}
       >
-        <Block
-          position="sticky"
-          top={0}
-          left={0}
-          right={0}
-          zIndex={1000}
-          marginBottom={10}
-        >
-          <SearchInput
-            value={search}
-            onChange={(e) => {
-              e.stopPropagation();
-              setSearch(e.target.value);
-            }}
-          />
-        </Block>
-        {items.map((group, groupId) => (
-          <React.Fragment key={groupId}>
-            {group.groupLabel && (
-              <Label>
-                <Text
-                  variant="body.sm"
-                  color={FOUNDATION_THEME.colors.gray[400]}
-                >
-                  {group.groupLabel}
-                </Text>
-              </Label>
-            )}
-            {group.items.map((item, itemIndex) => (
-              <Item
-                key={`${groupId}-${itemIndex}`}
-                // isSelected={selected.includes(item.value)}
-                selected={selected}
-                item={item}
-                onSelect={onSelect}
-              />
-            ))}
-            {groupId !== items.length - 1 && group.showSeparator && (
-              <Separator />
-            )}
-          </React.Fragment>
-        ))}
+        {enableSearch && (
+          <Block
+            position="sticky"
+            top={0}
+            left={0}
+            right={0}
+            zIndex={1000}
+            marginBottom={10}
+          >
+            <SearchInput
+              value={searchText}
+              onChange={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setSearchText(e.target.value);
+              }}
+            />
+          </Block>
+        )}
+        {filteredItems &&
+          filteredItems.map((group, groupId) => (
+            <React.Fragment key={groupId}>
+              {group.groupLabel && (
+                <Label>
+                  <Text
+                    variant="body.sm"
+                    color={FOUNDATION_THEME.colors.gray[400]}
+                  >
+                    {group.groupLabel}
+                  </Text>
+                </Label>
+              )}
+              {group.items.map((item, itemIndex) => (
+                <Item
+                  key={`${groupId}-${itemIndex}`}
+                  selected={selected}
+                  item={item}
+                  onSelect={onSelect}
+                />
+              ))}
+              {groupId !== items.length - 1 && group.showSeparator && (
+                <Separator />
+              )}
+            </React.Fragment>
+          ))}
       </Content>
     </RadixMenu.Root>
   );
 };
 
-export default MultiSelectMenu;
+export default SingleSelectMenu;

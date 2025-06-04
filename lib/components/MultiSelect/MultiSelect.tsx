@@ -74,7 +74,6 @@ const MultiSelect = ({
 
   return (
     <Block
-      className="debug"
       width="100%"
       display="flex"
       flexDirection="column"
@@ -146,15 +145,16 @@ const MultiSelect = ({
                 _focus={{
                   outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
                 }}
-                // _active={{
-                //   backgroundColor: FOUNDATION_THEME.colors.gray[50],
-                //   outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
-                // }}
                 gap={8}
               >
-                {slot && <Block as="span" contentCentered>{slot}</Block>}
+                {slot && (
+                  <Block as="span" contentCentered>
+                    {slot}
+                  </Block>
+                )}
                 <Block
                   as="span"
+                  height={20}
                   textAlign="left"
                   style={{
                     textAlign: "left",
@@ -164,22 +164,36 @@ const MultiSelect = ({
                     whiteSpace: "nowrap",
                   }}
                 >
+                  {/* NO CONTAINER Label*/}
+                  {variant === SelectMenuVariant.NO_CONTAINER && (
+                    <Text
+                      as="span"
+                      variant="body.md"
+                      color={FOUNDATION_THEME.colors.gray[700]}
+                      fontWeight={500}
+                    >
+                      {label}
+                    </Text>
+                  )}
+
+                  {/* Variant == Container - always show the placeholder*/}
                   {variant === SelectMenuVariant.NO_CONTAINER ||
-                    (variant === SelectMenuVariant.CONTAINER &&
-                      selectedValues.length === 0 && (
-                        <Text
-                          as="span"
-                          color={FOUNDATION_THEME.colors.gray[700]}
-                          fontWeight={500}
-                        >
-                          {variant === SelectMenuVariant.CONTAINER
-                            ? placeholder
-                            : label}
-                        </Text>
-                      ))}
+                    (variant === SelectMenuVariant.CONTAINER && (
+                      <Text
+                        as="span"
+                        variant="body.md"
+                        color={FOUNDATION_THEME.colors.gray[700]}
+                        fontWeight={500}
+                      >
+                        {variant === SelectMenuVariant.CONTAINER
+                          ? placeholder
+                          : label}
+                      </Text>
+                    ))}
                   {selectedValues.length > 0 && (
                     <Text
                       as="span"
+                      variant="body.md"
                       color={
                         variant === SelectMenuVariant.CONTAINER
                           ? selectionTagType === SelectionTagType.COUNT
@@ -191,17 +205,18 @@ const MultiSelect = ({
                       }
                       fontWeight={500}
                       style={{
+                        height: "100%",
                         marginLeft: 8,
+                        // border: "1px solid red",
                         backgroundColor:
                           selectionTagType === SelectionTagType.COUNT
                             ? FOUNDATION_THEME.colors.primary[600]
-                            : FOUNDATION_THEME.colors.primary[0],
+                            : "transparent",
                         borderRadius: 4,
                         padding:
                           selectionTagType === SelectionTagType.COUNT
                             ? "0px 6px"
                             : "0px 0px",
-                        height: "100%",
                       }}
                     >
                       {selectionTagType === SelectionTagType.COUNT
@@ -218,6 +233,7 @@ const MultiSelect = ({
                   alignItems="center"
                   gap={4}
                   size={20}
+                  contentCentered
                   flexShrink={0}
                 >
                   <ChevronDown size={16} />
