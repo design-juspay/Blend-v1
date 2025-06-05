@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { ColumnDefinition, SortDirection } from '../../../lib/components/DataTable/types';
 import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
+import Tag from '../../../lib/components/Tags/Tags';
+import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 
 const DataTableDemo = () => {
     const data = Array.from({ length: 50 }, (_, index) => ({
@@ -39,8 +41,8 @@ const DataTableDemo = () => {
       number: string;
       gateway: string;
       contact: string;
-      status: 'Active' | 'Inactive' | 'Pending'; // Update enum if needed
-    };
+      status: 'Active' | 'Inactive' | 'Pending';
+    } & Record<string, unknown>;
     
   
     const columns: ColumnDefinition<UserRow>[] = [
@@ -48,7 +50,7 @@ const DataTableDemo = () => {
         field: 'name',
         header: 'Name',
         renderCell: (_value, row) => (
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', width: '100%', gap: '6px' }}>
             <Avatar src={`https://randomuser.me/api/portraits/${row.id % 2 ? 'men' : 'women'}/${row.id % 70}.jpg`} />
             <div>
               <div className="font-medium text-sm">{row.name}</div>
@@ -57,7 +59,7 @@ const DataTableDemo = () => {
           </div>
         ),
         isSortable: true,
-        width: '150px'
+        width: '250px'
       },
       { 
         field: 'email',
@@ -88,15 +90,29 @@ const DataTableDemo = () => {
       {
         field: 'status',
         header: 'Status',
-        renderCell: (_value, row) => (
-          <span className={`px-2 py-1 rounded text-xs ${
-            row.status === 'Active' ? 'bg-green-100 text-green-800' : 
-            row.status === 'Inactive' ? 'bg-red-100 text-red-800' :
-            'bg-yellow-100 text-yellow-800'
-          }`}>
-            {row.status}
-          </span>
-        ),
+        renderCell: (_value, row) => {
+          const getStatusColor = (status: string): TagColor => {
+            switch (status) {
+              case 'Active':
+                return TagColor.SUCCESS;
+              case 'Inactive':
+                return TagColor.ERROR;
+              case 'Pending':
+                return TagColor.WARNING;
+              default:
+                return TagColor.NEUTRAL;
+            }
+          };
+
+          return (
+            <Tag
+              text={row.status}
+              variant={TagVariant.SUBTLE}
+              color={getStatusColor(row.status)}
+              size={TagSize.SM}
+            />
+          );
+        },
         isSortable: true
       },
     ];
@@ -113,8 +129,7 @@ const DataTableDemo = () => {
       <div>
         <DataTable
           data={data}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          columns={columns as any}
+          columns={columns as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
           description="Complete overview of system users and their roles"

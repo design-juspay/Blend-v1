@@ -88,10 +88,7 @@ export function DataTablePagination({
       display="flex" 
       justifyContent="space-between" 
       alignItems="center" 
-      height={`${FOUNDATION_THEME.unit[48]}`}
-      padding={`${FOUNDATION_THEME.unit[16]}`}
-      borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
-      backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+      width="100%"
     >
       <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[8]}>
         <PrimitiveText 

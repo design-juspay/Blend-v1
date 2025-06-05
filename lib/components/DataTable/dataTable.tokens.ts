@@ -46,6 +46,10 @@ type DataTableToken = {
 const dataTableTokens: DataTableToken = {
   container: {
     width: "100%",
+    maxHeight: "calc(100vh - 2rem)",
+    maxWidth: "calc(100vw - 2rem)",
+    display: "flex",
+    flexDirection: "column",
   },
   header: {
     container: {
@@ -82,6 +86,8 @@ const dataTableTokens: DataTableToken = {
       tableLayout: "auto",
       borderCollapse: "separate",
       borderSpacing: 0,
+      position: "relative",
+      minWidth: "max-content",
     }
   },
   thead: {
@@ -116,7 +122,7 @@ const dataTableTokens: DataTableToken = {
   },
   td: {
     base: {
-      padding: `${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[12]}`,
+      padding: `${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[12]}`,
       fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
       color: FOUNDATION_THEME.colors.gray[500],
       fontWeight: FOUNDATION_THEME.font.weight[500],
@@ -131,6 +137,10 @@ const dataTableTokens: DataTableToken = {
       padding: `${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[16]}`,
       borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[150]}`,
       height: FOUNDATION_THEME.unit[48],
+      position: "sticky",
+      bottom: 0,
+      backgroundColor: FOUNDATION_THEME.colors.gray[25],
+      zIndex: 10,
     },
     text: {
       fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,

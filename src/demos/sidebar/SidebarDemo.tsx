@@ -42,7 +42,7 @@ import StatCardDemo from "../StatCard/StatCardDemo";
 import TabsDemo from "../Tabs/TabsDemo";
 import Text from "../../../lib/components/Text/Text";
 import TagsDemo from "../Tags/TagsDemo";
-import Sidebar from "../../../lib/components/Sidebar";
+import { Sidebar } from "../../../lib/components/Sidebar";
 
 const ChartDemo2 = () => (
   <Block padding="24px" backgroundColor={FOUNDATION_THEME.colors.gray[0]}>

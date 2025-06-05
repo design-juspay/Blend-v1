@@ -20,20 +20,20 @@ import { FOUNDATION_THEME } from '../../tokens';
 
 const Table = styled.table<{ isStriped?: boolean; isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
-  table-layout: fixed;
+  table-layout: auto;
+  min-width: max-content;
+  width: 100%;
 `;
 
 const TableHead = styled.thead`
   ${dataTableTokens.thead.base}
+  background-color: ${FOUNDATION_THEME.colors.gray[25]};
 `;
 
 const TableHeaderCell = styled.th<{ isSortable?: boolean; width?: string }>`
   ${dataTableTokens.th.base}
   ${props => props.isSortable && dataTableTokens.th.sortable}
   ${props => props.width && `width: ${props.width};`}
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const TableBody = styled.tbody`
@@ -44,13 +44,15 @@ const TableRow = styled.tr`
   ${dataTableTokens.tr.base}
 `;
 
-const TableCell = styled.td<{ width?: string }>`
+const TableCell = styled.td<{ width?: string; hasCustomContent?: boolean }>`
   ${dataTableTokens.td.base}
   ${props => props.width && `width: ${props.width};`}
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 0;
+  ${props => !props.hasCustomContent && `
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 0;
+  `}
 `;
 
 
@@ -115,7 +117,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   }, [data]);
 
   const handleSelectAll = (checked: boolean | 'indeterminate') => {
-    // We only care about boolean values for selectAll
     const newSelectAll = checked === true;
     setSelectAll(newSelectAll);
 
@@ -251,138 +252,174 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
       <Block style={{
         borderRadius: 8,
         border: '1px solid #e5e7eb',
-        overflowX: 'auto',
+        maxHeight: 'calc(100vh - 200px)',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
       }}>
-        <Table isStriped={isStriped} isHoverable={isHoverable}>
-          <TableHead>
-            <TableRow>
-              <TableHeaderCell isSortable={false}>
-                <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
-                  <Checkbox
-                    checked={selectAll}
-                    onCheckedChange={handleSelectAll}
-                    size={CheckboxSize.MEDIUM}
-                  />
-                </Block>
-              </TableHeaderCell>
-
-              {visibleColumns.map((column) => (
-                <TableHeaderCell
-                  key={String(column.field)}
-                  isSortable={!!column.isSortable}
-                  width={column.width || 'auto'}
-                  onClick={() => column.isSortable && handleSort(column.field)}
-                >
-                  <Block display='flex' alignItems='center' justifyContent='space-between'>
-                    <PrimitiveText 
-                      as='span' 
-                      style={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                        flex: 1
-                      }}
-                      title={column.header}
-                    >
-                      {column.header}
-                    </PrimitiveText>
-                    {column.isSortable && (
-                      <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
-                        <ChevronUp 
-                          size={FOUNDATION_THEME.unit[12]} 
-                          style={{ 
-                            opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
-                          }} 
-                        />
-                        <ChevronDown 
-                          size={FOUNDATION_THEME.unit[12]} 
-                          style={{ 
-                            opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
-                          }} 
-                        />
-                      </Block>
-                    )}
-                  </Block>
-                </TableHeaderCell>
-              ))}
-
-              {enableColumnManager && (
-                <TableHeaderCell isSortable={false} width="40px">
-                  <Block position='relative'>
-                    <ColumnManager
-                      columns={initialColumns}
-                      visibleColumns={visibleColumns}
-                      onColumnChange={setVisibleColumns}
-                    />
-                  </Block>
-                </TableHeaderCell>
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentData.length > 0 ? (
-              currentData.map((row) => (
-                <TableRow key={String(row[idField])}>
-                  <TableCell>
+        <Block style={{
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          scrollBehavior: 'smooth',
+          WebkitOverflowScrolling: 'touch',
+        }}>
+          <Block style={{
+            overflowY: 'auto',
+            flex: 1,
+            minHeight: 0,
+          }}>
+            <Table isStriped={isStriped} isHoverable={isHoverable}>
+              <TableHead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
+                <TableRow>
+                  <TableHeaderCell isSortable={false} width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
                     <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
                       <Checkbox
-                        checked={!!selectedRows[String(row[idField])]}
-                        onCheckedChange={() => handleRowSelect(row[idField])}
+                        checked={selectAll}
+                        onCheckedChange={handleSelectAll}
                         size={CheckboxSize.MEDIUM}
                       />
                     </Block>
-                  </TableCell>
+                  </TableHeaderCell>
 
                   {visibleColumns.map((column) => (
-                    <TableCell 
-                      key={`${String(row[idField])}-${String(column.field)}`}
+                    <TableHeaderCell
+                      key={String(column.field)}
+                      isSortable={!!column.isSortable}
                       width={column.width || 'auto'}
+                      style={{ 
+                        minWidth: column.width || '120px',
+                        whiteSpace: 'nowrap'
+                      }}
+                      onClick={() => column.isSortable && handleSort(column.field)}
                     >
-                      <Block 
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          width: '100%'
-                        }}
-                        title={column.renderCell 
-                          ? String(column.renderCell(row[column.field], row)) 
-                          : (row[column.field] != null ? String(row[column.field]) : '')
-                        }
-                      >
-                        {column.renderCell
-                          ? column.renderCell(row[column.field], row)
-                          : row[column.field] != null ? String(row[column.field]) : ''}
+                      <Block display='flex' alignItems='center' justifyContent='space-between'>
+                        <PrimitiveText 
+                          as='span' 
+                          style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            minWidth: 0,
+                            flex: 1
+                          }}
+                          title={column.header}
+                        >
+                          {column.header}
+                        </PrimitiveText>
+                        {column.isSortable && (
+                          <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
+                            <ChevronUp 
+                              size={FOUNDATION_THEME.unit[12]} 
+                              style={{ 
+                                opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
+                              }} 
+                            />
+                            <ChevronDown 
+                              size={FOUNDATION_THEME.unit[12]} 
+                              style={{ 
+                                opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
+                              }} 
+                            />
+                          </Block>
+                        )}
                       </Block>
-                    </TableCell>
+                    </TableHeaderCell>
                   ))}
 
                   {enableColumnManager && (
-                    <TableCell />
+                    <TableHeaderCell isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
+                      <Block position='relative'>
+                        <ColumnManager
+                          columns={initialColumns}
+                          visibleColumns={visibleColumns}
+                          onColumnChange={setVisibleColumns}
+                        />
+                      </Block>
+                    </TableHeaderCell>
                   )}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <EmptyStateCell
-                  colSpan={visibleColumns.length + (enableColumnManager ? 2 : 1)}
-                >
-                  No data available
-                </EmptyStateCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              </TableHead>
+              <TableBody>
+                {currentData.length > 0 ? (
+                  currentData.map((row) => (
+                    <TableRow key={String(row[idField])}>
+                      <TableCell width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
+                        <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
+                          <Checkbox
+                            checked={!!selectedRows[String(row[idField])]}
+                            onCheckedChange={() => handleRowSelect(row[idField])}
+                            size={CheckboxSize.MEDIUM}
+                          />
+                        </Block>
+                      </TableCell>
+
+                      {visibleColumns.map((column) => (
+                        <TableCell 
+                          key={`${String(row[idField])}-${String(column.field)}`}
+                          width={column.width || 'auto'}
+                          hasCustomContent={!!column.renderCell}
+                          style={{ 
+                            minWidth: column.width || '120px',
+                            whiteSpace: column.renderCell ? 'normal' : 'nowrap'
+                          }}
+                        >
+                          {column.renderCell ? (
+                            <Block style={{ width: '100%' }}>
+                              {column.renderCell(row[column.field], row)}
+                            </Block>
+                          ) : (
+                            <Block 
+                              style={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                width: '100%'
+                              }}
+                              title={row[column.field] != null ? String(row[column.field]) : ''}
+                            >
+                              {row[column.field] != null ? String(row[column.field]) : ''}
+                            </Block>
+                          )}
+                        </TableCell>
+                      ))}
+
+                      {enableColumnManager && (
+                        <TableCell width="50px" style={{ minWidth: '50px', maxWidth: '50px' }} />
+                      )}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <EmptyStateCell
+                      colSpan={visibleColumns.length + (enableColumnManager ? 2 : 1)}
+                    >
+                      No data available
+                    </EmptyStateCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Block>
+        </Block>
+        
         {pagination && (
-          <DataTablePagination
-            currentPage={currentPage}
-            pageSize={pageSize}
-            totalRows={totalRows}
-            pageSizeOptions={pagination.pageSizeOptions}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
+          <Block style={{
+            ...dataTableTokens.pagination.container,
+            flexShrink: 0,
+          }}>
+            <DataTablePagination
+              currentPage={currentPage}
+              pageSize={pageSize}
+              totalRows={totalRows}
+              pageSizeOptions={pagination.pageSizeOptions}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+            />
+          </Block>
         )}
       </Block>
     </Block>
