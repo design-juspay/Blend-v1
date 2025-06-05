@@ -13,7 +13,6 @@ export * from "./components/Menu/Menu";
 export * from "./components/Accordion";
 export * from "./components/Snackbar";
 export * from "./components/Popover";
-export * from "./components/Accordion";
 export * from "./components/Checkbox";
 export * from "./components/Radio";
 export * from "./components/Switch";
