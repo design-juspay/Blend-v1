@@ -6,7 +6,7 @@ import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 
 const DataTableDemo = () => {
-    const data = Array.from({ length: 50 }, (_, index) => ({
+    const [data, setData] = useState(() => Array.from({ length: 50 }, (_, index) => ({
       id: index + 1,
       name: [
         'Jesse Leos', 'Jane Smith', 'Robert Johnson', 'Lisa Brown', 'David Miller',
@@ -30,7 +30,7 @@ const DataTableDemo = () => {
         'anna@example.com'
       ][index % 10],
       role: ['Admin', 'User', 'Manager', 'Editor', 'Viewer'][index % 5]
-    }));
+    })));
 
     type UserRow = {
       id: number;
@@ -50,11 +50,11 @@ const DataTableDemo = () => {
         field: 'name',
         header: 'Name',
         renderCell: (_value, row) => (
-          <div style={{ display: 'flex', width: '100%', gap: '6px' }}>
+          <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
             <Avatar src={`https://randomuser.me/api/portraits/${row.id % 2 ? 'men' : 'women'}/${row.id % 70}.jpg`} />
             <div>
-              <div className="font-medium text-sm">{row.name}</div>
-              <div className="text-xs text-gray-500">Joined in {row.joinDate}</div>
+              <div style={{ fontWeight: 500, fontSize: '14px' }}>{row.name}</div>
+              <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {row.joinDate}</div>
             </div>
           </div>
         ),
@@ -65,27 +65,32 @@ const DataTableDemo = () => {
         field: 'email',
         header: 'Email',
         isSortable: true,
+        isEditable: true,
         width: '200px'
       },
       { 
         field: 'role',
         header: 'Role',
-        isSortable: true
+        isSortable: true,
+        isEditable: true
       },
       { 
         field: 'number',
         header: 'Number',
-        isSortable: true
+        isSortable: true,
+        isEditable: true
       },
       { 
         field: 'gateway',
         header: 'Gateway',
-        isSortable: true
+        isSortable: true,
+        isEditable: true
       },
       { 
         field: 'contact',
         header: 'Contact',
-        isSortable: true
+        isSortable: true,
+        isEditable: true
       },
       {
         field: 'status',
@@ -124,6 +129,21 @@ const DataTableDemo = () => {
       field: '',
       direction: SortDirection.NONE
     });
+
+    // Handle row save
+    const handleRowSave = (rowId: unknown, updatedRow: Record<string, unknown>) => {
+      setData(prevData => 
+        prevData.map(row => 
+          row.id === rowId ? { ...row, ...updatedRow } : row
+        )
+      );
+      console.log('Row saved:', { rowId, updatedRow });
+    };
+
+    // Handle row cancel
+    const handleRowCancel = (rowId: unknown) => {
+      console.log('Edit cancelled for row:', rowId);
+    };
   
     return (
       <div>
@@ -132,9 +152,10 @@ const DataTableDemo = () => {
           columns={columns as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description="Complete overview of system users and their roles"
+          description="Complete overview of system users and their roles with inline editing"
           isStriped
           isHoverable
+          enableInlineEdit
           pagination={{
             currentPage,
             pageSize,
@@ -145,6 +166,8 @@ const DataTableDemo = () => {
           }}
           defaultSort={sortConfig}
           onSortChange={(newSortConfig) => setSortConfig(newSortConfig)}
+          onRowSave={handleRowSave}
+          onRowCancel={handleRowCancel}
         />
       </div>
     );

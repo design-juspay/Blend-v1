@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, forwardRef } from 'react';
 import {
-  ChevronDown, ChevronUp, Download
+  ChevronDown, ChevronUp, Download, Edit, Save, X
 } from 'lucide-react';
 import { styled } from 'styled-components';
 import { DataTableProps, SortDirection, SortConfig, ColumnDefinition } from './types';
@@ -16,13 +16,14 @@ import { CheckboxSize } from '../Checkbox/types';
 import { ColumnManager } from './ColumnManager';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
+import PrimitiveInput from '../Primitives/PrimitiveInput/PrimitiveInput';
 import { FOUNDATION_THEME } from '../../tokens';
 
-const Table = styled.table<{ isStriped?: boolean; isHoverable?: boolean }>`
+const Table = styled.table<{ $isStriped?: boolean; $isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
-  table-layout: auto;
-  min-width: max-content;
+  table-layout: fixed;
   width: 100%;
+  min-width: 800px;
 `;
 
 const TableHead = styled.thead`
@@ -30,10 +31,14 @@ const TableHead = styled.thead`
   background-color: ${FOUNDATION_THEME.colors.gray[25]};
 `;
 
-const TableHeaderCell = styled.th<{ isSortable?: boolean; width?: string }>`
+const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
   ${dataTableTokens.th.base}
-  ${props => props.isSortable && dataTableTokens.th.sortable}
+  ${props => props.$isSortable && dataTableTokens.th.sortable}
   ${props => props.width && `width: ${props.width};`}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
 `;
 
 const TableBody = styled.tbody`
@@ -44,22 +49,39 @@ const TableRow = styled.tr`
   ${dataTableTokens.tr.base}
 `;
 
-const TableCell = styled.td<{ width?: string; hasCustomContent?: boolean }>`
+const TableCell = styled.td<{ width?: string; $hasCustomContent?: boolean }>`
   ${dataTableTokens.td.base}
   ${props => props.width && `width: ${props.width};`}
-  ${props => !props.hasCustomContent && `
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 0;
-  `}
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 0;
 `;
-
 
 const EmptyStateCell = styled.td`
   ${dataTableTokens.td.base}
 `;
 
+const ActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${FOUNDATION_THEME.colors.gray[100]};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
 
 const DataTable = forwardRef(<T extends Record<string, unknown>>(
   {
@@ -73,6 +95,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     defaultSort,
     enableColumnManager = true,
     showToolbar = true,
+    enableInlineEdit = false,
     pagination = {
       currentPage: 1,
       pageSize: 10,
@@ -82,7 +105,10 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onPageChange,
     onPageSizeChange,
     onSortChange,
-  }: DataTableProps<T>
+    onRowSave,
+    onRowCancel,
+  }: DataTableProps<T>,
+  ref: React.Ref<HTMLDivElement>
 ) => {
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(defaultSort || null);
   const [visibleColumns, setVisibleColumns] = useState<ColumnDefinition<T>[]>(() => {
@@ -93,6 +119,10 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
   const [selectAll, setSelectAll] = useState(false);
+  
+  // Inline edit state
+  const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
+  const [editValues, setEditValues] = useState<Record<string, T>>({});
 
   const totalRows = pagination?.totalRows || data.length;
 
@@ -215,8 +245,150 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const hasSelectedRows = Object.values(selectedRows).some(selected => selected);
 
+  // Calculate column widths to ensure fixed layout
+  const getColumnWidth = (column: ColumnDefinition<T>, index: number) => {
+    if (column.width) return column.width;
+    
+    // Default widths based on field type or content
+    const field = String(column.field);
+    if (field === 'id' || field === 'number') return '80px';
+    if (field === 'email') return '200px';
+    if (field === 'name') return '200px';
+    if (field === 'status') return '120px';
+    if (field === 'role') return '120px';
+    
+    // Default width for other columns
+    return '150px';
+  };
+
+  // Inline edit functions
+  const handleEditRow = (rowId: unknown) => {
+    const rowIdStr = String(rowId);
+    const row = currentData.find(r => String(r[idField]) === rowIdStr);
+    if (row) {
+      setEditingRows(prev => ({ ...prev, [rowIdStr]: true }));
+      setEditValues(prev => ({ ...prev, [rowIdStr]: { ...row } }));
+    }
+  };
+
+  const handleSaveRow = (rowId: unknown) => {
+    const rowIdStr = String(rowId);
+    const updatedRow = editValues[rowIdStr];
+    if (updatedRow && onRowSave) {
+      onRowSave(rowId, updatedRow);
+    }
+    setEditingRows(prev => ({ ...prev, [rowIdStr]: false }));
+    setEditValues(prev => {
+      const newValues = { ...prev };
+      delete newValues[rowIdStr];
+      return newValues;
+    });
+  };
+
+  const handleCancelEdit = (rowId: unknown) => {
+    const rowIdStr = String(rowId);
+    if (onRowCancel) {
+      onRowCancel(rowId);
+    }
+    setEditingRows(prev => ({ ...prev, [rowIdStr]: false }));
+    setEditValues(prev => {
+      const newValues = { ...prev };
+      delete newValues[rowIdStr];
+      return newValues;
+    });
+  };
+
+  const handleFieldChange = (rowId: unknown, field: keyof T, value: unknown) => {
+    const rowIdStr = String(rowId);
+    setEditValues(prev => ({
+      ...prev,
+      [rowIdStr]: {
+        ...prev[rowIdStr],
+        [field]: value
+      }
+    }));
+  };
+
+  const renderEditableCell = (column: ColumnDefinition<T>, row: T, isEditing: boolean) => {
+    const rowId = String(row[idField]);
+    const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
+
+    if (isEditing && column.isEditable) {
+      if (column.renderEditCell) {
+        return column.renderEditCell(
+          currentValue,
+          isEditing ? editValues[rowId] : row,
+          (value) => handleFieldChange(row[idField], column.field, value)
+        );
+      } else {
+        // Default edit input
+        return (
+          <Block style={{ 
+            width: '100%', 
+            padding: '2px 0',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            <PrimitiveInput
+              value={String(currentValue || '')}
+              onChange={(e) => handleFieldChange(row[idField], column.field, e.target.value)}
+              style={{
+                width: 'calc(100% - 8px)',
+                height: '32px',
+                border: `1px solid ${FOUNDATION_THEME.colors.gray[300]}`,
+                borderRadius: '4px',
+                padding: `${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[8]}`,
+                fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+                color: '#6b7280',
+                fontWeight: FOUNDATION_THEME.font.weight[500],
+                backgroundColor: '#ffffff',
+                outline: 'none',
+                boxSizing: 'border-box',
+                margin: '0',
+                minWidth: '0',
+                maxWidth: '100%'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.boxShadow = '0 0 0 1px #dbeafe';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+          </Block>
+        );
+      }
+    }
+
+    // Display mode
+    if (column.renderCell) {
+      return (
+        <Block style={{ width: '100%' }}>
+          {column.renderCell(currentValue, isEditing ? editValues[rowId] : row)}
+        </Block>
+      );
+    }
+
+    return (
+      <Block 
+        style={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          width: '100%',
+          lineHeight: '1.5'
+        }}
+        title={currentValue != null ? String(currentValue) : ''}
+      >
+        {currentValue != null ? String(currentValue) : ''}
+      </Block>
+    );
+  };
+
   return (
-    <Block style={{
+    <Block ref={ref} style={{
       ...dataTableTokens.container,
     }}>
       {(title || description || showToolbar) && (
@@ -272,10 +444,10 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
             flex: 1,
             minHeight: 0,
           }}>
-            <Table isStriped={isStriped} isHoverable={isHoverable}>
+            <Table $isStriped={isStriped} $isHoverable={isHoverable}>
               <TableHead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
                 <TableRow>
-                  <TableHeaderCell isSortable={false} width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
+                  <TableHeaderCell $isSortable={false} width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
                     <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
                       <Checkbox
                         checked={selectAll}
@@ -285,53 +457,67 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                     </Block>
                   </TableHeaderCell>
 
-                  {visibleColumns.map((column) => (
-                    <TableHeaderCell
-                      key={String(column.field)}
-                      isSortable={!!column.isSortable}
-                      width={column.width || 'auto'}
-                      style={{ 
-                        minWidth: column.width || '120px',
-                        whiteSpace: 'nowrap'
-                      }}
-                      onClick={() => column.isSortable && handleSort(column.field)}
-                    >
-                      <Block display='flex' alignItems='center' justifyContent='space-between'>
-                        <PrimitiveText 
-                          as='span' 
-                          style={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            minWidth: 0,
-                            flex: 1
-                          }}
-                          title={column.header}
-                        >
-                          {column.header}
+                  {visibleColumns.map((column, index) => {
+                    const columnWidth = getColumnWidth(column, index);
+                    return (
+                      <TableHeaderCell
+                        key={String(column.field)}
+                        $isSortable={!!column.isSortable}
+                        width={columnWidth}
+                        style={{ 
+                          width: columnWidth,
+                          minWidth: columnWidth,
+                          maxWidth: columnWidth
+                        }}
+                        onClick={() => column.isSortable && handleSort(column.field)}
+                      >
+                        <Block display='flex' alignItems='center' justifyContent='space-between'>
+                          <PrimitiveText 
+                            as='span' 
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              minWidth: 0,
+                              flex: 1
+                            }}
+                            title={column.header}
+                          >
+                            {column.header}
+                          </PrimitiveText>
+                          {column.isSortable && (
+                            <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
+                              <ChevronUp 
+                                size={FOUNDATION_THEME.unit[12]} 
+                                style={{ 
+                                  opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
+                                }} 
+                              />
+                              <ChevronDown 
+                                size={FOUNDATION_THEME.unit[12]} 
+                                style={{ 
+                                  opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
+                                }} 
+                              />
+                            </Block>
+                          )}
+                        </Block>
+                      </TableHeaderCell>
+                    );
+                  })}
+
+                  {enableInlineEdit && (
+                    <TableHeaderCell $isSortable={false} width="100px" style={{ minWidth: '100px', maxWidth: '100px' }}>
+                      <Block display='flex' alignItems='center' justifyContent='center'>
+                        <PrimitiveText as='span' style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+                          Actions
                         </PrimitiveText>
-                        {column.isSortable && (
-                          <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
-                            <ChevronUp 
-                              size={FOUNDATION_THEME.unit[12]} 
-                              style={{ 
-                                opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
-                              }} 
-                            />
-                            <ChevronDown 
-                              size={FOUNDATION_THEME.unit[12]} 
-                              style={{ 
-                                opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
-                              }} 
-                            />
-                          </Block>
-                        )}
                       </Block>
                     </TableHeaderCell>
-                  ))}
+                  )}
 
                   {enableColumnManager && (
-                    <TableHeaderCell isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
+                    <TableHeaderCell $isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
                       <Block position='relative'>
                         <ColumnManager
                           columns={initialColumns}
@@ -345,57 +531,91 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               </TableHead>
               <TableBody>
                 {currentData.length > 0 ? (
-                  currentData.map((row) => (
-                    <TableRow key={String(row[idField])}>
-                      <TableCell width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
-                        <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
-                          <Checkbox
-                            checked={!!selectedRows[String(row[idField])]}
-                            onCheckedChange={() => handleRowSelect(row[idField])}
-                            size={CheckboxSize.MEDIUM}
-                          />
-                        </Block>
-                      </TableCell>
-
-                      {visibleColumns.map((column) => (
-                        <TableCell 
-                          key={`${String(row[idField])}-${String(column.field)}`}
-                          width={column.width || 'auto'}
-                          hasCustomContent={!!column.renderCell}
-                          style={{ 
-                            minWidth: column.width || '120px',
-                            whiteSpace: column.renderCell ? 'normal' : 'nowrap'
-                          }}
-                        >
-                          {column.renderCell ? (
-                            <Block style={{ width: '100%' }}>
-                              {column.renderCell(row[column.field], row)}
-                            </Block>
-                          ) : (
-                            <Block 
-                              style={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                width: '100%'
-                              }}
-                              title={row[column.field] != null ? String(row[column.field]) : ''}
-                            >
-                              {row[column.field] != null ? String(row[column.field]) : ''}
-                            </Block>
-                          )}
+                  currentData.map((row) => {
+                    const rowId = String(row[idField]);
+                    const isEditing = editingRows[rowId];
+                    
+                    return (
+                      <TableRow key={rowId}>
+                        <TableCell width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
+                          <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
+                            <Checkbox
+                              checked={!!selectedRows[rowId]}
+                              onCheckedChange={() => handleRowSelect(row[idField])}
+                              size={CheckboxSize.MEDIUM}
+                              disabled={isEditing}
+                            />
+                          </Block>
                         </TableCell>
-                      ))}
 
-                      {enableColumnManager && (
-                        <TableCell width="50px" style={{ minWidth: '50px', maxWidth: '50px' }} />
-                      )}
-                    </TableRow>
-                  ))
+                        {visibleColumns.map((column, index) => {
+                          const columnWidth = getColumnWidth(column, index);
+                          return (
+                            <TableCell 
+                              key={`${rowId}-${String(column.field)}`}
+                              width={columnWidth}
+                              $hasCustomContent={!!column.renderCell || (isEditing && column.isEditable)}
+                              style={{ 
+                                width: columnWidth,
+                                minWidth: columnWidth,
+                                maxWidth: columnWidth,
+                                verticalAlign: 'middle',
+                                position: 'relative'
+                              }}
+                            >
+                              <Block style={{ 
+                                width: '100%', 
+                                minHeight: '36px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                overflow: 'hidden'
+                              }}>
+                                {renderEditableCell(column, row, isEditing)}
+                              </Block>
+                            </TableCell>
+                          );
+                        })}
+
+                        {enableInlineEdit && (
+                          <TableCell width="100px" style={{ minWidth: '100px', maxWidth: '100px' }}>
+                            <Block display='flex' alignItems='center' justifyContent='center' gap={FOUNDATION_THEME.unit[4]}>
+                              {isEditing ? (
+                                <>
+                                  <ActionButton
+                                    onClick={() => handleSaveRow(row[idField])}
+                                    title="Save"
+                                  >
+                                    <Save size={16} color={FOUNDATION_THEME.colors.green[600]} />
+                                  </ActionButton>
+                                  <ActionButton
+                                    onClick={() => handleCancelEdit(row[idField])}
+                                    title="Cancel"
+                                  >
+                                    <X size={16} color={FOUNDATION_THEME.colors.red[600]} />
+                                  </ActionButton>
+                                </>
+                              ) : (
+                                <ActionButton
+                                  onClick={() => handleEditRow(row[idField])}
+                                  title="Edit"
+                                >
+                                  <Edit size={16} color={FOUNDATION_THEME.colors.primary[600]} />
+                                </ActionButton>
+                              )}
+                            </Block>
+                          </TableCell>
+                        )}
+
+                        {enableColumnManager && (
+                          <TableCell width="50px" style={{ minWidth: '50px', maxWidth: '50px' }} />
+                        )}
+                      </TableRow>
+                    );
+                  })
                 ) : (
                   <TableRow>
                     <EmptyStateCell
-                      colSpan={visibleColumns.length + (enableColumnManager ? 2 : 1)}
+                      colSpan={visibleColumns.length + (enableInlineEdit ? 1 : 0) + (enableColumnManager ? 1 : 0) + 1}
                     >
                       No data available
                     </EmptyStateCell>

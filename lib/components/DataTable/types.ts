@@ -17,9 +17,13 @@ export type ColumnDefinition<T> = {
   isVisible?: boolean;
   /** Whether column can be hidden by user */
   canHide?: boolean;
+  /** Whether column is editable inline */
+  isEditable?: boolean;
   /** Custom classes to apply to the column */
   className?: string;
   renderCell?: (value: unknown, row: T) => React.ReactNode;
+  /** Custom render for edit mode */
+  renderEditCell?: (value: unknown, row: T, onChange: (value: unknown) => void) => React.ReactNode;
 }
 
 export type FilterOption = {
@@ -94,6 +98,8 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   enableColumnManager?: boolean;
   /** Whether to show toolbar */
   showToolbar?: boolean;
+  /** Whether to enable inline editing */
+  enableInlineEdit?: boolean;
   /** Pagination configuration */
   pagination?: PaginationConfig;
   /** Callback when page changes */
@@ -104,6 +110,10 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onSortChange?: (sortConfig: SortConfig) => void;
   /** Callback when filters change */
   onFilterChange?: (filters: Record<string, unknown>) => void;
+  /** Callback when row is saved after editing */
+  onRowSave?: (rowId: unknown, updatedRow: T) => void;
+  /** Callback when row edit is cancelled */
+  onRowCancel?: (rowId: unknown) => void;
   /** Optional additional class name */
   className?: string;
 } 
