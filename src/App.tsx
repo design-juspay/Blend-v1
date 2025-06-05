@@ -35,7 +35,7 @@ type ComponentCategory = {
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("menu");
+  const [selectedCategory, setSelectedCategory] = useState<string>("tags");
 
   // Define the component categories
   const componentCategories: ComponentCategory[] = [

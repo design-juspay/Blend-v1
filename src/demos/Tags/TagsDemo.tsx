@@ -1,28 +1,33 @@
-import React from "react";
-import { Hash, Filter } from "lucide-react";
-import {
-  TagVariant,
-  TagColor,
-  TagSize,
-  TagShape,
-} from "../../../lib/components/Tags";
+import React, { useState } from "react";
+
+import { SingleSelect, Tag, TagSize } from "../../../lib/main";
+import { ThemeProvider } from "../../../lib/context";
 import Block from "../../../lib/components/Primitives/Block/Block";
-import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
-import {
-  Button,
-  ButtonSize,
-  SplitTag,
-  TooltipSide,
-  TooltipSize,
-} from "../../../lib/main";
-import { Tag } from "../../../lib/main";
-import Tooltip from "../../../lib/components/Tooltip/Tooltip";
-import Popover from "../../../lib/components/Popover/Popover";
-import { addSnackbar } from "../../../lib/components/Snackbar/Snackbar";
-import { SnackbarVariant } from "../../../lib/components/Snackbar/types";
+import theme1Tokens from "../../themes/theme1.tokens";
+import { SelectMenuVariant } from "../../../lib/components/Select";
 // import Menu from "../../../lib/components/Menu/Menu";
 
 const TagsDemo: React.FC = () => {
+  const [selectedTheme, setSelectedTheme] = useState<string>("");
+
+  const options = [
+    {
+      items: [
+        {
+          label: "Theme 1",
+          value: "theme1",
+        },
+        {
+          label: "Theme 2",
+          value: "theme2",
+        },
+      ],
+    },
+  ];
+
+  const rest =
+    selectedTheme === "theme1" ? { foundationTokens: theme1Tokens } : {};
+
   return (
     <div className="component-section">
       <header className="component-header">
@@ -32,72 +37,22 @@ const TagsDemo: React.FC = () => {
         </p>
       </header>
 
-      <Block display="flex" flexDirection="column" gap={40}>
-        <Block display="flex" gap={10} marginBottom={10}>
-          <Tooltip content="Hello">
-            <Block color="blue" cursor="pointer" height={"100%"}>
-              Click me
-            </Block>
-          </Tooltip>
-          <Tooltip content="Hello">
-            <Tag
-              text="Hello"
-              leadingSlot={<Hash size={12} />}
-              trailingSlot={<Filter size={12} />}
-              size={TagSize.SM}
-              onClick={() => alert("Clicked")}
-            />
-          </Tooltip>
+      <SingleSelect
+        items={options}
+        selected={selectedTheme}
+        onSelect={setSelectedTheme}
+        label="Select Theme"
+        placeholder="Select Theme"
+        variant={SelectMenuVariant.NO_CONTAINER}
+      />
 
-          <Tooltip
-            side={TooltipSide.BOTTOM}
-            showArrow={false}
-            offset={10}
-            size={TooltipSize.SMALL}
-            content="Hello"
-            slot={<Hash size={10} />}
-          >
-            <Button size={ButtonSize.SMALL} text="Open Menu" />
-          </Tooltip>
-          <Tooltip
-            side={TooltipSide.RIGHT}
-            showArrow={true}
-            size={TooltipSize.LARGE}
-            content="Hello"
-            slot={<Hash size={12} />}
-          >
-            <Button size={ButtonSize.SMALL} text="Open Menu" />
-          </Tooltip>
-        </Block>
-
-        <Block display="flex" gap={10} marginBottom={10}>
-          <SplitTag
-            size={TagSize.XS}
-            shape={TagShape.SQUARICAL}
-            primaryTag={{ text: "Primary Tag" }}
-            secondaryTag={{ text: "Secondary Tag" }}
-          />
-        </Block>
-
-        <Block display="flex" gap={10} marginBottom={10}>
-          {/* <Menu
-            trigger={<Button size={ButtonSize.SMALL} text="Open Menu" />}
-          ></Menu> */}
-        </Block>
+      <Block className="debug" padding={10}>
+        <ThemeProvider {...rest}>
+          <Tag text="Hello" size={TagSize.LG} />
+        </ThemeProvider>
       </Block>
 
-      <Popover trigger={<Button text="Open Popover" />}>
-        <Block
-          padding={10}
-          backgroundColor="red"
-          className="debug"
-          borderRadius="10px"
-        >
-          <h1>Hello</h1>
-        </Block>
-      </Popover>
-      {/* Tag Variants */}
-      <section className="showcase-section" style={{ marginTop: "200px" }}>
+      {/* <section className="showcase-section" style={{ marginTop: "200px" }}>
         <h2 className="showcase-title">Tag Variants</h2>
         <div className="showcase-container">
           <div className="showcase-item">
@@ -127,7 +82,6 @@ const TagsDemo: React.FC = () => {
         </div>
       </section>
 
-      {/* Tag Statuses */}
       <section className="showcase-section">
         <h2 className="showcase-title">Tag Statuses</h2>
         <div className="showcase-container">
@@ -182,7 +136,6 @@ const TagsDemo: React.FC = () => {
         </div>
       </section>
 
-      {/* Tag Sizes */}
       <section className="showcase-section">
         <h2 className="showcase-title">Tag Sizes</h2>
         <div className="showcase-container">
@@ -221,7 +174,6 @@ const TagsDemo: React.FC = () => {
         </div>
       </section>
 
-      {/* Tag Shapes */}
       <section className="showcase-section">
         <h2 className="showcase-title">Tag Shapes</h2>
         <div className="showcase-container">
@@ -243,8 +195,6 @@ const TagsDemo: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Slot Usage */}
       <section className="showcase-section">
         <h2 className="showcase-title">Slot Usage</h2>
         <div className="showcase-container">
@@ -337,7 +287,7 @@ const TagsDemo: React.FC = () => {
             Click me
           </button>
         </Block>
-      </section>
+      </section> */}
     </div>
   );
 };
