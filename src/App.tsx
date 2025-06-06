@@ -25,6 +25,7 @@ import StatCardDemo from "./demos/StatCard/StatCardDemo";
 import Snackbar from "../lib/components/Snackbar/Snackbar";
 import DataTableDemo from "./demos/DataTable/DataTableDemo";
 import InputDemo from "./demos/Input/InputDemo";
+import SidebarDemo from "./demos/sidebar/SidebarDemo";
 
 // Component categories
 type ComponentCategory = {
@@ -157,42 +158,43 @@ function App() {
   )?.component;
 
   return (
-    <div className="app-container">
-      {/* Sidebar Toggle for Mobile */}
-      <div className="sidebar-toggle">
-        <Button
-          subType={ButtonSubType.PLAIN_ICON}
-          ariaLabel={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-          leadingIcon={isSidebarOpen ? X : Menu}
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
-      </div>
+    // <div className="app-container">
+    //   {/* Sidebar Toggle for Mobile */}
+    //   <div className="sidebar-toggle">
+    //     <Button
+    //       subType={ButtonSubType.PLAIN_ICON}
+    //       ariaLabel={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+    //       leadingIcon={isSidebarOpen ? X : Menu}
+    //       onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+    //     />
+    //   </div>
 
-      <Snackbar visibleToasts={5} />
+    //   <Snackbar visibleToasts={5} />
 
-      {/* Sidebar */}
-      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        <div className="sidebar-header">
-          <h1 className="sidebar-title">Component Library</h1>
-        </div>
-        <nav className="sidebar-nav">
-          {componentCategories.map((category) => (
-            <button
-              key={category.id}
-              className={`sidebar-nav-item ${
-                selectedCategory === category.id ? "active" : ""
-              }`}
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </nav>
-      </aside>
+    //   {/* Sidebar */}
+    //   <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
+    //     <div className="sidebar-header">
+    //       <h1 className="sidebar-title">Component Library</h1>
+    //     </div>
+    //     <nav className="sidebar-nav">
+    //       {componentCategories.map((category) => (
+    //         <button
+    //           key={category.id}
+    //           className={`sidebar-nav-item ${
+    //             selectedCategory === category.id ? "active" : ""
+    //           }`}
+    //           onClick={() => setSelectedCategory(category.id)}
+    //         >
+    //           {category.name}
+    //         </button>
+    //       ))}
+    //     </nav>
+    //   </aside>
 
-      {/* Main Content */}
-      <main className="main-content">{currentComponent}</main>
-    </div>
+    //   {/* Main Content */}
+    //   <main className="main-content">{currentComponent}</main>
+    // </div>
+    <SidebarDemo />
   );
 }
 
