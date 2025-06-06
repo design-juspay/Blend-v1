@@ -1,10 +1,9 @@
 import Block from "../Primitives/Block/Block";
 import { forwardRef } from "react";
-
-import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
 import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "./types";
 import tagTokens from "./tag.tokens";
+import { useTheme } from "../../context";
 
 const Tag = forwardRef<HTMLDivElement, TagProps>(
   (
@@ -18,12 +17,32 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
       trailingSlot,
       onClick,
       splitTagPosition,
-      ...rest
     },
     ref
   ) => {
+    const { foundationTokens, componentTokens } = useTheme();
+
+    if (componentTokens.TAGS === undefined) {
+      componentTokens.TAGS = tagTokens;
+    }
+
+    // console.log(
+    //   "foundationToken.colors.primary[50]",
+    //   foundationTokens.colors.primary[50]
+    // );
+    // console.log(
+    //   "componentToken.TAGS?.background.noFill.neutral",
+    //   componentTokens.TAGS?.background.noFill.neutral
+    // );
+
+    // console.log("--------------------------------");
+
+    const tokens = componentTokens.TAGS;
+    console.log("tokens", tokens.background.noFill.neutral);
+    console.log(tokens.background[variant][color]);
+
     const isSplitTag = splitTagPosition !== undefined;
-    let borderRadius = tagTokens.borderRadius[shape][size];
+    let borderRadius = tokens.borderRadius[shape][size];
     if (isSplitTag) {
       const radius = tagTokens.borderRadius[shape][size];
       borderRadius =
@@ -38,35 +57,26 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
         display="flex"
         alignItems="center"
         justifyContent="center"
-        gap={FOUNDATION_THEME.unit[6]}
-        height={tagTokens.layout[size].height}
+        gap={tagTokens.gap}
         width="fit-content"
-        paddingX={FOUNDATION_THEME.unit[8]}
-        paddingY={FOUNDATION_THEME.unit[4]}
-        backgroundColor={tagTokens.background[variant][color]}
+        height={tagTokens.layout[size].height}
+        paddingX={tagTokens.paddingX}
+        paddingY={tagTokens.paddingY}
+        backgroundColor={tokens.background[variant][color]}
         color={tagTokens.text[variant][color]}
-        border={`1px solid ${tagTokens.border[variant][color]}`}
+        border={`${tagTokens.borderWidth[variant][color]} solid ${tagTokens.borderColor[variant][color]}`}
         borderRadius={borderRadius}
         cursor={onClick ? "pointer" : "default"}
         onClick={onClick}
-        {...rest}
       >
-        {leadingSlot && (
-          <Block contentCentered size={tagTokens.layout[size].iconSize}>
-            {leadingSlot}
-          </Block>
-        )}
+        {leadingSlot && <Block contentCentered>{leadingSlot}</Block>}
         <Text
           fontSize={tagTokens.font[size].fontSize}
           fontWeight={tagTokens.font[size].fontWeight}
         >
           {text}
         </Text>
-        {trailingSlot && (
-          <Block contentCentered size={tagTokens.layout[size].iconSize}>
-            {trailingSlot}
-          </Block>
-        )}
+        {trailingSlot && <Block contentCentered>{trailingSlot}</Block>}
       </Block>
     );
   }

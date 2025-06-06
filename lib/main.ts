@@ -9,7 +9,6 @@ export * from "./components/Avatar";
 export * from "./components/AvatarGroup";
 export * from "./components/Modal";
 export * from "./components/Tooltip";
-export * from "./components/Menu/Menu";
 export * from "./components/Accordion";
 export * from "./components/Snackbar";
 export * from "./components/Popover";
@@ -22,8 +21,10 @@ export * from "./components/Charts";
 export * from "./components/DateRangePicker";
 export * from "./components/StatCard";
 export * from "./components/Inputs";
-export * from "./components/Menu";
-export * from "./components/DataTable"
+export * from "./components/DataTable";
 export * from "./components/Sidebar";
+export * from "./components/Menu";
 export * from "./components/MultiSelect";
 export * from "./components/SingleSelect";
+
+export * from "./tokens/index";

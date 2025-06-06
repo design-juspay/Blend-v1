@@ -1,60 +1,12 @@
-import { CSSObject } from "styled-components";
-import { FOUNDATION_THEME } from "../../tokens";
-import { TagColor, TagSize, TagVariant } from "./types";
+import { FOUNDATION_THEME } from "../../lib/main";
 
-/**
- * @todo: Should we hardcode the keys for the tokens?
- */
-export type TagTokensType = Readonly<{
-  gap: CSSObject["gap"];
-  paddingX: CSSObject["padding"];
-  paddingY: CSSObject["padding"];
-  background: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["color"];
-    };
-  };
-  text: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["color"];
-    };
-  };
-  borderColor: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["color"];
-    };
-  };
-  borderRadius: {
-    [key: string]: {
-      [key: string]: CSSObject["borderRadius"];
-    };
-  };
-  borderWidth: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["borderWidth"];
-    };
-  };
-  font: {
-    [key: string]: {
-      [key: string]: CSSObject["fontSize"];
-    };
-  };
-  layout: {
-    [key in TagSize]: {
-      height: CSSObject["height"];
-      gap: CSSObject["gap"];
-    };
-  };
-}>;
-
-
-const tagTokens: TagTokensType = {
+export const theme1ComponentsToken = {
   gap: FOUNDATION_THEME.unit[6],
   paddingX: FOUNDATION_THEME.unit[8],
   paddingY: FOUNDATION_THEME.unit[4],
   background: {
     noFill: {
-      neutral: FOUNDATION_THEME.colors.gray[0],
+      neutral: FOUNDATION_THEME.colors.red[400], // changed value
       primary: FOUNDATION_THEME.colors.gray[0],
       success: FOUNDATION_THEME.colors.gray[0],
       error: FOUNDATION_THEME.colors.gray[0],
@@ -158,10 +110,10 @@ const tagTokens: TagTokensType = {
   },
   borderRadius: {
     squarical: {
-      xs: FOUNDATION_THEME.border.radius[6],
-      sm: FOUNDATION_THEME.border.radius[6],
-      md: FOUNDATION_THEME.border.radius[6],
-      lg: FOUNDATION_THEME.border.radius[8],
+      xs: FOUNDATION_THEME.border.radius[2],
+      sm: FOUNDATION_THEME.border.radius[2],
+      md: FOUNDATION_THEME.border.radius[2],
+      lg: FOUNDATION_THEME.border.radius[2],
     },
     rounded: {
       xs: FOUNDATION_THEME.border.radius.full,
@@ -208,4 +160,4 @@ const tagTokens: TagTokensType = {
   },
 };
 
-export default tagTokens;
+export default theme1ComponentsToken;
