@@ -144,26 +144,32 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                   padding="0 8px"
                 >
                   {merchants.length > 1 ? (
-                    <Select
-                      label=""
-                      placeholder="Select Merchant"
-                      variant={SelectMenuVariant.NO_CONTAINER}
-                      items={[
-                        {
-                          items: merchants.map((merchant) => ({
-                            label: merchant.label,
-                            value: merchant.label,
-                            slot1: merchant.icon,
-                          })),
-                        },
-                      ]}
-                      selected={activeMerchant || ""}
-                      onSelectChange={(value) => {
-                        if (setActiveMerchant && typeof value === "string") {
-                          setActiveMerchant(value);
-                        }
-                      }}
-                    />
+                    <Block width="100%">
+                      <Select
+                        helpIconText=""
+                        required={false}
+                        subLabel=""
+                        hintText=""
+                        label=""
+                        placeholder="Select Merchant"
+                        variant={SelectMenuVariant.CONTAINER}
+                        items={[
+                          {
+                            items: merchants.map((merchant) => ({
+                              label: merchant.label,
+                              value: merchant.label,
+                              slot1: merchant.icon,
+                            })),
+                          },
+                        ]}
+                        selected={activeMerchant || ""}
+                        onSelectChange={(value) => {
+                          if (setActiveMerchant && typeof value === "string") {
+                            setActiveMerchant(value);
+                          }
+                        }}
+                      />
+                    </Block>
                   ) : (
                     <Text
                       variant="body.sm"
@@ -227,9 +233,13 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                 />
                 {merchants.length > 1 ? (
                   <Select
+                    helpIconText=""
+                    required={false}
+                    subLabel=""
+                    hintText=""
                     label=""
                     placeholder="Select Merchant"
-                    variant={SelectMenuVariant.NO_CONTAINER}
+                    variant={SelectMenuVariant.CONTAINER}
                     items={[
                       {
                         items: merchants.map((merchant) => ({
