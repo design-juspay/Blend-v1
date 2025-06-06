@@ -1,37 +1,28 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
-import { TagColor, TagSize, TagVariant } from "./types";
 
 /**
  * @todo: Should we hardcode the keys for the tokens?
  */
 export type TagTokensType = Readonly<{
-  gap: CSSObject["gap"];
-  paddingX: CSSObject["padding"];
-  paddingY: CSSObject["padding"];
   background: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["color"];
+    [key: string]: {
+      [key: string]: CSSObject["color"];
     };
   };
   text: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["color"];
+    [key: string]: {
+      [key: string]: CSSObject["color"];
     };
   };
-  borderColor: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["color"];
+  border: {
+    [key: string]: {
+      [key: string]: CSSObject["color"];
     };
   };
   borderRadius: {
     [key: string]: {
       [key: string]: CSSObject["borderRadius"];
-    };
-  };
-  borderWidth: {
-    [key in TagVariant]: {
-      [key in TagColor]: CSSObject["borderWidth"];
     };
   };
   font: {
@@ -40,18 +31,13 @@ export type TagTokensType = Readonly<{
     };
   };
   layout: {
-    [key in TagSize]: {
-      height: CSSObject["height"];
-      gap: CSSObject["gap"];
+    [key: string]: {
+      [key: string]: CSSObject["height"];
     };
   };
 }>;
 
-
 const tagTokens: TagTokensType = {
-  gap: FOUNDATION_THEME.unit[6],
-  paddingX: FOUNDATION_THEME.unit[8],
-  paddingY: FOUNDATION_THEME.unit[4],
   background: {
     noFill: {
       neutral: FOUNDATION_THEME.colors.gray[0],
@@ -104,33 +90,7 @@ const tagTokens: TagTokensType = {
       purple: FOUNDATION_THEME.colors.purple[600],
     },
   },
-  borderWidth: {
-    noFill: {
-      neutral: "1px",
-      primary: "1px",
-      success: "1px",
-      error: "1px",
-      warning: "1px",
-      purple: "1px",
-    },
-    attentive: {
-      neutral: "1px",
-      primary: "1px",
-      success: "1px",
-      error: "1px",
-      warning: "1px",
-      purple: "1px",
-    },
-    subtle: {
-      neutral: "1px",
-      primary: "1px",
-      success: "1px",
-      error: "1px",
-      warning: "1px",
-      purple: "1px",
-    },
-  },
-  borderColor: {
+  border: {
     noFill: {
       neutral: FOUNDATION_THEME.colors.gray[950],
       primary: FOUNDATION_THEME.colors.primary[600],
@@ -191,18 +151,26 @@ const tagTokens: TagTokensType = {
   layout: {
     xs: {
       height: "20px",
+      padding: "2px 6px",
+      iconSize: "12px",
       gap: "6px",
     },
     sm: {
       height: "22px",
+      padding: "3px 8px",
+      iconSize: "12px",
       gap: "6px",
     },
     md: {
       height: "24px",
+      padding: "4px 10px",
+      iconSize: "12px",
       gap: "6px",
     },
     lg: {
       height: "28px",
+      padding: "6px 12px",
+      iconSize: "12px",
       gap: "6px",
     },
   },

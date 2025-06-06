@@ -1,10 +1,9 @@
 import { createContext, useContext } from "react"
 import { FOUNDATION_THEME, ThemeType } from "../tokens"
-import { TagTokensType } from "../components/Tags/tag.tokens";
 
 export type ComponentTokenType = {
-  TAGS?: TagTokensType;
-};
+  [componentName: string]: any
+}
 
 type ThemeContextType = {
   foundationTokens: ThemeType,
