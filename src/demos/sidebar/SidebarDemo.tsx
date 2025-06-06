@@ -281,6 +281,11 @@ const SidebarDemo = () => {
           leftSlot: <Users style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("avatarGroup"),
         },
+        {
+          label: "Breadcrumb",
+          leftSlot: <Grid style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("breadcrumb"),
+        },
       ],
     },
     {
