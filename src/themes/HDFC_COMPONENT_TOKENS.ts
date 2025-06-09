@@ -4,7 +4,7 @@ export const HDFC_COMPONENT_TOKENS = {
   TAGS: {
     background: {
       noFill: {
-        neutral: FOUNDATION_THEME.colors.primary[400],
+        neutral: FOUNDATION_THEME.colors.gray[0],
         primary: FOUNDATION_THEME.colors.gray[0],
         success: FOUNDATION_THEME.colors.gray[0],
         error: FOUNDATION_THEME.colors.gray[0],
@@ -72,12 +72,12 @@ export const HDFC_COMPONENT_TOKENS = {
         purple: FOUNDATION_THEME.colors.purple[100],
       },
       attentive: {
-        neutral: "transparent",
-        primary: "transparent",
-        success: "transparent",
-        error: "transparent",
-        warning: "transparent",
-        purple: "transparent",
+        neutral: FOUNDATION_THEME.colors.gray[950],
+        primary: FOUNDATION_THEME.colors.primary[600],
+        success: FOUNDATION_THEME.colors.green[600],
+        error: FOUNDATION_THEME.colors.red[600],
+        warning: FOUNDATION_THEME.colors.orange[500],
+        purple: FOUNDATION_THEME.colors.purple[500],
       },
     },
     borderRadius: {
@@ -112,7 +112,7 @@ export const HDFC_COMPONENT_TOKENS = {
         purple: 1,
       },
       attentive: {
-        neutral: 1,
+        neutral: 2,
         primary: 1,
         success: 1,
         error: 1,

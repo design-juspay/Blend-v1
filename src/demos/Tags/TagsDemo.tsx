@@ -19,8 +19,8 @@ const TagsDemo: React.FC = () => {
         />
         <Tag
           leftSlot={<Hash size={12} />}
-          variant={TagVariant.NO_FILL}
-          color={TagColor.NEUTRAL}
+          variant={TagVariant.ATTENTIVE}
+          color={TagColor.PRIMARY}
           size={TagSize.XS}
           text="Hello"
         />
