@@ -22,6 +22,9 @@ export type MenuV2Props = {
   collisonBoundaryRef?: Element | null | Array<Element | null>;
   maxHeight?: number;
   enableSearch?: boolean;
+  useVirtualization?: boolean;
+  itemHeight?: number;
+  virtualizationThreshold?: number;
 };
 
 export enum MenuItemV2Variant {

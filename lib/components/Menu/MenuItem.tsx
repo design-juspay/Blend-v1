@@ -66,9 +66,34 @@ const StyledItem = styled(RadixMenu.Item)<{ $hoverBg: string }>(
   })
 );
 
-const Item = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
+interface ItemProps {
+  item: MenuItemV2Type;
+  idx: number;
+  useVirtualization?: boolean;
+  virtualizationThreshold?: number;
+  itemHeight?: number;
+  maxHeight?: number;
+}
+
+const Item = ({
+  item,
+  idx,
+  useVirtualization = false,
+  virtualizationThreshold = 20,
+  itemHeight = 40,
+  maxHeight = 300,
+}: ItemProps) => {
   if (item.subMenu) {
-    return <SubMenu item={item} idx={idx} />;
+    return (
+      <SubMenu
+        item={item}
+        idx={idx}
+        useVirtualization={useVirtualization}
+        virtualizationThreshold={virtualizationThreshold}
+        itemHeight={itemHeight}
+        maxHeight={maxHeight}
+      />
+    );
   }
   const hoverBg = getHoverBgColor(item);
   return (

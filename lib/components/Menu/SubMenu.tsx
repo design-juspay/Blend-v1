@@ -11,6 +11,7 @@ import Text from "../Text/Text";
 import { contentBaseStyle } from "./Menu";
 import Item, { itemBaseStyle } from "./MenuItem";
 import { ChevronRightIcon } from "lucide-react";
+import Virtualizer from "../Virtualizer/Virtualizer";
 
 export const Sub = styled(RadixMenu.Sub)(() => ({
   padding: 0,
@@ -60,11 +61,23 @@ const SubContent = styled(RadixMenu.SubContent)(() => ({
 export const SubMenu = ({
   item,
   idx,
+  useVirtualization = false,
+  virtualizationThreshold = 20,
+  itemHeight = 40,
+  maxHeight = 300,
 }: {
   item: MenuItemV2Type;
   idx: number;
+  useVirtualization?: boolean;
+  virtualizationThreshold?: number;
+  itemHeight?: number;
+  maxHeight?: number;
 }) => {
   const hoverBg = getHoverBgColor(item);
+  const hasLargeSubMenu =
+    item.subMenu && item.subMenu.length > virtualizationThreshold;
+  const shouldVirtualize = useVirtualization && hasLargeSubMenu;
+
   return (
     <Sub key={idx}>
       <SubTrigger asChild $hoverBg={hoverBg}>
@@ -139,10 +152,29 @@ export const SubMenu = ({
       </SubTrigger>
       <RadixMenu.Portal>
         <SubContent avoidCollisions>
-          {item.subMenu &&
+          {shouldVirtualize && item.subMenu ? (
+            <Virtualizer
+              items={item.subMenu}
+              itemHeight={itemHeight}
+              maxHeight={maxHeight}
+              renderItem={(subItem, subIdx) => (
+                <Item
+                  key={`submenu-${subIdx}`}
+                  item={subItem}
+                  idx={subIdx}
+                  useVirtualization={useVirtualization}
+                  virtualizationThreshold={virtualizationThreshold}
+                  itemHeight={itemHeight}
+                  maxHeight={maxHeight}
+                />
+              )}
+            />
+          ) : (
+            item.subMenu &&
             item.subMenu.map((subItem, subIdx) => (
               <Item key={subIdx} item={subItem} idx={subIdx} />
-            ))}
+            ))
+          )}
         </SubContent>
       </RadixMenu.Portal>
     </Sub>

@@ -55,6 +55,7 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
+import CombinedLargeMenuDemo from "../Menu/CombinedLargeMenuDemo";
 
 const SearchContainer = styled(Block)`
   width: 160px;
@@ -101,6 +102,7 @@ const SidebarDemo = () => {
     | "buttonGroups"
     | "avatars"
     | "menu"
+    | "combinedLargeMenu"
     | "dropdown"
     | "accordion"
     | "statCard"
@@ -198,6 +200,8 @@ const SidebarDemo = () => {
         return <StatCardDemo />;
       case "menu":
         return <MenuDemo />;
+      case "combinedLargeMenu":
+        return <CombinedLargeMenuDemo />;
       case "modal":
         return <ModalDemo />;
       case "input":
@@ -385,6 +389,16 @@ const SidebarDemo = () => {
           label: "Data Table",
           leftSlot: <Table style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("dataTable"),
+        },
+        {
+          label: "Menu",
+          leftSlot: <MessageCircle style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("menu"),
+        },
+        {
+          label: "Combined Large Menu",
+          leftSlot: <MessageCircle style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("combinedLargeMenu"),
         },
       ],
     },

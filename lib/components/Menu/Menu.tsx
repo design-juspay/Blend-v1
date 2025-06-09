@@ -5,7 +5,14 @@ import { Tag, TagColor, TagShape, TagSize } from "../Tags";
 
 import styled, { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
-import {  MenuV2Props, MenuAlignment, MenuSide, MenuV2GroupType, MenuItemV2Variant, MenuItemV2ActionType } from "./types";
+import {
+  MenuV2Props,
+  MenuAlignment,
+  MenuSide,
+  MenuV2GroupType,
+  MenuItemV2Variant,
+  MenuItemV2ActionType,
+} from "./types";
 import React, { useState } from "react";
 import { filterMenuGroups } from "./utils";
 import MenuGroupLabel from "./MenuGroupLabel";
@@ -13,6 +20,7 @@ import MenuGroupSeperator from "./MenuGroupSeperator";
 import Item from "./MenuItem";
 import Block from "../Primitives/Block/Block";
 import SearchInput from "../Inputs/SearchInput/SearchInput";
+import Virtualizer from "../Virtualizer/Virtualizer";
 
 export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
@@ -203,7 +211,6 @@ const dummyMenuItems: MenuV2GroupType[] = [
   },
 ];
 
-
 const Menu = ({
   trigger,
   items = dummyMenuItems,
@@ -213,8 +220,11 @@ const Menu = ({
   sideOffset = 8,
   alignOffset = 0,
   collisonBoundaryRef,
-  maxHeight,
+  maxHeight = 300,
   enableSearch = true,
+  useVirtualization = false,
+  itemHeight = 40,
+  virtualizationThreshold = 20,
 }: MenuV2Props) => {
   const [searchText, setSearchText] = useState<string>("");
 
@@ -262,13 +272,39 @@ const Menu = ({
                   </Text>
                 </MenuGroupLabel>
               )}
-              {group.items.map((item, itemIndex) => (
-                <Item
-                  key={`${groupId}-${itemIndex}`}
-                  item={item}
-                  idx={itemIndex}
+
+              {useVirtualization &&
+              group.items.length > virtualizationThreshold ? (
+                <Virtualizer
+                  items={group.items}
+                  itemHeight={itemHeight}
+                  maxHeight={maxHeight}
+                  renderItem={(item, itemIndex) => (
+                    <Item
+                      key={`${groupId}-${itemIndex}`}
+                      item={item}
+                      idx={itemIndex}
+                      useVirtualization={useVirtualization}
+                      virtualizationThreshold={virtualizationThreshold}
+                      itemHeight={itemHeight}
+                      maxHeight={maxHeight}
+                    />
+                  )}
                 />
-              ))}
+              ) : (
+                group.items.map((item, itemIndex) => (
+                  <Item
+                    key={`${groupId}-${itemIndex}`}
+                    item={item}
+                    idx={itemIndex}
+                    useVirtualization={useVirtualization}
+                    virtualizationThreshold={virtualizationThreshold}
+                    itemHeight={itemHeight}
+                    maxHeight={maxHeight}
+                  />
+                ))
+              )}
+
               {groupId !== filteredItems.length - 1 && group.showSeparator && (
                 <MenuGroupSeperator />
               )}
