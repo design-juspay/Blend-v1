@@ -1,38 +1,51 @@
 import { CSSObject } from "styled-components";
-import { FOUNDATION_THEME } from "../../tokens";
+import { FOUNDATION_THEME, ThemeType } from "../../tokens";
+import { TagColor, TagShape, TagSize, TagVariant } from "./types";
 
-/**
- * @todo: Should we hardcode the keys for the tokens?
- */
 export type TagTokensType = Readonly<{
   background: {
-    [key: string]: {
-      [key: string]: CSSObject["color"];
+    [key in TagVariant]: {
+      [key in TagColor]: CSSObject["color"];
     };
   };
-  text: {
-    [key: string]: {
-      [key: string]: CSSObject["color"];
+  color: {
+    [key in TagVariant]: {
+      [key in TagColor]: CSSObject["color"];
     };
   };
-  border: {
-    [key: string]: {
-      [key: string]: CSSObject["color"];
+  borderColor: {
+    [key in TagVariant]: {
+      [key in TagColor]: CSSObject["color"];
     };
   };
   borderRadius: {
-    [key: string]: {
-      [key: string]: CSSObject["borderRadius"];
+    [key in TagShape]: {
+      [key in TagSize]: CSSObject["borderRadius"];
+    };
+  };
+  borderWidth: {
+    [key in TagVariant]: {
+      [key in TagColor]: CSSObject["borderWidth"];
     };
   };
   font: {
-    [key: string]: {
-      [key: string]: CSSObject["fontSize"];
+    [key in TagSize]: {
+      fontSize: CSSObject["fontSize"];
+      fontWeight: CSSObject["fontWeight"];
     };
   };
-  layout: {
-    [key: string]: {
-      [key: string]: CSSObject["height"];
+  gap: {
+    [key in TagSize]: CSSObject["gap"];
+  };
+  padding: {
+    [key in TagSize]: CSSObject["padding"];
+  };
+  height: {
+    [key in TagSize]: CSSObject["height"];
+  };
+  slot: {
+    size: {
+      [key in TagSize]: CSSObject["width"];
     };
   };
 }>;
@@ -64,7 +77,7 @@ const tagTokens: TagTokensType = {
       purple: FOUNDATION_THEME.colors.purple[50],
     },
   },
-  text: {
+  color: {
     noFill: {
       neutral: FOUNDATION_THEME.colors.gray[950],
       primary: FOUNDATION_THEME.colors.primary[800],
@@ -90,7 +103,7 @@ const tagTokens: TagTokensType = {
       purple: FOUNDATION_THEME.colors.purple[600],
     },
   },
-  border: {
+  borderColor: {
     noFill: {
       neutral: FOUNDATION_THEME.colors.gray[950],
       primary: FOUNDATION_THEME.colors.primary[600],
@@ -130,6 +143,32 @@ const tagTokens: TagTokensType = {
       lg: FOUNDATION_THEME.border.radius.full,
     },
   },
+  borderWidth: {
+    noFill: {
+      neutral: 1,
+      primary: 1,
+      success: 1,
+      error: 1,
+      warning: 1,
+      purple: 1,
+    },
+    subtle: {
+      neutral: 1,
+      primary: 1,
+      success: 1,
+      error: 1,
+      warning: 1,
+      purple: 1,
+    },
+    attentive: {
+      neutral: 1,
+      primary: 1,
+      success: 1,
+      error: 1,
+      warning: 1,
+      purple: 1,
+    },
+  },
   font: {
     xs: {
       fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
@@ -148,32 +187,199 @@ const tagTokens: TagTokensType = {
       fontWeight: FOUNDATION_THEME.font.weight[600],
     },
   },
-  layout: {
-    xs: {
-      height: "20px",
-      padding: "2px 6px",
-      iconSize: "12px",
-      gap: "6px",
-    },
-    sm: {
-      height: "22px",
-      padding: "3px 8px",
-      iconSize: "12px",
-      gap: "6px",
-    },
-    md: {
-      height: "24px",
-      padding: "4px 10px",
-      iconSize: "12px",
-      gap: "6px",
-    },
-    lg: {
-      height: "28px",
-      padding: "6px 12px",
-      iconSize: "12px",
-      gap: "6px",
+  gap: {
+    xs: FOUNDATION_THEME.unit[6],
+    sm: FOUNDATION_THEME.unit[6],
+    md: FOUNDATION_THEME.unit[6],
+    lg: FOUNDATION_THEME.unit[6],
+  },
+  padding: {
+    xs: `${FOUNDATION_THEME.unit[2]} ${FOUNDATION_THEME.unit[6]}`,
+    sm: `${FOUNDATION_THEME.unit[3]} ${FOUNDATION_THEME.unit[8]}`,
+    md: `${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[10]}`,
+    lg: `${FOUNDATION_THEME.unit[6]} ${FOUNDATION_THEME.unit[12]}`,
+  },
+  height: {
+    xs: FOUNDATION_THEME.unit[20],
+    sm: FOUNDATION_THEME.unit[22],
+    md: FOUNDATION_THEME.unit[24],
+    lg: FOUNDATION_THEME.unit[28],
+  },
+  slot: {
+    size: {
+      xs: FOUNDATION_THEME.unit[12],
+      sm: FOUNDATION_THEME.unit[12],
+      md: FOUNDATION_THEME.unit[12],
+      lg: FOUNDATION_THEME.unit[12],
     },
   },
+};
+
+export const getTagTokens = (foundationToken: ThemeType): TagTokensType => {
+  return {
+    background: {
+      noFill: {
+        neutral: foundationToken.colors.gray[0],
+        primary: foundationToken.colors.gray[0],
+        success: foundationToken.colors.gray[0],
+        error: foundationToken.colors.gray[0],
+        warning: foundationToken.colors.gray[0],
+        purple: foundationToken.colors.gray[0],
+      },
+      attentive: {
+        neutral: foundationToken.colors.gray[950],
+        primary: foundationToken.colors.primary[600],
+        success: foundationToken.colors.green[600],
+        error: foundationToken.colors.red[600],
+        warning: foundationToken.colors.orange[500],
+        purple: foundationToken.colors.purple[500],
+      },
+      subtle: {
+        neutral: foundationToken.colors.gray[50],
+        primary: foundationToken.colors.primary[50],
+        success: foundationToken.colors.green[50],
+        error: foundationToken.colors.red[50],
+        warning: foundationToken.colors.orange[50],
+        purple: foundationToken.colors.purple[50],
+      },
+    },
+    color: {
+      noFill: {
+        neutral: foundationToken.colors.gray[950],
+        primary: foundationToken.colors.primary[800],
+        success: foundationToken.colors.green[600],
+        error: foundationToken.colors.red[600],
+        warning: foundationToken.colors.orange[500],
+        purple: foundationToken.colors.purple[500],
+      },
+      attentive: {
+        neutral: foundationToken.colors.gray[0],
+        primary: foundationToken.colors.gray[0],
+        success: foundationToken.colors.gray[0],
+        error: foundationToken.colors.gray[0],
+        warning: foundationToken.colors.gray[0],
+        purple: foundationToken.colors.gray[0],
+      },
+      subtle: {
+        neutral: foundationToken.colors.gray[950],
+        primary: foundationToken.colors.primary[600],
+        success: foundationToken.colors.green[600],
+        error: foundationToken.colors.red[600],
+        warning: foundationToken.colors.orange[600],
+        purple: foundationToken.colors.purple[600],
+      },
+    },
+    borderColor: {
+      noFill: {
+        neutral: foundationToken.colors.gray[950],
+        primary: foundationToken.colors.primary[600],
+        success: foundationToken.colors.green[600],
+        error: foundationToken.colors.red[600],
+        warning: foundationToken.colors.orange[500],
+        purple: foundationToken.colors.purple[500],
+      },
+      subtle: {
+        neutral: foundationToken.colors.gray[200],
+        primary: foundationToken.colors.primary[100],
+        success: foundationToken.colors.green[100],
+        error: foundationToken.colors.red[100],
+        warning: foundationToken.colors.orange[100],
+        purple: foundationToken.colors.purple[100],
+      },
+      attentive: {
+        neutral: "transparent",
+        primary: "transparent",
+        success: "transparent",
+        error: "transparent",
+        warning: "transparent",
+        purple: "transparent",
+      },
+    },
+    borderRadius: {
+      squarical: {
+        xs: foundationToken.border.radius[6],
+        sm: foundationToken.border.radius[6],
+        md: foundationToken.border.radius[6],
+        lg: foundationToken.border.radius[8],
+      },
+      rounded: {
+        xs: foundationToken.border.radius.full,
+        sm: foundationToken.border.radius.full,
+        md: foundationToken.border.radius.full,
+        lg: foundationToken.border.radius.full,
+      },
+    },
+    borderWidth: {
+      noFill: {
+        neutral: 1,
+        primary: 1,
+        success: 1,
+        error: 1,
+        warning: 1,
+        purple: 1,
+      },
+      subtle: {
+        neutral: 1,
+        primary: 1,
+        success: 1,
+        error: 1,
+        warning: 1,
+        purple: 1,
+      },
+      attentive: {
+        neutral: 1,
+        primary: 1,
+        success: 1,
+        error: 1,
+        warning: 1,
+        purple: 1,
+      },
+    },
+    font: {
+      xs: {
+        fontSize: foundationToken.font.size.body.sm.fontSize,
+        fontWeight: foundationToken.font.weight[600],
+      },
+      sm: {
+        fontSize: foundationToken.font.size.body.sm.fontSize,
+        fontWeight: foundationToken.font.weight[600],
+      },
+      md: {
+        fontSize: foundationToken.font.size.body.md.fontSize,
+        fontWeight: foundationToken.font.weight[600],
+      },
+      lg: {
+        fontSize: foundationToken.font.size.body.md.fontSize,
+        fontWeight: foundationToken.font.weight[600],
+      },
+    },
+    gap: {
+      xs: foundationToken.unit[6],
+      sm: foundationToken.unit[6],
+      md: foundationToken.unit[6],
+      lg: foundationToken.unit[6],
+    },
+    padding: {
+      xs: `${foundationToken.unit[2]} ${foundationToken.unit[6]}`,
+      sm: `${foundationToken.unit[3]} ${foundationToken.unit[8]}`,
+      md: `${foundationToken.unit[4]} ${foundationToken.unit[10]}`,
+      lg: `${foundationToken.unit[6]} ${foundationToken.unit[12]}`,
+    },
+    height: {
+      xs: foundationToken.unit[20],
+      sm: foundationToken.unit[22],
+      md: foundationToken.unit[24],
+      lg: foundationToken.unit[28],
+    },
+    slot: {
+      size: {
+        xs: foundationToken.unit[12],
+        sm: foundationToken.unit[12],
+        md: foundationToken.unit[12],
+        lg: foundationToken.unit[12],
+      },
+    },
+  };
 };
 
 export default tagTokens;
