@@ -4,7 +4,7 @@ type ColorGroupType = Readonly<{
   [key: string]: CSSObject["color"];
 }>;
 
-type BaseColorTokensType = {
+export type ColorTokensType = {
   gray: ColorGroupType;
   primary: ColorGroupType;
   purple: ColorGroupType;
@@ -12,13 +12,8 @@ type BaseColorTokensType = {
   red: ColorGroupType;
   green: ColorGroupType;
   yellow: ColorGroupType;
+  [key: string]: ColorGroupType;
 };
-
-export type ColorTokensType = Readonly<
-  BaseColorTokensType & {
-    [key: string]: ColorGroupType;
-  }
->;
 
 const colorTokens: ColorTokensType = {
   gray: {

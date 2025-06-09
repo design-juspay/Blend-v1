@@ -1,33 +1,41 @@
 import { CSSObject } from "styled-components";
 
+type UnitType =
+  | CSSObject["width"]
+  | CSSObject["height"]
+  | CSSObject["gap"]
+  | CSSObject["padding"]
+  | CSSObject["margin"];
+
 export type UnitTokensType = Readonly<{
-  0: CSSObject["width"];
-  1: CSSObject["width"];
-  2: CSSObject["width"];
-  3: CSSObject["width"];
-  4: CSSObject["width"];
-  5: CSSObject["width"];
-  6: CSSObject["width"];
-  7: CSSObject["width"];
-  8: CSSObject["width"];
-  9: CSSObject["width"];
-  10: CSSObject["width"];
-  12: CSSObject["width"];
-  14: CSSObject["width"];
-  16: CSSObject["width"];
-  18: CSSObject["width"];
-  20: CSSObject["width"];
-  22: CSSObject["width"];
-  24: CSSObject["width"];
-  28: CSSObject["width"];
-  32: CSSObject["width"];
-  36: CSSObject["width"];
-  40: CSSObject["width"];
-  48: CSSObject["width"];
-  52: CSSObject["width"];
-  56: CSSObject["width"];
-  64: CSSObject["width"];
-  auto: CSSObject["width"];
+  0: UnitType;
+  1: UnitType;
+  2: UnitType;
+  3: UnitType;
+  4: UnitType;
+  5: UnitType;
+  6: UnitType;
+  7: UnitType;
+  8: UnitType;
+  9: UnitType;
+  10: UnitType;
+  12: UnitType;
+  14: UnitType;
+  16: UnitType;
+  18: UnitType;
+  20: UnitType;
+  22: UnitType;
+  24: UnitType;
+  28: UnitType;
+  32: UnitType;
+  36: UnitType;
+  40: UnitType;
+  48: UnitType;
+  52: UnitType;
+  56: UnitType;
+  64: UnitType;
+  auto: UnitType;
+  [key: string]: UnitType;
 }>;
 
 const unitTokens: UnitTokensType = {
