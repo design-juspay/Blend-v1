@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Hash } from "lucide-react";
-import { TagVariant, TagColor, TagSize } from "../../../lib/components/Tags";
-import { Tag, ThemeProvider } from "../../../lib/main";
+import {
+  TagVariant,
+  TagColor,
+  TagSize,
+  TagShape,
+} from "../../../lib/components/Tags";
+import { SearchInput, Tag, ThemeProvider } from "../../../lib/main";
 import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
 
 const TagsDemo: React.FC = () => {
+  const [search, setSearch] = useState("");
   return (
     <div className="component-section">
       <ThemeProvider componentTokens={HDFC_COMPONENT_TOKENS}>
@@ -24,6 +30,21 @@ const TagsDemo: React.FC = () => {
           size={TagSize.XS}
           text="Hello"
         />
+        <div style={{ height: 100, width: 300, marginTop: 100 }}>
+          <SearchInput
+            rightSlot={
+              <Tag
+                size={TagSize.XS}
+                text="Global Search"
+                color={TagColor.PURPLE}
+                shape={TagShape.ROUNDED}
+              />
+            }
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </ThemeProvider>
       {/* <div>
         <section className="showcase-section">

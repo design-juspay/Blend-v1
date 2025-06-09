@@ -1,3 +1,4 @@
+import { getSearchInputTokens } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { getTagTokens } from "../components/Tags/tag.tokens";
 import { FOUNDATION_THEME, ThemeType } from "../tokens";
 import ThemeContext, { ComponentTokenType } from "./ThemeContext";
@@ -14,6 +15,8 @@ const initTokens = (
 ): Required<ComponentTokenType> => {
   return {
     TAGS: componentTokens.TAGS ?? getTagTokens(foundationTokens),
+    SEARCH_INPUT:
+      componentTokens.SEARCH_INPUT ?? getSearchInputTokens(foundationTokens),
     // add supprort for other components here
   };
 };

@@ -34,8 +34,7 @@ const InputDemo: React.FC = () => {
   const [unitValue, setUnitValue] = useState<number>(0);
   const [inputSize, setInputSize] = useState<InputSize>(InputSize.MEDIUM);
   const [otp1, setOtp1] = useState("");
-  const [selectedInput, setSelectedInput] =
-    useState<string>("multi-value-input");
+  const [selectedInput, setSelectedInput] = useState<string>("search");
   const [tags, setTags] = useState<string[]>([
     "Tag 1",
     "Tag 2",

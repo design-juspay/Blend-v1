@@ -1,6 +1,43 @@
+import { ComponentTokenType } from "../../lib/context/ThemeContext";
 import { FOUNDATION_THEME } from "../../lib/tokens";
 
-export const HDFC_COMPONENT_TOKENS = {
+export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
+  SEARCH_INPUT: {
+    width: "100%",
+    height: FOUNDATION_THEME.unit[40],
+    gap: FOUNDATION_THEME.unit[8],
+    padding: {
+      x: FOUNDATION_THEME.unit[8],
+      y: FOUNDATION_THEME.unit[8],
+    },
+    borderRadius: FOUNDATION_THEME.unit[0],
+    borderTop: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+    },
+    borderLeft: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+    },
+    borderRight: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+    },
+    borderBottom: {
+      default: `1px solid ${FOUNDATION_THEME.colors.red[500]} !important`,
+      hover: `1px solid ${FOUNDATION_THEME.colors.green[700]} !important`,
+      focus: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
+      error: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
+    },
+    outline: "none",
+    boxShadow: FOUNDATION_THEME.shadows.sm,
+  },
   TAGS: {
     background: {
       noFill: {
