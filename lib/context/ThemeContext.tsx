@@ -5,7 +5,7 @@ import { getTagTokens } from "../components/Tags/tag.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
-  
+  // add supprort for other components here
 };
 
 type ThemeContextType = {

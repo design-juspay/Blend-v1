@@ -14,6 +14,7 @@ const initTokens = (
 ): Required<ComponentTokenType> => {
   return {
     TAGS: componentTokens.TAGS ?? getTagTokens(foundationTokens),
+    // add supprort for other components here
   };
 };
 
