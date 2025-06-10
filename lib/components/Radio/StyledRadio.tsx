@@ -52,14 +52,8 @@ export const StyledRadioInput = styled.input<{
         border-color: ${radioTokens.indicator[indicatorState].border.hover};
       }
       
-      ${$isDisabled && css`
-        cursor: not-allowed;
-      `}
-      
-      ${!$isDisabled && css`
-        cursor: pointer;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-      `}
+      cursor: ${$isDisabled ? 'not-allowed' : 'pointer'};
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
     `;
   }}
 `;
@@ -68,36 +62,38 @@ export const StyledRadioLabel = styled.label<{
   $isDisabled: boolean;
   $error?: boolean;
 }>`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  min-height: ${() => {
+    const radioTokens = useComponentToken("RADIO") as RadioTokensType;
+    return radioTokens.height.md;
+  }};
   cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
+  line-height: 1;
 `;
 
 export const StyledRadioText = styled(PrimitiveText)<{
   $isDisabled?: boolean;
   $error?: boolean;
   $isSubtext?: boolean;
+  $margin?: string;
 }>`
-  ${({ $isDisabled, $error, $isSubtext }) => {
+  ${({ $isDisabled, $error, $isSubtext, $margin }) => {
     const radioTokens = useComponentToken("RADIO") as RadioTokensType;
     const state = $isDisabled ? 'disabled' : $error ? 'error' : 'default';
     
     return css`
-      line-height: 1;
-      display: block;
-      margin: 0;
-      padding: 0;
       color: ${$isSubtext ? radioTokens.content.sublabel.color[state] : radioTokens.content.label.color[state]};
+      margin: ${$margin || 0};
     `;
   }}
 `;
 
-export const StyledRadioGroupLabel = styled(PrimitiveText).attrs({ as: 'p' })`
-  ${({ theme }) => {
+export const StyledRadioGroupLabel = styled(PrimitiveText).attrs({ as: 'label' })`
+  ${() => {
     const radioTokens = useComponentToken("RADIO") as RadioTokensType;
-    
     return css`
       color: ${radioTokens.content.label.color.default};
       margin-bottom: ${radioTokens.gap};

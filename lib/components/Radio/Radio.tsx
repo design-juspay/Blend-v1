@@ -45,7 +45,7 @@ export const Radio = ({
 
   return (
     <Block display="flex" flexDirection="column" gap={radioTokens.gap}>
-      <Block display="flex" alignItems="flex-start" gap={radioTokens.slotGap}>
+      <Block display="flex" alignItems={subtext ? "flex-start" : "center"} gap={radioTokens.slotGap}>
         <StyledRadioInput
           type="radio"
           id={uniqueId}
@@ -82,7 +82,7 @@ export const Radio = ({
                     as="span"
                     $error={error}
                     $isDisabled={disabled}
-                    margin={`0 0 0 ${radioTokens.slotGap}`}
+                    $margin={`0 0 0 ${radioTokens.slotGap}`}
                   >
                     *
                   </StyledRadioText>

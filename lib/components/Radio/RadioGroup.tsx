@@ -47,7 +47,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       <Block ref={ref} display="flex" flexDirection="column" gap={radioTokens.gap}>
         {label && (
           <PrimitiveText
-            as="p"
+            as="label"
             fontSize={radioTokens.content.label.font.md.fontSize}
             fontWeight={radioTokens.content.label.font.md.fontWeight}
             color={radioTokens.content.label.color.default}
