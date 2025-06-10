@@ -1,65 +1,121 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
+import { FoundationTokenType } from "../../../tokens/theme.token";
 
-type SearchInputTokens = {
-  input: {
-    gap: number;
-    padding: {
-      x: number;
-      y: number;
-    };
-    border: {
-      radius: number;
-      color: {
-        default: CSSObject["borderColor"];
-        hover: CSSObject["borderColor"];
-        focus: CSSObject["borderColor"];
-        error: CSSObject["borderColor"];
-        disabled: CSSObject["borderColor"];
-      };
-    };
-    boxShadow: CSSObject["boxShadow"];
+enum SearchInputState {
+  DEFAULT = "default",
+  HOVER = "hover",
+  FOCUS = "focus",
+  ERROR = "error",
+}
+
+export type SearchInputTokensType = {
+  height: CSSObject["height"];
+  width: CSSObject["width"];
+  gap: CSSObject["gap"];
+  padding: {
+    x: CSSObject["padding"];
+    y: CSSObject["padding"];
+  };
+  borderRadius: CSSObject["borderRadius"];
+  borderTop: {
+    [key in SearchInputState]: CSSObject["borderTop"];
+  };
+  borderLeft: {
+    [key in SearchInputState]: CSSObject["borderTop"];
+  };
+  borderRight: {
+    [key in SearchInputState]: CSSObject["borderRight"];
+  };
+  borderBottom: {
+    [key in SearchInputState]: CSSObject["borderBottom"];
+  };
+  border?: {
+    radius: CSSObject["borderRadius"];
     color: {
-      default: CSSObject["color"];
-      disabled: CSSObject["color"];
-    };
-    backgroundColor: {
-      default: CSSObject["backgroundColor"];
-      disabled: CSSObject["backgroundColor"];
+      [key in SearchInputState]: CSSObject["borderColor"];
     };
   };
+  outline: CSSObject["outline"];
+  boxShadow: CSSObject["boxShadow"];
 };
 
-// @TODO: Replace with FOUNDATION_THEME Token
-// Not dont yet because of some issue with type of unit tokens
-// Ignored for now due to potential breaking changes to other components
-const searchInputTokens: Readonly<SearchInputTokens> = {
-  input: {
-    gap: 8,
-    padding: {
-      x: 8,
-      y: 10,
-    },
-    border: {
-      radius: 8,
-      color: {
-        default: FOUNDATION_THEME.colors.gray[200],
-        hover: FOUNDATION_THEME.colors.gray[400],
-        focus: FOUNDATION_THEME.colors.primary[500],
-        error: FOUNDATION_THEME.colors.red[500],
-        disabled: FOUNDATION_THEME.colors.gray[200],
-      },
-    },
-    color: {
-      default: FOUNDATION_THEME.colors.gray[800],
-      disabled: FOUNDATION_THEME.colors.gray[300],
-    },
-    backgroundColor: {
-      default: FOUNDATION_THEME.colors.gray[0],
-      disabled: FOUNDATION_THEME.colors.gray[50],
-    },
-    boxShadow: FOUNDATION_THEME.shadows.sm,
+const searchInputTokens: Readonly<SearchInputTokensType> = {
+  width: "100%",
+  height: FOUNDATION_THEME.unit[40],
+  gap: FOUNDATION_THEME.unit[8],
+  padding: {
+    x: FOUNDATION_THEME.unit[8],
+    y: FOUNDATION_THEME.unit[8],
   },
+  borderRadius: FOUNDATION_THEME.unit[0],
+  borderTop: {
+    default: "none",
+    hover: "none",
+    focus: "none",
+    error: "none",
+  },
+  borderLeft: {
+    default: "none",
+    hover: "none",
+    focus: "none",
+    error: "none",
+  },
+  borderRight: {
+    default: "none",
+    hover: "none",
+    focus: "none",
+    error: "none",
+  },
+  borderBottom: {
+    default: `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`,
+    hover: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+    focus: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
+    error: `1px solid ${FOUNDATION_THEME.colors.red[500]} !important`,
+  },
+  outline: "none",
+  boxShadow: FOUNDATION_THEME.shadows.sm,
+};
+
+export const getSearchInputTokens = (
+  foundationTokens: FoundationTokenType
+): SearchInputTokensType => {
+  return {
+    width: "100%",
+    height: foundationTokens.unit[40],
+    gap: foundationTokens.unit[8],
+    padding: {
+      x: foundationTokens.unit[8],
+      y: foundationTokens.unit[8],
+    },
+    borderRadius: foundationTokens.unit[0],
+    borderTop: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+    },
+    borderLeft: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+    },
+    borderRight: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+    },
+    borderBottom: {
+      default: `1px solid ${foundationTokens.colors.gray[200]} !important`,
+      hover: `1px solid ${foundationTokens.colors.gray[400]} !important`,
+      focus: `1px solid ${foundationTokens.colors.primary[500]} !important`,
+      error: `1px solid ${foundationTokens.colors.red[500]} !important`,
+    },
+    outline: "none",
+    boxShadow: foundationTokens.shadows.sm,
+  };
 };
 
 export default searchInputTokens;

@@ -8,6 +8,7 @@ export type ShadowTokensType = Readonly<{
   xl: CSSObject["boxShadow"];
   "2xl": CSSObject["boxShadow"];
   full: CSSObject["boxShadow"];
+  [key: string]: CSSObject["boxShadow"];
 }>;
 
 const shadowTokens: ShadowTokensType = {

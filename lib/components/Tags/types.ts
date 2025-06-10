@@ -33,8 +33,8 @@ export type TagProps = {
   color?: TagColor;
   size?: TagSize;
   shape?: TagShape;
-  leadingSlot?: ReactNode;
-  trailingSlot?: ReactNode;
+  leftSlot?: ReactNode;
+  rightSlot?: ReactNode;
   onClick?: () => void;
   splitTagPosition?: "left" | "right";
 };
