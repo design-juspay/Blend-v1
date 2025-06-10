@@ -34,18 +34,6 @@ export const useTheme = () => {
   return context;
 };
 
-// @todo
-// add better type for this function, return type etc
-export const useComponentToken = (
-  component: keyof ComponentTokenType
-): SearchInputTokensType | TagTokensType => {
-  const { componentTokens } = useTheme();
-  switch (component) {
-    case "TAGS":
-      return componentTokens.TAGS;
-    case "SEARCH_INPUT":
-      return componentTokens.SEARCH_INPUT;
-  }
-};
+
 
 export default ThemeContext;

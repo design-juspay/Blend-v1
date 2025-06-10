@@ -17,7 +17,7 @@ const TagsDemo: React.FC = () => {
         <div
           style={{
             backgroundColor:
-              HDFC_COMPONENT_TOKENS.TAGS.background.noFill.neutral,
+              HDFC_COMPONENT_TOKENS.TAGS?.background.noFill.neutral,
             width: "10px",
             height: "10px",
             position: "relative",

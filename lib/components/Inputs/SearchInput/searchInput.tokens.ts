@@ -77,7 +77,9 @@ const searchInputTokens: Readonly<SearchInputTokensType> = {
   boxShadow: FOUNDATION_THEME.shadows.sm,
 };
 
-export const getSearchInputTokens = (foundationTokens: FoundationTokenType) => {
+export const getSearchInputTokens = (
+  foundationTokens: FoundationTokenType
+): SearchInputTokensType => {
   return {
     width: "100%",
     height: foundationTokens.unit[40],

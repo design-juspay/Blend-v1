@@ -1,2 +1,2 @@
 export { default as ThemeProvider } from "./ThemeProvider";
-export { useTheme, useComponentToken } from "./ThemeContext";
+export { useTheme } from "./ThemeContext";

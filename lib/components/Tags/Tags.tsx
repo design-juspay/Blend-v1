@@ -3,7 +3,8 @@ import { forwardRef } from "react";
 
 import Text from "../Text/Text";
 import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "./types";
-import { useComponentToken } from "../../context";
+import { useComponentToken } from "../../context/useContextToken";
+import { TagTokensType } from "./tag.tokens";
 
 const Tag = forwardRef<HTMLDivElement, TagProps>(
   (
@@ -20,7 +21,7 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
     },
     ref
   ) => {
-    const tagTokens = useComponentToken("TAGS");
+    const tagTokens = useComponentToken("TAGS") as TagTokensType;
 
     const isSplitTag = splitTagPosition !== undefined;
     let borderRadius = tagTokens.borderRadius[shape][size];
