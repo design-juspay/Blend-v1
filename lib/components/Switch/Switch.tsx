@@ -4,7 +4,8 @@ import { getSwitchDataState } from './utils';
 import { StyledSwitchRoot, StyledSwitchThumb, StyledSwitchLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import switchTokens from './token';
+import { useComponentToken } from '../../context';
+import { SwitchTokensType } from './switch.token';
 
 export const Switch = ({
   id,
@@ -21,6 +22,8 @@ export const Switch = ({
   name,
   value,
 }: SwitchProps) => {
+  const tokens = useComponentToken('SWITCH') as SwitchTokensType;
+  
   // TODO: This is a temporary fix to avoid the warning about useId.
   // We need to find a better solution to handle the id.
   const generatedId = React.useId();
@@ -83,15 +86,15 @@ export const Switch = ({
           >
             <PrimitiveText
               as="span"
-              fontSize={switchTokens.sizes[size].fontSize}
-              fontWeight={switchTokens.label.fontWeight}
+              fontSize={tokens.label.font.size[size]}
+              fontWeight={tokens.label.font.weight}
             >
               {children}
               {required && (
                 <PrimitiveText
                   as="span"
-                  color={switchTokens.required.color}
-                  margin={`0 0 0 ${switchTokens.required.spacing}`}
+                  color={tokens.required.color}
+                  margin={`0 0 0 ${tokens.required.spacing}`}
                 >
                   *
                 </PrimitiveText>
@@ -100,7 +103,7 @@ export const Switch = ({
           </StyledSwitchLabel>
         )}
         {slot && (
-          <Block as="span" marginLeft={switchTokens.spacing.rightSlot}>
+          <Block as="span" marginLeft={tokens.root.spacing.rightSlot}>
             {slot}
           </Block>
         )}
@@ -108,15 +111,15 @@ export const Switch = ({
 
       {subtext && (
         <Block 
-          marginLeft={switchTokens.sizes[size].subtext.marginLeft}
-          marginTop={switchTokens.sizes[size].subtext.marginTop}
+          marginLeft={tokens.subtext.spacing.left[size]}
+          marginTop={tokens.subtext.spacing.top}
         >
           <PrimitiveText
             as="span"
-            color={disabled ? switchTokens.subtext.disabled : 
-                   error ? switchTokens.subtext.error : 
-                   switchTokens.subtext.default}
-            fontSize={switchTokens.sizes[size].subtext.fontSize}
+            color={disabled ? tokens.subtext.color.disabled : 
+                   error ? tokens.subtext.color.error : 
+                   tokens.subtext.color.default}
+            fontSize={tokens.subtext.font.size[size]}
           >
             {subtext}
           </PrimitiveText>

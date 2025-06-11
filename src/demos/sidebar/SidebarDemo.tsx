@@ -409,6 +409,11 @@ const SidebarDemo = () => {
           onClick: () => setActiveComponent("radio"),
         },
         {
+          label: "Switch",
+          leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("switch"),
+        },
+        {
           label: "Selectors",
           leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("selectors"),

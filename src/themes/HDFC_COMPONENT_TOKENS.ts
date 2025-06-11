@@ -335,6 +335,118 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
       },
     },
   },
+  SWITCH: {
+    root: {
+      background: {
+        default: {
+          active: FOUNDATION_THEME.colors.green[500],
+          inactive: FOUNDATION_THEME.colors.gray[200],
+          disabled: FOUNDATION_THEME.colors.green[300],
+        }
+      },
+      border: {
+        radius: FOUNDATION_THEME.border.radius.full,
+        focus: {
+          color: FOUNDATION_THEME.colors.green[200]
+        }
+      },
+      size: {
+        sm: {
+          width: FOUNDATION_THEME.unit[24],
+          height: FOUNDATION_THEME.unit[12]
+        },
+        md: {
+          width: FOUNDATION_THEME.unit[28],
+          height: FOUNDATION_THEME.unit[14]
+        }
+      },
+      spacing: {
+        rightSlot: FOUNDATION_THEME.unit[6],
+        marginRight: FOUNDATION_THEME.unit[8]
+      }
+    },
+    thumb: {
+      background: {
+        default: FOUNDATION_THEME.colors.gray[0]
+      },
+      border: {
+        default: {
+          color: FOUNDATION_THEME.colors.gray[300],
+          width: '0.5px'
+        }
+      },
+      size: {
+        sm: {
+          width: FOUNDATION_THEME.unit[10],
+          height: FOUNDATION_THEME.unit[10],
+          top: '1px',
+          offset: {
+            active: FOUNDATION_THEME.unit[12],
+            inactive: FOUNDATION_THEME.unit[2]
+          }
+        },
+        md: {
+          width: FOUNDATION_THEME.unit[12],
+          height: FOUNDATION_THEME.unit[12],
+          top: '1px',
+          offset: {
+            active: FOUNDATION_THEME.unit[14],
+            inactive: FOUNDATION_THEME.unit[2]
+          }
+        }
+      }
+    },
+    label: {
+      color: {
+        default: FOUNDATION_THEME.colors.gray[800],
+        disabled: FOUNDATION_THEME.colors.gray[400]
+      },
+      font: {
+        weight: 500,
+        size: {
+          sm: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
+          md: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`
+        }
+      }
+    },
+    subtext: {
+      color: {
+        default: FOUNDATION_THEME.colors.gray[600],
+        disabled: FOUNDATION_THEME.colors.gray[300],
+        error: FOUNDATION_THEME.colors.red[500]
+      },
+      font: {
+        size: {
+          sm: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
+          md: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`
+        }
+      },
+      spacing: {
+        left: {
+          sm: FOUNDATION_THEME.unit[32],
+          md: FOUNDATION_THEME.unit[36]
+        },
+        top: FOUNDATION_THEME.unit[4]
+      }
+    },
+    group: {
+      label: {
+        color: FOUNDATION_THEME.colors.gray[800],
+        font: {
+          weight: 600
+        }
+      },
+      spacing: FOUNDATION_THEME.unit[16]
+    },
+    required: {
+      color: FOUNDATION_THEME.colors.red[500],
+      spacing: FOUNDATION_THEME.unit[2]
+    },
+    transition: {
+      duration: '300ms',
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    }
+  },
 };
 
 export default HDFC_COMPONENT_TOKENS;
