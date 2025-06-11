@@ -9,16 +9,16 @@ export type SwitchProps = {
   id?: string;
   checked?: boolean;
   defaultChecked?: boolean;
+  onChange?: (checked: boolean) => void;
   disabled?: boolean;
   required?: boolean;
   error?: boolean;
   size?: SwitchSize;
-  onChange?: (isChecked: boolean) => void;
-  value?: string;
-  children?: string;
-  subtext?: string;
+  label?: ReactNode;
+  subtext?: ReactNode;
   slot?: ReactNode;
   name?: string;
+  value?: string;
 };
 
 export type SwitchGroupProps = {

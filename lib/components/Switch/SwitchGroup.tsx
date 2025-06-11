@@ -4,7 +4,8 @@ import { StyledSwitchGroupLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import { Switch } from './Switch';
-import switchTokens from './token';
+import { useComponentToken } from '../../context/useContextToken';
+import { SwitchTokensType } from './switch.token';
 
 const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
   (
@@ -20,6 +21,7 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
     },
     ref
   ) => {
+    const tokens = useComponentToken('SWITCH') as SwitchTokensType;
     const [internalValues, setInternalValues] = useState<string[]>(defaultValue);
 
     const isControlled = controlledValue !== undefined;
@@ -77,20 +79,20 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
         id={id}
         display="flex"
         flexDirection="column"
-        gap={switchTokens.spacing.groupSpacing}
+        gap={tokens.gap}
       >
         {label && (
           <StyledSwitchGroupLabel>
             <PrimitiveText
               as="span"
-              fontSize={switchTokens.sizes.md.fontSize}
-              fontWeight={switchTokens.groupLabel.fontWeight}
+              fontSize={tokens.content.label.font.md.fontSize}
+              fontWeight={tokens.content.label.font.md.fontWeight}
             >
               {label}
             </PrimitiveText>
           </StyledSwitchGroupLabel>
         )}
-        <Block display="flex" flexDirection="column" gap={switchTokens.spacing.groupSpacing}>
+        <Block display="flex" flexDirection="column" gap={tokens.gap}>
           {enhancedChildren}
         </Block>
       </Block>

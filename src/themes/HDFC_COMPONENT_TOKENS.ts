@@ -335,6 +335,164 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
       },
     },
   },
+  SWITCH: {
+    gap: FOUNDATION_THEME.unit[8],
+    slotGap: FOUNDATION_THEME.unit[6],
+
+    height: {
+      sm: FOUNDATION_THEME.unit[12],
+      md: FOUNDATION_THEME.unit[16]
+    },
+    width: {
+      sm: FOUNDATION_THEME.unit[24],
+      md: FOUNDATION_THEME.unit[32]
+    },
+
+    borderRadius: {
+      base: FOUNDATION_THEME.border.radius.full,
+      thumb: FOUNDATION_THEME.border.radius.full
+    },
+
+    indicator: {
+      active: {
+        background: {
+          default: FOUNDATION_THEME.colors.green[500],
+          hover: FOUNDATION_THEME.colors.green[600],
+          disabled: FOUNDATION_THEME.colors.green[300]
+        },
+        border: {
+          default: FOUNDATION_THEME.colors.green[500],
+          hover: FOUNDATION_THEME.colors.green[600],
+          disabled: FOUNDATION_THEME.colors.green[300]
+        }
+      },
+      inactive: {
+        background: {
+          default: FOUNDATION_THEME.colors.gray[200],
+          hover: FOUNDATION_THEME.colors.gray[300],
+          disabled: FOUNDATION_THEME.colors.gray[100]
+        },
+        border: {
+          default: FOUNDATION_THEME.colors.gray[200],
+          hover: FOUNDATION_THEME.colors.gray[300],
+          disabled: FOUNDATION_THEME.colors.gray[100]
+        }
+      }
+    },
+
+    thumb: {
+      background: FOUNDATION_THEME.colors.gray[0],
+      border: {
+        color: FOUNDATION_THEME.colors.gray[300],
+        width: '0.5px'
+      },
+      size: {
+        sm: {
+          width: FOUNDATION_THEME.unit[10],
+          height: FOUNDATION_THEME.unit[10],
+          top: '1px',
+          offset: {
+            active: FOUNDATION_THEME.unit[12],
+            inactive: FOUNDATION_THEME.unit[2]
+          }
+        },
+        md: {
+          width: FOUNDATION_THEME.unit[14],
+          height: FOUNDATION_THEME.unit[14],
+          top: '1px',
+          offset: {
+            active: FOUNDATION_THEME.unit[16],
+            inactive: FOUNDATION_THEME.unit[2]
+          }
+        }
+      }
+    },
+
+    content: {
+      label: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[800],
+          hover: FOUNDATION_THEME.colors.gray[900],
+          disabled: FOUNDATION_THEME.colors.gray[400],
+          error: FOUNDATION_THEME.colors.red[500]
+        },
+        font: {
+          sm: {
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[500]
+          },
+          md: {
+            fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[500]
+          }
+        }
+      },
+      sublabel: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[600],
+          hover: FOUNDATION_THEME.colors.gray[700],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+          error: FOUNDATION_THEME.colors.red[500]
+        },
+        font: {
+          sm: {
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400]
+          },
+          md: {
+            fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400]
+          }
+        },
+        spacing: {
+          left: {
+            sm: FOUNDATION_THEME.unit[32],
+            md: FOUNDATION_THEME.unit[36]
+          },
+          top: FOUNDATION_THEME.unit[4]
+        }
+      }
+    },
+
+    borderWidth: {
+      inactive: {
+        default: 1,
+        hover: 1,
+        disabled: 1
+      },
+      active: {
+        default: 2,
+        hover: 2,
+        disabled: 1
+      }
+    },
+
+    focus: {
+      outline: {
+        width: FOUNDATION_THEME.border.width[2],
+        color: FOUNDATION_THEME.colors.green[200],
+        offset: FOUNDATION_THEME.unit[2]
+      }
+    },
+
+    slot: {
+      size: {
+        sm: FOUNDATION_THEME.unit[12],
+        md: FOUNDATION_THEME.unit[12]
+      },
+      spacing: FOUNDATION_THEME.unit[6]
+    },
+
+    required: {
+      color: FOUNDATION_THEME.colors.red[500],
+      spacing: FOUNDATION_THEME.unit[2]
+    },
+
+    transition: {
+      duration: '300ms',
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    }
+  },
 };
 
 export default HDFC_COMPONENT_TOKENS;
