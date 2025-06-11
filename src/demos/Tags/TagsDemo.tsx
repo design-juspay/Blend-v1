@@ -7,6 +7,7 @@ import {
   TagShape,
 } from "../../../lib/components/Tags";
 import {
+  NumberInput,
   SearchInput,
   Tag,
   TextArea,
@@ -19,6 +20,7 @@ const TagsDemo: React.FC = () => {
   const [search, setSearch] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
   const [textInputValue, setTextInputValue] = useState("");
+  const [numberInputValue, setNumberInputValue] = useState(0);
   return (
     <div className="component-section">
       <ThemeProvider componentTokens={HDFC_COMPONENT_TOKENS}>
@@ -81,6 +83,19 @@ const TagsDemo: React.FC = () => {
             error={false}
             errorMessage="This is an error message."
             hintText="This is a hint text to help user."
+          />
+        </div>
+        <div style={{ width: 300, height: 200 }}>
+          <NumberInput
+            required
+            placeholder="Enter your text"
+            value={numberInputValue}
+            onChange={(e) => setNumberInputValue(Number(e.target.value))}
+            label="Number Input"
+            helpIconHintText="This is a hint text to help user."
+            disabled={false}
+            error={false}
+            errorMessage="This is an error message."
           />
         </div>
       </ThemeProvider>

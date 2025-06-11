@@ -14,12 +14,17 @@ import {
   getTextInputTokens,
   TextInputTokensType,
 } from "../components/Inputs/TextInput/textInput.tokens";
+import {
+  getNumberInputTokens,
+  NumberInputTokensType,
+} from "../components/Inputs/NumberInput/numberInput.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
   SEARCH_INPUT?: SearchInputTokensType;
   TEXT_AREA?: TextAreaTokensType;
   TEXT_INPUT?: TextInputTokensType;
+  NUMBER_INPUT?: NumberInputTokensType;
   // add supprort for other components here
 };
 
@@ -35,6 +40,7 @@ const ThemeContext = createContext<ThemeContextType>({
     SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
     TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
     TEXT_INPUT: getTextInputTokens(FOUNDATION_THEME),
+    NUMBER_INPUT: getNumberInputTokens(FOUNDATION_THEME),
   },
 });
 

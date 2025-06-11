@@ -1,3 +1,4 @@
+import { getNumberInputTokens } from "../components/Inputs/NumberInput/numberInput.tokens";
 import { getSearchInputTokens } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { getTextAreaTokens } from "../components/Inputs/TextArea/textarea.token";
 import { getTextInputTokens } from "../components/Inputs/TextInput/textInput.tokens";
@@ -16,6 +17,8 @@ const initTokens = (
     TEXT_AREA: componentTokens.TEXT_AREA ?? getTextAreaTokens(foundationTokens),
     TEXT_INPUT:
       componentTokens.TEXT_INPUT ?? getTextInputTokens(foundationTokens),
+    NUMBER_INPUT:
+      componentTokens.NUMBER_INPUT ?? getNumberInputTokens(foundationTokens),
     // add supprort for other components here
   };
 };

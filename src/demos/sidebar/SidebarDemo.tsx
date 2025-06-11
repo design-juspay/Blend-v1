@@ -112,7 +112,7 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
-  >("input");
+  >("theme");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
@@ -255,6 +255,11 @@ const SidebarDemo = () => {
     {
       label: "Basic Components",
       items: [
+        {
+          label: "Theme",
+          leftSlot: <Palette style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("theme"),
+        },
         {
           label: "Button",
           leftSlot: <Square style={{ width: "16px", height: "16px" }} />,

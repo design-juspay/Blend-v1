@@ -5,7 +5,7 @@ import { FOUNDATION_THEME } from "../../../tokens";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import { InputSize, InputProps } from "./types";
-import { useComponentToken } from "../../../context/useContextToken";
+import { useComponentToken } from "../../../context/useComponentToken";
 import { TextInputTokensType } from "./textInput.tokens";
 
 const toPixels = (value: string | number | undefined): number => {
