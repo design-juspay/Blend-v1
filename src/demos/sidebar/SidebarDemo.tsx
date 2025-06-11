@@ -56,6 +56,7 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
+import DemoThemeProvider from "../DemoThemeProvider";
 
 const SearchContainer = styled(Block)`
   width: 160px;
@@ -111,7 +112,8 @@ const SidebarDemo = () => {
     | "dataTable"
     | "colorPalette"
     | "popover"
-  >("input");
+    | "theme"
+  >("theme");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
@@ -161,6 +163,8 @@ const SidebarDemo = () => {
 
   const renderContent = () => {
     switch (activeComponent) {
+      case "theme":
+        return <DemoThemeProvider />;
       case "buttons":
         return <ButtonDemo />;
       case "buttonGroups":
