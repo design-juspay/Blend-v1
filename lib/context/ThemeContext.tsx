@@ -6,10 +6,15 @@ import {
   getSearchInputTokens,
   SearchInputTokensType,
 } from "../components/Inputs/SearchInput/searchInput.tokens";
+import {
+  getTextAreaTokens,
+  TextAreaTokensType,
+} from "../components/Inputs/TextArea/textarea.token";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
   SEARCH_INPUT?: SearchInputTokensType;
+  TEXT_AREA?: TextAreaTokensType;
   // add supprort for other components here
 };
 
@@ -23,6 +28,7 @@ const ThemeContext = createContext<ThemeContextType>({
   componentTokens: {
     TAGS: getTagTokens(FOUNDATION_THEME),
     SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
+    TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
   },
 });
 
