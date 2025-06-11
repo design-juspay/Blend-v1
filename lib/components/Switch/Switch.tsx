@@ -86,8 +86,8 @@ export const Switch = ({
           >
             <PrimitiveText
               as="span"
-              fontSize={tokens.label.font.size[size]}
-              fontWeight={tokens.label.font.weight}
+              fontSize={tokens.content.label.font[size].fontSize}
+              fontWeight={tokens.content.label.font[size].fontWeight}
             >
               {children}
               {required && (
@@ -103,7 +103,7 @@ export const Switch = ({
           </StyledSwitchLabel>
         )}
         {slot && (
-          <Block as="span" marginLeft={tokens.root.spacing.rightSlot}>
+          <Block as="span" marginLeft={tokens.slot.spacing}>
             {slot}
           </Block>
         )}
@@ -111,15 +111,15 @@ export const Switch = ({
 
       {subtext && (
         <Block 
-          marginLeft={tokens.subtext.spacing.left[size]}
-          marginTop={tokens.subtext.spacing.top}
+          marginLeft={tokens.content.sublabel.spacing.left[size]}
+          marginTop={tokens.content.sublabel.spacing.top}
         >
           <PrimitiveText
             as="span"
-            color={disabled ? tokens.subtext.color.disabled : 
-                   error ? tokens.subtext.color.error : 
-                   tokens.subtext.color.default}
-            fontSize={tokens.subtext.font.size[size]}
+            color={disabled ? tokens.content.sublabel.color.disabled : 
+                   error ? tokens.content.sublabel.color.error : 
+                   tokens.content.sublabel.color.default}
+            fontSize={tokens.content.sublabel.font[size].fontSize}
           >
             {subtext}
           </PrimitiveText>

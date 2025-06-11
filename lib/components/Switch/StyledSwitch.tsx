@@ -14,7 +14,7 @@ export const StyledSwitchRoot = styled.button<{
     const tokens = useComponentToken('SWITCH') as SwitchTokensType;
     return css`
       position: relative;
-      border-radius: ${tokens.root.border.radius};
+      border-radius: ${tokens.borderRadius.base};
       border: none;
       outline: none;
       cursor: ${$isDisabled ? 'not-allowed' : 'pointer'};
@@ -23,25 +23,25 @@ export const StyledSwitchRoot = styled.button<{
       /* Reset all margin and padding */
       margin: 0;
       padding: 0;
-      margin-right: ${tokens.root.spacing.marginRight};
+      margin-right: ${tokens.gap};
       
       /* Prevent any inherited spacing */
       display: inline-flex;
       align-items: center;
       justify-content: flex-start;
       
-      width: ${tokens.root.size[size].width};
-      height: ${tokens.root.size[size].height};
+      width: ${tokens.width[size]};
+      height: ${tokens.height[size]};
       
       background-color: ${$isDisabled
-        ? ($isChecked ? tokens.root.background.default.disabled : tokens.root.background.default.inactive)
-        : ($isChecked ? tokens.root.background.default.active : tokens.root.background.default.inactive)
+        ? ($isChecked ? tokens.indicator.active.background.disabled : tokens.indicator.inactive.background.disabled)
+        : ($isChecked ? tokens.indicator.active.background.default : tokens.indicator.inactive.background.default)
       };
       
       /* Improved focus styles for better accessibility */
       &:focus-visible {
-        outline: ${FOUNDATION_THEME.border.width[2]} solid ${tokens.root.border.focus.color};
-        outline-offset: ${FOUNDATION_THEME.unit[2]};
+        outline: ${tokens.focus.outline.width} solid ${tokens.focus.outline.color};
+        outline-offset: ${tokens.focus.outline.offset};
         box-shadow: 0 0 0 ${FOUNDATION_THEME.border.width[2]} rgba(0, 0, 0, ${FOUNDATION_THEME.opacity[10]});
       }
       
@@ -65,9 +65,9 @@ export const StyledSwitchThumb = styled.div<{
     return css`
       position: absolute;
       top: ${tokens.thumb.size[size].top};
-      border-radius: ${tokens.root.border.radius};
-      background-color: ${tokens.thumb.background.default};
-      border: ${tokens.thumb.border.default.width} solid ${tokens.thumb.border.default.color};
+      border-radius: ${tokens.borderRadius.thumb};
+      background-color: ${tokens.thumb.background};
+      border: ${tokens.thumb.border.width} solid ${tokens.thumb.border.color};
       transition: transform ${tokens.transition.duration} ${tokens.transition.easing};
       
       width: ${tokens.thumb.size[size].width};
@@ -82,11 +82,15 @@ export const StyledSwitchLabel = styled.label<{
   $isDisabled: boolean;
   $error?: boolean;
 }>`
-  ${({ $isDisabled }) => {
+  ${({ $isDisabled, $error }) => {
     const tokens = useComponentToken('SWITCH') as SwitchTokensType;
     return css`
-      color: ${$isDisabled ? tokens.label.color.disabled : tokens.label.color.default};
-      font-weight: ${tokens.label.font.weight};
+      color: ${$error 
+        ? tokens.content.label.color.error 
+        : $isDisabled 
+          ? tokens.content.label.color.disabled 
+          : tokens.content.label.color.default};
+      font-weight: ${tokens.content.label.font.md.fontWeight};
       cursor: ${$isDisabled ? 'not-allowed' : 'pointer'};
       display: flex;
       align-items: center;
@@ -114,9 +118,9 @@ export const StyledSwitchGroupLabel = styled.div`
   ${() => {
     const tokens = useComponentToken('SWITCH') as SwitchTokensType;
     return css`
-      color: ${tokens.group.label.color};
-      font-weight: ${tokens.group.label.font.weight};
-      margin-bottom: ${tokens.group.spacing};
+      color: ${tokens.content.label.color.default};
+      font-weight: ${tokens.content.label.font.md.fontWeight};
+      margin-bottom: ${tokens.gap};
     `;
   }}
 `; 

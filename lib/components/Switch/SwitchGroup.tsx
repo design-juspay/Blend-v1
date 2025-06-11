@@ -79,20 +79,20 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
         id={id}
         display="flex"
         flexDirection="column"
-        gap={tokens.group.spacing}
+        gap={tokens.gap}
       >
         {label && (
           <StyledSwitchGroupLabel>
             <PrimitiveText
               as="span"
-              fontSize={tokens.label.font.size.md}
-              fontWeight={tokens.group.label.font.weight}
+              fontSize={tokens.content.label.font.md.fontSize}
+              fontWeight={tokens.content.label.font.md.fontWeight}
             >
               {label}
             </PrimitiveText>
           </StyledSwitchGroupLabel>
         )}
-        <Block display="flex" flexDirection="column" gap={tokens.group.spacing}>
+        <Block display="flex" flexDirection="column" gap={tokens.gap}>
           {enhancedChildren}
         </Block>
       </Block>

@@ -336,44 +336,55 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
     },
   },
   SWITCH: {
-    root: {
-      background: {
-        default: {
-          active: FOUNDATION_THEME.colors.green[500],
-          inactive: FOUNDATION_THEME.colors.gray[200],
-          disabled: FOUNDATION_THEME.colors.green[300],
-        }
-      },
-      border: {
-        radius: FOUNDATION_THEME.border.radius.full,
-        focus: {
-          color: FOUNDATION_THEME.colors.green[200]
-        }
-      },
-      size: {
-        sm: {
-          width: FOUNDATION_THEME.unit[24],
-          height: FOUNDATION_THEME.unit[12]
+    gap: FOUNDATION_THEME.unit[8],
+    slotGap: FOUNDATION_THEME.unit[6],
+
+    height: {
+      sm: FOUNDATION_THEME.unit[12],
+      md: FOUNDATION_THEME.unit[16]
+    },
+    width: {
+      sm: FOUNDATION_THEME.unit[24],
+      md: FOUNDATION_THEME.unit[32]
+    },
+
+    borderRadius: {
+      base: FOUNDATION_THEME.border.radius.full,
+      thumb: FOUNDATION_THEME.border.radius.full
+    },
+
+    indicator: {
+      active: {
+        background: {
+          default: FOUNDATION_THEME.colors.green[500],
+          hover: FOUNDATION_THEME.colors.green[600],
+          disabled: FOUNDATION_THEME.colors.green[300]
         },
-        md: {
-          width: FOUNDATION_THEME.unit[28],
-          height: FOUNDATION_THEME.unit[14]
+        border: {
+          default: FOUNDATION_THEME.colors.green[500],
+          hover: FOUNDATION_THEME.colors.green[600],
+          disabled: FOUNDATION_THEME.colors.green[300]
         }
       },
-      spacing: {
-        rightSlot: FOUNDATION_THEME.unit[6],
-        marginRight: FOUNDATION_THEME.unit[8]
+      inactive: {
+        background: {
+          default: FOUNDATION_THEME.colors.gray[200],
+          hover: FOUNDATION_THEME.colors.gray[300],
+          disabled: FOUNDATION_THEME.colors.gray[100]
+        },
+        border: {
+          default: FOUNDATION_THEME.colors.gray[200],
+          hover: FOUNDATION_THEME.colors.gray[300],
+          disabled: FOUNDATION_THEME.colors.gray[100]
+        }
       }
     },
+
     thumb: {
-      background: {
-        default: FOUNDATION_THEME.colors.gray[0]
-      },
+      background: FOUNDATION_THEME.colors.gray[0],
       border: {
-        default: {
-          color: FOUNDATION_THEME.colors.gray[300],
-          width: '0.5px'
-        }
+        color: FOUNDATION_THEME.colors.gray[300],
+        width: '0.5px'
       },
       size: {
         sm: {
@@ -386,62 +397,97 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
           }
         },
         md: {
-          width: FOUNDATION_THEME.unit[12],
-          height: FOUNDATION_THEME.unit[12],
+          width: FOUNDATION_THEME.unit[14],
+          height: FOUNDATION_THEME.unit[14],
           top: '1px',
           offset: {
-            active: FOUNDATION_THEME.unit[14],
+            active: FOUNDATION_THEME.unit[16],
             inactive: FOUNDATION_THEME.unit[2]
           }
         }
       }
     },
-    label: {
-      color: {
-        default: FOUNDATION_THEME.colors.gray[800],
-        disabled: FOUNDATION_THEME.colors.gray[400]
-      },
-      font: {
-        weight: 500,
-        size: {
-          sm: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
-          md: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`
-        }
-      }
-    },
-    subtext: {
-      color: {
-        default: FOUNDATION_THEME.colors.gray[600],
-        disabled: FOUNDATION_THEME.colors.gray[300],
-        error: FOUNDATION_THEME.colors.red[500]
-      },
-      font: {
-        size: {
-          sm: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
-          md: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`
-        }
-      },
-      spacing: {
-        left: {
-          sm: FOUNDATION_THEME.unit[32],
-          md: FOUNDATION_THEME.unit[36]
-        },
-        top: FOUNDATION_THEME.unit[4]
-      }
-    },
-    group: {
+
+    content: {
       label: {
-        color: FOUNDATION_THEME.colors.gray[800],
+        color: {
+          default: FOUNDATION_THEME.colors.gray[800],
+          hover: FOUNDATION_THEME.colors.gray[900],
+          disabled: FOUNDATION_THEME.colors.gray[400],
+          error: FOUNDATION_THEME.colors.red[500]
+        },
         font: {
-          weight: 600
+          sm: {
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[500]
+          },
+          md: {
+            fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[500]
+          }
         }
       },
-      spacing: FOUNDATION_THEME.unit[16]
+      sublabel: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[600],
+          hover: FOUNDATION_THEME.colors.gray[700],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+          error: FOUNDATION_THEME.colors.red[500]
+        },
+        font: {
+          sm: {
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400]
+          },
+          md: {
+            fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400]
+          }
+        },
+        spacing: {
+          left: {
+            sm: FOUNDATION_THEME.unit[32],
+            md: FOUNDATION_THEME.unit[36]
+          },
+          top: FOUNDATION_THEME.unit[4]
+        }
+      }
     },
+
+    borderWidth: {
+      inactive: {
+        default: 1,
+        hover: 1,
+        disabled: 1
+      },
+      active: {
+        default: 2,
+        hover: 2,
+        disabled: 1
+      }
+    },
+
+    focus: {
+      outline: {
+        width: FOUNDATION_THEME.border.width[2],
+        color: FOUNDATION_THEME.colors.green[200],
+        offset: FOUNDATION_THEME.unit[2]
+      }
+    },
+
+    slot: {
+      size: {
+        sm: FOUNDATION_THEME.unit[12],
+        md: FOUNDATION_THEME.unit[12]
+      },
+      spacing: FOUNDATION_THEME.unit[6]
+    },
+
     required: {
       color: FOUNDATION_THEME.colors.red[500],
       spacing: FOUNDATION_THEME.unit[2]
     },
+
     transition: {
       duration: '300ms',
       easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
