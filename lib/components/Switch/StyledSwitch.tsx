@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { SwitchSize } from './types';
 import { FOUNDATION_THEME } from '../../tokens';
-import { useComponentToken } from '../../context';
+import { useComponentToken } from '../../context/useContextToken';
 import { SwitchTokensType } from './switch.token';
 
 export const StyledSwitchRoot = styled.button<{
@@ -42,7 +42,7 @@ export const StyledSwitchRoot = styled.button<{
       &:focus-visible {
         outline: ${tokens.focus.outline.width} solid ${tokens.focus.outline.color};
         outline-offset: ${tokens.focus.outline.offset};
-        box-shadow: 0 0 0 ${FOUNDATION_THEME.border.width[2]} rgba(0, 0, 0, ${FOUNDATION_THEME.opacity[10]});
+        box-shadow: ${FOUNDATION_THEME.shadows.sm};
       }
       
       ${$isDisabled && css`opacity: 0.7;`}
@@ -123,4 +123,4 @@ export const StyledSwitchGroupLabel = styled.div`
       margin-bottom: ${tokens.gap};
     `;
   }}
-`; 
+`;

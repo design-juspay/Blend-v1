@@ -4,7 +4,7 @@ import { getSwitchDataState } from './utils';
 import { StyledSwitchRoot, StyledSwitchThumb, StyledSwitchLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import { useComponentToken } from '../../context';
+import { useComponentToken } from '../../context/useContextToken';
 import { SwitchTokensType } from './switch.token';
 
 export const Switch = ({
@@ -16,7 +16,7 @@ export const Switch = ({
   required = false,
   error = false,
   size = SwitchSize.MEDIUM,
-  children,
+  label,
   subtext,
   slot,
   name,
@@ -78,7 +78,7 @@ export const Switch = ({
           />
         </StyledSwitchRoot>
         
-        {children && (
+        {label && (
           <StyledSwitchLabel
             htmlFor={uniqueId}
             $isDisabled={disabled}
@@ -89,7 +89,7 @@ export const Switch = ({
               fontSize={tokens.content.label.font[size].fontSize}
               fontWeight={tokens.content.label.font[size].fontWeight}
             >
-              {children}
+              {label}
               {required && (
                 <PrimitiveText
                   as="span"
