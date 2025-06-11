@@ -4,11 +4,12 @@ import { FOUNDATION_THEME } from '../../../lib/tokens';
 import Block from '../../../lib/components/Primitives/Block/Block';
 import PrimitiveText from '../../../lib/components/Primitives/PrimitiveText/PrimitiveText';
 import { Tag, TagSize, TagColor, TagVariant } from '../../../lib/components/Tags';
-import ThemeContext from '../../../lib/context/ThemeContext';
+import { ThemeProvider } from '../../../lib/context';
 import { HDFC_COMPONENT_TOKENS } from '../../themes/HDFC_COMPONENT_TOKENS';
 import { getTagTokens } from '../../../lib/components/Tags/tag.tokens';
 import { getSearchInputTokens } from '../../../lib/components/Inputs/SearchInput/searchInput.tokens';
 import { getRadioTokens } from '../../../lib/components/Radio/radio.token';
+import { getTextAreaTokens } from '../../../lib/components/Inputs/TextArea/textarea.token';
 
 const CoreFeaturesDemo = () => {
   const [selectedSize, setSelectedSize] = useState<string>('small');
@@ -129,17 +130,16 @@ const CoreFeaturesDemo = () => {
 const ThemeCustomizationDemo = () => {
   const [selectedValue, setSelectedValue] = useState<string>('option1');
   
-  const themeContextValue = {
-    foundationTokens: FOUNDATION_THEME,
-    componentTokens: {
-      TAGS: getTagTokens(FOUNDATION_THEME),
-      SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
-      RADIO: HDFC_COMPONENT_TOKENS.RADIO || getRadioTokens(FOUNDATION_THEME),
-    },
+  const customComponentTokens = {
+    ...HDFC_COMPONENT_TOKENS,
+    TAGS: getTagTokens(FOUNDATION_THEME),
+    SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
+    RADIO: HDFC_COMPONENT_TOKENS.RADIO || getRadioTokens(FOUNDATION_THEME),
+    TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
   };
 
   return (
-    <ThemeContext.Provider value={themeContextValue}>
+    <ThemeProvider componentTokens={customComponentTokens}>
       <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[24]}>
         <Block>
           <Block marginBottom={FOUNDATION_THEME.unit[16]}>
@@ -168,7 +168,7 @@ const ThemeCustomizationDemo = () => {
           </Block>
         </Block>
       </Block>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 };
 
