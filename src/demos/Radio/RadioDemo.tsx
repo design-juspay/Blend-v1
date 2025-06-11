@@ -4,179 +4,212 @@ import { FOUNDATION_THEME } from '../../../lib/tokens';
 import Block from '../../../lib/components/Primitives/Block/Block';
 import PrimitiveText from '../../../lib/components/Primitives/PrimitiveText/PrimitiveText';
 import { Tag, TagSize, TagColor, TagVariant } from '../../../lib/components/Tags';
+import { ThemeProvider } from '../../../lib/context';
+import { HDFC_COMPONENT_TOKENS } from '../../themes/HDFC_COMPONENT_TOKENS';
+import { getTagTokens } from '../../../lib/components/Tags/tag.tokens';
+import { getSearchInputTokens } from '../../../lib/components/Inputs/SearchInput/searchInput.tokens';
+import { getRadioTokens } from '../../../lib/components/Radio/radio.token';
+import { getTextAreaTokens } from '../../../lib/components/Inputs/TextArea/textarea.token';
+
+const CoreFeaturesDemo = () => {
+  const [selectedSize, setSelectedSize] = useState<string>('small');
+  const [selectedPlan, setSelectedPlan] = useState<string>('basic');
+  const [selectedControlled, setSelectedControlled] = useState<string>('option1');
+  const [selectedState, setSelectedState] = useState<string>('default');
+  const [selectedTag, setSelectedTag] = useState<string>('featured');
+
+  return (
+    <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[40]}>
+      {/* Basic Usage */}
+      <Block>
+        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+          <PrimitiveText as="h2" fontSize="24px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            Basic Usage
+          </PrimitiveText>
+        </Block>
+        <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[16]}>
+          <RadioGroup name="basic-options" value={selectedControlled} onChange={setSelectedControlled}>
+            <Radio value="option1">Option 1</Radio>
+            <Radio value="option2">Option 2</Radio>
+            <Radio value="option3">Option 3</Radio>
+          </RadioGroup>
+        </Block>
+      </Block>
+
+      {/* Sizes */}
+      <Block>
+        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+          <PrimitiveText as="h2" fontSize="24px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            Sizes
+          </PrimitiveText>
+        </Block>
+        <Block display="flex" gap={FOUNDATION_THEME.unit[32]}>
+          <RadioGroup name="size-demo" value={selectedSize} onChange={setSelectedSize}>
+            <Radio value="small" size={RadioSize.SMALL}>Small</Radio>
+            <Radio value="medium" size={RadioSize.MEDIUM}>Medium</Radio>
+          </RadioGroup>
+        </Block>
+      </Block>
+
+      {/* States */}
+      <Block>
+        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+          <PrimitiveText as="h2" fontSize="24px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            States
+          </PrimitiveText>
+        </Block>
+        <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[16]}>
+          <RadioGroup name="states-demo" value={selectedState} onChange={setSelectedState}>
+            <Radio value="default">Default State</Radio>
+            <Radio value="disabled" disabled>Disabled State</Radio>
+            <Radio value="error" error>Error State</Radio>
+            <Radio value="required" required>Required State</Radio>
+          </RadioGroup>
+        </Block>
+      </Block>
+
+      {/* Advanced Usage */}
+      <Block>
+        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+          <PrimitiveText as="h2" fontSize="24px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            Advanced Usage
+          </PrimitiveText>
+        </Block>
+        <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[32]}>
+          {/* With Helper Text */}
+          <Block>
+            <Block marginBottom={FOUNDATION_THEME.unit[12]}>
+              <PrimitiveText as="h3" fontSize="18px" fontWeight={500} color={FOUNDATION_THEME.colors.gray[900]}>
+                With Helper Text
+              </PrimitiveText>
+            </Block>
+            <RadioGroup name="plan-options" value={selectedPlan} onChange={setSelectedPlan}>
+              <Radio 
+                value="basic" 
+                subtext="Perfect for individuals"
+              >
+                Basic Plan
+              </Radio>
+              <Radio 
+                value="pro" 
+                subtext="For growing teams"
+              >
+                Pro Plan
+              </Radio>
+            </RadioGroup>
+          </Block>
+
+          {/* With Tags */}
+          <Block>
+            <Block marginBottom={FOUNDATION_THEME.unit[12]}>
+              <PrimitiveText as="h3" fontSize="18px" fontWeight={500} color={FOUNDATION_THEME.colors.gray[900]}>
+                With Tags
+              </PrimitiveText>
+            </Block>
+            <RadioGroup name="tag-options" value={selectedTag} onChange={setSelectedTag}>
+              <Radio 
+                value="featured" 
+                slot={<Tag text="NEW" size={TagSize.XS} color={TagColor.SUCCESS} variant={TagVariant.SUBTLE} />}
+              >
+                Featured Option
+              </Radio>
+              <Radio 
+                value="standard"
+                slot={<Tag text="BASIC" size={TagSize.XS} color={TagColor.WARNING} variant={TagVariant.SUBTLE} />}
+              >
+                Standard Option
+              </Radio>
+            </RadioGroup>
+          </Block>
+        </Block>
+      </Block>
+    </Block>
+  );
+};
+
+const ThemeCustomizationDemo = () => {
+  const [selectedValue, setSelectedValue] = useState<string>('option1');
+  
+  const customComponentTokens = {
+    ...HDFC_COMPONENT_TOKENS,
+    TAGS: getTagTokens(FOUNDATION_THEME),
+    SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
+    RADIO: HDFC_COMPONENT_TOKENS.RADIO || getRadioTokens(FOUNDATION_THEME),
+    TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
+  };
+
+  return (
+    <ThemeProvider componentTokens={customComponentTokens}>
+      <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[24]}>
+        <Block>
+          <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+            <PrimitiveText as="h2" fontSize="24px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+              HDFC Theme
+            </PrimitiveText>
+          </Block>
+          <Block marginBottom={FOUNDATION_THEME.unit[16]}>
+            <PrimitiveText as="p" fontSize="16px" color={FOUNDATION_THEME.colors.gray[600]}>
+              Customized radio buttons with HDFC brand colors and styling
+            </PrimitiveText>
+          </Block>
+          <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[16]}>
+            <RadioGroup name="theme-demo" value={selectedValue} onChange={setSelectedValue}>
+              <Radio value="option1">Default Radio</Radio>
+              <Radio value="option2" disabled>Disabled Radio</Radio>
+              <Radio value="option3" error>Error Radio</Radio>
+              <Radio 
+                value="option4" 
+                subtext="With helper text"
+                slot={<Tag text="CUSTOM" size={TagSize.XS} color={TagColor.WARNING} variant={TagVariant.SUBTLE} />}
+              >
+                Advanced Radio
+              </Radio>
+            </RadioGroup>
+          </Block>
+        </Block>
+      </Block>
+    </ThemeProvider>
+  );
+};
 
 const RadioDemo: React.FC = () => {
-  const [selectedValue, setSelectedValue] = useState<string>('option1');
-  const [selectedSize, setSelectedSize] = useState<string>('medium');
-
   return (
     <Block
       padding={FOUNDATION_THEME.unit[32]}
       display="flex"
       flexDirection="column"
-      gap={FOUNDATION_THEME.unit[32]}
+      gap={FOUNDATION_THEME.unit[48]}
     >
+      {/* Header */}
       <Block>
         <Block marginBottom={FOUNDATION_THEME.unit[8]}>
-          <PrimitiveText as="h1" fontSize="32px" fontWeight={600}>
-            Radio Component Demo
+          <PrimitiveText as="h1" fontSize="32px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            Radio
           </PrimitiveText>
         </Block>
         <PrimitiveText as="p" fontSize="16px" color={FOUNDATION_THEME.colors.gray[600]}>
-          Demonstration of Radio and RadioGroup components with different sizes, states, and features.
+          Radio buttons allow users to select a single option from a list of mutually exclusive options.
         </PrimitiveText>
       </Block>
 
-      {/* Basic Radio Group */}
+      {/* Core Features */}
       <Block>
-        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
-            Basic Radio Group
+        <Block marginBottom={FOUNDATION_THEME.unit[24]}>
+          <PrimitiveText as="h2" fontSize="28px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            Core Features
           </PrimitiveText>
         </Block>
-        <RadioGroup
-          name="basic-options"
-          label="Choose an option"
-          value={selectedValue}
-          onChange={setSelectedValue}
-        >
-          <Radio value="option1">Option 1</Radio>
-          <Radio value="option2">Option 2</Radio>
-          <Radio value="option3">Option 3</Radio>
-        </RadioGroup>
+        <CoreFeaturesDemo />
       </Block>
 
-      {/* Radio Sizes */}
+      {/* Theme Customization */}
       <Block>
-        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
-            Radio Sizes
+        <Block marginBottom={FOUNDATION_THEME.unit[24]}>
+          <PrimitiveText as="h2" fontSize="28px" fontWeight={600} color={FOUNDATION_THEME.colors.gray[900]}>
+            Theme Customization
           </PrimitiveText>
         </Block>
-        <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[16]}>
-          <Block>
-            <Block marginBottom={FOUNDATION_THEME.unit[8]}>
-              <PrimitiveText as="h3" fontSize="18px" fontWeight={500}>
-                Small Size
-              </PrimitiveText>
-            </Block>
-            <RadioGroup name="size-small" defaultValue="small1">
-              <Radio value="small1" size={RadioSize.SMALL}>Small Radio 1</Radio>
-              <Radio value="small2" size={RadioSize.SMALL}>Small Radio 2</Radio>
-            </RadioGroup>
-          </Block>
-
-          <Block>
-            <Block marginBottom={FOUNDATION_THEME.unit[8]}>
-              <PrimitiveText as="h3" fontSize="18px" fontWeight={500}>
-                Medium Size (Default)
-              </PrimitiveText>
-            </Block>
-            <RadioGroup name="size-medium" defaultValue="medium1">
-              <Radio value="medium1" size={RadioSize.MEDIUM}>Medium Radio 1</Radio>
-              <Radio value="medium2" size={RadioSize.MEDIUM}>Medium Radio 2</Radio>
-            </RadioGroup>
-          </Block>
-        </Block>
-      </Block>
-
-      {/* Radio with Subtext */}
-      <Block>
-        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
-            Radio with Subtext
-          </PrimitiveText>
-        </Block>
-        <RadioGroup name="subtext-options" label="Select your plan" defaultValue="basic">
-          <Radio 
-            value="basic" 
-            subtext="Perfect for individuals getting started"
-          >
-            Basic Plan
-          </Radio>
-          <Radio 
-            value="pro" 
-            subtext="Great for small teams and growing businesses"
-          >
-            Pro Plan
-          </Radio>
-          <Radio 
-            value="enterprise" 
-            subtext="Advanced features for large organizations"
-          >
-            Enterprise Plan
-          </Radio>
-        </RadioGroup>
-      </Block>
-
-      {/* Radio with Slot */}
-      <Block>
-        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
-            Radio with Slot
-          </PrimitiveText>
-        </Block>
-        <RadioGroup name="slot-options" label="Select subscription tier" defaultValue="starter">
-          <Radio 
-            value="starter" 
-            slot={<Tag text="FREE" size={TagSize.XS} color={TagColor.NEUTRAL} variant={TagVariant.SUBTLE} />}
-            subtext="Basic features for getting started"
-          >
-            Starter Plan
-          </Radio>
-          <Radio 
-            value="professional" 
-            slot={<Tag text="POPULAR" size={TagSize.XS} color={TagColor.SUCCESS} variant={TagVariant.SUBTLE} />}
-            subtext="Advanced features for professionals"
-          >
-            Professional Plan
-          </Radio>
-          <Radio 
-            value="enterprise" 
-            slot={<Tag text="PREMIUM" size={TagSize.XS} color={TagColor.WARNING} variant={TagVariant.SUBTLE} />}
-            subtext="Full feature set for large organizations"
-          >
-            Enterprise Plan
-          </Radio>
-        </RadioGroup>
-      </Block>
-
-      {/* Disabled States */}
-      <Block>
-        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
-            Disabled States
-          </PrimitiveText>
-        </Block>
-        <RadioGroup name="disabled-options" label="Disabled options" defaultValue="enabled">
-          <Radio value="enabled">Enabled Option</Radio>
-          <Radio value="disabled1" disabled>Disabled Option 1</Radio>
-          <Radio value="disabled2" disabled>Disabled Option 2</Radio>
-        </RadioGroup>
-      </Block>
-
-      {/* Controlled Example */}
-      <Block>
-        <Block marginBottom={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="h2" fontSize="24px" fontWeight={600}>
-            Controlled Example
-          </PrimitiveText>
-        </Block>
-        <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[16]}>
-          <PrimitiveText as="p" fontSize="14px" color={FOUNDATION_THEME.colors.gray[600]}>
-            Selected value: <strong>{selectedSize}</strong>
-          </PrimitiveText>
-          <RadioGroup
-            name="controlled-size"
-            label="Select size"
-            value={selectedSize}
-            onChange={setSelectedSize}
-          >
-            <Radio value="small">Small</Radio>
-            <Radio value="medium">Medium</Radio>
-            <Radio value="large">Large</Radio>
-          </RadioGroup>
-        </Block>
+        <ThemeCustomizationDemo />
       </Block>
     </Block>
   );

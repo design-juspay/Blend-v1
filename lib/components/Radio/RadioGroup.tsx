@@ -1,88 +1,61 @@
-import React, { forwardRef, useState } from 'react';
-import { RadioGroupProps, RadioProps } from './types';
-import { StyledRadioGroupLabel } from './StyledRadio';
-import Block from '../Primitives/Block/Block';
-import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import Radio from './Radio';
-import radioTokens from './token';
+import React, { forwardRef } from "react";
+import { RadioGroupProps, RadioProps } from "./types";
+import Block from "../Primitives/Block/Block";
+import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
+import Radio from "./Radio";
+import { useComponentToken } from "../../context/ThemeContext";
+import { RadioTokensType } from "./radio.token";
 
 const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
-  (
-    {
-      id,
-      label,
-      name,
-      defaultValue,
-      value: controlledValue,
-      children,
-      onChange,
-      disabled = false,
-    },
-    ref
-  ) => {
-    const [internalValue, setInternalValue] = useState<string | undefined>(defaultValue);
+  ({ children, label, name, value, defaultValue, onChange, disabled }, ref) => {
+    const radioTokens = useComponentToken("RADIO") as RadioTokensType;
 
-    const isControlled = controlledValue !== undefined;
-    const value = isControlled ? controlledValue : internalValue;
+    const handleChange = (isChecked: boolean, childValue: string) => {
+      if (isChecked && onChange) {
+        onChange(childValue);
+      }
+    };
 
+    // Type guard to check if child is a Radio component
     const isRadioElement = (child: React.ReactElement): child is React.ReactElement<RadioProps> => {
       return child.type === Radio;
     };
 
-    const enhancedChildren = React.Children.map(children, child => {
-      if (!React.isValidElement(child)) return child;
+    // Clone children with additional props
+    const enhancedChildren = React.Children.map(children, (child) => {
+      if (!React.isValidElement(child) || !isRadioElement(child)) return null;
 
-      if (isRadioElement(child)) {
-        const childValue = child.props.value;
+      const childValue = child.props.value;
+      if (typeof childValue !== 'string') return null;
 
-        if (!childValue) return child;
+      const isControlled = value !== undefined;
+      const isChecked = isControlled ? value === childValue : defaultValue === childValue;
 
-        return React.cloneElement(child, {
-          checked: value === childValue,
-          onChange: (checked: boolean) => {
-            if (checked) {
-              if (!isControlled) {
-                setInternalValue(childValue);
-              }
-
-              if (child.props.onChange) {
-                child.props.onChange(checked);
-              }
-
-              if (onChange) {
-                onChange(childValue);
-              }
-            }
-          },
-          name,
-          disabled: disabled || child.props.disabled,
-        });
-      }
-
-      return child;
+      return React.cloneElement(child, {
+        name,
+        checked: isChecked,
+        onChange: (checked: boolean) => {
+          if (checked) {
+            handleChange(checked, childValue);
+          }
+        },
+        disabled: disabled || child.props.disabled,
+      });
     });
 
     return (
-      <Block 
-        ref={ref} 
-        role="radiogroup" 
-        id={id}
-        display="flex"
-        flexDirection="column"
-        gap={radioTokens.spacing.groupSpacing}
-      >
+      <Block ref={ref} display="flex" flexDirection="column" gap={radioTokens.gap}>
         {label && (
-          <StyledRadioGroupLabel>
-            <PrimitiveText
-              as="span"
-              fontSize={radioTokens.sizes.md.fontSize}
-              fontWeight={radioTokens.groupLabel.fontWeight}
-            >
-              {label}
-            </PrimitiveText>
-          </StyledRadioGroupLabel>
+          <PrimitiveText
+            as="label"
+            fontSize={radioTokens.content.label.font.md.fontSize}
+            fontWeight={radioTokens.content.label.font.md.fontWeight}
+            color={radioTokens.content.label.color.default}
+          >
+            {label}
+          </PrimitiveText>
         )}
-        <Block display="flex" flexDirection="column" gap={radioTokens.spacing.groupSpacing}>
+        <Block display="flex" flexDirection="column" gap={radioTokens.gap}>
           {enhancedChildren}
         </Block>
       </Block>
@@ -90,6 +63,6 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   }
 );
 
-RadioGroup.displayName = 'RadioGroup';
+RadioGroup.displayName = "RadioGroup";
 
 export default RadioGroup;

@@ -237,6 +237,104 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
       },
     },
   },
+  RADIO: {
+    height: {
+      sm: FOUNDATION_THEME.unit[16],
+      md: FOUNDATION_THEME.unit[20],
+    },
+    gap: FOUNDATION_THEME.unit[8],
+    slotGap: FOUNDATION_THEME.unit[8],
+    borderWidth: {
+      active: {
+        default: 2,
+        hover: 2,
+        disabled: 2,
+      },
+      inactive: {
+        default: 2,
+        hover: 2,
+        disabled: 2,
+      },
+    },
+    indicator: {
+      active: {
+        background: {
+          default: FOUNDATION_THEME.colors.gray[0],
+          hover: FOUNDATION_THEME.colors.gray[50],
+          disabled: FOUNDATION_THEME.colors.gray[100],
+        },
+        border: {
+          default: FOUNDATION_THEME.colors.red[500],
+          hover: FOUNDATION_THEME.colors.red[600],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+        },
+      },
+      inactive: {
+        background: {
+          default: FOUNDATION_THEME.colors.gray[0],
+          hover: FOUNDATION_THEME.colors.gray[50],
+          disabled: FOUNDATION_THEME.colors.gray[100],
+        },
+        border: {
+          default: FOUNDATION_THEME.colors.gray[300],
+          hover: FOUNDATION_THEME.colors.gray[400],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+        },
+      },
+    },
+    activeIndicator: {
+      active: {
+        background: {
+          default: FOUNDATION_THEME.colors.red[500],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+        },
+      },
+    },
+    content: {
+      label: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[900],
+          hover: FOUNDATION_THEME.colors.gray[900],
+          disabled: FOUNDATION_THEME.colors.gray[400],
+          error: FOUNDATION_THEME.colors.red[500],
+        },
+        font: {
+          sm: {
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400],
+          },
+          md: {
+            fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400],
+          },
+        },
+      },
+      sublabel: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[600],
+          hover: FOUNDATION_THEME.colors.gray[600],
+          disabled: FOUNDATION_THEME.colors.gray[400],
+          error: FOUNDATION_THEME.colors.red[500],
+        },
+        font: {
+          sm: {
+            fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400],
+          },
+          md: {
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            fontWeight: FOUNDATION_THEME.font.weight[400],
+          },
+        },
+      },
+    },
+    slot: {
+      size: {
+        sm: FOUNDATION_THEME.unit[16],
+        md: FOUNDATION_THEME.unit[20],
+      },
+    },
+  },
 };
 
 export default HDFC_COMPONENT_TOKENS;

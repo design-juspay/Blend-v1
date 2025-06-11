@@ -1,6 +1,7 @@
 import { getSearchInputTokens } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { getTextAreaTokens } from "../components/Inputs/TextArea/textarea.token";
 import { getTagTokens } from "../components/Tags/tag.tokens";
+import { getRadioTokens } from "../components/Radio/radio.token";
 import { ThemeType } from "../tokens";
 import { ComponentTokenType } from "./ThemeContext";
 
@@ -14,6 +15,7 @@ const initTokens = (
       componentTokens.SEARCH_INPUT ?? getSearchInputTokens(foundationTokens),
     TEXT_AREA:
       componentTokens.TEXT_AREA ?? getTextAreaTokens(foundationTokens),
+    RADIO: componentTokens.RADIO ?? getRadioTokens(foundationTokens),
     // add supprort for other components here
   };
 };

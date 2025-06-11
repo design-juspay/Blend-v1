@@ -10,11 +10,13 @@ import {
   getTextAreaTokens,
   TextAreaTokensType,
 } from "../components/Inputs/TextArea/textarea.token";
+import { RadioTokensType, getRadioTokens } from "../components/Radio/radio.token";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
   SEARCH_INPUT?: SearchInputTokensType;
   TEXT_AREA?: TextAreaTokensType;
+  RADIO?: RadioTokensType;
   // add supprort for other components here
 };
 
@@ -29,6 +31,7 @@ const ThemeContext = createContext<ThemeContextType>({
     TAGS: getTagTokens(FOUNDATION_THEME),
     SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
     TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
+    RADIO: getRadioTokens(FOUNDATION_THEME),
   },
 });
 
@@ -40,6 +43,9 @@ export const useTheme = () => {
   return context;
 };
 
-
+export const useComponentToken = (componentName: keyof ComponentTokenType) => {
+  const { componentTokens } = useTheme();
+  return componentTokens[componentName];
+};
 
 export default ThemeContext;
