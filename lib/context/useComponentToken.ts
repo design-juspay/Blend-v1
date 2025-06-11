@@ -4,6 +4,7 @@ import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchIn
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
 import { TextInputTokensType } from "../components/Inputs/TextInput/textInput.tokens";
 import { TagTokensType } from "../components/Tags/tag.tokens";
+import { RadioTokensType } from "../components/Radio/radio.token";
 import { ComponentTokenType, useTheme } from "./ThemeContext";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
@@ -17,7 +18,7 @@ export const useComponentToken = (
   | TextAreaTokensType
   | TextInputTokensType
   | NumberInputTokensType
-  | AlertTokenType => {
+  | AlertTokenType | RadioTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TAGS":
@@ -26,6 +27,8 @@ export const useComponentToken = (
       return componentTokens.SEARCH_INPUT;
     case "TEXT_AREA":
       return componentTokens.TEXT_AREA;
+    case "RADIO":
+      return componentTokens.RADIO;
     case "TEXT_INPUT":
       return componentTokens.TEXT_INPUT;
     case "NUMBER_INPUT":

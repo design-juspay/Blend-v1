@@ -25,6 +25,7 @@ import {
   Table,
   Palette,
   MessageCircle,
+  CircleDot as Radio,
 } from "lucide-react";
 import { DirectoryData } from "../../../lib/components/Directory/types";
 import Block from "../../../lib/components/Primitives/Block/Block";
@@ -426,6 +427,11 @@ const SidebarDemo = () => {
           label: "Date Picker",
           leftSlot: <CalendarIcon style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("datePicker"),
+        },
+        {
+          label: "Radio",
+          leftSlot: <Radio style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("radio"),
         },
         {
           label: "Selectors",
