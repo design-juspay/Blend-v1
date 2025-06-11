@@ -1,4 +1,4 @@
-import { Settings } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { styled } from 'styled-components';
 import { FOUNDATION_THEME } from '../../tokens';
 import { Checkbox } from '../Checkbox';
@@ -79,7 +79,7 @@ export const ColumnManager = <T,>({
         enableSearch={false}
         trigger={
           <TriggerButton contentCentered>
-            <Settings size={16} />
+            <Plus size={16} />
           </TriggerButton>
         }
         items={menuItems}

@@ -1,86 +1,20 @@
 import { useState, useEffect, useMemo, forwardRef } from 'react';
-import {
-  ChevronDown, ChevronUp, Download, Edit, Save, X
-} from 'lucide-react';
 import { styled } from 'styled-components';
-import { DataTableProps, SortDirection, SortConfig, ColumnDefinition } from './types';
+import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from './types';
 import dataTableTokens from './dataTable.tokens';
 import {
-  sortData,
+  sortData, searchData, applyColumnFilters
 } from './utils';
-import { DataTablePagination } from './DataTablePagination';
-import Button from '../Button/Button';
-import { ButtonSize, ButtonType } from '../Button/types';
-import { Checkbox } from '../../main';
-import { CheckboxSize } from '../Checkbox/types';
-import { ColumnManager } from './ColumnManager';
+import DataTableHeader from './DataTableHeader';
+import TableHeader from './TableHeader';
+import TableBodyComponent from './TableBody';
+import TableFooter from './TableFooter';
 import Block from '../Primitives/Block/Block';
-import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import PrimitiveInput from '../Primitives/PrimitiveInput/PrimitiveInput';
-import { FOUNDATION_THEME } from '../../tokens';
-
 const Table = styled.table<{ $isStriped?: boolean; $isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
   table-layout: fixed;
   width: 100%;
   min-width: 800px;
-`;
-
-const TableHead = styled.thead`
-  ${dataTableTokens.thead.base}
-  background-color: ${FOUNDATION_THEME.colors.gray[25]};
-`;
-
-const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
-  ${dataTableTokens.th.base}
-  ${props => props.$isSortable && dataTableTokens.th.sortable}
-  ${props => props.width && `width: ${props.width};`}
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  box-sizing: border-box;
-`;
-
-const TableBody = styled.tbody`
-  ${dataTableTokens.tbody}
-`;
-
-const TableRow = styled.tr`
-  ${dataTableTokens.tr.base}
-`;
-
-const TableCell = styled.td<{ width?: string; $hasCustomContent?: boolean }>`
-  ${dataTableTokens.td.base}
-  ${props => props.width && `width: ${props.width};`}
-  overflow: hidden;
-  box-sizing: border-box;
-  max-width: 0;
-`;
-
-const EmptyStateCell = styled.td`
-  ${dataTableTokens.td.base}
-`;
-
-const ActionButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 4px;
-  background-color: transparent;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${FOUNDATION_THEME.colors.gray[100]};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 `;
 
 const DataTable = forwardRef(<T extends Record<string, unknown>>(
@@ -93,6 +27,9 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     isStriped = false,
     isHoverable = true,
     defaultSort,
+    enableSearch = false,
+    searchPlaceholder = "Search...",
+    enableFiltering = false,
     enableColumnManager = true,
     showToolbar = true,
     enableInlineEdit = false,
@@ -105,6 +42,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onPageChange,
     onPageSizeChange,
     onSortChange,
+    onSearchChange,
+    onFilterChange,
     onRowSave,
     onRowCancel,
   }: DataTableProps<T>,
@@ -120,6 +59,11 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
   const [selectAll, setSelectAll] = useState(false);
   
+  // Search and filter state
+  const [searchConfig, setSearchConfig] = useState<SearchConfig>({ query: '', caseSensitive: false });
+  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
+  
   // Inline edit state
   const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
   const [editValues, setEditValues] = useState<Record<string, T>>({});
@@ -129,12 +73,23 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const processedData = useMemo(() => {
     let result = [...data];
 
+    // Apply search
+    if (enableSearch && searchConfig.query.trim()) {
+      result = searchData(result, searchConfig, visibleColumns);
+    }
+
+    // Apply column filters
+    if (enableFiltering && columnFilters.length > 0) {
+      result = applyColumnFilters(result, columnFilters);
+    }
+
+    // Apply sorting
     if (sortConfig && sortConfig.field) {
       result = sortData(result, sortConfig);
     }
 
     return result;
-  }, [data, sortConfig]);
+  }, [data, searchConfig, columnFilters, sortConfig, visibleColumns, enableSearch, enableFiltering]);
 
   const currentData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
@@ -211,7 +166,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     document.body.removeChild(link);
   };
 
-  const handleSort = (field: keyof T) => {
+  const handleSort = (field: keyof any) => {
     const direction = sortConfig?.field === field
       ? sortConfig.direction === SortDirection.ASCENDING
         ? SortDirection.DESCENDING
@@ -240,6 +195,54 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
     if (onPageSizeChange) {
       onPageSizeChange(size);
+    }
+  };
+
+  const handleSearch = (query: string) => {
+    const newSearchConfig = { ...searchConfig, query };
+    setSearchConfig(newSearchConfig);
+    setCurrentPage(1); // Reset to first page when searching
+    
+    if (onSearchChange) {
+      onSearchChange(newSearchConfig);
+    }
+  };
+
+  const handleColumnFilter = (field: keyof any, type: FilterType, value: string | string[], operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte') => {
+    const existingFilterIndex = columnFilters.findIndex(f => f.field === field);
+    let newFilters = [...columnFilters];
+
+    if (existingFilterIndex >= 0) {
+      if (!value || (Array.isArray(value) && value.length === 0)) {
+        // Remove filter if no value
+        newFilters.splice(existingFilterIndex, 1);
+      } else {
+        // Update existing filter
+        newFilters[existingFilterIndex] = { field, type, value, operator };
+      }
+    } else if (value && (!Array.isArray(value) || value.length > 0)) {
+      // Add new filter
+      newFilters.push({ field, type, value, operator });
+    }
+
+    setColumnFilters(newFilters);
+    setCurrentPage(1); // Reset to first page when filtering
+    
+    if (onFilterChange) {
+      onFilterChange(newFilters);
+    }
+  };
+
+  const clearAllFilters = () => {
+    setColumnFilters([]);
+    setSearchConfig({ query: '', caseSensitive: false });
+    setCurrentPage(1);
+    
+    if (onFilterChange) {
+      onFilterChange([]);
+    }
+    if (onSearchChange) {
+      onSearchChange({ query: '', caseSensitive: false });
     }
   };
 
@@ -298,7 +301,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     });
   };
 
-  const handleFieldChange = (rowId: unknown, field: keyof T, value: unknown) => {
+  const handleFieldChange = (rowId: unknown, field: keyof any, value: unknown) => {
     const rowIdStr = String(rowId);
     setEditValues(prev => ({
       ...prev,
@@ -309,117 +312,29 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }));
   };
 
-  const renderEditableCell = (column: ColumnDefinition<T>, row: T, isEditing: boolean) => {
-    const rowId = String(row[idField]);
-    const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
-
-    if (isEditing && column.isEditable) {
-      if (column.renderEditCell) {
-        return column.renderEditCell(
-          currentValue,
-          isEditing ? editValues[rowId] : row,
-          (value) => handleFieldChange(row[idField], column.field, value)
-        );
-      } else {
-        // Default edit input
-        return (
-          <Block style={{ 
-            width: '100%', 
-            padding: '2px 0',
-            overflow: 'hidden',
-            position: 'relative'
-          }}>
-            <PrimitiveInput
-              value={String(currentValue || '')}
-              onChange={(e) => handleFieldChange(row[idField], column.field, e.target.value)}
-              style={{
-                width: 'calc(100% - 8px)',
-                height: '32px',
-                border: `1px solid ${FOUNDATION_THEME.colors.gray[300]}`,
-                borderRadius: '4px',
-                padding: `${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[8]}`,
-                fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
-                color: '#6b7280',
-                fontWeight: FOUNDATION_THEME.font.weight[500],
-                backgroundColor: '#ffffff',
-                outline: 'none',
-                boxSizing: 'border-box',
-                margin: '0',
-                minWidth: '0',
-                maxWidth: '100%'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#3b82f6';
-                e.target.style.boxShadow = '0 0 0 1px #dbeafe';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#d1d5db';
-                e.target.style.boxShadow = 'none';
-              }}
-            />
-          </Block>
-        );
-      }
-    }
-
-    // Display mode
-    if (column.renderCell) {
-      return (
-        <Block style={{ width: '100%' }}>
-          {column.renderCell(currentValue, isEditing ? editValues[rowId] : row)}
-        </Block>
-      );
-    }
-
-    return (
-      <Block 
-        style={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          width: '100%',
-          lineHeight: '1.5'
-        }}
-        title={currentValue != null ? String(currentValue) : ''}
-      >
-        {currentValue != null ? String(currentValue) : ''}
-      </Block>
-    );
-  };
-
   return (
     <Block ref={ref} style={{
       ...dataTableTokens.container,
     }}>
-      {(title || description || showToolbar) && (
-        <Block style={{
-          ...dataTableTokens.header.container,
-        }}>
-          <Block display='flex' flexDirection='column' gap={FOUNDATION_THEME.unit[10]}>
-            {title && <PrimitiveText as='h2' style={{
-              ...dataTableTokens.header.title,
-            }}>{title}</PrimitiveText>}
-            {description && <PrimitiveText as='p' style={{
-              ...dataTableTokens.header.description,
-            }}>{description}</PrimitiveText>}
-          </Block>
-
-          {showToolbar && (
-            <Block display='flex' justifyContent='space-between' alignItems='center' gap={8}>
-              {hasSelectedRows && (
-                <Button
-                  buttonType={ButtonType.SECONDARY}
-                  leadingIcon={Download}
-                  onClick={exportToCSV}
-                  size={ButtonSize.SMALL}
-                >
-                  Export
-                </Button>
-              )}
-            </Block>
-          )}
-        </Block>
-      )}
+      <DataTableHeader
+        title={title}
+        description={description}
+        showToolbar={showToolbar}
+        enableSearch={enableSearch}
+        searchPlaceholder={searchPlaceholder}
+        searchConfig={searchConfig}
+        enableFiltering={enableFiltering}
+        showFilters={showFilters}
+        columnFilters={columnFilters}
+        visibleColumns={visibleColumns}
+        data={data}
+        hasSelectedRows={hasSelectedRows}
+        onSearch={handleSearch}
+        onToggleFilters={() => setShowFilters(!showFilters)}
+        onColumnFilter={handleColumnFilter}
+        onClearAllFilters={clearAllFilters}
+        onExportToCSV={exportToCSV}
+      />
 
       <Block style={{
         borderRadius: 8,
@@ -445,202 +360,46 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
             minHeight: 0,
           }}>
             <Table $isStriped={isStriped} $isHoverable={isHoverable}>
-              <TableHead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
-                <TableRow>
-                  <TableHeaderCell $isSortable={false} width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
-                    <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
-                      <Checkbox
-                        checked={selectAll}
-                        onCheckedChange={handleSelectAll}
-                        size={CheckboxSize.MEDIUM}
-                      />
-                    </Block>
-                  </TableHeaderCell>
-
-                  {visibleColumns.map((column, index) => {
-                    const columnWidth = getColumnWidth(column, index);
-                    return (
-                      <TableHeaderCell
-                        key={String(column.field)}
-                        $isSortable={!!column.isSortable}
-                        width={columnWidth}
-                        style={{ 
-                          width: columnWidth,
-                          minWidth: columnWidth,
-                          maxWidth: columnWidth
-                        }}
-                        onClick={() => column.isSortable && handleSort(column.field)}
-                      >
-                        <Block display='flex' alignItems='center' justifyContent='space-between'>
-                          <PrimitiveText 
-                            as='span' 
-                            style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              minWidth: 0,
-                              flex: 1
-                            }}
-                            title={column.header}
-                          >
-                            {column.header}
-                          </PrimitiveText>
-                          {column.isSortable && (
-                            <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
-                              <ChevronUp 
-                                size={FOUNDATION_THEME.unit[12]} 
-                                style={{ 
-                                  opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
-                                }} 
-                              />
-                              <ChevronDown 
-                                size={FOUNDATION_THEME.unit[12]} 
-                                style={{ 
-                                  opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
-                                }} 
-                              />
-                            </Block>
-                          )}
-                        </Block>
-                      </TableHeaderCell>
-                    );
-                  })}
-
-                  {enableInlineEdit && (
-                    <TableHeaderCell $isSortable={false} width="100px" style={{ minWidth: '100px', maxWidth: '100px' }}>
-                      <Block display='flex' alignItems='center' justifyContent='center'>
-                        <PrimitiveText as='span' style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
-                          Actions
-                        </PrimitiveText>
-                      </Block>
-                    </TableHeaderCell>
-                  )}
-
-                  {enableColumnManager && (
-                    <TableHeaderCell $isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
-                      <Block position='relative'>
-                        <ColumnManager
-                          columns={initialColumns}
-                          visibleColumns={visibleColumns}
-                          onColumnChange={setVisibleColumns}
-                        />
-                      </Block>
-                    </TableHeaderCell>
-                  )}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {currentData.length > 0 ? (
-                  currentData.map((row) => {
-                    const rowId = String(row[idField]);
-                    const isEditing = editingRows[rowId];
-                    
-                    return (
-                      <TableRow key={rowId}>
-                        <TableCell width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
-                          <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
-                            <Checkbox
-                              checked={!!selectedRows[rowId]}
-                              onCheckedChange={() => handleRowSelect(row[idField])}
-                              size={CheckboxSize.MEDIUM}
-                              disabled={isEditing}
-                            />
-                          </Block>
-                        </TableCell>
-
-                        {visibleColumns.map((column, index) => {
-                          const columnWidth = getColumnWidth(column, index);
-                          return (
-                            <TableCell 
-                              key={`${rowId}-${String(column.field)}`}
-                              width={columnWidth}
-                              $hasCustomContent={!!column.renderCell || (isEditing && column.isEditable)}
-                              style={{ 
-                                width: columnWidth,
-                                minWidth: columnWidth,
-                                maxWidth: columnWidth,
-                                verticalAlign: 'middle',
-                                position: 'relative'
-                              }}
-                            >
-                              <Block style={{ 
-                                width: '100%', 
-                                minHeight: '36px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                overflow: 'hidden'
-                              }}>
-                                {renderEditableCell(column, row, isEditing)}
-                              </Block>
-                            </TableCell>
-                          );
-                        })}
-
-                        {enableInlineEdit && (
-                          <TableCell width="100px" style={{ minWidth: '100px', maxWidth: '100px' }}>
-                            <Block display='flex' alignItems='center' justifyContent='center' gap={FOUNDATION_THEME.unit[4]}>
-                              {isEditing ? (
-                                <>
-                                  <ActionButton
-                                    onClick={() => handleSaveRow(row[idField])}
-                                    title="Save"
-                                  >
-                                    <Save size={16} color={FOUNDATION_THEME.colors.green[600]} />
-                                  </ActionButton>
-                                  <ActionButton
-                                    onClick={() => handleCancelEdit(row[idField])}
-                                    title="Cancel"
-                                  >
-                                    <X size={16} color={FOUNDATION_THEME.colors.red[600]} />
-                                  </ActionButton>
-                                </>
-                              ) : (
-                                <ActionButton
-                                  onClick={() => handleEditRow(row[idField])}
-                                  title="Edit"
-                                >
-                                  <Edit size={16} color={FOUNDATION_THEME.colors.primary[600]} />
-                                </ActionButton>
-                              )}
-                            </Block>
-                          </TableCell>
-                        )}
-
-                        {enableColumnManager && (
-                          <TableCell width="50px" style={{ minWidth: '50px', maxWidth: '50px' }} />
-                        )}
-                      </TableRow>
-                    );
-                  })
-                ) : (
-                  <TableRow>
-                    <EmptyStateCell
-                      colSpan={visibleColumns.length + (enableInlineEdit ? 1 : 0) + (enableColumnManager ? 1 : 0) + 1}
-                    >
-                      No data available
-                    </EmptyStateCell>
-                  </TableRow>
-                )}
-              </TableBody>
+              <TableHeader
+                visibleColumns={visibleColumns}
+                initialColumns={initialColumns}
+                sortConfig={sortConfig}
+                selectAll={selectAll}
+                enableInlineEdit={enableInlineEdit}
+                enableColumnManager={enableColumnManager}
+                onSort={handleSort}
+                onSelectAll={handleSelectAll}
+                onColumnChange={setVisibleColumns}
+                getColumnWidth={getColumnWidth}
+              />
+              <TableBodyComponent
+                currentData={currentData}
+                visibleColumns={visibleColumns}
+                idField={idField}
+                selectedRows={selectedRows}
+                editingRows={editingRows}
+                editValues={editValues}
+                enableInlineEdit={enableInlineEdit}
+                enableColumnManager={enableColumnManager}
+                onRowSelect={handleRowSelect}
+                onEditRow={handleEditRow}
+                onSaveRow={handleSaveRow}
+                onCancelEdit={handleCancelEdit}
+                onFieldChange={handleFieldChange}
+                getColumnWidth={getColumnWidth}
+              />
             </Table>
           </Block>
         </Block>
         
-        {pagination && (
-          <Block style={{
-            ...dataTableTokens.pagination.container,
-            flexShrink: 0,
-          }}>
-            <DataTablePagination
-              currentPage={currentPage}
-              pageSize={pageSize}
-              totalRows={totalRows}
-              pageSizeOptions={pagination.pageSizeOptions}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </Block>
-        )}
+        <TableFooter
+          pagination={pagination}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          totalRows={totalRows}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
       </Block>
     </Block>
   );

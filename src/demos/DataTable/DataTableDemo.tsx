@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ColumnDefinition, SortDirection } from '../../../lib/components/DataTable/types';
+import { ColumnDefinition, SortDirection, FilterType, SearchConfig, ColumnFilter } from '../../../lib/components/DataTable/types';
 import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
@@ -59,6 +59,8 @@ const DataTableDemo = () => {
           </div>
         ),
         isSortable: true,
+        isFilterable: true,
+        filterType: FilterType.TEXT,
         width: '250px'
       },
       { 
@@ -66,31 +68,53 @@ const DataTableDemo = () => {
         header: 'Email',
         isSortable: true,
         isEditable: true,
+        isFilterable: true,
+        filterType: FilterType.TEXT,
         width: '200px'
       },
       { 
         field: 'role',
         header: 'Role',
         isSortable: true,
-        isEditable: true
+        isEditable: true,
+        isFilterable: true,
+        filterType: FilterType.SELECT,
+        filterOptions: [
+          { id: 'admin', label: 'Admin', value: 'Admin' },
+          { id: 'user', label: 'User', value: 'User' },
+          { id: 'manager', label: 'Manager', value: 'Manager' },
+          { id: 'editor', label: 'Editor', value: 'Editor' },
+          { id: 'viewer', label: 'Viewer', value: 'Viewer' },
+        ]
       },
       { 
         field: 'number',
         header: 'Number',
         isSortable: true,
-        isEditable: true
+        isEditable: true,
+        isFilterable: true,
+        filterType: FilterType.TEXT
       },
       { 
         field: 'gateway',
         header: 'Gateway',
         isSortable: true,
-        isEditable: true
+        isEditable: true,
+        isFilterable: true,
+        filterType: FilterType.SELECT,
+        filterOptions: [
+          { id: 'gateway-a', label: 'Gateway A', value: 'Gateway A' },
+          { id: 'gateway-b', label: 'Gateway B', value: 'Gateway B' },
+          { id: 'gateway-c', label: 'Gateway C', value: 'Gateway C' },
+        ]
       },
       { 
         field: 'contact',
         header: 'Contact',
         isSortable: true,
-        isEditable: true
+        isEditable: true,
+        isFilterable: true,
+        filterType: FilterType.TEXT
       },
       {
         field: 'status',
@@ -118,7 +142,14 @@ const DataTableDemo = () => {
             />
           );
         },
-        isSortable: true
+        isSortable: true,
+        isFilterable: true,
+        filterType: FilterType.SELECT,
+        filterOptions: [
+          { id: 'active', label: 'Active', value: 'Active' },
+          { id: 'inactive', label: 'Inactive', value: 'Inactive' },
+          { id: 'pending', label: 'Pending', value: 'Pending' },
+        ]
       },
     ];
     
@@ -129,6 +160,15 @@ const DataTableDemo = () => {
       field: '',
       direction: SortDirection.NONE
     });
+
+    // Handle search and filter
+    const handleSearchChange = (searchConfig: SearchConfig) => {
+      console.log('Search changed:', searchConfig);
+    };
+
+    const handleFilterChange = (filters: ColumnFilter[]) => {
+      console.log('Filters changed:', filters);
+    };
 
     // Handle row save
     const handleRowSave = (rowId: unknown, updatedRow: Record<string, unknown>) => {
@@ -152,9 +192,12 @@ const DataTableDemo = () => {
           columns={columns as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description="Complete overview of system users and their roles with inline editing"
+          description="Complete overview of system users and their roles with search, filtering, and inline editing"
           isStriped
           isHoverable
+          enableSearch
+          searchPlaceholder="Search users by name, email, or any field..."
+          enableFiltering
           enableInlineEdit
           pagination={{
             currentPage,
@@ -166,6 +209,8 @@ const DataTableDemo = () => {
           }}
           defaultSort={sortConfig}
           onSortChange={(newSortConfig) => setSortConfig(newSortConfig)}
+          onSearchChange={handleSearchChange}
+          onFilterChange={handleFilterChange}
           onRowSave={handleRowSave}
           onRowCancel={handleRowCancel}
         />

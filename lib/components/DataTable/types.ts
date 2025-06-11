@@ -4,6 +4,14 @@ export enum SortDirection {
   NONE = "none",
 }
 
+export enum FilterType {
+  TEXT = "text",
+  SELECT = "select",
+  MULTISELECT = "multiselect",
+  DATE = "date",
+  NUMBER = "number",
+}
+
 export type ColumnDefinition<T> = {
   /** Field key in data object */
   field: keyof T;
@@ -19,6 +27,12 @@ export type ColumnDefinition<T> = {
   canHide?: boolean;
   /** Whether column is editable inline */
   isEditable?: boolean;
+  /** Whether column is filterable */
+  isFilterable?: boolean;
+  /** Type of filter for this column */
+  filterType?: FilterType;
+  /** Filter options for select/multiselect filters */
+  filterOptions?: FilterOption[];
   /** Custom classes to apply to the column */
   className?: string;
   renderCell?: (value: unknown, row: T) => React.ReactNode;
@@ -31,6 +45,8 @@ export type FilterOption = {
   id: string;
   /** Display label for the filter */
   label: string;
+  /** Value to filter by */
+  value: string;
   /** Optional nested options */
   options?: FilterOption[];
 }
@@ -46,6 +62,26 @@ export type Filter = {
   selectedValues?: string[];
   /** Whether multiple selections are allowed */
   isMultiSelect?: boolean;
+}
+
+export type ColumnFilter = {
+  /** Column field to filter */
+  field: keyof any;
+  /** Filter type */
+  type: FilterType;
+  /** Filter value(s) */
+  value: string | string[] | number | Date;
+  /** Filter operator (equals, contains, greater than, etc.) */
+  operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte';
+}
+
+export type SearchConfig = {
+  /** Search query string */
+  query: string;
+  /** Fields to search in (if empty, searches all visible columns) */
+  searchFields?: string[];
+  /** Whether search is case sensitive */
+  caseSensitive?: boolean;
 }
 
 export type SortConfig = {
@@ -92,6 +128,10 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   isHoverable?: boolean;
   /** Default sort configuration */
   defaultSort?: SortConfig;
+  /** Whether to enable universal search */
+  enableSearch?: boolean;
+  /** Search placeholder text */
+  searchPlaceholder?: string;
   /** Whether to enable filtering */
   enableFiltering?: boolean;
   /** Whether to show column manager */
@@ -108,8 +148,10 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onPageSizeChange?: (size: number) => void;
   /** Callback when sort changes */
   onSortChange?: (sortConfig: SortConfig) => void;
+  /** Callback when search changes */
+  onSearchChange?: (searchConfig: SearchConfig) => void;
   /** Callback when filters change */
-  onFilterChange?: (filters: Record<string, unknown>) => void;
+  onFilterChange?: (filters: ColumnFilter[]) => void;
   /** Callback when row is saved after editing */
   onRowSave?: (rowId: unknown, updatedRow: T) => void;
   /** Callback when row edit is cancelled */
