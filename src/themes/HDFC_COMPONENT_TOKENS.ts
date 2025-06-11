@@ -2,6 +2,41 @@ import { ComponentTokenType } from "../../lib/context/ThemeContext";
 import { FOUNDATION_THEME } from "../../lib/tokens";
 
 export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
+  TEXT_AREA: {
+    fontFamily: "InterDisplay",
+    paddingX: FOUNDATION_THEME.unit[14],
+    paddingY: FOUNDATION_THEME.unit[10],
+    borderRadius: FOUNDATION_THEME.unit[8],
+    boxShadow: FOUNDATION_THEME.shadows.sm,
+    outline: {
+      default: "none",
+      hover: "none",
+      focus: "none",
+      error: "none",
+      disabled: "none",
+    },
+    border: {
+      default: `1px solid ${FOUNDATION_THEME.colors.green[200]}`,
+      hover: `1px solid ${FOUNDATION_THEME.colors.primary[400]}`,
+      focus: `1px solid ${FOUNDATION_THEME.colors.orange[500]}`,
+      error: `1px solid ${FOUNDATION_THEME.colors.red[500]}`,
+      disabled: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    },
+    color: {
+      default: FOUNDATION_THEME.colors.gray[800],
+      hover: FOUNDATION_THEME.colors.gray[800],
+      focus: FOUNDATION_THEME.colors.gray[800],
+      error: FOUNDATION_THEME.colors.red[800],
+      disabled: FOUNDATION_THEME.colors.gray[300],
+    },
+    backgroundColor: {
+      default: FOUNDATION_THEME.colors.gray[0],
+      hover: FOUNDATION_THEME.colors.gray[0],
+      focus: FOUNDATION_THEME.colors.gray[0],
+      error: FOUNDATION_THEME.colors.gray[0],
+      disabled: FOUNDATION_THEME.colors.gray[50],
+    },
+  },
   SEARCH_INPUT: {
     width: "100%",
     height: FOUNDATION_THEME.unit[40],

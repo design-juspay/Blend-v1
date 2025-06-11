@@ -112,6 +112,9 @@ type PrimitiveTextareaProps = StateStyles & {
 
   // Resize
   resize?: CSSObject["resize"];
+
+  // Font
+  fontFamily?: CSSObject["fontFamily"];
 };
 
 const blockedProps = [
@@ -186,6 +189,7 @@ const blockedProps = [
   "_focusVisible",
   "placeholderStyles",
   "resize",
+  "fontFamily",
 ];
 
 const stateToSelector: Record<keyof StateStyles, string> = {
@@ -216,6 +220,7 @@ const getStyles = (props: PrimitiveTextareaProps): CSSObject => {
   if (props.pointerEvents !== undefined)
     styles.pointerEvents = props.pointerEvents;
   if (props.opacity !== undefined) styles.opacity = props.opacity;
+  if (props.fontFamily !== undefined) styles.fontFamily = props.fontFamily;
 
   if (props.contentCentered) {
     styles.display = props.display ?? "flex";
