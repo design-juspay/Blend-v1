@@ -6,12 +6,19 @@ import {
   TagSize,
   TagShape,
 } from "../../../lib/components/Tags";
-import { SearchInput, Tag, TextArea, ThemeProvider } from "../../../lib/main";
+import {
+  SearchInput,
+  Tag,
+  TextArea,
+  TextInput,
+  ThemeProvider,
+} from "../../../lib/main";
 import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
 
 const TagsDemo: React.FC = () => {
   const [search, setSearch] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
+  const [textInputValue, setTextInputValue] = useState("");
   return (
     <div className="component-section">
       <ThemeProvider componentTokens={HDFC_COMPONENT_TOKENS}>
@@ -46,7 +53,7 @@ const TagsDemo: React.FC = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div style={{ width: 300, height: 200}}>
+        <div style={{ width: 300, height: 200 }}>
           <TextArea
             required
             placeholder="Enter your text"
@@ -58,6 +65,20 @@ const TagsDemo: React.FC = () => {
             disabled={false}
             error={false}
             cols={10}
+            errorMessage="This is an error message."
+            hintText="This is a hint text to help user."
+          />
+        </div>
+        <div style={{ width: 300, height: 200 }}>
+          <TextInput
+            required
+            placeholder="Enter your text"
+            value={textInputValue}
+            onChange={(e) => setTextInputValue(e.target.value)}
+            label="Text Input"
+            helpIconHintText="This is a hint text to help user."
+            disabled={false}
+            error={false}
             errorMessage="This is an error message."
             hintText="This is a hint text to help user."
           />

@@ -1,5 +1,6 @@
 import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
+import { TextInputTokensType } from "../components/Inputs/TextInput/textInput.tokens";
 import { TagTokensType } from "../components/Tags/tag.tokens";
 import { ComponentTokenType, useTheme } from "./ThemeContext";
 
@@ -8,7 +9,11 @@ import { ComponentTokenType, useTheme } from "./ThemeContext";
 // WE WILL ADAPT TO BETTER TYPES LATER
 export const useComponentToken = (
   component: keyof ComponentTokenType
-): SearchInputTokensType | TagTokensType | TextAreaTokensType => {
+):
+  | SearchInputTokensType
+  | TagTokensType
+  | TextAreaTokensType
+  | TextInputTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TAGS":
@@ -17,5 +22,7 @@ export const useComponentToken = (
       return componentTokens.SEARCH_INPUT;
     case "TEXT_AREA":
       return componentTokens.TEXT_AREA;
+    case "TEXT_INPUT":
+      return componentTokens.TEXT_INPUT;
   }
 };

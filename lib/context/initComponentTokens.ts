@@ -1,5 +1,6 @@
 import { getSearchInputTokens } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { getTextAreaTokens } from "../components/Inputs/TextArea/textarea.token";
+import { getTextInputTokens } from "../components/Inputs/TextInput/textInput.tokens";
 import { getTagTokens } from "../components/Tags/tag.tokens";
 import { ThemeType } from "../tokens";
 import { ComponentTokenType } from "./ThemeContext";
@@ -12,8 +13,9 @@ const initTokens = (
     TAGS: componentTokens.TAGS ?? getTagTokens(foundationTokens),
     SEARCH_INPUT:
       componentTokens.SEARCH_INPUT ?? getSearchInputTokens(foundationTokens),
-    TEXT_AREA:
-      componentTokens.TEXT_AREA ?? getTextAreaTokens(foundationTokens),
+    TEXT_AREA: componentTokens.TEXT_AREA ?? getTextAreaTokens(foundationTokens),
+    TEXT_INPUT:
+      componentTokens.TEXT_INPUT ?? getTextInputTokens(foundationTokens),
     // add supprort for other components here
   };
 };

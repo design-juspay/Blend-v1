@@ -1,10 +1,21 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
+import { FoundationTokenType } from "../../../tokens/theme.token";
 
-type TextInputSize = "md" | "lg";
-type TextInputState = "default" | "hover" | "focus" | "error" | "disabled";
+enum TextInputSize {
+  MD = "md",
+  LG = "lg",
+}
 
-type TextInputTokens = {
+enum TextInputState {
+  DEFAULT = "default",
+  HOVER = "hover",
+  FOCUS = "focus",
+  ERROR = "error",
+  DISABLED = "disabled",
+}
+
+export type TextInputTokensType = {
   input: {
     gap: CSSObject["gap"];
     borderRadius?: CSSObject["borderRadius"];
@@ -31,7 +42,7 @@ type TextInputTokens = {
   };
 };
 
-const textInputTokens: Readonly<TextInputTokens> = {
+const textInputTokens: Readonly<TextInputTokensType> = {
   input: {
     gap: FOUNDATION_THEME.unit[8],
     borderRadius: FOUNDATION_THEME.unit[10],
@@ -70,6 +81,51 @@ const textInputTokens: Readonly<TextInputTokens> = {
     },
     boxShadow: FOUNDATION_THEME.shadows.sm,
   },
+};
+
+export const getTextInputTokens = (
+  foundationTheme: FoundationTokenType
+): TextInputTokensType => {
+  return {
+    input: {
+      gap: foundationTheme.unit[8],
+      borderRadius: foundationTheme.unit[10],
+      paddingX: {
+        md: foundationTheme.unit[12],
+        lg: foundationTheme.unit[14],
+      },
+      paddingY: {
+        md: foundationTheme.unit[8],
+        lg: foundationTheme.unit[10],
+      },
+      border: {
+        default: `1px solid ${foundationTheme.colors.gray[200]}`,
+        hover: `1px solid ${foundationTheme.colors.gray[400]}`,
+        focus: `1px solid ${foundationTheme.colors.primary[500]}`,
+        error: `1px solid ${foundationTheme.colors.red[500]}`,
+        disabled: `1px solid ${foundationTheme.colors.gray[200]}`,
+      },
+      outline: {
+        default: "none",
+        hover: "none",
+        focus: "none",
+        error: "none",
+        disabled: "none",
+      },
+      color: {
+        default: foundationTheme.colors.gray[800],
+        hover: foundationTheme.colors.gray[800],
+        focus: foundationTheme.colors.gray[800],
+        error: foundationTheme.colors.red[800],
+        disabled: foundationTheme.colors.gray[300],
+      },
+      backgroundColor: {
+        default: foundationTheme.colors.gray[0],
+        disabled: foundationTheme.colors.gray[50],
+      },
+      boxShadow: foundationTheme.shadows.sm,
+    },
+  };
 };
 
 export default textInputTokens;

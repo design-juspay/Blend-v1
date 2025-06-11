@@ -2,11 +2,11 @@ import Block from "../../Primitives/Block/Block";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { useRef, useState, useEffect } from "react";
 import { FOUNDATION_THEME } from "../../../tokens";
-
-import textInputTokens from "./textInput.tokens";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import { InputSize, InputProps } from "./types";
+import { useComponentToken } from "../../../context/useContextToken";
+import { TextInputTokensType } from "./textInput.tokens";
 
 const toPixels = (value: string | number | undefined): number => {
   if (typeof value === "number") {
@@ -39,6 +39,9 @@ const TextInput = ({
   name,
   required = false,
 }: InputProps) => {
+  const textInputTokens = useComponentToken(
+    "TEXT_INPUT"
+  ) as TextInputTokensType;
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
 
