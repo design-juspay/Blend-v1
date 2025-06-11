@@ -1,3 +1,4 @@
+import { getAlertTokens } from "../components/Alert/alert.tokens";
 import { getNumberInputTokens } from "../components/Inputs/NumberInput/numberInput.tokens";
 import { getSearchInputTokens } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { getTextAreaTokens } from "../components/Inputs/TextArea/textarea.token";
@@ -19,6 +20,7 @@ const initTokens = (
       componentTokens.TEXT_INPUT ?? getTextInputTokens(foundationTokens),
     NUMBER_INPUT:
       componentTokens.NUMBER_INPUT ?? getNumberInputTokens(foundationTokens),
+    ALERT: componentTokens.ALERT ?? getAlertTokens(foundationTokens),
     // add supprort for other components here
   };
 };

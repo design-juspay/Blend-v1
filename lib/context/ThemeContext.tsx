@@ -18,6 +18,10 @@ import {
   getNumberInputTokens,
   NumberInputTokensType,
 } from "../components/Inputs/NumberInput/numberInput.tokens";
+import {
+  AlertTokenType,
+  getAlertTokens,
+} from "../components/Alert/alert.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -25,6 +29,7 @@ export type ComponentTokenType = {
   TEXT_AREA?: TextAreaTokensType;
   TEXT_INPUT?: TextInputTokensType;
   NUMBER_INPUT?: NumberInputTokensType;
+  ALERT?: AlertTokenType;
   // add supprort for other components here
 };
 
@@ -41,6 +46,7 @@ const ThemeContext = createContext<ThemeContextType>({
     TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
     TEXT_INPUT: getTextInputTokens(FOUNDATION_THEME),
     NUMBER_INPUT: getNumberInputTokens(FOUNDATION_THEME),
+    ALERT: getAlertTokens(FOUNDATION_THEME),
   },
 });
 

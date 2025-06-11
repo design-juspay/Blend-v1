@@ -1,3 +1,4 @@
+import { AlertTokenType } from "../components/Alert/alert.tokens";
 import { NumberInputTokensType } from "../components/Inputs/NumberInput/numberInput.tokens";
 import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
@@ -15,7 +16,8 @@ export const useComponentToken = (
   | TagTokensType
   | TextAreaTokensType
   | TextInputTokensType
-  | NumberInputTokensType => {
+  | NumberInputTokensType
+  | AlertTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TAGS":
@@ -28,5 +30,7 @@ export const useComponentToken = (
       return componentTokens.TEXT_INPUT;
     case "NUMBER_INPUT":
       return componentTokens.NUMBER_INPUT;
+    case "ALERT":
+      return componentTokens.ALERT;
   }
 };
