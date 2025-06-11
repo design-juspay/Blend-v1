@@ -26,7 +26,6 @@ import {
   Palette,
   MessageCircle,
 } from "lucide-react";
-import styled from "styled-components";
 import { DirectoryData } from "../../../lib/components/Directory/types";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
@@ -56,6 +55,14 @@ import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
 import DemoThemeProvider from "../DemoThemeProvider";
+import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
+import { SingleSelect, ThemeProvider, useTheme } from "../../../lib/main";
+import {
+  SelectMenuAlignment,
+  SelectMenuVariant,
+} from "../../../lib/components/Select";
+import styled from "styled-components";
+import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
 
 const SearchContainer = styled(Block)`
   width: 160px;
@@ -119,6 +126,16 @@ const SidebarDemo = () => {
     "Design System"
   );
 
+  const [theme, setTheme] = useState<"EULER" | "JUSBIZ">("EULER");
+
+  const themeProps =
+    theme === "EULER"
+      ? {}
+      : {
+          foundationTokens: ALT_FOUNDATION_TOKENS,
+          // componentTokens: HDFC_COMPONENT_TOKENS,
+        };
+
   const topbar = (
     <Block
       width="100%"
@@ -127,14 +144,6 @@ const SidebarDemo = () => {
       justifyContent="space-between"
       flexGrow={1}
     >
-      <Block>
-        <SearchContainer>
-          <Search style={{ width: "16px", height: "16px" }} />
-          <Text variant="body.sm" fontWeight={400}>
-            Search
-          </Text>
-        </SearchContainer>
-      </Block>
       <Text
         variant="body.sm"
         fontWeight={400}
@@ -149,21 +158,37 @@ const SidebarDemo = () => {
       >
         {activeTenant}
       </Text>
-      <Text
-        variant="body.sm"
-        fontWeight={400}
-        color={FOUNDATION_THEME.colors.gray[600]}
-      >
-        {activeComponent}
-      </Text>
-      <EyeClosed style={{ width: "16px", height: "16px" }} />
+
+      <div>
+        <SingleSelect
+          label="Theme"
+          placeholder="Select Theme"
+          minWidth={200}
+          alignment={SelectMenuAlignment.END}
+          selected={theme}
+          onSelect={(value) => setTheme(value as "EULER" | "JUSBIZ")}
+          variant={SelectMenuVariant.NO_CONTAINER}
+          items={[
+            {
+              items: [
+                {
+                  value: "EULER",
+                  label: "EULER",
+                },
+                {
+                  value: "JUSBIZ",
+                  label: "JUSBIZ",
+                },
+              ],
+            },
+          ]}
+        />
+      </div>
     </Block>
   );
 
   const renderContent = () => {
     switch (activeComponent) {
-      case "theme":
-        return <DemoThemeProvider />;
       case "buttons":
         return <ButtonDemo />;
       case "buttonGroups":
@@ -255,11 +280,6 @@ const SidebarDemo = () => {
     {
       label: "Basic Components",
       items: [
-        {
-          label: "Theme",
-          leftSlot: <Palette style={{ width: "16px", height: "16px" }} />,
-          onClick: () => setActiveComponent("theme"),
-        },
         {
           label: "Button",
           leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
@@ -460,21 +480,30 @@ const SidebarDemo = () => {
 
   return (
     <Block height="100vh">
-      <Sidebar
-        tenants={tenants}
-        merchants={merchants}
-        data={sampleData}
-        topbar={topbar}
-        activeTenant={activeTenant}
-        setActiveTenant={setActiveTenant}
-        activeMerchant={activeMerchant}
-        setActiveMerchant={setActiveMerchant}
-        footer={footer}
-      >
-        <ContentWrapper>{renderContent()}</ContentWrapper>
-      </Sidebar>
+      <ThemeProvider {...themeProps}>
+        <Checker />
+        <Sidebar
+          tenants={tenants}
+          merchants={merchants}
+          data={sampleData}
+          topbar={topbar}
+          activeTenant={activeTenant}
+          setActiveTenant={setActiveTenant}
+          activeMerchant={activeMerchant}
+          setActiveMerchant={setActiveMerchant}
+          footer={footer}
+        >
+          <ContentWrapper>{renderContent()}</ContentWrapper>
+        </Sidebar>
+      </ThemeProvider>
     </Block>
   );
+};
+
+const Checker = () => {
+  const { foundationTokens } = useTheme();
+  console.log(foundationTokens);
+  return <div></div>;
 };
 
 export default SidebarDemo;

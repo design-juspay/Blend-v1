@@ -1,105 +1,19 @@
-import React, { useState } from "react";
-import { Hash } from "lucide-react";
+import React from "react";
+import { Filter, Hash } from "lucide-react";
 import {
   TagVariant,
   TagColor,
   TagSize,
   TagShape,
 } from "../../../lib/components/Tags";
-import {
-  NumberInput,
-  SearchInput,
-  Tag,
-  TextArea,
-  TextInput,
-  ThemeProvider,
-} from "../../../lib/main";
-import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
+import { addSnackbar, SnackbarVariant, Tag } from "../../../lib/main";
+import Block from "../../../lib/components/Primitives/Block/Block";
+import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
 
 const TagsDemo: React.FC = () => {
-  const [search, setSearch] = useState("");
-  const [textAreaValue, setTextAreaValue] = useState("");
-  const [textInputValue, setTextInputValue] = useState("");
-  const [numberInputValue, setNumberInputValue] = useState(0);
   return (
     <div className="component-section">
-      <ThemeProvider componentTokens={HDFC_COMPONENT_TOKENS}>
-        <div
-          style={{
-            backgroundColor:
-              HDFC_COMPONENT_TOKENS.TAGS?.background.noFill.neutral,
-            width: "10px",
-            height: "10px",
-            position: "relative",
-          }}
-        />
-        <Tag
-          leftSlot={<Hash size={12} />}
-          variant={TagVariant.ATTENTIVE}
-          color={TagColor.PRIMARY}
-          size={TagSize.XS}
-          text="Hello"
-        />
-        <div style={{ height: 100, width: 300, marginTop: 100 }}>
-          <SearchInput
-            rightSlot={
-              <Tag
-                size={TagSize.XS}
-                text="Global Search"
-                color={TagColor.PURPLE}
-                shape={TagShape.ROUNDED}
-              />
-            }
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div style={{ width: 300, height: 200 }}>
-          <TextArea
-            required
-            placeholder="Enter your text"
-            value={textAreaValue}
-            onChange={(e) => setTextAreaValue(e.target.value)}
-            label="Text Area"
-            helpIconHintText="This is a hint text to help user."
-            helpIconText="This is a help icon hint text to help user."
-            disabled={false}
-            error={false}
-            cols={10}
-            errorMessage="This is an error message."
-            hintText="This is a hint text to help user."
-          />
-        </div>
-        <div style={{ width: 300, height: 200 }}>
-          <TextInput
-            required
-            placeholder="Enter your text"
-            value={textInputValue}
-            onChange={(e) => setTextInputValue(e.target.value)}
-            label="Text Input"
-            helpIconHintText="This is a hint text to help user."
-            disabled={false}
-            error={false}
-            errorMessage="This is an error message."
-            hintText="This is a hint text to help user."
-          />
-        </div>
-        <div style={{ width: 300, height: 200 }}>
-          <NumberInput
-            required
-            placeholder="Enter your text"
-            value={numberInputValue}
-            onChange={(e) => setNumberInputValue(Number(e.target.value))}
-            label="Number Input"
-            helpIconHintText="This is a hint text to help user."
-            disabled={false}
-            error={false}
-            errorMessage="This is an error message."
-          />
-        </div>
-      </ThemeProvider>
-      {/* <div>
+      <div>
         <section className="showcase-section">
           <h2 className="showcase-title">Tag Variants</h2>
           <div className="showcase-container">
@@ -337,7 +251,7 @@ const TagsDemo: React.FC = () => {
             </button>
           </Block>
         </section>
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -51,21 +51,19 @@ const DemoThemeProvider = () => {
           <code style={{ fontSize: 12, color: "black" }}>{codeBlock}</code>
         </pre>
       </div>
-      <ThemeProvider {...themeProps}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-            marginTop: 100,
-          }}
-        >
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            <Tag text="Subtle Variant, Primary Color Tag, Small Size" />
-            <Tag text="Subtle Variant, Primary Color Tag" />
-          </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          marginTop: 100,
+        }}
+      >
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          <Tag text="Subtle Variant, Primary Color Tag, Small Size" />
+          <Tag text="Subtle Variant, Primary Color Tag" />
         </div>
-      </ThemeProvider>
+      </div>
     </div>
   );
 };
