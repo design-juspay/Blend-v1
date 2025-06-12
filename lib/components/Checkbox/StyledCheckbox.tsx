@@ -1,7 +1,20 @@
 import styled, { css } from 'styled-components';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { CheckboxSize } from './types';
-import checkboxTokens from './token';
+import { CheckboxSize, CheckboxCheckedState, CheckboxInteractionState } from './types';
+import { useComponentToken } from '../../context/useContextToken'; // Or '../../context/ThemeContext'
+import { CheckboxTokensType } from './checkbox.token';
+
+const getInteractionState = (
+  isDisabled: boolean, 
+  error?: boolean, 
+  isHovered?: boolean 
+): Exclude<CheckboxInteractionState, 'hover'> => {
+  if (isDisabled) return 'disabled';
+  if (error) return 'error';
+  // Note: hover state for background/border is handled separately in &:hover
+  return 'default';
+};
+
 
 export const StyledCheckboxRoot = styled(CheckboxPrimitive.Root)<{
   size: CheckboxSize;
@@ -14,91 +27,71 @@ export const StyledCheckboxRoot = styled(CheckboxPrimitive.Root)<{
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border-radius: ${checkboxTokens.border.radius};
-  background-color: ${({ $checked, $isDisabled }) => {
-    if ($isDisabled) {
-      return $checked 
-        ? checkboxTokens.background.disabledChecked 
-        : checkboxTokens.background.disabled;
-    }
-    return $checked === true || $checked === 'indeterminate'
-      ? checkboxTokens.background.checked
-      : checkboxTokens.background.default;
-  }};
-  border: ${({ $checked, $isDisabled }) => {
-    if ($isDisabled) {
-      return $checked 
-        ? 'none' 
-        : `${checkboxTokens.border.width} solid ${checkboxTokens.border.default}`;
-    }
-    return $checked === true || $checked === 'indeterminate'
-      ? 'none'
-      : `${checkboxTokens.border.width} solid ${checkboxTokens.border.default}`;
-  }};
-  
-  ${({ size }) => css`
-    width: ${checkboxTokens.sizes[size].root.width};
-    height: ${checkboxTokens.sizes[size].root.height};
-  `}
-  
-  /* Reset all margin and padding */
-  margin: 0;
-  padding: 0;
-  margin-right: ${checkboxTokens.spacing.checkboxMarginRight};
-  flex-shrink: 0;
-  
-  /* Improved focus styles for better accessibility */
-  &:focus-visible {
-    outline: 2px solid ${checkboxTokens.border.focus};
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  &:not([disabled]):hover {
-    ${({ $checked }) => $checked === true || $checked === 'indeterminate'
-      ? css`background-color: ${checkboxTokens.background.hover};`
-      : css`border-color: ${checkboxTokens.border.hover};`
-    }
-  }
-  
-  ${({ $isDisabled }) => $isDisabled && css`
-    opacity: 0.5;
-    cursor: not-allowed;
-  `}
-  
-  ${({ $isDisabled }) => !$isDisabled && css`
-    cursor: pointer;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  ${({ size, $isDisabled, $checked, $error }) => {
+    const tokens = useComponentToken("CHECKBOX") as CheckboxTokensType;
+    const currentCheckedState: CheckboxCheckedState = $checked === 'indeterminate' ? 'indeterminate' : $checked ? 'checked' : 'unchecked';
+    const currentInteractionState = getInteractionState($isDisabled, $error);
     
-    &[data-state=checked], &[data-state=indeterminate] {
-      background-color: ${checkboxTokens.background.checked};
-      border: none;
-      
-      &:hover {
-        background-color: ${checkboxTokens.border.hover};
+    return css`
+      border-radius: ${tokens.indicator.border.radius};
+      background-color: ${tokens.indicator.background[currentCheckedState]?.[currentInteractionState]};
+      border-width: ${tokens.indicator.border.width};
+      border-style: solid;
+      border-color: ${tokens.indicator.border.color[currentCheckedState]?.[currentInteractionState]};
+      width: ${tokens.indicator.size[size].width};
+      height: ${tokens.indicator.size[size].height};
+      margin: 0;
+      padding: 0;
+      margin-right: ${tokens.checkboxMarginRight};
+      flex-shrink: 0;
+      transition: all ${tokens.transition.duration} ${tokens.transition.easing};
+
+      &:focus-visible {
+        outline: ${tokens.indicator.focus.outlineWidth} solid ${tokens.indicator.focus.outlineColor};
+        outline-offset: ${tokens.indicator.focus.outlineOffset};
+        box-shadow: ${tokens.indicator.focus.boxShadow};
       }
-    }
-  `}
+
+      &:not([disabled]):hover {
+        background-color: ${tokens.indicator.background[currentCheckedState]?.hover};
+        border-color: ${tokens.indicator.border.color[currentCheckedState]?.hover};
+      }
+
+      ${$isDisabled && css`
+        opacity: 0.7; // Or use token: tokens.opacity.disabled or similar if available
+        cursor: not-allowed;
+      `}
+
+      ${!$isDisabled && css`
+        cursor: pointer;
+      `}
+    `;
+  }}
 `;
 
 export const StyledCheckboxIndicator = styled(CheckboxPrimitive.Indicator)<{
-  size: CheckboxSize;
+  size: CheckboxSize; // size might be used if indicator has size-specific styles not covered by root
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: ${checkboxTokens.icon.color};
+  /* Icon color is set in Checkbox.tsx as it depends on more states */
   
-  /* Smooth animation for indicator */
-  &[data-state="checked"], &[data-state="indeterminate"] {
-    animation: scale-in 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  
-  &[data-state="unchecked"] {
-    animation: scale-out 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  ${({ theme }) => { // Assuming ThemeProvider provides theme, or use useComponentToken
+    const tokens = useComponentToken("CHECKBOX") as CheckboxTokensType;
+    return css`
+      &[data-state="checked"], &[data-state="indeterminate"] {
+        animation: scale-in ${tokens.transition.duration} ${tokens.transition.easing};
+      }
+      
+      &[data-state="unchecked"] {
+        animation: scale-out ${tokens.transition.duration} ${tokens.transition.easing};
+      }
+    `;
+  }}
   
   @keyframes scale-in {
     from {
@@ -127,9 +120,12 @@ export const StyledLabel = styled.label<{
   $isDisabled: boolean;
   $error?: boolean;
 }>`
-  color: ${({ $isDisabled }) => 
-    $isDisabled ? checkboxTokens.label.disabled : checkboxTokens.label.default};
-  font-weight: ${checkboxTokens.label.fontWeight};
+  color: ${({ $isDisabled, $error }) => {
+    const tokens = useComponentToken("CHECKBOX") as CheckboxTokensType;
+    const interactionState = getInteractionState($isDisabled, $error);
+    return tokens.content.label.color[interactionState];
+  }};
+  /* Font weight and size are applied in Checkbox.tsx via PrimitiveText */
   cursor: ${({ $isDisabled }) => $isDisabled ? 'not-allowed' : 'pointer'};
   display: flex;
   align-items: center;
@@ -149,4 +145,4 @@ export const StyledLabel = styled.label<{
     margin: 0 !important;
     padding: 0 !important;
   }
-`; 
+`;

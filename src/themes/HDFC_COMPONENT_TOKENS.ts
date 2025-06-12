@@ -493,6 +493,153 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
       easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
     }
   },
+  CHECKBOX: {
+    gap: FOUNDATION_THEME.unit[8],
+    slotGap: FOUNDATION_THEME.unit[6],
+    checkboxMarginRight: FOUNDATION_THEME.unit[10], // HDFC specific margin
+
+    indicator: { // Was 'root'
+      size: {
+        sm: {
+          width: FOUNDATION_THEME.unit[16], // Slightly larger for HDFC
+          height: FOUNDATION_THEME.unit[16],
+        },
+        md: {
+          width: FOUNDATION_THEME.unit[20], // Slightly larger for HDFC
+          height: FOUNDATION_THEME.unit[20],
+        },
+      },
+      background: {
+        unchecked: {
+          default: FOUNDATION_THEME.colors.gray[0],
+          hover: FOUNDATION_THEME.colors.gray[50],
+          disabled: FOUNDATION_THEME.colors.gray[100],
+          error: FOUNDATION_THEME.colors.gray[0],
+        },
+        checked: {
+          default: FOUNDATION_THEME.colors.red[600], // HDFC Red for checked
+          hover: FOUNDATION_THEME.colors.red[700],   // Darker HDFC Red
+          disabled: FOUNDATION_THEME.colors.red[200], // Lighter HDFC Red
+          error: FOUNDATION_THEME.colors.red[600],
+        },
+        indeterminate: {
+          default: FOUNDATION_THEME.colors.red[600], // HDFC Red for indeterminate
+          hover: FOUNDATION_THEME.colors.red[700],
+          disabled: FOUNDATION_THEME.colors.red[200],
+          error: FOUNDATION_THEME.colors.red[600],
+        },
+      },
+      border: {
+        radius: FOUNDATION_THEME.border.radius[2], // Sharper radius for HDFC
+        width: FOUNDATION_THEME.border.width[2], // Thicker border for HDFC
+        color: {
+          unchecked: {
+            default: FOUNDATION_THEME.colors.gray[400], // Darker border for HDFC
+            hover: FOUNDATION_THEME.colors.red[700],   // HDFC Red on hover
+            disabled: FOUNDATION_THEME.colors.gray[200],
+            error: FOUNDATION_THEME.colors.orange[500], // Orange for error border
+          },
+          checked: {
+            default: 'transparent',
+            hover: 'transparent',
+            disabled: 'transparent',
+            error: FOUNDATION_THEME.colors.orange[500],
+          },
+          indeterminate: {
+            default: 'transparent',
+            hover: 'transparent',
+            disabled: 'transparent',
+            error: FOUNDATION_THEME.colors.orange[500],
+          },
+        },
+      },
+      focus: {
+        outlineColor: FOUNDATION_THEME.colors.red[300], // HDFC Red focus outline
+        outlineWidth: FOUNDATION_THEME.border.width[2],
+        outlineOffset: FOUNDATION_THEME.unit[1],
+        boxShadow: `0 0 0 3px ${FOUNDATION_THEME.colors.red[100]}`,
+      },
+    },
+
+    icon: { // Was 'indicator'
+      color: { // Was 'iconColor'
+        checked: {
+          default: FOUNDATION_THEME.colors.gray[0],
+          disabled: FOUNDATION_THEME.colors.gray[0],
+        },
+        indeterminate: {
+          default: FOUNDATION_THEME.colors.gray[0],
+          disabled: FOUNDATION_THEME.colors.gray[0],
+        },
+      },
+      size: { // Was 'iconSize', HDFC might prefer slightly different icon emphasis
+        sm: {
+          width: FOUNDATION_THEME.unit[10],
+          height: FOUNDATION_THEME.unit[10],
+          strokeWidth: 3, // Thicker stroke
+        },
+        md: {
+          width: FOUNDATION_THEME.unit[12],
+          height: FOUNDATION_THEME.unit[12],
+          strokeWidth: 3, // Thicker stroke
+        },
+      },
+    },
+
+    content: { // New parent
+      label: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[700], // HDFC label color
+          disabled: FOUNDATION_THEME.colors.gray[400],
+          error: FOUNDATION_THEME.colors.orange[700], // Orange for error label
+        },
+        font: { // HDFC might use specific font weights or sizes
+          sm: {
+            fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`,
+            fontWeight: FOUNDATION_THEME.font.weight[600], // Bolder label
+          },
+          md: {
+            fontSize: `${FOUNDATION_THEME.font.size.body.md.fontSize}px`,
+            fontWeight: FOUNDATION_THEME.font.weight[600], // Bolder label
+          },
+        },
+      },
+      subtext: {
+        color: {
+          default: FOUNDATION_THEME.colors.gray[500], // HDFC subtext color
+          disabled: FOUNDATION_THEME.colors.gray[300],
+          error: FOUNDATION_THEME.colors.orange[600], // Orange for error subtext
+        },
+        font: {
+          sm: {
+            fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`,
+            fontWeight: FOUNDATION_THEME.font.weight[400],
+          },
+          md: {
+            fontSize: `${FOUNDATION_THEME.font.size.body.sm.fontSize}px`, // Smaller subtext for md
+            fontWeight: FOUNDATION_THEME.font.weight[400],
+          },
+        },
+        spacing: {
+          left: {
+            sm: FOUNDATION_THEME.unit[8], // Reduced indent for HDFC subtext
+            md: FOUNDATION_THEME.unit[8], // Reduced indent for HDFC subtext
+          },
+          top: FOUNDATION_THEME.unit[2], // Less top spacing
+        },
+      },
+    },
+
+    required: {
+      color: FOUNDATION_THEME.colors.orange[600], // Orange for required
+      spacing: FOUNDATION_THEME.unit[4], // More spacing for required
+    },
+
+    transition: {
+      duration: '200ms', // Slightly different transition
+      easing: 'ease-in-out',
+    },
+  }
 };
 
 export default HDFC_COMPONENT_TOKENS;

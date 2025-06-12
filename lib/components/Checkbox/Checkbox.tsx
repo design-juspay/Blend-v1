@@ -12,7 +12,8 @@ import {
 } from './StyledCheckbox';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import checkboxTokens from './token';
+import { useComponentToken } from '../../context/useContextToken'; // Or '../../context/ThemeContext'
+import { CheckboxTokensType } from './checkbox.token';
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
   (
@@ -33,6 +34,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref
   ) => {
+    const tokens = useComponentToken("CHECKBOX") as CheckboxTokensType;
     // TODO: This is a temporary fix to avoid the warning about useId.
     // We need to find a better solution to handle the id.
     const generatedId = React.useId();
@@ -48,6 +50,17 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
 
     // Get the current checked state for styling and data purposes
     const currentChecked = isControlled ? checked : defaultChecked;
+
+    const getIconColor = () => {
+      if (disabled) {
+        return currentChecked === 'indeterminate' 
+          ? tokens.icon.color.indeterminate?.disabled 
+          : tokens.icon.color.checked?.disabled;
+      }
+      return currentChecked === 'indeterminate'
+        ? tokens.icon.color.indeterminate?.default
+        : tokens.icon.color.checked?.default;
+    };
 
     return (
       <Block display="flex" flexDirection="column">
@@ -82,15 +95,15 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
                 >
                   {currentChecked === 'indeterminate' ? (
                     <Minus 
-                      size={extractPixelValue(checkboxTokens.sizes[size].icon.width)}
-                      color={checkboxTokens.icon.color} 
-                      strokeWidth={2.5}
+                      size={extractPixelValue(tokens.icon.size[size].width)}
+                      color={getIconColor()}
+                      strokeWidth={tokens.icon.size[size].strokeWidth}
                     />
                   ) : (
                     <Check 
-                      size={extractPixelValue(checkboxTokens.sizes[size].icon.width)}
-                      color={checkboxTokens.icon.color} 
-                      strokeWidth={2.5}
+                      size={extractPixelValue(tokens.icon.size[size].width)}
+                      color={getIconColor()}
+                      strokeWidth={tokens.icon.size[size].strokeWidth}
                     />
                   )}
                 </Block>
@@ -106,15 +119,15 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
             >
               <PrimitiveText
                 as="span"
-                fontSize={checkboxTokens.sizes[size].fontSize}
-                fontWeight={checkboxTokens.label.fontWeight}
+                fontSize={tokens.content.label.font[size].fontSize}
+                fontWeight={tokens.content.label.font[size].fontWeight}
               >
                 {children}
                 {required && (
                   <PrimitiveText
                     as="span"
-                    color={checkboxTokens.required.color}
-                    margin={`0 0 0 ${checkboxTokens.required.spacing}`}
+                    color={tokens.required.color}
+                    margin={`0 0 0 ${tokens.required.spacing}`}
                   >
                     *
                   </PrimitiveText>
@@ -123,7 +136,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
             </StyledLabel>
           )}
           {slot && (
-            <Block as="span" marginLeft={checkboxTokens.spacing.rightSlot}>
+            <Block as="span" marginLeft={tokens.slotGap}>
               {slot}
             </Block>
           )}
@@ -131,15 +144,15 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
 
         {subtext && (
           <Block 
-            marginLeft={checkboxTokens.sizes[size].subtext.marginLeft}
-            marginTop={checkboxTokens.sizes[size].subtext.marginTop}
+            marginLeft={tokens.content.subtext.spacing.left[size]}
+            marginTop={tokens.content.subtext.spacing.top}
           >
             <PrimitiveText
               as="span"
-              color={disabled ? checkboxTokens.subtext.disabled : 
-                     error ? checkboxTokens.subtext.error : 
-                     checkboxTokens.subtext.default}
-              fontSize={checkboxTokens.sizes[size].subtext.fontSize}
+              color={disabled ? tokens.content.subtext.color.disabled : 
+                     error ? tokens.content.subtext.color.error : 
+                     tokens.content.subtext.color.default}
+              fontSize={tokens.content.subtext.font[size].fontSize}
             >
               {subtext}
             </PrimitiveText>

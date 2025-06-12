@@ -12,6 +12,7 @@ import {
 } from "../components/Inputs/TextArea/textarea.token";
 import { RadioTokensType, getRadioTokens } from "../components/Radio/radio.token";
 import { SwitchTokensType, getSwitchTokens } from "../components/Switch/switch.token";
+import { CheckboxTokensType, getCheckboxTokens } from "../components/Checkbox/checkbox.token";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -19,6 +20,7 @@ export type ComponentTokenType = {
   TEXT_AREA?: TextAreaTokensType;
   RADIO?: RadioTokensType;
   SWITCH?: SwitchTokensType;
+  CHECKBOX?: CheckboxTokensType;
   // add supprort for other components here
 };
 
@@ -35,6 +37,7 @@ const ThemeContext = createContext<ThemeContextType>({
     TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
     RADIO: getRadioTokens(FOUNDATION_THEME),
     SWITCH: getSwitchTokens(FOUNDATION_THEME),
+    CHECKBOX: getCheckboxTokens(FOUNDATION_THEME),
   },
 });
 
