@@ -1,2 +1,2 @@
-export { default as FOUNDATION_THEME } from "./theme.tokens";
-export type { ThemeType } from "./theme.tokens";
+export { default as FOUNDATION_THEME } from "./theme.token";
+export type { FoundationTokenType as ThemeType } from "./theme.token";

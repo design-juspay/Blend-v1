@@ -25,6 +25,7 @@ import {
   Table,
   Palette,
   MessageCircle,
+  CircleDot as Radio,
 } from "lucide-react";
 import styled from "styled-components";
 import { DirectoryData } from "../../../lib/components/Directory/types";
@@ -56,6 +57,7 @@ import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
 import CombinedLargeMenuDemo from "../Menu/CombinedLargeMenuDemo";
+import DemoThemeProvider from "../DemoThemeProvider";
 
 const SearchContainer = styled(Block)`
   width: 160px;
@@ -112,7 +114,8 @@ const SidebarDemo = () => {
     | "dataTable"
     | "colorPalette"
     | "popover"
-  >("buttons");
+    | "theme"
+  >("theme");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
@@ -162,6 +165,8 @@ const SidebarDemo = () => {
 
   const renderContent = () => {
     switch (activeComponent) {
+      case "theme":
+        return <DemoThemeProvider />;
       case "buttons":
         return <ButtonDemo />;
       case "buttonGroups":
@@ -411,6 +416,16 @@ const SidebarDemo = () => {
           label: "Date Picker",
           leftSlot: <CalendarIcon style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("datePicker"),
+        },
+        {
+          label: "Radio",
+          leftSlot: <Radio style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("radio"),
+        },
+        {
+          label: "Switch",
+          leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("switch"),
         },
         {
           label: "Selectors",

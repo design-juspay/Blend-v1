@@ -1,10 +1,10 @@
 import Block from "../Primitives/Block/Block";
 import { forwardRef } from "react";
 
-import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
 import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "./types";
-import tagTokens from "./tag.tokens";
+import { useComponentToken } from "../../context/useContextToken";
+import { TagTokensType } from "./tag.tokens";
 
 const Tag = forwardRef<HTMLDivElement, TagProps>(
   (
@@ -14,14 +14,15 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
       color = TagColor.PRIMARY,
       size = TagSize.SM,
       shape = TagShape.SQUARICAL,
-      leadingSlot,
-      trailingSlot,
+      leftSlot,
+      rightSlot,
       onClick,
       splitTagPosition,
-      ...rest
     },
     ref
   ) => {
+    const tagTokens = useComponentToken("TAGS") as TagTokensType;
+
     const isSplitTag = splitTagPosition !== undefined;
     let borderRadius = tagTokens.borderRadius[shape][size];
     if (isSplitTag) {
@@ -38,35 +39,25 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
         display="flex"
         alignItems="center"
         justifyContent="center"
-        gap={FOUNDATION_THEME.unit[6]}
-        height={tagTokens.layout[size].height}
         width="fit-content"
-        paddingX={FOUNDATION_THEME.unit[8]}
-        paddingY={FOUNDATION_THEME.unit[4]}
+        gap={tagTokens.gap[size]}
+        height={tagTokens.height[size]}
+        padding={tagTokens.padding[size]}
         backgroundColor={tagTokens.background[variant][color]}
-        color={tagTokens.text[variant][color]}
-        border={`1px solid ${tagTokens.border[variant][color]}`}
+        color={tagTokens.color[variant][color]}
+        border={`${tagTokens.borderWidth[variant][color]}px solid ${tagTokens.borderColor[variant][color]}`}
         borderRadius={borderRadius}
         cursor={onClick ? "pointer" : "default"}
         onClick={onClick}
-        {...rest}
       >
-        {leadingSlot && (
-          <Block contentCentered size={tagTokens.layout[size].iconSize}>
-            {leadingSlot}
-          </Block>
-        )}
+        {leftSlot && <Block contentCentered>{leftSlot}</Block>}
         <Text
           fontSize={tagTokens.font[size].fontSize}
           fontWeight={tagTokens.font[size].fontWeight}
         >
           {text}
         </Text>
-        {trailingSlot && (
-          <Block contentCentered size={tagTokens.layout[size].iconSize}>
-            {trailingSlot}
-          </Block>
-        )}
+        {rightSlot && <Block contentCentered>{rightSlot}</Block>}
       </Block>
     );
   }

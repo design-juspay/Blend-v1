@@ -1,10 +1,25 @@
 import { useEffect } from "react";
 import { useRef, useState } from "react";
-import { FOUNDATION_THEME } from "../../../tokens";
 import Block from "../../Primitives/Block/Block";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
-import searchInputTokens from "./searchInput.tokens";
+
 import { SearchInputProps } from "./types";
+import { SearchInputTokensType } from "./searchInput.tokens";
+import { useComponentToken } from "../../../context/useContextToken";
+
+const toPixels = (value: string | number | undefined): number => {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    // Remove 'px' and convert to number
+    const numericValue = parseFloat(value.replace("px", ""));
+    return isNaN(numericValue) ? 0 : numericValue;
+  }
+
+  return 0;
+};
 
 const SearchInput = ({
   leftSlot,
@@ -15,6 +30,10 @@ const SearchInput = ({
   onChange,
   name,
 }: SearchInputProps) => {
+  const searchInputTokens = useComponentToken(
+    "SEARCH_INPUT"
+  ) as SearchInputTokensType;
+
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
 
@@ -33,9 +52,10 @@ const SearchInput = ({
       setRightSlotWidth(0);
     }
   }, [leftSlot, rightSlot]);
-  const paddingX = searchInputTokens.input.padding.x;
-  const paddingY = searchInputTokens.input.padding.y;
-  const GAP = searchInputTokens.input.gap;
+
+  const paddingX = toPixels(searchInputTokens.padding.x);
+  const paddingY = toPixels(searchInputTokens.padding.y);
+  const GAP = toPixels(searchInputTokens.gap);
 
   const paddingInlineStart = leftSlot
     ? paddingX + leftSlotWidth + GAP
@@ -76,30 +96,27 @@ const SearchInput = ({
         name={name}
         value={value}
         onChange={onChange}
+        height={searchInputTokens.height}
+        width={searchInputTokens.width}
         placeholder={placeholder}
         paddingInlineStart={paddingInlineStart}
         paddingInlineEnd={paddingInlineEnd}
         paddingY={paddingY}
-        border="none"
-        outline="none"
-        height={40}
-        width={"100%"}
+        outline={searchInputTokens.outline}
+        borderRadius={searchInputTokens.borderRadius}
+        borderTop={searchInputTokens.borderTop.default}
+        borderLeft={searchInputTokens.borderLeft.default}
+        borderRight={searchInputTokens.borderRight.default}
         borderBottom={
           error
-            ? `1px solid ${searchInputTokens.input.border.color.error} !important`
-            : `1px solid ${searchInputTokens.input.border.color.default} !important`
+            ? searchInputTokens.borderBottom.error
+            : searchInputTokens.borderBottom.default
         }
         _hover={{
-          borderBottom: `1px solid ${searchInputTokens.input.border.color.hover} !important`,
+          borderBottom: searchInputTokens.borderBottom.hover,
         }}
-        // @TODO: Confirm use case in v1
-        // _focusVisible={{
-        //   borderBottom: `1px solid ${searchInputTokens.input.border.color.focus} !important`,
-        //   outline: "none !important",
-        // }}
         _focus={{
-          borderBottom: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          outline: "none !important",
+          borderBottom: searchInputTokens.borderBottom.focus,
         }}
       />
     </Block>
