@@ -6,8 +6,8 @@ import { CheckboxTokensType } from './checkbox.token';
 
 const getInteractionState = (
   isDisabled: boolean, 
-  error?: boolean, 
-  isHovered?: boolean 
+  error?: boolean
+  // isHovered is not used here as hover styles are applied directly in &:hover
 ): Exclude<CheckboxInteractionState, 'hover'> => {
   if (isDisabled) return 'disabled';
   if (error) return 'error';
@@ -80,7 +80,7 @@ export const StyledCheckboxIndicator = styled(CheckboxPrimitive.Indicator)<{
   height: 100%;
   /* Icon color is set in Checkbox.tsx as it depends on more states */
   
-  ${({ theme }) => { // Assuming ThemeProvider provides theme, or use useComponentToken
+  ${() => { // Removed 'theme' as it's not used and useComponentToken is used instead
     const tokens = useComponentToken("CHECKBOX") as CheckboxTokensType;
     return css`
       &[data-state="checked"], &[data-state="indeterminate"] {

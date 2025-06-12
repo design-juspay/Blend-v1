@@ -3,7 +3,7 @@ import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token
 import { TagTokensType } from "../components/Tags/tag.tokens";
 import { RadioTokensType } from "../components/Radio/radio.token";
 import { SwitchTokensType } from "../components/Switch/switch.token";
-import { CheckboxTokensType } from "../components/Checkbox/token"; // Added
+import { CheckboxTokensType } from "../components/Checkbox/checkbox.token"; // Added and path corrected
 import { ComponentTokenType, useTheme } from "./ThemeContext";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING

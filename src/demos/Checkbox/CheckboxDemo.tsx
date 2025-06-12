@@ -9,7 +9,7 @@ import { HDFC_COMPONENT_TOKENS } from '../../themes/HDFC_COMPONENT_TOKENS';
 import { FOUNDATION_THEME } from '../../../lib/tokens';
 
 const CheckboxDemo = () => {
-  const [hdfcDemoValue, setHdfcDemoValue] = useState(false); 
+  // const [hdfcDemoValue, setHdfcDemoValue] = useState(false); // Removed as it's unused
   const [hdfcThemedStates, setHdfcThemedStates] = useState({
     unchecked: false,
     checked: true,
