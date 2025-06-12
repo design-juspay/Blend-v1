@@ -13,6 +13,7 @@ import {
 import { RadioTokensType, getRadioTokens } from "../components/Radio/radio.token";
 import { SwitchTokensType, getSwitchTokens } from "../components/Switch/switch.token";
 import { CheckboxTokensType, getCheckboxTokens } from "../components/Checkbox/checkbox.token";
+import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -21,6 +22,7 @@ export type ComponentTokenType = {
   RADIO?: RadioTokensType;
   SWITCH?: SwitchTokensType;
   CHECKBOX?: CheckboxTokensType;
+  TABS?: TabsTokensType; // Added TABS
   // add supprort for other components here
 };
 
@@ -38,6 +40,7 @@ const ThemeContext = createContext<ThemeContextType>({
     RADIO: getRadioTokens(FOUNDATION_THEME),
     SWITCH: getSwitchTokens(FOUNDATION_THEME),
     CHECKBOX: getCheckboxTokens(FOUNDATION_THEME),
+    TABS: getTabsTokens(FOUNDATION_THEME), // Added TABS
   },
 });
 

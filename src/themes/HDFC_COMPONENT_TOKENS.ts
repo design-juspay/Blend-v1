@@ -639,6 +639,133 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
       duration: '200ms', // Slightly different transition
       easing: 'ease-in-out',
     },
+  },
+  TABS: { // Added HDFC overrides for TABS
+    rootLayout: {
+      width: "100%",
+    },
+    list: {
+      layout: {
+        underline: {
+          // HDFC might want a different gap or no bottom border initially
+          gap: FOUNDATION_THEME.unit[16],
+          borderBottomWidth: FOUNDATION_THEME.border.width[1],
+          borderBottomColor: FOUNDATION_THEME.colors.gray[300], // Slightly darker for HDFC
+        },
+        boxed: {
+          backgroundColor: FOUNDATION_THEME.colors.red[50], // HDFC subtle red bg
+          padding: FOUNDATION_THEME.unit[6],
+          borderRadius: FOUNDATION_THEME.border.radius[6], // Sharper radius
+          gap: FOUNDATION_THEME.unit[2],
+        },
+        floating: {
+          gap: FOUNDATION_THEME.unit[10],
+        },
+      },
+      expandedLayout: {
+        justifyContent: "space-around", // HDFC might prefer space-around
+      },
+      size: {
+        lg: { height: FOUNDATION_THEME.unit[52] } 
+      }
+    },
+    trigger: {
+      size: {
+        md: {
+          height: FOUNDATION_THEME.unit[40], // Taller triggers for HDFC
+          paddingX: FOUNDATION_THEME.unit[16],
+          fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
+        },
+        lg: {
+          height: FOUNDATION_THEME.unit[48], // Taller triggers for HDFC
+          paddingX: FOUNDATION_THEME.unit[20],
+          fontSize: FOUNDATION_THEME.font.size.body.lg.fontSize,
+        },
+      },
+      font: { // HDFC might use brand font or different weights
+        underline: {
+          default: { fontWeight: FOUNDATION_THEME.font.weight[500] },
+          active: { fontWeight: FOUNDATION_THEME.font.weight[700] }, // Bolder active
+        },
+        boxed: {
+          default: { fontWeight: FOUNDATION_THEME.font.weight[500] },
+          active: { fontWeight: FOUNDATION_THEME.font.weight[700] },
+        },
+        floating: {
+          default: { fontWeight: FOUNDATION_THEME.font.weight[500] },
+          active: { fontWeight: FOUNDATION_THEME.font.weight[700] },
+        },
+      },
+      color: { // HDFC brand colors
+        underline: {
+          default: FOUNDATION_THEME.colors.gray[600],
+          hover: FOUNDATION_THEME.colors.red[700],
+          active: FOUNDATION_THEME.colors.red[600],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+        },
+        boxed: {
+          default: FOUNDATION_THEME.colors.red[700],
+          hover: FOUNDATION_THEME.colors.red[800],
+          active: FOUNDATION_THEME.colors.gray[0], // White text on active red bg
+          disabled: FOUNDATION_THEME.colors.red[200],
+        },
+        floating: {
+          default: FOUNDATION_THEME.colors.gray[600],
+          hover: FOUNDATION_THEME.colors.red[700],
+          active: FOUNDATION_THEME.colors.red[600],
+          disabled: FOUNDATION_THEME.colors.gray[300],
+        },
+      },
+      background: {
+        underline: {
+          // default, hover, active usually transparent for underline
+        },
+        boxed: {
+          default: "transparent",
+          hover: FOUNDATION_THEME.colors.red[100], // Light red hover
+          active: FOUNDATION_THEME.colors.red[600], // HDFC red active bg
+        },
+        floating: {
+          default: "transparent",
+          hover: FOUNDATION_THEME.colors.red[50],
+          active: FOUNDATION_THEME.colors.red[100], // Subtle red active for floating
+        },
+      },
+      border: {
+        underline: {
+          underlineHeight: FOUNDATION_THEME.border.width[2],
+          underlineColor: FOUNDATION_THEME.colors.red[600], // HDFC red underline
+        },
+        boxed: {
+          radius: FOUNDATION_THEME.border.radius[6],
+        },
+        floating: {
+          radius: FOUNDATION_THEME.border.radius[6],
+        },
+      },
+      shadow: {
+        boxed: {
+          active: FOUNDATION_THEME.shadows.md, // Slightly more prominent shadow
+        },
+      },
+      iconSpacing: {
+        gap: FOUNDATION_THEME.unit[6], // Tighter icon spacing
+      },
+      focus: {
+        ringWidth: "3px",
+        ringColor: FOUNDATION_THEME.colors.red[300], // HDFC red focus ring
+        ringOffset: FOUNDATION_THEME.unit[1],
+      },
+      disabledOpacity: FOUNDATION_THEME.opacity[40], // More opaque disabled state
+    },
+    content: {
+      padding: FOUNDATION_THEME.unit[20],
+      marginTop: FOUNDATION_THEME.unit[20],
+    },
+    transition: {
+      duration: "0.15s", // Faster transitions for HDFC
+      easing: "ease-out",
+    }
   }
 };
 
