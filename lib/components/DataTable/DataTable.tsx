@@ -251,8 +251,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
       onSearchChange({ query: '', caseSensitive: false });
     }
   };
-
-  const hasSelectedRows = Object.values(selectedRows).some(selected => selected);
   const selectedCount = Object.values(selectedRows).filter(selected => selected).length;
 
   const handleDeselectAll = () => {

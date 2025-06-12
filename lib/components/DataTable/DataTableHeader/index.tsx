@@ -8,6 +8,7 @@ import { ButtonSize, ButtonType } from '../../Button/types';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
 import PrimitiveInput from '../../Primitives/PrimitiveInput/PrimitiveInput';
+import { SearchInput } from '../../Inputs/SearchInput';
 import { FOUNDATION_THEME } from '../../../tokens';
 import dataTableTokens from '../dataTable.tokens';
 import { Popover } from '../../Popover';
@@ -76,33 +77,14 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<any>>(({
 
       {showToolbar && (
         <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[12]}>
-          {/* Search and Filter Controls */}
           {(enableSearch || enableFiltering) && (
             <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[12]} style={{ flex: 1 }}>
               {enableSearch && (
                 <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]} style={{ minWidth: '300px' }}>
-                  <PrimitiveInput
-                    placeholder={searchPlaceholder}
-                    value={searchConfig.query}
-                    onChange={(e) => onSearch(e.target.value)}
-                    style={{
-                      width: '100%',
-                      height: '36px',
-                      border: `1px solid ${FOUNDATION_THEME.colors.gray[300]}`,
-                      borderRadius: '6px',
-                      padding: `0 ${FOUNDATION_THEME.unit[12]}`,
-                      fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                      backgroundColor: '#ffffff',
-                      outline: 'none',
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#3b82f6';
-                      e.target.style.boxShadow = '0 0 0 2px #dbeafe';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#d1d5db';
-                      e.target.style.boxShadow = 'none';
-                    }}
+                  <SearchInput
+                  placeholder={searchPlaceholder}
+                  value={searchConfig.query}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
                   />
                 </Block>
               )}
@@ -160,16 +142,16 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<any>>(({
                                   value={Array.isArray(currentFilter?.value) ? '' : (currentFilter?.value as string || '')}
                                   onChange={(e) => {
                                     const value = e.target.value;
-                                    onColumnFilter(column.field, filterType, value || '', 'equals');
+                                    onColumnFilter(column.field, filterType, value, 'equals');
                                   }}
                                   style={{
                                     width: '100%',
                                     height: '32px',
-                                    border: `1px solid ${FOUNDATION_THEME.colors.gray[300]}`,
-                                    borderRadius: '4px',
+                                    border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[300]}`,
+                                    borderRadius: FOUNDATION_THEME.border.radius[12],
                                     padding: `0 ${FOUNDATION_THEME.unit[8]}`,
                                     fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                                    backgroundColor: '#ffffff',
+                                    backgroundColor: FOUNDATION_THEME.colors.gray[0],
                                     outline: 'none',
                                   }}
                                 >
@@ -194,16 +176,16 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<any>>(({
                                 value={(currentFilter?.value as string) || ''}
                                 onChange={(e) => {
                                   const value = e.target.value;
-                                  onColumnFilter(column.field, filterType, value, 'contains');
+                                  onColumnFilter(column.field, filterType, value, 'equals');
                                 }}
                                 style={{
                                   width: '100%',
                                   height: '32px',
-                                  border: `1px solid ${FOUNDATION_THEME.colors.gray[300]}`,
-                                  borderRadius: '4px',
+                                  border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[300]}`,
+                                  borderRadius: FOUNDATION_THEME.border.radius[12],
                                   padding: `0 ${FOUNDATION_THEME.unit[8]}`,
                                   fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                                  backgroundColor: '#ffffff',
+                                  backgroundColor: FOUNDATION_THEME.colors.gray[0],
                                   outline: 'none',
                                 }}
                               />
