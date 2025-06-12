@@ -57,7 +57,9 @@ const dataTableTokens: DataTableToken = {
       justifyContent: "space-between",
       alignItems: "flex-start",
       marginBottom: FOUNDATION_THEME.unit[16],
-      gap: FOUNDATION_THEME.unit[16],
+      gap: FOUNDATION_THEME.unit[20],
+      maxWidth: "100vw",
+      overflowX: "auto",
       "@media (min-width: 768px)": {
         flexDirection: "row",
       },

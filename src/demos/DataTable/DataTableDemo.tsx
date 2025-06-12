@@ -4,6 +4,9 @@ import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
+import  {Button, ButtonType, ButtonSize } from '../../../lib/main';
+import { RefreshCw, Plus, CircleX } from 'lucide-react';
+
 
 const DataTableDemo = () => {
     const [data, setData] = useState(() => Array.from({ length: 50 }, (_, index) => ({
@@ -184,6 +187,18 @@ const DataTableDemo = () => {
     const handleRowCancel = (rowId: unknown) => {
       console.log('Edit cancelled for row:', rowId);
     };
+
+    const handleRefreshData = () => {
+      // Simulate API call to refresh data
+      console.log('Refreshing data...');
+      // You can call your API here and update the data state
+    };
+  
+    const handleAddUser = () => {
+      console.log('Adding new user...');
+      // Handle add user logic
+    };
+  
   
     return (
       <div>
@@ -213,6 +228,38 @@ const DataTableDemo = () => {
           onFilterChange={handleFilterChange}
           onRowSave={handleRowSave}
           onRowCancel={handleRowCancel}
+          headerSlot1={
+            <Button
+              buttonType={ButtonType.SECONDARY}
+              leadingIcon={RefreshCw}
+              size={ButtonSize.SMALL}
+              onClick={handleRefreshData}
+            >
+              Refresh
+            </Button>
+          }
+          headeSlot2={
+            <Button
+              buttonType={ButtonType.DANGER}
+              leadingIcon={CircleX}
+              size={ButtonSize.SMALL}
+              onClick={handleRefreshData}
+            >
+              Action
+            </Button>
+          }
+          headerSlot3={
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <Button
+                buttonType={ButtonType.PRIMARY}
+                leadingIcon={Plus}
+                size={ButtonSize.SMALL}
+                onClick={handleAddUser}
+              >
+                Add User
+              </Button>
+            </div>
+          }
         />
       </div>
     );

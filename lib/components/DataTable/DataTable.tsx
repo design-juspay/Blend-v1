@@ -9,7 +9,9 @@ import DataTableHeader from './DataTableHeader';
 import TableHeader from './TableHeader';
 import TableBodyComponent from './TableBody';
 import TableFooter from './TableFooter';
+import BulkActionBar from './TableBody/BulkActionBar';
 import Block from '../Primitives/Block/Block';
+
 const Table = styled.table<{ $isStriped?: boolean; $isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
   table-layout: fixed;
@@ -46,6 +48,10 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onFilterChange,
     onRowSave,
     onRowCancel,
+    headerSlot1,
+    headeSlot2,
+    headerSlot3,
+    bulkActions
   }: DataTableProps<T>,
   ref: React.Ref<HTMLDivElement>
 ) => {
@@ -210,7 +216,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const handleColumnFilter = (field: keyof any, type: FilterType, value: string | string[], operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte') => {
     const existingFilterIndex = columnFilters.findIndex(f => f.field === field);
-    let newFilters = [...columnFilters];
+    const newFilters = [...columnFilters];
 
     if (existingFilterIndex >= 0) {
       if (!value || (Array.isArray(value) && value.length === 0)) {
@@ -247,9 +253,15 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   };
 
   const hasSelectedRows = Object.values(selectedRows).some(selected => selected);
+  const selectedCount = Object.values(selectedRows).filter(selected => selected).length;
+
+  const handleDeselectAll = () => {
+    setSelectedRows({});
+    setSelectAll(false);
+  };
 
   // Calculate column widths to ensure fixed layout
-  const getColumnWidth = (column: ColumnDefinition<T>, index: number) => {
+  const getColumnWidth = (column: ColumnDefinition<T>) => {
     if (column.width) return column.width;
     
     // Default widths based on field type or content
@@ -315,6 +327,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   return (
     <Block ref={ref} style={{
       ...dataTableTokens.container,
+      position: 'relative',
     }}>
       <DataTableHeader
         title={title}
@@ -328,12 +341,13 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         columnFilters={columnFilters}
         visibleColumns={visibleColumns}
         data={data}
-        hasSelectedRows={hasSelectedRows}
         onSearch={handleSearch}
         onToggleFilters={() => setShowFilters(!showFilters)}
         onColumnFilter={handleColumnFilter}
         onClearAllFilters={clearAllFilters}
-        onExportToCSV={exportToCSV}
+        headerSlot1={headerSlot1}
+        headerSlot2={headeSlot2}
+        headerSlot3={headerSlot3}
       />
 
       <Block style={{
@@ -344,7 +358,15 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        position: 'relative',
       }}>
+        <BulkActionBar
+          selectedCount={selectedCount}
+          onExport={exportToCSV}
+          onDeselectAll={handleDeselectAll}
+          customActions={bulkActions}
+        />
+
         <Block style={{
           overflowX: 'auto',
           overflowY: 'hidden',
@@ -407,4 +429,4 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
 DataTable.displayName = "DataTable";
 
-export default DataTable; 
+export default DataTable;

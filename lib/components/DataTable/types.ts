@@ -158,4 +158,12 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onRowCancel?: (rowId: unknown) => void;
   /** Optional additional class name */
   className?: string;
-} 
+  /** Custom slot on the left side of the toolbar */
+  headerSlot1?: React.ReactNode;
+  /** Custom slot in the center of the toolbar */
+  headeSlot2?: React.ReactNode;
+  /** Custom slot on the right side of the toolbar */
+  headerSlot3?: React.ReactNode;
+  /** Custom bulk actions to show in the floating action bar */
+  bulkActions?: React.ReactNode;
+}
