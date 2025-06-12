@@ -206,58 +206,6 @@ const CombinedLargeMenuDemo = () => {
             virtualizationThreshold={20}
           />
         </Block>
-
-        <Block
-          marginTop={16}
-          padding={16}
-          backgroundColor={FOUNDATION_THEME.colors.gray[50]}
-          borderRadius={8}
-          border={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
-        >
-          <Text
-            variant="heading.sm"
-            style={{ marginBottom: "8px" }}
-            color={FOUNDATION_THEME.colors.gray[600]}
-          >
-            How to test both virtualizations:
-          </Text>
-          <Block display="flex" flexDirection="column" gap={4}>
-            <Text variant="body.sm" color={FOUNDATION_THEME.colors.gray[600]}>
-              1. Open the menu and scroll through the main items (virtualized)
-            </Text>
-            <Text variant="body.sm" color={FOUNDATION_THEME.colors.gray[600]}>
-              2. Look for items labeled "with large submenu" (every 10th item)
-            </Text>
-            <Text variant="body.sm" color={FOUNDATION_THEME.colors.gray[600]}>
-              3. Hover over those items to open their large submenu
-            </Text>
-            <Text variant="body.sm" color={FOUNDATION_THEME.colors.gray[600]}>
-              4. Scroll through the submenu to see submenu virtualization
-            </Text>
-            <Text variant="body.sm" color={FOUNDATION_THEME.colors.gray[600]}>
-              5. Check browser console to see how many items are rendered
-            </Text>
-          </Block>
-
-          {!useVirtualization && (mainMenuSize > 500 || submenuSize > 500) && (
-            <Block
-              marginTop={8}
-              padding={8}
-              backgroundColor={FOUNDATION_THEME.colors.red[50]}
-              borderRadius={4}
-            >
-              <Text
-                variant="body.sm"
-                color={FOUNDATION_THEME.colors.red[600]}
-                fontWeight={600}
-              >
-                Warning: You've disabled virtualization with large datasets!
-                This may cause your browser to slow down or crash when opening
-                the menu.
-              </Text>
-            </Block>
-          )}
-        </Block>
       </Block>
     </div>
   );
