@@ -91,6 +91,15 @@
   - Updated styled components to use internal hook imports
   - Fixed box-shadow implementation to use foundation tokens
   - Maintained consistent token structure across all styled components
+- **Checkbox Component Token Refactor (Post-Switch updates):**
+  - Aligned `CheckboxTokensType` with `Radio` and `Switch` by nesting `label` and `subtext` under a `content` object.
+  - Renamed `CheckboxTokensType.root` (for the checkbox square) to `indicator` for conceptual consistency.
+  - Renamed `CheckboxTokensType.indicator` (for the check/minus icon) to `icon`.
+  - Updated `indicator.background` and `indicator.border.color` to use a nested structure: `[CheckboxCheckedState][CheckboxInteractionState]`.
+  - Corrected token filename from `token.ts` to `checkbox.token.ts` and updated all import paths.
+  - Ensured HDFC theme tokens for Checkbox (`HDFC_COMPONENT_TOKENS.ts`) match the new structure.
+  - Updated Checkbox demo (`CheckboxDemo.tsx`) to reflect token changes and improve interactivity of themed examples.
+  - Verified changes with a successful project build.
 
 ## Recent Implementation Patterns
 
@@ -212,4 +221,4 @@ We've established a clear component hierarchy:
 - Primitives should be simple and focused
 - Higher-level components should compose primitives
 - Maintain consistent code style throughout
-- Document design decisions and patterns 
+- Document design decisions and patterns
