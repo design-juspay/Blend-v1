@@ -72,7 +72,9 @@ const alertTokens: AlertTokenType = {
   },
 };
 
-export const getAlertTokens = (foundationToken: FoundationTokenType) => {
+export const getAlertTokens = (
+  foundationToken: FoundationTokenType
+): AlertTokenType => {
   return {
     padding: foundationToken.unit[16],
     borderRadius: foundationToken.border.radius[8],

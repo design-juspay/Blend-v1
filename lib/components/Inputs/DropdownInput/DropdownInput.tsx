@@ -3,7 +3,6 @@ import Block from "../../Primitives/Block/Block";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
-// import textInputTokens from "../TextInput/textInput.tokens";
 import { TextInputSize } from "../TextInput/types";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { ChevronDown } from "lucide-react";
