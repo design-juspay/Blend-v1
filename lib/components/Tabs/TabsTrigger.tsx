@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { TabsTriggerProps, TabsVariant, TabsSize } from './types';
 import { StyledTabsTrigger, IconContainer } from './StyledTabs';
-import { useComponentToken } from '../../context/useContextToken'; // Import hook
+import { useComponentToken } from '../../context/useComponentToken'; // Import hook
 import { TabsTokensType } from './tabs.token'; // Import token type
 
 const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(

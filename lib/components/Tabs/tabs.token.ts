@@ -2,106 +2,111 @@ import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME, ThemeType } from "../../tokens";
 import { TabsVariant, TabsSize } from "./types";
 
-// Token Structure: $component.$target.$property.[$variant].[$type].[$state]
-// $component: TABS (implied)
-
-export type TabsInteractionState = 'default' | 'hover' | 'active' | 'focus' | 'disabled';
+export type TabsInteractionState =
+  | "default"
+  | "hover"
+  | "active"
+  | "focus"
+  | "disabled";
 
 export type TabsTokensType = Readonly<{
-  // $target: 'rootLayout'
   rootLayout?: {
     width?: CSSObject["width"];
   };
 
-  // $target: 'list' (The container for tab triggers)
   list: {
-    layout: { // $property
-      [key in TabsVariant]?: { // $variant
+    layout: {
+      [key in TabsVariant]?: {
         display?: CSSObject["display"];
         width?: CSSObject["width"];
         alignItems?: CSSObject["alignItems"];
         gap?: CSSObject["gap"];
         padding?: CSSObject["padding"];
-        borderBottomWidth?: CSSObject["borderWidth"]; // For underline variant
-        borderBottomColor?: CSSObject["borderColor"]; // For underline variant
-        backgroundColor?: CSSObject["backgroundColor"]; // For boxed variant
-        borderRadius?: CSSObject["borderRadius"]; // For boxed variant
+        borderBottomWidth?: CSSObject["borderWidth"];
+        borderBottomColor?: CSSObject["borderColor"];
+        backgroundColor?: CSSObject["backgroundColor"];
+        borderRadius?: CSSObject["borderRadius"];
       };
     };
-    expandedLayout?: { // $property for when expanded is true
+    expandedLayout?: {
       justifyContent?: CSSObject["justifyContent"];
     };
-    // Specific size property for list if needed, e.g., list.size.lg.height
     size?: {
-        [key in TabsSize]?: {
-            height?: CSSObject["height"];
-        };
+      [key in TabsSize]?: {
+        height?: CSSObject["height"];
+      };
     };
   };
 
-  // $target: 'trigger' (Individual tab button)
   trigger: {
-    size: { // $property
-      [key in TabsSize]: { // $variant: md, lg
+    size: {
+      [key in TabsSize]: {
         height: CSSObject["height"];
-        paddingX: CSSObject["paddingLeft"]; // Assuming paddingLeft and Right are same
+        paddingX: CSSObject["paddingLeft"];
         fontSize: CSSObject["fontSize"];
       };
     };
-    font: { // $property
-      [key in TabsVariant]?: { // $variant: underline, boxed, floating
-        [key in Extract<TabsInteractionState, 'default' | 'active'>]?: { // $state
+    font: {
+      [key in TabsVariant]?: {
+        [key in Extract<TabsInteractionState, "default" | "active">]?: {
           fontWeight: CSSObject["fontWeight"];
         };
       };
     };
-    color: { // $property
-      [key in TabsVariant]?: { // $variant
-        [key in Extract<TabsInteractionState, 'default' | 'hover' | 'active' | 'disabled'>]?: CSSObject["color"]; // $state
+    color: {
+      [key in TabsVariant]?: {
+        [key in Extract<
+          TabsInteractionState,
+          "default" | "hover" | "active" | "disabled"
+        >]?: CSSObject["color"];
       };
     };
-    background: { // $property
-      [key in TabsVariant]?: { // $variant
-        [key in Extract<TabsInteractionState, 'default' | 'hover' | 'active'>]?: CSSObject["backgroundColor"]; // $state
+    background: {
+      [key in TabsVariant]?: {
+        [key in Extract<
+          TabsInteractionState,
+          "default" | "hover" | "active"
+        >]?: CSSObject["backgroundColor"];
       };
     };
-    border: { // $property
-      [key in TabsVariant]?: { // $variant
-        radius?: CSSObject["borderRadius"]; // For boxed, floating
-        underlineHeight?: CSSObject["height"]; // For active underline variant
-        underlineColor?: CSSObject["borderColor"]; // For active underline variant
+    border: {
+      [key in TabsVariant]?: {
+        radius?: CSSObject["borderRadius"];
+        underlineHeight?: CSSObject["height"];
+        underlineColor?: CSSObject["borderColor"];
       };
     };
-    shadow?: { // $property
-      [key in Extract<TabsVariant, 'boxed'>]?: { // $variant: boxed
-        [key in Extract<TabsInteractionState, 'active'>]?: CSSObject["boxShadow"]; // $state: active
+    shadow?: {
+      [key in Extract<TabsVariant, "boxed">]?: {
+        [key in Extract<
+          TabsInteractionState,
+          "active"
+        >]?: CSSObject["boxShadow"];
       };
     };
-    iconSpacing?: { // $property
-      gap?: CSSObject["gap"]; // Gap between icon and text
+    iconSpacing?: {
+      gap?: CSSObject["gap"];
     };
-    focus?: { // $property (or $state of trigger)
+    focus?: {
       outlineColor?: CSSObject["borderColor"];
       outlineWidth?: CSSObject["borderWidth"];
       outlineOffset?: CSSObject["outlineOffset"];
-      ringWidth?: CSSObject["string"]; // e.g. "2px"
+      ringWidth?: CSSObject["string"];
       ringColor?: CSSObject["borderColor"];
       ringOffset?: CSSObject["string"];
     };
-    disabledOpacity?: CSSObject["opacity"]; // $property
+    disabledOpacity?: CSSObject["opacity"];
   };
 
-  // $target: 'content' (The content area for a tab panel)
   content: {
-    padding?: CSSObject["padding"]; // $property
-    marginTop?: CSSObject["marginTop"]; // $property: Spacing between TabsList and TabsContent
-    animation?: { // $property
+    padding?: CSSObject["padding"];
+    marginTop?: CSSObject["marginTop"];
+    animation?: {
       duration?: CSSObject["transitionDuration"];
       timingFunction?: CSSObject["transitionTimingFunction"];
     };
   };
-  
-  // General transition for properties not covered by content.animation
+
   transition?: {
     duration?: CSSObject["transitionDuration"];
     easing?: CSSObject["transitionTimingFunction"];
@@ -123,7 +128,7 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
           display: "flex",
           width: "100%",
           alignItems: "center",
-          gap: foundationToken.unit[12], // Corrected path
+          gap: foundationToken.unit[12],
           borderBottomWidth: foundationToken.border.width[1],
           borderBottomColor: listBottomBorderColor,
         },
@@ -131,50 +136,50 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
           display: "flex",
           width: "100%",
           alignItems: "center",
-          gap: foundationToken.unit[4], // Corrected path
+          gap: foundationToken.unit[4],
           backgroundColor: foundationToken.colors.gray[50],
-          padding: foundationToken.unit[4], // Corrected path
-          borderRadius: foundationToken.border.radius[8], // Corrected path
+          padding: foundationToken.unit[4],
+          borderRadius: foundationToken.border.radius[8],
         },
         floating: {
           display: "flex",
           width: "100%",
           alignItems: "center",
-          gap: foundationToken.unit[8], // Corrected path
+          gap: foundationToken.unit[8],
         },
       },
       expandedLayout: {
         justifyContent: "space-between",
       },
       size: {
-        lg: { height: foundationToken.unit[48] } // Corrected path
-      }
+        lg: { height: foundationToken.unit[48] },
+      },
     },
     trigger: {
       size: {
         md: {
-          height: foundationToken.unit[36], 
-          paddingX: foundationToken.unit[12], 
-          fontSize: foundationToken.font.size.body.md.fontSize, // Corrected path
+          height: foundationToken.unit[36],
+          paddingX: foundationToken.unit[12],
+          fontSize: foundationToken.font.size.body.md.fontSize,
         },
         lg: {
-          height: foundationToken.unit[40], 
-          paddingX: foundationToken.unit[12], 
-          fontSize: foundationToken.font.size.body.md.fontSize, // Corrected path
+          height: foundationToken.unit[40],
+          paddingX: foundationToken.unit[12],
+          fontSize: foundationToken.font.size.body.md.fontSize,
         },
       },
       font: {
         underline: {
-          default: { fontWeight: foundationToken.font.weight[500] }, // Corrected path
-          active: { fontWeight: foundationToken.font.weight[600] }, // Corrected path
+          default: { fontWeight: foundationToken.font.weight[500] },
+          active: { fontWeight: foundationToken.font.weight[600] },
         },
         boxed: {
-          default: { fontWeight: foundationToken.font.weight[500] }, // Corrected path
-          active: { fontWeight: foundationToken.font.weight[600] }, // Corrected path
+          default: { fontWeight: foundationToken.font.weight[500] },
+          active: { fontWeight: foundationToken.font.weight[600] },
         },
         floating: {
-          default: { fontWeight: foundationToken.font.weight[500] }, // Corrected path
-          active: { fontWeight: foundationToken.font.weight[600] }, // Corrected path
+          default: { fontWeight: foundationToken.font.weight[500] },
+          active: { fontWeight: foundationToken.font.weight[600] },
         },
       },
       color: {
@@ -182,7 +187,7 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
           default: foundationToken.colors.gray[500],
           hover: foundationToken.colors.gray[600],
           active: foundationToken.colors.gray[700],
-          disabled: foundationToken.colors.gray[400], // Assuming disabled color
+          disabled: foundationToken.colors.gray[400],
         },
         boxed: {
           default: foundationToken.colors.gray[500],
@@ -200,7 +205,7 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
       background: {
         underline: {
           default: "transparent",
-          hover: "transparent", // Or a very subtle hover like gray[25]
+          hover: "transparent",
           active: "transparent",
         },
         boxed: {
@@ -210,7 +215,7 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
         },
         floating: {
           default: "transparent",
-          hover: foundationToken.colors.gray[50], // Subtle hover for floating
+          hover: foundationToken.colors.gray[50],
           active: foundationToken.colors.gray[100],
         },
       },
@@ -220,44 +225,39 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
           underlineColor: underlineBorderColor,
         },
         boxed: {
-          radius: foundationToken.border.radius[8], // Corrected path
+          radius: foundationToken.border.radius[8],
         },
         floating: {
-          radius: foundationToken.border.radius[8], // Corrected path
+          radius: foundationToken.border.radius[8],
         },
       },
       shadow: {
         boxed: {
-          active: foundationToken.shadows.sm, // Corrected path
+          active: foundationToken.shadows.sm,
         },
       },
       iconSpacing: {
-        gap: foundationToken.unit[8], // Corrected path
+        gap: foundationToken.unit[8],
       },
       focus: {
-        // Using ring for focus as per original utils
         ringWidth: foundationToken.border.width[2],
         ringColor: foundationToken.colors.primary[500],
-        ringOffset: foundationToken.unit[2], // Corrected path
-        // outline properties can be an alternative
-        // outlineColor: foundationToken.colors.primary[500],
-        // outlineWidth: foundationToken.border.width[2],
-        // outlineOffset: foundationToken.unit[1],
+        ringOffset: foundationToken.unit[2],
       },
       disabledOpacity: foundationToken.opacity[50],
     },
     content: {
-      padding: foundationToken.unit[16], // Corrected path
-      marginTop: foundationToken.unit[16], // Corrected path
+      padding: foundationToken.unit[16],
+      marginTop: foundationToken.unit[16],
       animation: {
         duration: "0.2s",
         timingFunction: "ease-in-out",
       },
     },
-    transition: { // General transition for properties like color, background on trigger
-        duration: "0.2s",
-        easing: "ease-in-out",
-    }
+    transition: {
+      duration: "0.2s",
+      easing: "ease-in-out",
+    },
   };
 };
 

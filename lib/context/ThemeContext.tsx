@@ -52,9 +52,4 @@ export const useTheme = () => {
   return context;
 };
 
-export const useComponentToken = (componentName: keyof ComponentTokenType) => {
-  const { componentTokens } = useTheme();
-  return componentTokens[componentName];
-};
-
 export default ThemeContext;

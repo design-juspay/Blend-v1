@@ -12,7 +12,7 @@ import {
 } from './StyledCheckbox';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import { useComponentToken } from '../../context/useContextToken'; // Or '../../context/ThemeContext'
+import { useComponentToken } from '../../context/useComponentToken'; // Or '../../context/ThemeContext'
 import { CheckboxTokensType } from './checkbox.token';
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(

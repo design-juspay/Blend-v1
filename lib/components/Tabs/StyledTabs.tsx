@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { TabsVariant, TabsSize } from "./types";
-import { useComponentToken } from "../../context/useContextToken";
+import { useComponentToken } from "../../context/useComponentToken";
 import { TabsTokensType } from "./tabs.token"; // Removed TabsInteractionState as it's not used here
 // tabsUtils are mostly replaced by direct token access, but keep for now if any complex logic is needed.
 // import { getIconContainerStyles } from "./tabsUtils"; 

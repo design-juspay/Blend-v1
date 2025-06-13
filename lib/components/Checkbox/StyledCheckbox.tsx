@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { CheckboxSize, CheckboxCheckedState, CheckboxInteractionState } from './types';
-import { useComponentToken } from '../../context/useContextToken'; // Or '../../context/ThemeContext'
+import { useComponentToken } from '../../context/useComponentToken'; // Or '../../context/ThemeContext'
 import { CheckboxTokensType } from './checkbox.token';
 
 const getInteractionState = (
