@@ -8,6 +8,8 @@ type StateStyles = {
   _active?: PrimitiveButtonProps;
   _disabled?: PrimitiveButtonProps;
   _visited?: PrimitiveButtonProps;
+  _focusVisible?: PrimitiveButtonProps;
+  _focusWithin?: PrimitiveButtonProps;
 };
 
 // Base props type
@@ -51,6 +53,7 @@ type PrimitiveButtonProps = StateStyles & {
 
   // Visual
   backgroundColor?: CSSObject["backgroundColor"];
+  background?: CSSObject["background"];
   color?: CSSObject["color"];
   border?: CSSObject["border"];
   borderTop?: CSSObject["borderTop"];
@@ -75,6 +78,14 @@ type PrimitiveButtonProps = StateStyles & {
 
   // State
   disabled?: boolean;
+
+  // Text
+  fontWeight?: CSSObject["fontWeight"];
+  fontSize?: CSSObject["fontSize"];
+  fontFamily?: CSSObject["fontFamily"];
+  textDecoration?: CSSObject["textDecoration"];
+  textUnderlineOffset?: CSSObject["textUnderlineOffset"];
+  textTransform?: CSSObject["textTransform"];
 };
 
 // Prevent these props from reaching the DOM
@@ -107,6 +118,7 @@ const blockedProps = [
   "left",
   "zIndex",
   "backgroundColor",
+  "background",
   "color",
   "border",
   "borderTop",
@@ -132,6 +144,14 @@ const blockedProps = [
   "_active",
   "_disabled",
   "_visited",
+  "_focusVisible",
+  "_focusWithin",
+  "fontWeight",
+  "fontSize",
+  "fontFamily",
+  "textDecoration",
+  "textUnderlineOffset",
+  "textTransform",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -240,6 +260,8 @@ const stateToSelector: Record<keyof StateStyles, string> = {
   _active: "&:active",
   _disabled: "&:disabled",
   _visited: "&:visited",
+  _focusVisible: "&:focus-visible",
+  _focusWithin: "&:focus-within",
 };
 
 // Styled button

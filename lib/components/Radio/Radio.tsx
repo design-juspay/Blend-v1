@@ -3,7 +3,7 @@ import { RadioProps, RadioSize } from './types';
 import { getRadioDataState } from './utils';
 import { StyledRadioInput, StyledRadioLabel, StyledRadioText } from './StyledRadio';
 import Block from '../Primitives/Block/Block';
-import { useComponentToken } from '../../context/ThemeContext';
+import { useComponentToken } from '../../context/useComponentToken';
 import { RadioTokensType } from './radio.token';
 
 export const Radio = ({

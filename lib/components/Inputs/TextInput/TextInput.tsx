@@ -1,15 +1,28 @@
 import Block from "../../Primitives/Block/Block";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { useRef, useState, useEffect } from "react";
-import { FOUNDATION_THEME } from "../../../tokens";
-
-import textInputTokens from "./textInput.tokens";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
-import { InputSize, InputProps } from "./types";
+import { TextInputSize, InputProps } from "./types";
+import { useComponentToken } from "../../../context/useComponentToken";
+import { TextInputTokensType } from "./textInput.tokens";
+
+const toPixels = (value: string | number | undefined): number => {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    // Remove 'px' and convert to number
+    const numericValue = parseFloat(value.replace("px", ""));
+    return isNaN(numericValue) ? 0 : numericValue;
+  }
+
+  return 0;
+};
 
 const TextInput = ({
-  size = InputSize.MEDIUM,
+  size = TextInputSize.MEDIUM,
   leftSlot,
   rightSlot,
   error = false,
@@ -25,7 +38,9 @@ const TextInput = ({
   name,
   required = false,
 }: InputProps) => {
-
+  const textInputTokens = useComponentToken(
+    "TEXT_INPUT"
+  ) as TextInputTokensType;
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
 
@@ -45,10 +60,9 @@ const TextInput = ({
     }
   }, [leftSlot, rightSlot]);
 
-  // @TODO: Reconsider the type of unitTokens in FOUNDATION_THEME
-  const paddingX = textInputTokens.input.padding.x[size];
-  const paddingY = textInputTokens.input.padding.y[size];
-  const GAP = textInputTokens.input.gap;
+  const paddingX = toPixels(textInputTokens.input.paddingX[size]);
+  const paddingY = toPixels(textInputTokens.input.paddingY[size]);
+  const GAP = toPixels(textInputTokens.input.gap);
 
   const paddingInlineStart = leftSlot
     ? paddingX + leftSlotWidth + GAP
@@ -86,41 +100,29 @@ const TextInput = ({
           type="text"
           name={name}
           onChange={onChange}
+          placeholder={placeholder}
+          width={"100%"}
+          disabled={disabled}
+          //styling props
           paddingInlineStart={paddingInlineStart}
           paddingInlineEnd={paddingInlineEnd}
           paddingTop={paddingY}
           paddingBottom={paddingY}
-          placeholder={placeholder}
-          borderRadius={textInputTokens.input.border.radius}
-          boxShadow={FOUNDATION_THEME.shadows.sm}
-          border={
-            error
-              ? `1px solid ${textInputTokens.input.border.color.error}`
-              : `1px solid ${textInputTokens.input.border.color.default}`
-          }
+          borderRadius={textInputTokens.input.borderRadius}
+          boxShadow={textInputTokens.input.boxShadow}
+          border={textInputTokens.input.border[error ? "error" : "default"]}
           outline="none"
-          width={"100%"}
           _hover={{
-            border: `1px solid ${textInputTokens.input.border.color.hover}`,
+            border: textInputTokens.input.border.hover,
           }}
-          color={
-            disabled
-              ? textInputTokens.input.color.disabled
-              : textInputTokens.input.color.default
-          }
-          // @TODO: Confirm use case in v1
-          // _focusVisible={{
-          //   border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          //   outline: "none !important",
-          // }}
+          color={textInputTokens.input.color[disabled ? "disabled" : "default"]}
           _focus={{
-            border: `1px solid ${textInputTokens.input.border.color.focus} !important`,
-            outline: "none !important",
+            border: textInputTokens.input.border.focus,
+            outline: textInputTokens.input.outline.focus,
           }}
-          disabled={disabled}
           _disabled={{
             backgroundColor: textInputTokens.input.backgroundColor.disabled,
-            border: `1px solid ${textInputTokens.input.border.color.disabled}`,
+            border: textInputTokens.input.border.disabled,
             cursor: "not-allowed",
           }}
         />

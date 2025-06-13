@@ -1,4 +1,17 @@
-import { InputSize } from "../TextInput/types";
+import { TextInputSize } from "../TextInput/types";
+
+export enum MultiValueInputSize {
+  MD = "md",
+  LG = "lg",
+}
+
+export enum MultiValueInputState {
+  DEFAULT = "default",
+  HOVER = "hover",
+  FOCUS = "focus",
+  ERROR = "error",
+  DISABLED = "disabled",
+}
 
 export type MultiValueInputProps = {
   label: string;
@@ -13,5 +26,5 @@ export type MultiValueInputProps = {
   tags: string[];
   onTagAdd: (tag: string) => void;
   onTagRemove: (tag: string) => void;
-  size?: InputSize;
+  size?: TextInputSize;
 };

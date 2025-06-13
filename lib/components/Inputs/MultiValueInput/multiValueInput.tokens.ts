@@ -1,35 +1,35 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { FoundationTokenType } from "../../../tokens/theme.token";
-import { TextInputSize, TextInputState } from "./types";
+import { MultiValueInputSize, MultiValueInputState } from "./types";
 
-export type TextInputTokensType = {
+export type MultiValueInputTokensType = {
   input: {
     gap: CSSObject["gap"];
     borderRadius?: CSSObject["borderRadius"];
     boxShadow: CSSObject["boxShadow"];
     paddingX: {
-      [key in TextInputSize]: CSSObject["padding"];
+      [key in MultiValueInputSize]: CSSObject["padding"];
     };
     paddingY: {
-      [key in TextInputSize]: CSSObject["padding"];
+      [key in MultiValueInputSize]: CSSObject["padding"];
     };
     border: {
-      [key in TextInputState]: CSSObject["border"];
+      [key in MultiValueInputState]: CSSObject["border"];
     };
     color: {
-      [key in TextInputState]: CSSObject["color"];
+      [key in MultiValueInputState]: CSSObject["color"];
     };
     outline: {
-      [key in TextInputState]: CSSObject["outline"];
+      [key in MultiValueInputState]: CSSObject["outline"];
     };
     backgroundColor: {
-      [key in TextInputState]: CSSObject["backgroundColor"];
+      [key in MultiValueInputState]: CSSObject["backgroundColor"];
     };
   };
 };
 
-const textInputTokens: Readonly<TextInputTokensType> = {
+const multiValueInputTokens: Readonly<MultiValueInputTokensType> = {
   input: {
     gap: FOUNDATION_THEME.unit[8],
     borderRadius: FOUNDATION_THEME.unit[10],
@@ -73,9 +73,9 @@ const textInputTokens: Readonly<TextInputTokensType> = {
   },
 };
 
-export const getTextInputTokens = (
+export const getMultiValueInputTokens = (
   foundationTheme: FoundationTokenType
-): TextInputTokensType => {
+): MultiValueInputTokensType => {
   return {
     input: {
       gap: foundationTheme.unit[8],
@@ -121,4 +121,4 @@ export const getTextInputTokens = (
   };
 };
 
-export default textInputTokens;
+export default multiValueInputTokens;
