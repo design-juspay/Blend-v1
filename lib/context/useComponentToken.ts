@@ -6,6 +6,14 @@ import { SwitchTokensType } from "../components/Switch/switch.token";
 import { CheckboxTokensType } from "../components/Checkbox/checkbox.token";
 import { TabsTokensType } from "../components/Tabs/tabs.token";
 import { ComponentTokenType, useTheme } from "./ThemeContext";
+import { TextInputTokensType } from "../components/Inputs/TextInput/textInput.tokens";
+import { NumberInputTokensType } from "../components/Inputs/NumberInput/numberInput.tokens";
+import { AlertTokenType } from "../components/Alert/alert.tokens";
+import { OTPInputTokensType } from "../components/Inputs/OTPInput/otpInput.tokens";
+import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
+import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
+import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
+import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -16,12 +24,30 @@ export const useComponentToken = (
   | SearchInputTokensType
   | TagTokensType
   | TextAreaTokensType
+  | TextInputTokensType
+  | NumberInputTokensType
+  | AlertTokenType
   | RadioTokensType
+  | OTPInputTokensType
+  | UnitInputTokensType
+  | MultiValueInputTokensType
   | SwitchTokensType
   | CheckboxTokensType
-  | TabsTokensType => {
+  | TabsTokensType
+  | TooltipTokensType
+  | DropdownInputTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
+    case "TOOLTIP":
+      return componentTokens.TOOLTIP;
+    case "TEXT_INPUT":
+      return componentTokens.TEXT_INPUT;
+    case "NUMBER_INPUT":
+      return componentTokens.NUMBER_INPUT;
+    case "ALERT":
+      return componentTokens.ALERT;
+    case "OTP_INPUT":
+      return componentTokens.OTP_INPUT;
     case "TAGS":
       return componentTokens.TAGS;
     case "SEARCH_INPUT":
@@ -36,6 +62,8 @@ export const useComponentToken = (
       return componentTokens.CHECKBOX;
     case "TABS":
       return componentTokens.TABS;
+    case "DROPDOWN_INPUT":
+      return componentTokens.DROPDOWN_INPUT;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }
