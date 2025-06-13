@@ -19,8 +19,6 @@ import {
   List,
   Grid,
   Box,
-  Search,
-  EyeClosed,
   IndianRupee,
   Table,
   Palette,
@@ -55,8 +53,6 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
-import DemoThemeProvider from "../DemoThemeProvider";
-import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
 import { SingleSelect, ThemeProvider, useTheme } from "../../../lib/main";
 import {
   SelectMenuAlignment,
@@ -64,17 +60,6 @@ import {
 } from "../../../lib/components/Select";
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
-
-const SearchContainer = styled(Block)`
-  width: 160px;
-  height: 100%;
-  outline: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  border-radius: ${FOUNDATION_THEME.border.radius[4]};
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -120,7 +105,7 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
-  >("alerts");
+  >("input");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(

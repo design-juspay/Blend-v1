@@ -4,7 +4,7 @@ import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import textInputTokens from "../TextInput/textInput.tokens";
-import { InputSize } from "../TextInput/types";
+import { TextInputSize } from "../TextInput/types";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { ChevronDown } from "lucide-react";
 import SelectMenu from "../../Select/SelectMenu";
@@ -51,7 +51,7 @@ const DropdownInput = ({
   value,
   onChange,
   slot,
-  size = InputSize.MEDIUM,
+  size = TextInputSize.MEDIUM,
   placeholder,
   dropDownValue,
   onDropDownChange,

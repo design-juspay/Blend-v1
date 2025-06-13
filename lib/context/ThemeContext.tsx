@@ -23,6 +23,19 @@ import {
   AlertTokenType,
   getAlertTokens,
 } from "../components/Alert/alert.tokens";
+import {
+  getOTPInputTokens,
+  OTPInputTokensType,
+} from "../components/Inputs/OTPInput/otpInput.tokens";
+import {
+  getTooltipTokens,
+  TooltipTokensType,
+} from "../components/Tooltip/tooltip.tokens";
+import {
+  getUnitInputTokens,
+  UnitInputTokensType,
+} from "../components/Inputs/UnitInput/unitInput.tokens";
+import { getMultiValueInputTokens, MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -32,6 +45,10 @@ export type ComponentTokenType = {
   TEXT_INPUT?: TextInputTokensType;
   NUMBER_INPUT?: NumberInputTokensType;
   ALERT?: AlertTokenType;
+  OTP_INPUT?: OTPInputTokensType;
+  TOOLTIP?: TooltipTokensType;
+  UNIT_INPUT?: UnitInputTokensType;
+  MULTI_VALUE_INPUT?: MultiValueInputTokensType;
   // add supprort for other components here
 };
 
@@ -50,6 +67,10 @@ const ThemeContext = createContext<ThemeContextType>({
     TEXT_INPUT: getTextInputTokens(FOUNDATION_THEME),
     NUMBER_INPUT: getNumberInputTokens(FOUNDATION_THEME),
     ALERT: getAlertTokens(FOUNDATION_THEME),
+    OTP_INPUT: getOTPInputTokens(FOUNDATION_THEME),
+    TOOLTIP: getTooltipTokens(FOUNDATION_THEME),
+    UNIT_INPUT: getUnitInputTokens(FOUNDATION_THEME),
+    MULTI_VALUE_INPUT: getMultiValueInputTokens(FOUNDATION_THEME),
   },
 });
 
@@ -59,11 +80,6 @@ export const useTheme = () => {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
-};
-
-export const useComponentToken = (componentName: keyof ComponentTokenType) => {
-  const { componentTokens } = useTheme();
-  return componentTokens[componentName];
 };
 
 export default ThemeContext;

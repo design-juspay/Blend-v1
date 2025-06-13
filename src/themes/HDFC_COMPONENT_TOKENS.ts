@@ -78,6 +78,9 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
       backgroundColor: {
         default: FOUNDATION_THEME.colors.gray[0],
         disabled: FOUNDATION_THEME.colors.gray[50],
+        hover: FOUNDATION_THEME.colors.gray[0],
+        focus: FOUNDATION_THEME.colors.gray[0],
+        error: FOUNDATION_THEME.colors.gray[0],
       },
       boxShadow: FOUNDATION_THEME.shadows.sm,
     },

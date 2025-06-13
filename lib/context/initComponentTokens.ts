@@ -7,6 +7,10 @@ import { getTagTokens } from "../components/Tags/tag.tokens";
 import { getRadioTokens } from "../components/Radio/radio.token";
 import { ThemeType } from "../tokens";
 import { ComponentTokenType } from "./ThemeContext";
+import { getOTPInputTokens } from "../components/Inputs/OTPInput/otpInput.tokens";
+import { getTooltipTokens } from "../components/Tooltip/tooltip.tokens";
+import { getUnitInputTokens } from "../components/Inputs/UnitInput/unitInput.tokens";
+import { getMultiValueInputTokens } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -23,6 +27,13 @@ const initTokens = (
     NUMBER_INPUT:
       componentTokens.NUMBER_INPUT ?? getNumberInputTokens(foundationTokens),
     ALERT: componentTokens.ALERT ?? getAlertTokens(foundationTokens),
+    OTP_INPUT: componentTokens.OTP_INPUT ?? getOTPInputTokens(foundationTokens),
+    TOOLTIP: componentTokens.TOOLTIP ?? getTooltipTokens(foundationTokens),
+    UNIT_INPUT:
+      componentTokens.UNIT_INPUT ?? getUnitInputTokens(foundationTokens),
+    MULTI_VALUE_INPUT:
+      componentTokens.MULTI_VALUE_INPUT ??
+      getMultiValueInputTokens(foundationTokens),
     // add supprort for other components here
   };
 };

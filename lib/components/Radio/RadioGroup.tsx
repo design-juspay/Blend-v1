@@ -3,7 +3,7 @@ import { RadioGroupProps, RadioProps } from "./types";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import Radio from "./Radio";
-import { useComponentToken } from "../../context/ThemeContext";
+import { useComponentToken } from "../../context/useComponentToken";
 import { RadioTokensType } from "./radio.token";
 
 const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(

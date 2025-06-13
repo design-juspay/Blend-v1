@@ -9,9 +9,12 @@ import Block from "../../Primitives/Block/Block";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
-import textInputTokens from "../TextInput/textInput.tokens";
+
 import { FOUNDATION_THEME } from "../../../tokens";
 import { OTPProps } from "./types";
+// import otpInputTokens from "./otpInput.tokens";
+import { useComponentToken } from "../../../context/useComponentToken";
+import { OTPInputTokensType } from "./otpInput.tokens";
 
 const OTPInput = ({
   label,
@@ -27,6 +30,7 @@ const OTPInput = ({
   onChange,
   form,
 }: OTPProps) => {
+  const otpInputTokens = useComponentToken("OTP_INPUT") as OTPInputTokensType;
   const length = 6;
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [, setActiveIndex] = useState<number>(-1);
@@ -115,7 +119,7 @@ const OTPInput = ({
       <Block
         display="flex"
         justifyContent="space-between"
-        gap={8}
+        gap={otpInputTokens.input.gap}
         width={"100%"}
       >
         {otp.map((digit, index) => (
@@ -123,7 +127,7 @@ const OTPInput = ({
             form={form}
             width={42}
             height={48}
-            borderRadius={12}
+            borderRadius={otpInputTokens.input.borderRadius}
             style={{
               textAlign: "center",
               fontWeight: 600,
@@ -134,28 +138,45 @@ const OTPInput = ({
               inputRefs.current[index] = el;
             }}
             key={index}
-            border={
-              error
-                ? `1px solid ${textInputTokens.input.border.color.error}`
-                : `1px solid ${textInputTokens.input.border.color.default}`
-            }
+            // border={
+            //   error
+            //     ? `1px solid ${textInputTokens.input.border.color.error}`
+            //     : `1px solid ${textInputTokens.input.border.color.default}`
+            // }
+            border={otpInputTokens.input.border[error ? "error" : "default"]}
             outline="none"
+            // _hover={{
+            //   border: `1px solid ${textInputTokens.input.border.color.hover}`,
+            // }}
             _hover={{
-              border: `1px solid ${textInputTokens.input.border.color.hover}`,
+              border: otpInputTokens.input.border.hover,
             }}
             color={
-              disabled
-                ? textInputTokens.input.color.disabled
-                : textInputTokens.input.color.default
+              otpInputTokens.input.color[disabled ? "disabled" : "default"]
             }
+            // color={
+            //   disabled
+            //     ? textInputTokens.input.color.disabled
+            //     : textInputTokens.input.color.default
+            // }
+            // _focus={{
+            //   border: `1px solid ${textInputTokens.input.border.color.focus} !important`,
+            //   outline: "none !important",
+            // }}
+            // disabled={disabled}
+            // _disabled={{
+            //   backgroundColor: textInputTokens.input.backgroundColor.disabled,
+            //   border: `1px solid ${textInputTokens.input.border.color.disabled}`,
+            //   cursor: "not-allowed",
+            // }}
             _focus={{
-              border: `1px solid ${textInputTokens.input.border.color.focus} !important`,
-              outline: "none !important",
+              border: otpInputTokens.input.border.focus,
+              outline: otpInputTokens.input.outline.focus,
             }}
             disabled={disabled}
             _disabled={{
-              backgroundColor: textInputTokens.input.backgroundColor.disabled,
-              border: `1px solid ${textInputTokens.input.border.color.disabled}`,
+              backgroundColor: otpInputTokens.input.backgroundColor.disabled,
+              border: otpInputTokens.input.border.disabled,
               cursor: "not-allowed",
             }}
             // Handle input change

@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { ThemeProvider } from "../../lib/context";
-import { FOUNDATION_THEME } from "../../lib/tokens";
 import { SingleSelect, Tag } from "../../lib/main";
-import HDFC_COMPONENT_TOKENS from "../themes/HDFC_COMPONENT_TOKENS";
 
 const DemoThemeProvider = () => {
   const [theme, setTheme] = useState<"EULER" | "JUSBIZ">("EULER");
@@ -15,14 +12,6 @@ const DemoThemeProvider = () => {
     <Tag text="Subtle Variant, Primary Color Tag, Small Size" />
   </ThemeProvider>
   `;
-
-  const themeProps =
-    theme === "EULER"
-      ? {}
-      : {
-          foundationTokens: FOUNDATION_THEME,
-          componentTokens: HDFC_COMPONENT_TOKENS,
-        };
 
   return (
     <div style={{ padding: 10, margin: 2 }}>

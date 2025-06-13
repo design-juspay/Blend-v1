@@ -6,6 +6,10 @@ import { TextInputTokensType } from "../components/Inputs/TextInput/textInput.to
 import { TagTokensType } from "../components/Tags/tag.tokens";
 import { RadioTokensType } from "../components/Radio/radio.token";
 import { ComponentTokenType, useTheme } from "./ThemeContext";
+import { OTPInputTokensType } from "../components/Inputs/OTPInput/otpInput.tokens";
+import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
+import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
+import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -18,7 +22,12 @@ export const useComponentToken = (
   | TextAreaTokensType
   | TextInputTokensType
   | NumberInputTokensType
-  | AlertTokenType | RadioTokensType => {
+  | AlertTokenType
+  | RadioTokensType
+  | OTPInputTokensType
+  | TooltipTokensType
+  | UnitInputTokensType
+  | MultiValueInputTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TAGS":
@@ -35,5 +44,13 @@ export const useComponentToken = (
       return componentTokens.NUMBER_INPUT;
     case "ALERT":
       return componentTokens.ALERT;
+    case "OTP_INPUT":
+      return componentTokens.OTP_INPUT;
+    case "TOOLTIP":
+      return componentTokens.TOOLTIP;
+    case "UNIT_INPUT":
+      return componentTokens.UNIT_INPUT;
+    case "MULTI_VALUE_INPUT":
+      return componentTokens.MULTI_VALUE_INPUT;
   }
 };
