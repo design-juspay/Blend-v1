@@ -4,8 +4,9 @@ import { StyledSwitchGroupLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import { Switch } from './Switch';
-import { useComponentToken } from '../../context/useContextToken';
+
 import { SwitchTokensType } from './switch.token';
+import { useComponentToken } from '../../context/useComponentToken';
 
 const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
   (

@@ -53,13 +53,14 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
-import { SingleSelect, ThemeProvider, useTheme } from "../../../lib/main";
+import { SingleSelect, ThemeProvider } from "../../../lib/main";
 import {
   SelectMenuAlignment,
   SelectMenuVariant,
 } from "../../../lib/components/Select";
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
+import { useTheme } from "../../../lib/context/ThemeContext";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -498,7 +499,6 @@ const SidebarDemo = () => {
 
 const Checker = () => {
   const { foundationTokens } = useTheme();
-  console.log(foundationTokens);
   return <div></div>;
 };
 

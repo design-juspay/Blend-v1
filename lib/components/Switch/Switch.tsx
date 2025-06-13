@@ -4,8 +4,8 @@ import { getSwitchDataState } from './utils';
 import { StyledSwitchRoot, StyledSwitchThumb, StyledSwitchLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import { useComponentToken } from '../../context/useContextToken';
 import { SwitchTokensType } from './switch.token';
+import { useComponentToken } from '../../context/useComponentToken';
 
 export const Switch = ({
   id,

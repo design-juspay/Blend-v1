@@ -11,6 +11,7 @@ import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
 import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
+import { SwitchTokensType } from "../components/Switch/switch.token";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -29,7 +30,8 @@ export const useComponentToken = (
   | TooltipTokensType
   | UnitInputTokensType
   | MultiValueInputTokensType
-  | DropdownInputTokensType => {
+  | DropdownInputTokensType
+  | SwitchTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TAGS":
@@ -56,5 +58,9 @@ export const useComponentToken = (
       return componentTokens.MULTI_VALUE_INPUT;
     case "DROPDOWN_INPUT":
       return componentTokens.DROPDOWN_INPUT;
+    case "SWITCH":
+      return componentTokens.SWITCH;
+    default:
+      throw new Error(`Unknown component token: ${component}`);
   }
 };
