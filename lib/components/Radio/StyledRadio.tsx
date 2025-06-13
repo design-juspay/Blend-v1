@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
 import { RadioSize } from './types';
+
 import { RadioTokensType } from './radio.token';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import { useComponentToken } from '../../context/useComponentToken';
+import { useComponentToken } from "../../context/useComponentToken";
 
 export const StyledRadioInput = styled.input<{
   size: RadioSize;

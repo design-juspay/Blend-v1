@@ -1,38 +1,46 @@
 import { CSSObject } from "styled-components";
+import { UnitInputSize } from "./types";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { FoundationTokenType } from "../../../tokens/theme.token";
-import { TextInputSize, TextInputState } from "./types";
 
-export type TextInputTokensType = {
+enum UnitInputState {
+  DEFAULT = "default",
+  HOVER = "hover",
+  FOCUS = "focus",
+  ERROR = "error",
+  DISABLED = "disabled",
+}
+
+export type UnitInputTokensType = {
   input: {
     gap: CSSObject["gap"];
     borderRadius?: CSSObject["borderRadius"];
     boxShadow: CSSObject["boxShadow"];
     paddingX: {
-      [key in TextInputSize]: CSSObject["padding"];
+      [key in UnitInputSize]: CSSObject["padding"];
     };
     paddingY: {
-      [key in TextInputSize]: CSSObject["padding"];
+      [key in UnitInputSize]: CSSObject["padding"];
     };
     border: {
-      [key in TextInputState]: CSSObject["border"];
+      [key in UnitInputState]: CSSObject["border"];
     };
     color: {
-      [key in TextInputState]: CSSObject["color"];
+      [key in UnitInputState]: CSSObject["color"];
     };
     outline: {
-      [key in TextInputState]: CSSObject["outline"];
+      [key in UnitInputState]: CSSObject["outline"];
     };
     backgroundColor: {
-      [key in TextInputState]: CSSObject["backgroundColor"];
+      [key in UnitInputState]: CSSObject["backgroundColor"];
     };
   };
 };
 
-const textInputTokens: Readonly<TextInputTokensType> = {
+const unitInputTokens: UnitInputTokensType = {
   input: {
-    gap: FOUNDATION_THEME.unit[8],
-    borderRadius: FOUNDATION_THEME.unit[10],
+    gap: FOUNDATION_THEME.unit[4],
+    borderRadius: FOUNDATION_THEME.border.radius[10],
     boxShadow: FOUNDATION_THEME.shadows.sm,
     paddingX: {
       md: FOUNDATION_THEME.unit[12],
@@ -73,13 +81,14 @@ const textInputTokens: Readonly<TextInputTokensType> = {
   },
 };
 
-export const getTextInputTokens = (
+export const getUnitInputTokens = (
   foundationTheme: FoundationTokenType
-): TextInputTokensType => {
+): UnitInputTokensType => {
   return {
     input: {
-      gap: foundationTheme.unit[8],
-      borderRadius: foundationTheme.unit[10],
+      gap: foundationTheme.unit[4],
+      borderRadius: foundationTheme.border.radius[10],
+      boxShadow: foundationTheme.shadows.sm,
       paddingX: {
         md: foundationTheme.unit[12],
         lg: foundationTheme.unit[14],
@@ -116,9 +125,8 @@ export const getTextInputTokens = (
         focus: foundationTheme.colors.gray[0],
         error: foundationTheme.colors.gray[0],
       },
-      boxShadow: foundationTheme.shadows.sm,
     },
   };
 };
 
-export default textInputTokens;
+export default unitInputTokens;

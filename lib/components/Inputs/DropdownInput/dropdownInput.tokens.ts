@@ -1,35 +1,35 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { FoundationTokenType } from "../../../tokens/theme.token";
-import { TextInputSize, TextInputState } from "./types";
+import { DropdownInputSize, DropdownInputState } from "./types";
 
-export type TextInputTokensType = {
+export type DropdownInputTokensType = {
   input: {
     gap: CSSObject["gap"];
     borderRadius?: CSSObject["borderRadius"];
     boxShadow: CSSObject["boxShadow"];
     paddingX: {
-      [key in TextInputSize]: CSSObject["padding"];
+      [key in DropdownInputSize]: CSSObject["padding"];
     };
     paddingY: {
-      [key in TextInputSize]: CSSObject["padding"];
+      [key in DropdownInputSize]: CSSObject["padding"];
     };
     border: {
-      [key in TextInputState]: CSSObject["border"];
+      [key in DropdownInputState]: CSSObject["border"];
     };
     color: {
-      [key in TextInputState]: CSSObject["color"];
+      [key in DropdownInputState]: CSSObject["color"];
     };
     outline: {
-      [key in TextInputState]: CSSObject["outline"];
+      [key in DropdownInputState]: CSSObject["outline"];
     };
     backgroundColor: {
-      [key in TextInputState]: CSSObject["backgroundColor"];
+      [key in DropdownInputState]: CSSObject["backgroundColor"];
     };
   };
 };
 
-const textInputTokens: Readonly<TextInputTokensType> = {
+const dropdownInputTokens: Readonly<DropdownInputTokensType> = {
   input: {
     gap: FOUNDATION_THEME.unit[8],
     borderRadius: FOUNDATION_THEME.unit[10],
@@ -73,9 +73,9 @@ const textInputTokens: Readonly<TextInputTokensType> = {
   },
 };
 
-export const getTextInputTokens = (
+export const getDropdownInputTokens = (
   foundationTheme: FoundationTokenType
-): TextInputTokensType => {
+): DropdownInputTokensType => {
   return {
     input: {
       gap: foundationTheme.unit[8],
@@ -121,4 +121,4 @@ export const getTextInputTokens = (
   };
 };
 
-export default textInputTokens;
+export default dropdownInputTokens;
