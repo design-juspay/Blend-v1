@@ -161,6 +161,13 @@
       - Required field indicator with red asterisk
       - Error state support with visual feedback
       - Slot support for additional content
+  - ✅ **Token Structure Refactor & ThemeProvider Integration**:
+    - ✅ Aligned `CheckboxTokensType` with Radio/Switch patterns (nested `content` object, `indicator` for square, `icon` for symbol).
+    - ✅ Updated `indicator.background` and `indicator.border.color` to use nested `[CheckedState][InteractionState]` structure.
+    - ✅ Corrected token filename to `checkbox.token.ts` and updated all imports.
+    - ✅ Ensured HDFC theme tokens for Checkbox match the new structure.
+    - ✅ Updated Checkbox demo for token changes and themed example interactivity.
+    - ✅ Verified with successful project build.
 
 - ✅ Radio and RadioGroup components with different sizes and states
   - ✅ Support for different sizes (small, medium)
@@ -449,4 +456,4 @@
 ### In Progress
 - Reviewing other components for ThemeProvider integration
 - Standardizing token structure across components
-- Implementing transient props pattern where needed 
+- Implementing transient props pattern where needed

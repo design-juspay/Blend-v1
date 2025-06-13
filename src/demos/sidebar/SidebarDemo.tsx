@@ -419,6 +419,11 @@ const SidebarDemo = () => {
           onClick: () => setActiveComponent("radio"),
         },
         {
+          label: "Checkbox",
+          leftSlot: <Square style={{ width: "16px", height: "16px" }} />, // Using Square as a placeholder icon
+          onClick: () => setActiveComponent("checkbox"),
+        },
+        {
           label: "Switch",
           leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("switch"),

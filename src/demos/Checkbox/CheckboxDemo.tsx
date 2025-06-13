@@ -4,9 +4,19 @@ import { CheckboxSize } from '../../../lib/components/Checkbox/types';
 import Block from '../../../lib/components/Primitives/Block/Block';
 import PrimitiveText from '../../../lib/components/Primitives/PrimitiveText/PrimitiveText';
 import { Tag, TagSize, TagColor, TagVariant } from '../../../lib/components/Tags';
+import ThemeProvider from '../../../lib/context/ThemeProvider';
+import { HDFC_COMPONENT_TOKENS } from '../../themes/HDFC_COMPONENT_TOKENS';
+import { FOUNDATION_THEME } from '../../../lib/tokens';
 
 const CheckboxDemo = () => {
-  const [demoValue, setDemoValue] = useState(false);
+  // const [hdfcDemoValue, setHdfcDemoValue] = useState(false); // Removed as it's unused
+  const [hdfcThemedStates, setHdfcThemedStates] = useState({
+    unchecked: false,
+    checked: true,
+    indeterminate: 'indeterminate' as boolean | 'indeterminate',
+    error: false,
+    required: true,
+  });
 
   const [basicStates, setBasicStates] = useState({
     unchecked: false,
@@ -62,34 +72,13 @@ const CheckboxDemo = () => {
 
   return (
     <Block padding="24px">
-      <PrimitiveText as="h1" fontSize="32px" fontWeight={700} margin="0 0 32px 0">
+      <PrimitiveText as="h1" fontSize="32px" fontWeight={700} margin="0 0 32px 0" color={FOUNDATION_THEME.colors.gray[800]}>
         Checkbox Component
       </PrimitiveText>
 
-      {/* Demo Value Display */}
-      <Block marginBottom="40px" padding="20px" backgroundColor="#f0f9ff" borderRadius="8px">
-        <PrimitiveText as="h3" fontSize="16px" fontWeight={600} margin="0 0 16px 0">
-          Live Demo
-        </PrimitiveText>
-        <Block className="debug" display="flex" alignItems="center" gap="16px" marginBottom="12px">
-          <Checkbox 
-            size={CheckboxSize.SMALL}
-            checked={demoValue}
-            onCheckedChange={(checked) => setDemoValue(checked === true)}
-          >
-            Demo Checkbox
-          </Checkbox>
-        </Block>
-        <Block padding="12px" backgroundColor="white" borderRadius="4px" border="1px solid #e5e7eb">
-          <PrimitiveText as="code" fontSize="14px" fontFamily="monospace">
-            Current value: {JSON.stringify(demoValue)}
-          </PrimitiveText>
-        </Block>
-      </Block>
-
       {/* Basic States */}
       <Block marginBottom="40px">
-        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0">
+        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0" color={FOUNDATION_THEME.colors.gray[700]}>
           Basic States
         </PrimitiveText>
         <Block display="flex" flexDirection="column" gap="16px">
@@ -126,7 +115,7 @@ const CheckboxDemo = () => {
 
       {/* Sizes */}
       <Block marginBottom="40px">
-        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0">
+        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0" color={FOUNDATION_THEME.colors.gray[700]}>
           Sizes
         </PrimitiveText>
         <Block display="flex" flexDirection="column" gap="16px">
@@ -150,7 +139,7 @@ const CheckboxDemo = () => {
 
       {/* Special States */}
       <Block marginBottom="40px">
-        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0">
+        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0" color={FOUNDATION_THEME.colors.gray[700]}>
           Special States & Features
         </PrimitiveText>
         <Block display="flex" flexDirection="column" gap="20px">
@@ -185,10 +174,10 @@ const CheckboxDemo = () => {
 
       {/* Parent-Child Example */}
       <Block marginBottom="40px">
-        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0">
+        <PrimitiveText as="h2" fontSize="20px" fontWeight={600} margin="0 0 20px 0" color={FOUNDATION_THEME.colors.gray[700]}>
           Parent-Child Relationship
         </PrimitiveText>
-        <PrimitiveText as="p" fontSize="14px" color="#666" margin="0 0 16px 0">
+        <PrimitiveText as="p" fontSize="14px" color={FOUNDATION_THEME.colors.gray[600]} margin="0 0 16px 0">
           Demonstrates indeterminate state when some but not all children are selected
         </PrimitiveText>
         
@@ -224,8 +213,71 @@ const CheckboxDemo = () => {
           </Block>
         </Block>
       </Block>
+
+      {/* HDFC Themed Checkbox */}
+      <Block marginBottom="40px" marginTop="40px" padding="20px" backgroundColor="#fff8f0" borderRadius="8px" border="1px solid #fed7aa">
+        <PrimitiveText as="h2" fontSize="24px" fontWeight={700} margin="0 0 24px 0" color={HDFC_COMPONENT_TOKENS.CHECKBOX?.content?.label?.color?.default || FOUNDATION_THEME.colors.red[700]}>
+          HDFC Themed Checkbox
+        </PrimitiveText>
+        <ThemeProvider 
+          foundationTokens={FOUNDATION_THEME} 
+          componentTokens={HDFC_COMPONENT_TOKENS}
+        >
+          {/* Removed HDFC Themed Demo checkbox and its value display */}
+          <PrimitiveText as="h3" fontSize="18px" fontWeight={600} margin="0 0 16px 0" color={HDFC_COMPONENT_TOKENS.CHECKBOX?.content?.label?.color?.default || FOUNDATION_THEME.colors.red[600]}>
+            Themed States
+          </PrimitiveText>
+          <Block display="flex" flexDirection="column" gap="16px">
+            <Checkbox 
+              checked={hdfcThemedStates.unchecked} 
+              onCheckedChange={(val) => setHdfcThemedStates(prev => ({...prev, unchecked: val === true}))}
+            >
+              Themed Unchecked
+            </Checkbox>
+            <Checkbox 
+              checked={hdfcThemedStates.checked} 
+              onCheckedChange={(val) => setHdfcThemedStates(prev => ({...prev, checked: val === true}))}
+            >
+              Themed Checked
+            </Checkbox>
+            <Checkbox 
+              checked={hdfcThemedStates.indeterminate}
+              onCheckedChange={(val) => setHdfcThemedStates(prev => ({...prev, indeterminate: val}))}
+            >
+              Themed Indeterminate
+            </Checkbox>
+            <Checkbox 
+              disabled
+            >
+              Themed Disabled Unchecked
+            </Checkbox>
+            <Checkbox 
+              checked 
+              disabled
+            >
+              Themed Disabled Checked
+            </Checkbox>
+             <Checkbox 
+              error 
+              checked={hdfcThemedStates.error}
+              onCheckedChange={(val) => setHdfcThemedStates(prev => ({...prev, error: val === true}))}
+              subtext="Themed error subtext"
+            >
+              Themed Error State
+            </Checkbox>
+            <Checkbox 
+              required
+              checked={hdfcThemedStates.required}
+              onCheckedChange={(val) => setHdfcThemedStates(prev => ({...prev, required: val === true}))}
+              subtext="Themed required subtext"
+            >
+              Themed Required State
+            </Checkbox>
+          </Block>
+        </ThemeProvider>
+      </Block>
     </Block>
   );
 };
 
-export default CheckboxDemo; 
+export default CheckboxDemo;

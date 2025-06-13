@@ -41,6 +41,8 @@ import {
   DropdownInputTokensType,
   getDropdownInputTokens,
 } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
+import { CheckboxTokensType, getCheckboxTokens } from "../components/Checkbox/checkbox.token";
+import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -56,6 +58,8 @@ export type ComponentTokenType = {
   UNIT_INPUT?: UnitInputTokensType;
   MULTI_VALUE_INPUT?: MultiValueInputTokensType;
   DROPDOWN_INPUT?: DropdownInputTokensType;
+  CHECKBOX?: CheckboxTokensType;
+  TABS?: TabsTokensType; // Added TABS
   // add supprort for other components here
 };
 
@@ -80,6 +84,8 @@ const ThemeContext = createContext<ThemeContextType>({
     UNIT_INPUT: getUnitInputTokens(FOUNDATION_THEME),
     MULTI_VALUE_INPUT: getMultiValueInputTokens(FOUNDATION_THEME),
     DROPDOWN_INPUT: getDropdownInputTokens(FOUNDATION_THEME),
+    CHECKBOX: getCheckboxTokens(FOUNDATION_THEME),
+    TABS: getTabsTokens(FOUNDATION_THEME), // Added TABS
   },
 });
 

@@ -1,17 +1,19 @@
-import { AlertTokenType } from "../components/Alert/alert.tokens";
-import { NumberInputTokensType } from "../components/Inputs/NumberInput/numberInput.tokens";
 import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
-import { TextInputTokensType } from "../components/Inputs/TextInput/textInput.tokens";
 import { TagTokensType } from "../components/Tags/tag.tokens";
 import { RadioTokensType } from "../components/Radio/radio.token";
+import { SwitchTokensType } from "../components/Switch/switch.token";
+import { CheckboxTokensType } from "../components/Checkbox/checkbox.token";
+import { TabsTokensType } from "../components/Tabs/tabs.token";
 import { ComponentTokenType, useTheme } from "./ThemeContext";
+import { TextInputTokensType } from "../components/Inputs/TextInput/textInput.tokens";
+import { NumberInputTokensType } from "../components/Inputs/NumberInput/numberInput.tokens";
+import { AlertTokenType } from "../components/Alert/alert.tokens";
 import { OTPInputTokensType } from "../components/Inputs/OTPInput/otpInput.tokens";
 import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
 import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
-import { SwitchTokensType } from "../components/Switch/switch.token";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -27,21 +29,17 @@ export const useComponentToken = (
   | AlertTokenType
   | RadioTokensType
   | OTPInputTokensType
-  | TooltipTokensType
   | UnitInputTokensType
   | MultiValueInputTokensType
-  | DropdownInputTokensType
-  | SwitchTokensType => {
+  | SwitchTokensType
+  | CheckboxTokensType
+  | TabsTokensType
+  | TooltipTokensType
+  | DropdownInputTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
-    case "TAGS":
-      return componentTokens.TAGS;
-    case "SEARCH_INPUT":
-      return componentTokens.SEARCH_INPUT;
-    case "TEXT_AREA":
-      return componentTokens.TEXT_AREA;
-    case "RADIO":
-      return componentTokens.RADIO;
+    case "TOOLTIP":
+      return componentTokens.TOOLTIP;
     case "TEXT_INPUT":
       return componentTokens.TEXT_INPUT;
     case "NUMBER_INPUT":
@@ -50,16 +48,22 @@ export const useComponentToken = (
       return componentTokens.ALERT;
     case "OTP_INPUT":
       return componentTokens.OTP_INPUT;
-    case "TOOLTIP":
-      return componentTokens.TOOLTIP;
-    case "UNIT_INPUT":
-      return componentTokens.UNIT_INPUT;
-    case "MULTI_VALUE_INPUT":
-      return componentTokens.MULTI_VALUE_INPUT;
-    case "DROPDOWN_INPUT":
-      return componentTokens.DROPDOWN_INPUT;
+    case "TAGS":
+      return componentTokens.TAGS;
+    case "SEARCH_INPUT":
+      return componentTokens.SEARCH_INPUT;
+    case "TEXT_AREA":
+      return componentTokens.TEXT_AREA;
+    case "RADIO":
+      return componentTokens.RADIO;
     case "SWITCH":
       return componentTokens.SWITCH;
+    case "CHECKBOX":
+      return componentTokens.CHECKBOX;
+    case "TABS":
+      return componentTokens.TABS;
+    case "DROPDOWN_INPUT":
+      return componentTokens.DROPDOWN_INPUT;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }
