@@ -149,6 +149,93 @@ $component.[$target].$property.[$variant].[$type].[$state]
 
 ### Example Token Implementations
 
+#### Switch Component
+```typescript
+export type SwitchTokensType = Readonly<{
+  // Base spacing
+  gap: CSSObject["gap"];
+  slotGap: CSSObject["gap"];
+
+  // Core dimensions
+  height: {
+    [key in SwitchSize]: CSSObject["height"];
+  };
+  width: {
+    [key in SwitchSize]: CSSObject["width"];
+  };
+
+  // Border radius
+  borderRadius: {
+    base: CSSObject["borderRadius"];
+    thumb: CSSObject["borderRadius"];
+  };
+
+  // Indicator (main switch)
+  indicator: {
+    [key in SwitchIndicatorState]: {
+      background: {
+        [key in Exclude<SwitchState, "error">]: CSSObject["backgroundColor"];
+      };
+      border: {
+        [key in Exclude<SwitchState, "error">]: CSSObject["borderColor"];
+      };
+    };
+  };
+
+  // Thumb (moving circle)
+  thumb: {
+    background: CSSObject["backgroundColor"];
+    border: {
+      color: CSSObject["borderColor"];
+      width: CSSObject["borderWidth"];
+    };
+    size: {
+      [key in SwitchSize]: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+        top: CSSObject["top"];
+        offset: {
+          active: CSSObject["left"];
+          inactive: CSSObject["left"];
+        };
+      };
+    };
+  };
+
+  // Content styling
+  content: {
+    label: {
+      color: {
+        [key in SwitchState]: CSSObject["color"];
+      };
+      font: {
+        [key in SwitchSize]: {
+          fontSize: CSSObject["fontSize"];
+          fontWeight: CSSObject["fontWeight"];
+        };
+      };
+    };
+    sublabel: {
+      color: {
+        [key in SwitchState]: CSSObject["color"];
+      };
+      font: {
+        [key in SwitchSize]: {
+          fontSize: CSSObject["fontSize"];
+          fontWeight: CSSObject["fontWeight"];
+        };
+      };
+      spacing: {
+        left: {
+          [key in SwitchSize]: CSSObject["marginLeft"];
+        };
+        top: CSSObject["marginTop"];
+      };
+    };
+  };
+}>;
+```
+
 #### Radio Component
 ```typescript
 // radio.token.ts
@@ -212,30 +299,32 @@ export type TagTokensType = Readonly<{
 ```
 
 ### Token Generation Pattern
-Components must provide a token generation function that maps foundation tokens to component tokens:
+Components must provide a token generation function that maps foundation tokens to component tokens. The function should be the primary export, with a default export of the tokens using FOUNDATION_THEME for standalone usage:
 
 ```typescript
-export const getRadioTokens = (foundationToken: ThemeType): RadioTokensType => {
+// Primary export - token generation function
+export const getSwitchTokens = (foundationToken: ThemeType): SwitchTokensType => {
   return {
     gap: foundationToken.unit[8],
-    indicator: {
-      inactive: {
-        background: {
-          default: foundationToken.colors.gray[0],
-          hover: foundationToken.colors.gray[0],
-          disabled: foundationToken.colors.gray[50],
-        },
-        // ... other states
-      },
+    slotGap: foundationToken.unit[6],
+    height: {
+      sm: foundationToken.unit[12],
+      md: foundationToken.unit[16]
     },
-    // ... other tokens
+    // ... other tokens mapped from foundation tokens
   };
 };
+
+// Default export for standalone usage
+const switchTokens: SwitchTokensType = getSwitchTokens(FOUNDATION_THEME);
+export default switchTokens;
 ```
 
 ### Component Implementation Pattern
-1. Use `useComponentToken` hook to access tokens:
+1. Use `useComponentToken` hook to access tokens (imported directly from source):
 ```typescript
+import { useComponentToken } from '../../context/useContextToken';
+
 const Component = () => {
   const tokens = useComponentToken("COMPONENT_NAME") as ComponentTokensType;
   // Use tokens for styling
@@ -248,10 +337,18 @@ const StyledComponent = styled.div<{
   $isDisabled?: boolean;
   $variant?: string;
 }>`
-  color: ${({ $isDisabled, theme }) => 
-    $isDisabled ? tokens.color.disabled : tokens.color.default
-  };
+  // Use tokens for styling
+  ${({ $isDisabled }) => css`
+    opacity: ${$isDisabled ? 0.7 : 1};
+  `}
 `;
+```
+
+3. Keep hooks internal to the library:
+```typescript
+// In context/index.ts
+export { default as ThemeProvider } from "./ThemeProvider";
+// Do NOT export internal hooks like useComponentToken
 ```
 
 ### Best Practices

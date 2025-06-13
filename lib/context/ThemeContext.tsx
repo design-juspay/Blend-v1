@@ -11,6 +11,7 @@ import {
   TextAreaTokensType,
 } from "../components/Inputs/TextArea/textarea.token";
 import { RadioTokensType, getRadioTokens } from "../components/Radio/radio.token";
+import { SwitchTokensType, getSwitchTokens } from "../components/Switch/switch.token";
 import {
   getTextInputTokens,
   TextInputTokensType,
@@ -46,6 +47,7 @@ export type ComponentTokenType = {
   SEARCH_INPUT?: SearchInputTokensType;
   TEXT_AREA?: TextAreaTokensType;
   RADIO?: RadioTokensType;
+  SWITCH?: SwitchTokensType;
   TEXT_INPUT?: TextInputTokensType;
   NUMBER_INPUT?: NumberInputTokensType;
   ALERT?: AlertTokenType;
@@ -69,6 +71,7 @@ const ThemeContext = createContext<ThemeContextType>({
     SEARCH_INPUT: getSearchInputTokens(FOUNDATION_THEME),
     TEXT_AREA: getTextAreaTokens(FOUNDATION_THEME),
     RADIO: getRadioTokens(FOUNDATION_THEME),
+    SWITCH: getSwitchTokens(FOUNDATION_THEME),
     TEXT_INPUT: getTextInputTokens(FOUNDATION_THEME),
     NUMBER_INPUT: getNumberInputTokens(FOUNDATION_THEME),
     ALERT: getAlertTokens(FOUNDATION_THEME),
