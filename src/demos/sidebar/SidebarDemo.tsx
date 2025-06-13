@@ -60,7 +60,6 @@ import {
 } from "../../../lib/components/Select";
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
-import { useTheme } from "../../../lib/context/ThemeContext";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -478,7 +477,6 @@ const SidebarDemo = () => {
   return (
     <Block height="100vh">
       <ThemeProvider {...themeProps}>
-        <Checker />
         <Sidebar
           tenants={tenants}
           merchants={merchants}
@@ -497,9 +495,5 @@ const SidebarDemo = () => {
   );
 };
 
-const Checker = () => {
-  const { foundationTokens } = useTheme();
-  return <div></div>;
-};
 
 export default SidebarDemo;
