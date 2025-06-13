@@ -1,5 +1,5 @@
-import { forwardRef } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { forwardRef, useState, useRef, useEffect } from 'react';
+import { ChevronDown, ChevronUp, Edit2 } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableHeaderProps } from './types';
 import { SortDirection } from '../types';
@@ -30,6 +30,23 @@ const TableRow = styled.tr`
   ${dataTableTokens.tr.base}
 `;
 
+const EditIcon = styled(Edit2)`
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  color: ${FOUNDATION_THEME.colors.gray[500]};
+  
+  &:hover {
+    color: ${FOUNDATION_THEME.colors.primary[600]};
+  }
+`;
+
+const HeaderContainer = styled(Block)`
+  &:hover ${EditIcon} {
+    opacity: 1;
+  }
+`;
+
 const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>(({
   visibleColumns,
   initialColumns,
@@ -40,8 +57,60 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
   onSort,
   onSelectAll,
   onColumnChange,
+  onHeaderChange,
   getColumnWidth,
 }, ref) => {
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [localColumns, setLocalColumns] = useState(visibleColumns);
+  const editableRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setLocalColumns(visibleColumns);
+  }, [visibleColumns]);
+
+  useEffect(() => {
+    if (editingField && editableRef.current) {
+      editableRef.current.focus();
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(editableRef.current);
+      range.collapse(false);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
+  }, [editingField]);
+
+  const handleHeaderEdit = (field: string) => {
+    setEditingField(field);
+  };
+
+  const handleHeaderSave = (field: string, newValue: string) => {
+    const trimmedValue = newValue.trim();
+    const currentColumn = localColumns.find(col => String(col.field) === field);
+    
+    if (currentColumn && trimmedValue !== currentColumn.header) {
+      const updatedColumns = localColumns.map(col => 
+        String(col.field) === field 
+          ? { ...col, header: trimmedValue }
+          : col
+      );
+      setLocalColumns(updatedColumns);
+      
+      onHeaderChange?.(field as any, trimmedValue);
+      onColumnChange?.(updatedColumns);
+    }
+    setEditingField(null);
+  };
+
+  const handleHeaderKeyDown = (e: React.KeyboardEvent, field: string) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleHeaderSave(field, e.currentTarget.textContent || '');
+    } else if (e.key === 'Escape') {
+      setEditingField(null);
+    }
+  };
+
   return (
     <TableHead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 10 }}>
       <TableRow>
@@ -55,8 +124,10 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
           </Block>
         </TableHeaderCell>
 
-        {visibleColumns.map((column, index) => {
+        {localColumns.map((column, index) => {
           const columnWidth = getColumnWidth(column, index);
+          const isEditing = editingField === String(column.field);
+          
           return (
             <TableHeaderCell
               key={String(column.field)}
@@ -70,19 +141,45 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
               onClick={() => column.isSortable && onSort(column.field)}
             >
               <Block display='flex' alignItems='center' justifyContent='space-between'>
-                <PrimitiveText 
-                  as='span' 
-                  style={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    minWidth: 0,
-                    flex: 1
-                  }}
-                  title={column.header}
-                >
-                  {column.header}
-                </PrimitiveText>
+                <HeaderContainer display='flex' alignItems='center' gap={8}>
+                  {isEditing ? (
+                    <Block
+                      ref={editableRef}
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={() => handleHeaderSave(String(column.field), document.activeElement?.textContent || '')}
+                      onKeyDown={(e) => handleHeaderKeyDown(e, String(column.field))}
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        minWidth: 0,
+                        flex: 1,
+                        outline: 'none',
+                        cursor: 'text'
+                      }}
+                    >
+                      {column.header}
+                    </Block>
+                  ) : (
+                    <>
+                      <PrimitiveText 
+                        as='span' 
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          minWidth: 0,
+                          flex: 1
+                        }}
+                        title={column.header}
+                      >
+                        {column.header}
+                      </PrimitiveText>
+                      <EditIcon size={14} onClick={() => handleHeaderEdit(String(column.field))} />
+                    </>
+                  )}
+                </HeaderContainer>
                 {column.isSortable && (
                   <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
                     <ChevronUp 
@@ -119,7 +216,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
             <Block position='relative'>
               <ColumnManager
                 columns={initialColumns}
-                visibleColumns={visibleColumns}
+                visibleColumns={localColumns}
                 onColumnChange={onColumnChange}
               />
             </Block>

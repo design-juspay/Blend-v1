@@ -156,7 +156,12 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     selectedData.forEach(row => {
       const rowData = fields.map(field => {
         const value = row[field];
-        return value != null ? `"${String(value).replace(/"/g, '""')}"` : '';
+        if (value != null) {
+          const stringValue = String(value);
+          const escapedValue = stringValue.replace(/"/g, '""');
+          return `"${escapedValue}"`;
+        }
+        return '';
       });
       csvContent += rowData.join(',') + '\n';
     });
