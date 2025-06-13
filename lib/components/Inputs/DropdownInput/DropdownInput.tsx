@@ -16,9 +16,7 @@ import {
 import PrimitiveButton from "../../Primitives/PrimitiveButton/PrimitiveButton";
 import Text from "../../Text/Text";
 import { DropdownInputProps } from "./types";
-import dropdownInputTokens, {
-  DropdownInputTokensType,
-} from "./dropdownInput.tokens";
+import { DropdownInputTokensType } from "./dropdownInput.tokens";
 import { useComponentToken } from "../../../context/useComponentToken";
 
 const map = function getValueLabelMap(

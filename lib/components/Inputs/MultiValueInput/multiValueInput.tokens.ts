@@ -2,7 +2,6 @@ import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { FoundationTokenType } from "../../../tokens/theme.token";
 import { MultiValueInputSize, MultiValueInputState } from "./types";
-import { TextInputSize } from "../TextInput/types";
 
 export type MultiValueInputTokensType = {
   input: {
