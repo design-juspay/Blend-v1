@@ -36,6 +36,10 @@ import {
   UnitInputTokensType,
 } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { getMultiValueInputTokens, MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
+import {
+  DropdownInputTokensType,
+  getDropdownInputTokens,
+} from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -49,6 +53,7 @@ export type ComponentTokenType = {
   TOOLTIP?: TooltipTokensType;
   UNIT_INPUT?: UnitInputTokensType;
   MULTI_VALUE_INPUT?: MultiValueInputTokensType;
+  DROPDOWN_INPUT?: DropdownInputTokensType;
   // add supprort for other components here
 };
 
@@ -71,6 +76,7 @@ const ThemeContext = createContext<ThemeContextType>({
     TOOLTIP: getTooltipTokens(FOUNDATION_THEME),
     UNIT_INPUT: getUnitInputTokens(FOUNDATION_THEME),
     MULTI_VALUE_INPUT: getMultiValueInputTokens(FOUNDATION_THEME),
+    DROPDOWN_INPUT: getDropdownInputTokens(FOUNDATION_THEME),
   },
 });
 

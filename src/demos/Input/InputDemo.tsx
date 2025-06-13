@@ -37,7 +37,7 @@ const InputDemo: React.FC = () => {
   );
   const [otp1, setOtp1] = useState("");
   const [selectedInput, setSelectedInput] =
-    useState<string>("multi-value-input");
+    useState<string>("dropdown");
   const [tags, setTags] = useState<string[]>([
     "Tag 1",
     "Tag 2",

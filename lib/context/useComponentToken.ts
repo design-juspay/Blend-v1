@@ -10,6 +10,7 @@ import { OTPInputTokensType } from "../components/Inputs/OTPInput/otpInput.token
 import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
 import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
+import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -27,7 +28,8 @@ export const useComponentToken = (
   | OTPInputTokensType
   | TooltipTokensType
   | UnitInputTokensType
-  | MultiValueInputTokensType => {
+  | MultiValueInputTokensType
+  | DropdownInputTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TAGS":
@@ -52,5 +54,7 @@ export const useComponentToken = (
       return componentTokens.UNIT_INPUT;
     case "MULTI_VALUE_INPUT":
       return componentTokens.MULTI_VALUE_INPUT;
+    case "DROPDOWN_INPUT":
+      return componentTokens.DROPDOWN_INPUT;
   }
 };

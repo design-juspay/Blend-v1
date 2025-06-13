@@ -11,6 +11,7 @@ import { getOTPInputTokens } from "../components/Inputs/OTPInput/otpInput.tokens
 import { getTooltipTokens } from "../components/Tooltip/tooltip.tokens";
 import { getUnitInputTokens } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { getMultiValueInputTokens } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
+import { getDropdownInputTokens } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -34,6 +35,9 @@ const initTokens = (
     MULTI_VALUE_INPUT:
       componentTokens.MULTI_VALUE_INPUT ??
       getMultiValueInputTokens(foundationTokens),
+    DROPDOWN_INPUT:
+      componentTokens.DROPDOWN_INPUT ??
+      getDropdownInputTokens(foundationTokens),
     // add supprort for other components here
   };
 };
