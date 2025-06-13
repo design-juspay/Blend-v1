@@ -3,7 +3,7 @@ import PrimitiveTextarea from "../../Primitives/PrimitiveTextArea";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import { TextAreaProps } from "./types";
-import { useComponentToken } from "../../../context/useContextToken";
+import { useComponentToken } from "../../../context/useComponentToken";
 import { TextAreaTokensType } from "./textarea.token";
 
 const TextArea = ({

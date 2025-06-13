@@ -6,6 +6,8 @@ import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import { NumberInputProps } from "./types";
 import { NumberInputSize } from "./types";
+import { useComponentToken } from "../../../context/useComponentToken";
+import { NumberInputTokensType } from "./numberInput.tokens";
 
 const NumberInput = ({
   value,
@@ -25,8 +27,11 @@ const NumberInput = ({
   hintText,
   name,
 }: NumberInputProps) => {
-  const paddingX = size === NumberInputSize.MEDIUM ? 12 : 14;
-  const paddingY = size === NumberInputSize.MEDIUM ? 8 : 10;
+  const numberInputTokens = useComponentToken(
+    "NUMBER_INPUT"
+  ) as NumberInputTokensType;
+  const paddingX = numberInputTokens.input.paddingX[size];
+  const paddingY = numberInputTokens.input.paddingY[size];
 
   return (
     <Block display="flex" flexDirection="column" gap={8} width="100%">
@@ -51,35 +56,25 @@ const NumberInput = ({
           required={required}
           paddingX={paddingX}
           paddingY={paddingY}
-          borderRadius={8}
-          boxShadow={FOUNDATION_THEME.shadows.sm}
-          border={
-            error
-              ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-              : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
-          }
+          borderRadius={numberInputTokens.input.borderRadius}
+          boxShadow={numberInputTokens.input.boxShadow}
+          border={numberInputTokens.input.border[error ? "error" : "default"]}
           outline="none"
           width={"100%"}
           _hover={{
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
+            border: numberInputTokens.input.border.hover,
           }}
           color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[800]
+            numberInputTokens.input.color[disabled ? "disabled" : "default"]
           }
-          _focusVisible={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-            outline: "none !important",
-          }}
           _focus={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
-            outline: "none !important",
+            border: numberInputTokens.input.border.focus,
+            outline: numberInputTokens.input.outline.focus,
           }}
           disabled={disabled}
           _disabled={{
-            backgroundColor: FOUNDATION_THEME.colors.gray[50],
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            backgroundColor: numberInputTokens.input.backgroundColor.disabled,
+            border: numberInputTokens.input.border.disabled,
             cursor: "not-allowed",
           }}
         />
@@ -115,7 +110,7 @@ const NumberInput = ({
             width={"24px"}
             height={"50%"}
             contentCentered
-            borderRadius={"0 8px 0 0"}
+            borderRadius={`0 ${numberInputTokens.input.borderRadius} 0 0`}
             disabled={disabled || (typeof max === "number" && value >= max)}
             _focus={{
               backgroundColor: FOUNDATION_THEME.colors.gray[100],
@@ -137,7 +132,7 @@ const NumberInput = ({
             width={"24px"}
             height={"50%"}
             contentCentered
-            borderRadius={"0 0px 8px 0"}
+            borderRadius={`0 0px ${numberInputTokens.input.borderRadius} 0`}
             _focus={{
               backgroundColor: FOUNDATION_THEME.colors.gray[100],
             }}

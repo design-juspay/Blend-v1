@@ -3,8 +3,7 @@ import Block from "../../Primitives/Block/Block";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
-import textInputTokens from "../TextInput/textInput.tokens";
-import { InputSize } from "../TextInput/types";
+import { TextInputSize } from "../TextInput/types";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { ChevronDown } from "lucide-react";
 import SelectMenu from "../../Select/SelectMenu";
@@ -16,6 +15,8 @@ import {
 import PrimitiveButton from "../../Primitives/PrimitiveButton/PrimitiveButton";
 import Text from "../../Text/Text";
 import { DropdownInputProps } from "./types";
+import { DropdownInputTokensType } from "./dropdownInput.tokens";
+import { useComponentToken } from "../../../context/useComponentToken";
 
 const map = function getValueLabelMap(
   groups: SelectMenuGroupType[]
@@ -38,6 +39,20 @@ const map = function getValueLabelMap(
   return map;
 };
 
+const toPixels = (value: string | number | undefined): number => {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    // Remove 'px' and convert to number
+    const numericValue = parseFloat(value.replace("px", ""));
+    return isNaN(numericValue) ? 0 : numericValue;
+  }
+
+  return 0;
+};
+
 const DropdownInput = ({
   label,
   sublabel,
@@ -51,19 +66,22 @@ const DropdownInput = ({
   value,
   onChange,
   slot,
-  size = InputSize.MEDIUM,
+  size = TextInputSize.MEDIUM,
   placeholder,
   dropDownValue,
   onDropDownChange,
   dropDownItems,
 }: DropdownInputProps) => {
+  const dropdownInputTokens = useComponentToken(
+    "DROPDOWN_INPUT"
+  ) as DropdownInputTokensType;
   const slotRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   const valueLabelMap = map(dropDownItems);
 
   const [slotWidth, setSlotWidth] = useState<number>(0);
   const [dropdownWidth, setDropdownWidth] = useState<number>(0);
+
   useEffect(() => {
     if (slotRef.current) {
       setSlotWidth(slotRef.current.offsetWidth);
@@ -78,14 +96,14 @@ const DropdownInput = ({
     }
   }, [slot, dropDownValue]);
 
-  // @TODO: Reconsider the type of unitTokens in FOUNDATION_THEME
-  const paddingX = textInputTokens.input.padding.x[size];
-  const paddingY = textInputTokens.input.padding.y[size];
-  const GAP = textInputTokens.input.gap;
+  const paddingX = toPixels(dropdownInputTokens.input.paddingX[size]);
+  const paddingY = toPixels(dropdownInputTokens.input.paddingY[size]);
+  const GAP = toPixels(dropdownInputTokens.input.gap);
 
   const paddingInlineStart = paddingX + (slotWidth ? slotWidth + GAP : 0);
   const paddingInlineEnd =
     paddingX + (dropdownWidth ? dropdownWidth + 2 * GAP : 0);
+
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
       <InputLabels
@@ -120,36 +138,31 @@ const DropdownInput = ({
           paddingTop={paddingY}
           paddingBottom={paddingY}
           placeholder={placeholder}
-          borderRadius={textInputTokens.input.border.radius}
-          boxShadow={FOUNDATION_THEME.shadows.sm}
+          borderRadius={dropdownInputTokens.input.borderRadius}
+          boxShadow={dropdownInputTokens.input.boxShadow}
           border={
             error
-              ? `1px solid ${textInputTokens.input.border.color.error}`
-              : `1px solid ${textInputTokens.input.border.color.default}`
+              ? dropdownInputTokens.input.border.error
+              : dropdownInputTokens.input.border.default
           }
           outline="none"
           width={"100%"}
           _hover={{
-            border: `1px solid ${textInputTokens.input.border.color.hover}`,
+            border: dropdownInputTokens.input.border.hover,
           }}
           color={
             disabled
-              ? textInputTokens.input.color.disabled
-              : textInputTokens.input.color.default
+              ? dropdownInputTokens.input.color.disabled
+              : dropdownInputTokens.input.color.default
           }
-          // @TODO: Confirm use case in v1
-          // _focusVisible={{
-          //   border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          //   outline: "none !important",
-          // }}
           _focus={{
-            border: `1px solid ${textInputTokens.input.border.color.focus} !important`,
+            border: dropdownInputTokens.input.border.focus,
             outline: "none !important",
           }}
           disabled={disabled}
           _disabled={{
-            backgroundColor: textInputTokens.input.backgroundColor.disabled,
-            border: `1px solid ${textInputTokens.input.border.color.disabled}`,
+            backgroundColor: dropdownInputTokens.input.backgroundColor.disabled,
+            border: dropdownInputTokens.input.border.disabled,
             cursor: "not-allowed",
           }}
         />

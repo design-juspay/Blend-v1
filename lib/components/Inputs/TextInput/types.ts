@@ -1,4 +1,4 @@
-export enum InputSize {
+export enum TextInputSize {
   MEDIUM = "md",
   LARGE = "lg",
 }
@@ -7,6 +7,15 @@ export enum InputSize {
 //   SEARCH = "search",
 //   TEXT = "text",
 // }
+
+export enum TextInputState {
+  DEFAULT = "default",
+  HOVER = "hover",
+  FOCUS = "focus",
+  ERROR = "error",
+  DISABLED = "disabled",
+}
+
 
 export type InputProps = {
   required?: boolean;
@@ -17,7 +26,7 @@ export type InputProps = {
   error?: boolean;
   errorMessage?: string;
   disabled?: boolean;
-  size?: InputSize;
+  size?: TextInputSize;
   leftSlot?: React.ReactNode;
   rightSlot?: React.ReactNode;
   value: string;

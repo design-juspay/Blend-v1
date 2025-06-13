@@ -1,12 +1,11 @@
 import Block from "../../Primitives/Block/Block";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { useRef, useState, useEffect } from "react";
-import { FOUNDATION_THEME } from "../../../tokens";
-
-import textInputTokens from "./textInput.tokens";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
-import { InputSize, InputProps } from "./types";
+import { TextInputSize, InputProps } from "./types";
+import { useComponentToken } from "../../../context/useComponentToken";
+import { TextInputTokensType } from "./textInput.tokens";
 
 const toPixels = (value: string | number | undefined): number => {
   if (typeof value === "number") {
@@ -23,7 +22,7 @@ const toPixels = (value: string | number | undefined): number => {
 };
 
 const TextInput = ({
-  size = InputSize.MEDIUM,
+  size = TextInputSize.MEDIUM,
   leftSlot,
   rightSlot,
   error = false,
@@ -39,6 +38,9 @@ const TextInput = ({
   name,
   required = false,
 }: InputProps) => {
+  const textInputTokens = useComponentToken(
+    "TEXT_INPUT"
+  ) as TextInputTokensType;
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
 
@@ -107,7 +109,7 @@ const TextInput = ({
           paddingTop={paddingY}
           paddingBottom={paddingY}
           borderRadius={textInputTokens.input.borderRadius}
-          boxShadow={FOUNDATION_THEME.shadows.sm}
+          boxShadow={textInputTokens.input.boxShadow}
           border={textInputTokens.input.border[error ? "error" : "default"]}
           outline="none"
           _hover={{

@@ -1,9 +1,21 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../../tokens";
 import { FoundationTokenType } from "../../../tokens/theme.token";
-import { TextInputSize, TextInputState } from "./types";
 
-export type TextInputTokensType = {
+enum TextInputSize {
+  MD = "md",
+  LG = "lg",
+}
+
+enum TextInputState {
+  DEFAULT = "default",
+  HOVER = "hover",
+  FOCUS = "focus",
+  ERROR = "error",
+  DISABLED = "disabled",
+}
+
+export type NumberInputTokensType = {
   input: {
     gap: CSSObject["gap"];
     borderRadius?: CSSObject["borderRadius"];
@@ -24,16 +36,16 @@ export type TextInputTokensType = {
       [key in TextInputState]: CSSObject["outline"];
     };
     backgroundColor: {
-      [key in TextInputState]: CSSObject["backgroundColor"];
+      default: CSSObject["backgroundColor"];
+      disabled: CSSObject["backgroundColor"];
     };
   };
 };
 
-const textInputTokens: Readonly<TextInputTokensType> = {
+const numberInputTokens: Readonly<NumberInputTokensType> = {
   input: {
     gap: FOUNDATION_THEME.unit[8],
     borderRadius: FOUNDATION_THEME.unit[10],
-    boxShadow: FOUNDATION_THEME.shadows.sm,
     paddingX: {
       md: FOUNDATION_THEME.unit[12],
       lg: FOUNDATION_THEME.unit[14],
@@ -66,16 +78,14 @@ const textInputTokens: Readonly<TextInputTokensType> = {
     backgroundColor: {
       default: FOUNDATION_THEME.colors.gray[0],
       disabled: FOUNDATION_THEME.colors.gray[50],
-      hover: FOUNDATION_THEME.colors.gray[0],
-      focus: FOUNDATION_THEME.colors.gray[0],
-      error: FOUNDATION_THEME.colors.gray[0],
     },
+    boxShadow: FOUNDATION_THEME.shadows.sm,
   },
 };
 
-export const getTextInputTokens = (
+export const getNumberInputTokens = (
   foundationTheme: FoundationTokenType
-): TextInputTokensType => {
+): NumberInputTokensType => {
   return {
     input: {
       gap: foundationTheme.unit[8],
@@ -112,13 +122,10 @@ export const getTextInputTokens = (
       backgroundColor: {
         default: foundationTheme.colors.gray[0],
         disabled: foundationTheme.colors.gray[50],
-        hover: foundationTheme.colors.gray[0],
-        focus: foundationTheme.colors.gray[0],
-        error: foundationTheme.colors.gray[0],
       },
       boxShadow: foundationTheme.shadows.sm,
     },
   };
 };
 
-export default textInputTokens;
+export default numberInputTokens;

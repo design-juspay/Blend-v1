@@ -138,18 +138,20 @@ const SingleSelect = ({
                 }}
                 gap={8}
               >
-                {slot && <Block contentCentered>{slot}</Block>}
-                <Text
-                  variant="body.md"
-                  color={
-                    selected
-                      ? FOUNDATION_THEME.colors.gray[700]
-                      : FOUNDATION_THEME.colors.gray[600]
-                  }
-                  fontWeight={500}
-                >
-                  {selected ? valueLabelMap[selected] : placeholder}
-                </Text>
+                <Block display="flex" alignItems="center" gap={8}>
+                  {slot && <Block contentCentered>{slot}</Block>}
+                  <Text
+                    variant="body.md"
+                    color={
+                      selected
+                        ? FOUNDATION_THEME.colors.gray[700]
+                        : FOUNDATION_THEME.colors.gray[600]
+                    }
+                    fontWeight={500}
+                  >
+                    {selected ? valueLabelMap[selected] : placeholder}
+                  </Text>
+                </Block>
                 <Block contentCentered>
                   <ChevronDown
                     size={16}
