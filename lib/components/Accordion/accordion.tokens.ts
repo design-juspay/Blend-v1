@@ -1,6 +1,6 @@
 import { CSSObject } from "styled-components";
 import { FOUNDATION_THEME, ThemeType } from "../../tokens";
-import { AccordionType } from "./types"; // Removed AccordionChevronPosition
+import { AccordionType } from "./types";
 
 
 export type AccordionState = 'default' | 'disabled' | 'open';
@@ -16,6 +16,7 @@ export type AccordionTokensType = Readonly<{
         flexDirection?: CSSObject['flexDirection'];
         gap?: CSSObject['gap'];
         borderRadius?: CSSObject['borderRadius'];
+        boxShadow?: CSSObject['boxShadow'];
       };
     };
   };
@@ -187,7 +188,7 @@ export type AccordionTokensType = Readonly<{
 }>;
 
 export const getAccordionTokens = (foundationToken: ThemeType): AccordionTokensType => {
-  const { colors, unit, font, border } = foundationToken; // Removed shadows
+  const { colors, unit, font, border, shadows } = foundationToken;
 
   return {
     root: {
@@ -200,6 +201,7 @@ export const getAccordionTokens = (foundationToken: ThemeType): AccordionTokensT
           flexDirection: "column",
           gap: unit[24],
           borderRadius: border.radius[8],
+          boxShadow: shadows.xs,
         },
         [AccordionType.NO_BORDER]: {
           display: "flex",
@@ -216,7 +218,6 @@ export const getAccordionTokens = (foundationToken: ThemeType): AccordionTokensT
           border: `${border.width[1]} solid ${colors.gray[200]}`,
           borderRadius: border.radius[8],
           overflow: "hidden",
-          borderBottom: "none",
         },
         [AccordionType.NO_BORDER]: {
         },

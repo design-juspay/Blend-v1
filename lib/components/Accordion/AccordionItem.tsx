@@ -26,7 +26,7 @@ const StyledAccordionHeader = styled(RadixAccordion.Header)`
   display: flex;
 `;
 
-const ChevronIconStyled = styled(Block)<{ // Renamed to avoid conflict with component
+const ChevronIconStyled = styled(Block)<{
   $chevronPosition: AccordionChevronPosition;
 }>`
   /* Base transition and transform-origin are applied via inline style from tokens in getChevronIcon */
