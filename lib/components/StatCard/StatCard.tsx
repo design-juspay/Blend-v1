@@ -15,7 +15,9 @@ import { Tooltip } from "../Tooltip";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
 import { ChangeType, StatCardVariant, type StatCardProps } from "./types";
-import { FOUNDATION_THEME } from "../../tokens";
+// import { FOUNDATION_THEME } from "../../tokens"; // Removed as all direct usages should be replaced by tokens
+import { useComponentToken } from "../../context/useComponentToken";
+import { StatCardTokensType } from "./statcard.tokens";
 
 const StatCard = ({
   title,
@@ -29,6 +31,8 @@ const StatCard = ({
   actionIcon,
   helpIconText,
 }: StatCardProps) => {
+  const tokens = useComponentToken("STAT_CARD") as StatCardTokensType;
+
   const normalizedVariant =
     variant === StatCardVariant.PROGRESS_BAR ? "progress" : variant;
 
@@ -41,14 +45,24 @@ const StatCard = ({
   const formattedChange = change ? (
     <Block display="flex" alignItems="center">
       {change.type === ChangeType.INCREASE ? (
-        <ArrowUp size={14} style={{ marginRight: FOUNDATION_THEME.unit[2] }} />
+        <ArrowUp size={14} style={{ marginRight: tokens.changeIndicator.arrowIcon.spacing.marginRight }} />
       ) : (
         <ArrowDown
           size={14}
-          style={{ marginRight: FOUNDATION_THEME.unit[2] }}
+          style={{ marginRight: tokens.changeIndicator.arrowIcon.spacing.marginRight }}
         />
       )}
-      <Text>{Math.abs(change.value).toFixed(2)}%</Text>
+      <Text
+        color={
+          change.type === ChangeType.INCREASE
+            ? tokens.changeIndicator.text.color[ChangeType.INCREASE]
+            : tokens.changeIndicator.text.color[ChangeType.DECREASE]
+        }
+        variant="body.sm" // Applies font size
+        fontWeight={tokens.changeIndicator.text.font.weight}
+      >
+        {Math.abs(change.value).toFixed(2)}%
+      </Text>
     </Block>
   ) : null;
 
@@ -58,11 +72,11 @@ const StatCard = ({
   }, [chartData]);
 
   const lineColor = isTrendingDown
-    ? FOUNDATION_THEME.colors.red[500]
-    : FOUNDATION_THEME.colors.green[500];
-  const areaColor = isTrendingDown
-    ? FOUNDATION_THEME.colors.red[500]
-    : FOUNDATION_THEME.colors.green[500];
+    ? tokens.chartLine.stroke[ChangeType.DECREASE]
+    : tokens.chartLine.stroke[ChangeType.INCREASE];
+  const areaColor = isTrendingDown // For gradient start
+    ? tokens.chartLine.stroke[ChangeType.DECREASE] 
+    : tokens.chartLine.stroke[ChangeType.INCREASE];
 
   const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (!active || !payload || payload.length === 0) return null;
@@ -78,11 +92,11 @@ const StatCard = ({
 
     return (
       <Block
-        backgroundColor={FOUNDATION_THEME.colors.gray[1000]}
-        padding={`${FOUNDATION_THEME.unit[4]} ${FOUNDATION_THEME.unit[8]}`}
-        borderRadius={FOUNDATION_THEME.border.radius[4]}
+        backgroundColor={tokens.chartTooltip.background}
+        padding={tokens.chartTooltip.spacing.padding}
+        borderRadius={tokens.chartTooltip.border.radius}
       >
-        <Text color={FOUNDATION_THEME.colors.gray[0]} variant="body.sm">
+        <Text color={tokens.chartTooltip.text.color} variant="body.sm">
           {`${Math.abs(percentage).toFixed(0)}% ${isUp ? "Up" : "Down"}`}
         </Text>
       </Block>
@@ -98,33 +112,33 @@ const StatCard = ({
 
   return (
     <Block
-      height="190px"
-      border={`${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`}
-      borderRadius={FOUNDATION_THEME.border.radius[8]}
+      height={tokens.container.fixedHeight}
+      border={`${tokens.container.border.width} solid ${tokens.container.border.color}`}
+      borderRadius={tokens.container.border.radius}
       overflow="hidden"
-      backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-      boxShadow={FOUNDATION_THEME.shadows.xs}
-      padding={FOUNDATION_THEME.unit[16]}
+      backgroundColor={tokens.container.background.color}
+      boxShadow={tokens.container.effect.boxShadow}
+      padding={tokens.container.spacing.padding}
       display="flex"
       flexDirection="column"
-      gap={FOUNDATION_THEME.unit[24]}
+      gap={tokens.container.spacing.gap}
       data-statcard-variant={normalizedVariant}
     >
       {effectiveVariant !== StatCardVariant.NUMBER && (
         <Block
           display="flex"
           flexDirection="column"
-          gap={FOUNDATION_THEME.unit[4]}
+          gap={tokens.header.spacing.gap}
         >
           <Block
             display="flex"
             alignItems="flex-start"
-            gap={FOUNDATION_THEME.unit[8]}
+            gap={tokens.titleArea.spacing.gap}
           >
             {titleIcon && (
               <Block
-                width={FOUNDATION_THEME.unit[20]}
-                height={FOUNDATION_THEME.unit[20]}
+                width={tokens.titleIcon.dimension.width}
+                height={tokens.titleIcon.dimension.height}
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
@@ -137,12 +151,12 @@ const StatCard = ({
               display="flex"
               alignItems="center"
               flexGrow={1}
-              gap={FOUNDATION_THEME.unit[8]}
+              gap={tokens.titleArea.spacing.gap} 
             >
               <Text
                 variant="body.md"
-                fontWeight={FOUNDATION_THEME.font.weight[500]}
-                color={FOUNDATION_THEME.colors.gray[400]}
+                fontWeight={tokens.titleText.font.weight}
+                color={tokens.titleText.color}
               >
                 {title}
               </Text>
@@ -150,9 +164,9 @@ const StatCard = ({
                 <Block flexShrink={0}>
                   <Tooltip content={helpIconText}>
                     <CircleHelp
-                      width={16}
-                      height={16}
-                      color={FOUNDATION_THEME.colors.gray[400]}
+                      width={tokens.helpIcon.dimension.width as number} // Assuming number
+                      height={tokens.helpIcon.dimension.height as number} // Assuming number
+                      color={tokens.helpIcon.color}
                     />
                   </Tooltip>
                 </Block>
@@ -174,41 +188,32 @@ const StatCard = ({
             display="flex"
             flexDirection="column"
             alignItems="flex-start"
-            paddingLeft={titleIcon ? FOUNDATION_THEME.unit[28] : "0"}
+            paddingLeft={titleIcon ? tokens.header.spacing.titleIconPaddingLeft : "0"}
           >
             <Block
               width="100%"
               display="flex"
               alignItems="center"
-              gap={FOUNDATION_THEME.unit[4]}
+              gap={tokens.valueArea.spacing.gap}
             >
               <Text
-                variant="heading.lg"
-                fontWeight={FOUNDATION_THEME.font.weight[600]}
-                color={FOUNDATION_THEME.colors.gray[800]}
+                variant="heading.lg" // Size comes from variant
+                fontWeight={tokens.valueText.font.default.weight}
+                color={tokens.valueText.color}
               >
                 {value}
               </Text>
               {formattedChange && (
-                <Block marginLeft={FOUNDATION_THEME.unit[8]}>
-                  <Text
-                    color={
-                      change?.type === ChangeType.INCREASE
-                        ? FOUNDATION_THEME.colors.green[600]
-                        : FOUNDATION_THEME.colors.red[600]
-                    }
-                    variant="body.sm"
-                    fontWeight={FOUNDATION_THEME.font.weight[600]}
-                  >
-                    {formattedChange}
-                  </Text>
+                <Block marginLeft={tokens.changeIndicator.spacing.marginLeft}>
+                  {/* formattedChange now has its styles applied internally */}
+                  {formattedChange}
                 </Block>
               )}
             </Block>
             <Text
-              variant="body.sm"
-              color={FOUNDATION_THEME.colors.gray[400]}
-              fontWeight={FOUNDATION_THEME.font.weight[500]}
+              variant="body.sm" // Size comes from variant
+              color={tokens.subtitleText.color}
+              fontWeight={tokens.subtitleText.font.weight}
             >
               {subtitle}
             </Text>
@@ -228,7 +233,7 @@ const StatCard = ({
             display="flex"
             flexDirection="column"
             alignItems="center"
-            gap={FOUNDATION_THEME.unit[16]}
+            gap={tokens.container.spacing.gap} // Assuming same gap for NUMBER variant main content
           >
             {titleIcon && (
               <Block
@@ -244,13 +249,14 @@ const StatCard = ({
               width="100%"
               display="flex"
               alignItems="center"
-              flexGrow={1}
-              gap={FOUNDATION_THEME.unit[8]}
+              justifyContent="center" // Center title area for NUMBER variant
+              flexGrow={1} // Allow grow
+              gap={tokens.titleArea.spacing.gap}
             >
               <Text
                 variant="body.md"
-                fontWeight={FOUNDATION_THEME.font.weight[500]}
-                color={FOUNDATION_THEME.colors.gray[400]}
+                fontWeight={tokens.titleText.font.weight}
+                color={tokens.titleText.color}
               >
                 {title}
               </Text>
@@ -258,9 +264,9 @@ const StatCard = ({
                 <Block>
                   <Tooltip content={helpIconText}>
                     <CircleHelp
-                      width={16}
-                      height={16}
-                      color={FOUNDATION_THEME.colors.gray[400]}
+                      width={tokens.helpIcon.dimension.width as number}
+                      height={tokens.helpIcon.dimension.height as number}
+                      color={tokens.helpIcon.color}
                     />
                   </Tooltip>
                 </Block>
@@ -272,36 +278,28 @@ const StatCard = ({
             <Block
               width="100%"
               display="flex"
+              justifyContent="center" // Center value area for NUMBER variant
               alignItems="center"
-              gap={FOUNDATION_THEME.unit[4]}
+              gap={tokens.valueArea.spacing.gap}
             >
               <Text
-                variant="heading.xl"
-                fontWeight={FOUNDATION_THEME.font.weight[600]}
-                color={FOUNDATION_THEME.colors.gray[800]}
+                variant="heading.xl" // Size from variant
+                fontWeight={tokens.valueText.font.numberVariant.weight}
+                color={tokens.valueText.color}
               >
                 {value}
               </Text>
               {formattedChange && (
-                <Block marginLeft={FOUNDATION_THEME.unit[8]}>
-                  <Text
-                    color={
-                      change?.type === ChangeType.INCREASE
-                        ? FOUNDATION_THEME.colors.green[600]
-                        : FOUNDATION_THEME.colors.red[600]
-                    }
-                    variant="body.sm"
-                    fontWeight={FOUNDATION_THEME.font.weight[600]}
-                  >
-                    {formattedChange}
-                  </Text>
+                <Block marginLeft={tokens.changeIndicator.spacing.marginLeft}>
+                  {/* formattedChange now has its styles applied internally */}
+                  {formattedChange}
                 </Block>
               )}
             </Block>
             <Text
-              variant="body.sm"
-              color={FOUNDATION_THEME.colors.gray[400]}
-              fontWeight={FOUNDATION_THEME.font.weight[500]}
+              variant="body.sm" // Size from variant
+              color={tokens.subtitleText.color}
+              fontWeight={tokens.subtitleText.font.weight}
             >
               {subtitle}
             </Text>
@@ -310,7 +308,7 @@ const StatCard = ({
       )}
 
       {effectiveVariant !== StatCardVariant.NUMBER && (
-        <Block height="50px">
+        <Block height={tokens.chartArea.height}>
           {effectiveVariant === StatCardVariant.LINE && indexedChartData && (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
@@ -322,8 +320,8 @@ const StatCard = ({
                 <RechartsTooltip
                   content={<CustomTooltip />}
                   cursor={{
-                    strokeDasharray: "6 5",
-                    stroke: FOUNDATION_THEME.colors.gray[400],
+                    strokeDasharray: tokens.chartTooltip.cursor.strokeDasharray,
+                    stroke: tokens.chartTooltip.cursor.stroke,
                   }}
                   position={{ y: 0 }}
                   isAnimationActive={false}
@@ -337,11 +335,11 @@ const StatCard = ({
                     x2="0"
                     y2="1"
                   >
-                    <stop offset="0%" stopColor={areaColor} stopOpacity={0.2} />
+                    <stop offset="0%" stopColor={areaColor} stopOpacity={tokens.chartLine.areaFillOpacity} />
                     <stop
                       offset="100%"
-                      stopColor={FOUNDATION_THEME.colors.gray[0]}
-                      stopOpacity={0.5}
+                      stopColor={tokens.chartLine.areaBaseFill}
+                      stopOpacity={0.5} /* This opacity could also be tokenized if needed */
                     />
                   </linearGradient>
                 </defs>
@@ -351,12 +349,12 @@ const StatCard = ({
                   type="monotone"
                   dataKey="value"
                   stroke={lineColor}
-                  strokeWidth={2}
+                  strokeWidth={tokens.chartLine.strokeWidth as number}
                   fill={`url(#colorGradient)`}
                   activeDot={{
-                    r: 4,
-                    fill: FOUNDATION_THEME.colors.gray[0],
-                    stroke: lineColor,
+                    r: 4, // This could be a token tokens.chartLine.activeDot.radius
+                    fill: tokens.chartLine.activeDot.fill,
+                    stroke: lineColor, // Uses the dynamic lineColor
                   }}
                 />
               </AreaChart>
@@ -379,11 +377,11 @@ const StatCard = ({
                 />
                 <Bar
                   dataKey="value"
-                  fill={FOUNDATION_THEME.colors.primary[500]}
-                  radius={[2, 2, 0, 0]}
+                  fill={tokens.chartBar.fill.default}
+                  radius={tokens.chartBar.radius as [number, number, number, number]}
                   isAnimationActive={false}
                   activeBar={{
-                    fill: FOUNDATION_THEME.colors.primary[100],
+                    fill: tokens.chartBar.fill.active,
                   }}
                 />
               </BarChart>
@@ -394,42 +392,42 @@ const StatCard = ({
             progressValue && (
               <Block
                 width="100%"
-                height={FOUNDATION_THEME.unit[20]}
+                height={tokens.progressBar.dimension.height}
                 display="flex"
                 alignItems="center"
-                gap={FOUNDATION_THEME.unit[16]}
+                gap={tokens.progressBar.spacing.gap}
               >
                 <Block
                   width="100%"
                   height="100%"
                   display="flex"
                   flexGrow={1}
-                  borderRadius={FOUNDATION_THEME.border.radius[4]}
+                  borderRadius={tokens.progressBar.track.radius}
                   overflow="hidden"
                 >
                   <Block
-                    backgroundColor={FOUNDATION_THEME.colors.primary[500]}
+                    backgroundColor={tokens.progressBar.fill.background}
                     height="100%"
                     width={`${progressValue}%`}
                   />
                   <Block
-                    backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                    backgroundColor={tokens.progressBar.track.background}
                     height="100%"
                     backgroundImage={`repeating-linear-gradient(
                       to right,
-                      ${FOUNDATION_THEME.colors.gray[200]},
-                      ${FOUNDATION_THEME.colors.gray[200]} 5px,
+                      ${tokens.progressBar.track.patternColor},
+                      ${tokens.progressBar.track.patternColor} 5px,
                       transparent 1px,
                       transparent
                     )`}
-                    backgroundSize={`${FOUNDATION_THEME.unit[10]} ${FOUNDATION_THEME.unit[10]}`}
+                    backgroundSize={tokens.progressBar.track.patternSegmentWidth}
                     style={{ width: `${100 - progressValue}%` }}
                   />
                 </Block>
                 <Text
                   variant="body.md"
-                  fontWeight={FOUNDATION_THEME.font.weight[600]}
-                  color={FOUNDATION_THEME.colors.gray[700]}
+                  fontWeight={tokens.progressBar.text.font.weight}
+                  color={tokens.progressBar.text.color}
                 >
                   {progressValue}%
                 </Text>

@@ -33,3 +33,5 @@ export type StyledOverflowCounterProps = {
   $shape: AvatarShape;
   $isOpen: boolean;
 };
+
+export type AvatarGroupOverflowCounterState = 'default' | 'hover' | 'active' | 'isOpen';

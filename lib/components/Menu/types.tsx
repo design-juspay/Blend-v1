@@ -22,6 +22,8 @@ export type MenuV2Props = {
   collisonBoundaryRef?: Element | null | Array<Element | null>;
   maxHeight?: number;
   enableSearch?: boolean;
+  open?: boolean; // Added for controlled state
+  onOpenChange?: (open: boolean) => void; // Added for controlled state
 };
 
 export enum MenuItemV2Variant {

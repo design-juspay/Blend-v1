@@ -323,7 +323,7 @@ export default switchTokens;
 ### Component Implementation Pattern
 1. Use `useComponentToken` hook to access tokens (imported directly from source):
 ```typescript
-import { useComponentToken } from '../../context/useContextToken';
+import { useComponentToken } from '../../context/useComponentToken'; // Corrected path
 
 const Component = () => {
   const tokens = useComponentToken("COMPONENT_NAME") as ComponentTokensType;
