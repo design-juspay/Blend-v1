@@ -100,32 +100,44 @@
   - Ensured HDFC theme tokens for Checkbox (`HDFC_COMPONENT_TOKENS.ts`) match the new structure.
   - Updated Checkbox demo (`CheckboxDemo.tsx`) to reflect token changes and improve interactivity of themed examples.
   - Verified changes with a successful project build.
+- **Accordion Component ThemeProvider Integration**:
+  - Added full ThemeProvider support with `accordion.tokens.ts`.
+  - Defined `AccordionTokensType` following the standard hierarchical structure and implemented `getAccordionTokens` function.
+  - Refactored `Accordion.tsx` and `AccordionItem.tsx` (including styled components and direct token usage) to use `useComponentToken("ACCORDION")`.
+  - Integrated "ACCORDION" into theme context files (`ThemeContext.tsx`, `useComponentToken.ts`, `initComponentTokens.ts`).
+  - Resolved TypeScript errors related to token types and module resolution for context files.
 
 ## Recent Implementation Patterns
 
 ### ThemeProvider Integration
-We have successfully implemented the ThemeProvider pattern in the Radio and Tags components, establishing key patterns:
+The ThemeProvider pattern has been successfully implemented and extended across several components (including Radio, Tags, Checkbox, Switch, and Accordion), solidifying key practices:
 
-1. **Token Structure Standardization**
-   - Implemented consistent token hierarchy
-   - Established pattern for state management in tokens
-   - Created reusable patterns for layout and typography tokens
+1. **Token Structure Standardization**:
+   - Consistent token hierarchy (`$component.[$target].$property.[$variant].[$type].[$state]`) applied.
+   - Patterns for state management (e.g., hover, active, disabled, open) and variants (e.g., size, type) within tokens are established.
+   - Reusable patterns for layout, typography, color, and border tokens are consistently used.
 
-2. **Component-Specific Achievements**
-   - Radio Component:
-     - Implemented comprehensive token structure for states (default, hover, disabled, error)
-     - Added support for sublabels with proper theming
-     - Fixed vertical alignment issues using token-based spacing
-     - Implemented transient props pattern for styled-components
+2. **Component-Specific Achievements & Patterns (relevant to current work)**:
+   - **Radio Component**:
+     - Implemented comprehensive token structure for states (default, hover, disabled, error).
+     - Added support for sublabels with proper theming.
+   - **Tags Component**:
+     - Established variant and color token patterns.
+   - **Accordion Component**:
+     - Adapted existing detailed token structure into the new hierarchical format.
+     - Ensured theming for different accordion types (BORDER, NO_BORDER) and states (disabled, open).
+     - Handled token application for nested elements like trigger, content, title, subtext, and chevron.
+   - *(Note: ThemeProvider integration for Breadcrumb, Avatar, AvatarGroup, and StatCard was performed but reverted from the main context as they belong to a separate PR.)*
 
-   - Tags Component:
-     - Established variant and color token patterns
-     - Created extensible token structure for future variants
-
-3. **Current Best Practices**
-   - Using transient props ($) for styled-components to avoid DOM warnings
-   - Implementing proper type safety with Readonly and mapped types
-   - Maintaining consistent token structure across components
+3. **Current Best Practices**:
+   - All component-specific tokens are defined in a `componentName.token.ts` file (e.g., `accordion.tokens.ts`).
+   - Each token file includes `ComponentNameTokensType` and a `getComponentNameTokens` function.
+   - Components consume tokens via `useComponentToken("COMPONENT_NAME")`.
+   - Central theme context files (`ThemeContext.tsx`, `useComponentToken.ts`, `initComponentTokens.ts`) are updated for each new themed component.
+   - Using transient props (`$`) for styled-components to avoid DOM warnings.
+   - Implementing proper type safety with `Readonly<>` and mapped types for token definitions.
+   - Maintaining consistent token structure across components.
+>>>>>>> Updated ThemeProvider Integration patterns
 
 ### Next Steps
 1. Apply these patterns to remaining components

@@ -7,7 +7,8 @@ import { getTagTokens } from "../components/Tags/tag.tokens";
 import { getRadioTokens } from "../components/Radio/radio.token";
 import { getSwitchTokens } from "../components/Switch/switch.token";
 import { getCheckboxTokens } from "../components/Checkbox/checkbox.token";
-import { getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
+import { getTabsTokens } from "../components/Tabs/tabs.token";
+import { getAccordionTokens } from "../components/Accordion/accordion.tokens";
 import { ThemeType } from "../tokens";
 import { ComponentTokenType } from "./ThemeContext";
 import { getOTPInputTokens } from "../components/Inputs/OTPInput/otpInput.tokens";
@@ -43,7 +44,8 @@ const initTokens = (
       componentTokens.DROPDOWN_INPUT ??
       getDropdownInputTokens(foundationTokens),
     CHECKBOX: componentTokens.CHECKBOX ?? getCheckboxTokens(foundationTokens),
-    TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens), // Added TABS
+    TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens),
+    ACCORDION: componentTokens.ACCORDION ?? getAccordionTokens(foundationTokens),
     // add supprort for other components here
   };
 };
