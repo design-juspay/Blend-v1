@@ -1,9 +1,10 @@
 import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
 import { TagTokensType } from "../components/Tags/tag.tokens";
-import { BreadcrumbTokensType } from "../components/Breadcrumb/breadcrumb.token"; // Renamed import path
-import { AvatarTokensType } from "../components/Avatar/avatar.token"; // Added AVATAR
-import { AvatarGroupTokensType } from "../components/AvatarGroup/avatarGroup.token"; // Added AVATAR_GROUP
+import { BreadcrumbTokensType } from "../components/Breadcrumb/breadcrumb.token";
+import { AvatarTokensType } from "../components/Avatar/avatar.token";
+import { AvatarGroupTokensType } from "../components/AvatarGroup/avatarGroup.token";
+import { StatCardTokensType } from "../components/StatCard/statcard.tokens";
 import { RadioTokensType } from "../components/Radio/radio.token";
 import { SwitchTokensType } from "../components/Switch/switch.token";
 import { CheckboxTokensType } from "../components/Checkbox/checkbox.token";
@@ -41,7 +42,8 @@ export const useComponentToken = (
   | DropdownInputTokensType
   | BreadcrumbTokensType
   | AvatarTokensType
-  | AvatarGroupTokensType => { // Added AvatarGroupTokensType
+  | AvatarGroupTokensType
+  | StatCardTokensType => { // Added StatCardTokensType
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -70,12 +72,14 @@ export const useComponentToken = (
       return componentTokens.TABS;
     case "DROPDOWN_INPUT":
       return componentTokens.DROPDOWN_INPUT;
-    case "BREADCRUMB": // Added BREADCRUMB case
+    case "BREADCRUMB":
       return componentTokens.BREADCRUMB;
-    case "AVATAR": // Added AVATAR case
+    case "AVATAR":
       return componentTokens.AVATAR;
-    case "AVATAR_GROUP": // Added AVATAR_GROUP case
+    case "AVATAR_GROUP":
       return componentTokens.AVATAR_GROUP;
+    case "STAT_CARD":
+      return componentTokens.STAT_CARD;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }
