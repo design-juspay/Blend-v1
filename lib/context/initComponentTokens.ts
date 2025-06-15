@@ -9,6 +9,8 @@ import { getSwitchTokens } from "../components/Switch/switch.token";
 import { getCheckboxTokens } from "../components/Checkbox/checkbox.token";
 import { getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
 import { getBreadcrumbTokens } from "../components/Breadcrumb/breadcrumb.token"; // Renamed import path
+import { getAvatarTokens } from "../components/Avatar/avatar.token"; // Added AVATAR
+import { getAvatarGroupTokens } from "../components/AvatarGroup/avatarGroup.token"; // Added AVATAR_GROUP
 import { ThemeType } from "../tokens";
 import { ComponentTokenType } from "./ThemeContext";
 import { getOTPInputTokens } from "../components/Inputs/OTPInput/otpInput.tokens";
@@ -46,6 +48,8 @@ const initTokens = (
     CHECKBOX: componentTokens.CHECKBOX ?? getCheckboxTokens(foundationTokens),
     TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens), // Added TABS
     BREADCRUMB: componentTokens.BREADCRUMB ?? getBreadcrumbTokens(foundationTokens), // Added BREADCRUMB
+    AVATAR: componentTokens.AVATAR ?? getAvatarTokens(foundationTokens), // Added AVATAR
+    AVATAR_GROUP: componentTokens.AVATAR_GROUP ?? getAvatarGroupTokens(foundationTokens), // Added AVATAR_GROUP
     // add supprort for other components here
   };
 };

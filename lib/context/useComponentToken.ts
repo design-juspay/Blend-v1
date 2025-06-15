@@ -2,6 +2,8 @@ import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchIn
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
 import { TagTokensType } from "../components/Tags/tag.tokens";
 import { BreadcrumbTokensType } from "../components/Breadcrumb/breadcrumb.token"; // Renamed import path
+import { AvatarTokensType } from "../components/Avatar/avatar.token"; // Added AVATAR
+import { AvatarGroupTokensType } from "../components/AvatarGroup/avatarGroup.token"; // Added AVATAR_GROUP
 import { RadioTokensType } from "../components/Radio/radio.token";
 import { SwitchTokensType } from "../components/Switch/switch.token";
 import { CheckboxTokensType } from "../components/Checkbox/checkbox.token";
@@ -37,7 +39,9 @@ export const useComponentToken = (
   | TabsTokensType
   | TooltipTokensType
   | DropdownInputTokensType
-  | BreadcrumbTokensType => { // Added BreadcrumbTokensType
+  | BreadcrumbTokensType
+  | AvatarTokensType
+  | AvatarGroupTokensType => { // Added AvatarGroupTokensType
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -68,6 +72,10 @@ export const useComponentToken = (
       return componentTokens.DROPDOWN_INPUT;
     case "BREADCRUMB": // Added BREADCRUMB case
       return componentTokens.BREADCRUMB;
+    case "AVATAR": // Added AVATAR case
+      return componentTokens.AVATAR;
+    case "AVATAR_GROUP": // Added AVATAR_GROUP case
+      return componentTokens.AVATAR_GROUP;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }

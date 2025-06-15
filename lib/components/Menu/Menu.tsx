@@ -215,13 +215,15 @@ const Menu = ({
   collisonBoundaryRef,
   maxHeight,
   enableSearch = true,
+  open, // Added
+  onOpenChange, // Added
 }: MenuV2Props) => {
   const [searchText, setSearchText] = useState<string>("");
 
   const filteredItems = filterMenuGroups(items, searchText);
 
   return (
-    <RadixMenu.Root modal={asModal}>
+    <RadixMenu.Root modal={asModal} open={open} onOpenChange={onOpenChange}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         sideOffset={sideOffset}

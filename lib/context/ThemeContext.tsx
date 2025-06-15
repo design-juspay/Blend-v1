@@ -44,6 +44,8 @@ import {
 import { CheckboxTokensType, getCheckboxTokens } from "../components/Checkbox/checkbox.token";
 import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
 import { getBreadcrumbTokens, BreadcrumbTokensType } from "../components/Breadcrumb/breadcrumb.token"; // Renamed import path
+import { getAvatarTokens, AvatarTokensType } from "../components/Avatar/avatar.token"; // Added AVATAR
+import { getAvatarGroupTokens, AvatarGroupTokensType } from "../components/AvatarGroup/avatarGroup.token"; // Added AVATAR_GROUP
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -62,6 +64,8 @@ export type ComponentTokenType = {
   CHECKBOX?: CheckboxTokensType;
   TABS?: TabsTokensType; // Added TABS
   BREADCRUMB?: BreadcrumbTokensType;
+  AVATAR?: AvatarTokensType; // Added AVATAR
+  AVATAR_GROUP?: AvatarGroupTokensType; // Added AVATAR_GROUP
   // add supprort for other components here
 };
 
@@ -89,6 +93,8 @@ const ThemeContext = createContext<ThemeContextType>({
     CHECKBOX: getCheckboxTokens(FOUNDATION_THEME),
     TABS: getTabsTokens(FOUNDATION_THEME), // Added TABS
     BREADCRUMB: getBreadcrumbTokens(FOUNDATION_THEME),
+    AVATAR: getAvatarTokens(FOUNDATION_THEME), // Added AVATAR
+    AVATAR_GROUP: getAvatarGroupTokens(FOUNDATION_THEME), // Added AVATAR_GROUP
   },
 });
 
