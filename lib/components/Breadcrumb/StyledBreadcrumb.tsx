@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { useComponentToken } from '../../context/useComponentToken';
-import { BreadcrumbTokensType, BreadcrumbItemInteractionState } from './breadcrumb.token'; // Renamed import path
+import { BreadcrumbTokensType } from './breadcrumb.token'; // Removed BreadcrumbItemInteractionState
 // import { foundationToken } from '../../foundationToken'; // No longer needed directly
 
 type StyledProps = {
@@ -67,9 +67,9 @@ export const StyledBreadcrumbLink = styled.a<StyledProps>`
 `;
 
 export const StyledBreadcrumbSpan = styled.span<StyledProps>`
-  ${({ $isActive }) => {
+  ${() => { // Removed $isActive from destructured props as it's not used in this specific block
     const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
-    const active = $isActive || false; // Should always be true for span if $isActive is passed
+    // const active = $isActive || false; // Removed unused variable
     return css`
       display: inline-flex;
       align-items: center;

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { CSSObject } from 'styled-components';
+// import { CSSObject } from 'styled-components'; // Removed unused import
 
 export enum BreadcrumbVariant {
   DEFAULT = 'default',
