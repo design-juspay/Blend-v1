@@ -23,7 +23,22 @@ const StyledAccordionItem = styled(RadixAccordion.Item)<{
 `;
 
 const StyledAccordionHeader = styled(RadixAccordion.Header)`
-  display: flex; /* Base style from original */
+  display: flex;
+`;
+
+const ChevronIconStyled = styled(Block)<{ // Renamed to avoid conflict with component
+  $chevronPosition: AccordionChevronPosition;
+}>`
+  /* Base transition and transform-origin are applied via inline style from tokens in getChevronIcon */
+  /* Rotation logic based on ancestor's data-state and own $chevronPosition prop */
+  button[data-state="open"] & {
+    ${(props) => props.$chevronPosition === AccordionChevronPosition.RIGHT && css`
+      transform: rotate(180deg);
+    `}
+    ${(props) => props.$chevronPosition === AccordionChevronPosition.LEFT && css`
+      transform: rotate(90deg);
+    `}
+  }
 `;
 
 const StyledAccordionTrigger = styled(RadixAccordion.Trigger)<{
@@ -44,14 +59,14 @@ const StyledAccordionTrigger = styled(RadixAccordion.Trigger)<{
       &:hover:not(:disabled) {
         background-color: ${tokens.trigger.variantStyling[props.$accordionType].hover?.backgroundColor};
       }
-
+      
       &[data-state="open"] {
         ${props.$accordionType === AccordionType.BORDER && tokens.trigger.stateStyling.open}
+        /* Rotation logic moved to ChevronIconStyled based on this ancestor state */
       }
       
       ${props.$isDisabled && css`
         cursor: ${tokens.trigger.stateStyling.disabled.cursor};
-        /* Apply disabled background if BORDER type, as per original logic */
         ${props.$accordionType === AccordionType.BORDER && css`
           background-color: ${tokens.trigger.stateStyling.disabled.backgroundColor};
         `}
@@ -72,31 +87,10 @@ const StyledAccordionContent = styled(RadixAccordion.Content)<{
   }}
 `;
 
-const ChevronIconStyled = styled(Block)<{ // Renamed to avoid conflict with component
-  $chevronPosition: AccordionChevronPosition;
-}>`
-  ${() => {
-    return css`
-      transition: transform 200ms ease; /* Moved from token for direct application */
-      transform-origin: center; /* Moved from token */
-    `;
-  }}
-
-  &[data-state="open"] {
-    ${props => props.$chevronPosition === AccordionChevronPosition.RIGHT && css`
-      transform: rotate(180deg);
-    `}
-    ${props => props.$chevronPosition === AccordionChevronPosition.LEFT && css`
-      transform: rotate(90deg);
-    `}
-  }
-`;
-
-
 const AccordionItem = forwardRef<
   HTMLDivElement,
   AccordionItemProps & { 
-    accordionType?: AccordionType; 
+    accordionType?: AccordionType;
   }
 >(
   (
@@ -226,7 +220,7 @@ const AccordionItem = forwardRef<
                     </PrimitiveText>
                   )}
                   {subtextSlot && (
-                    <Block marginLeft="8px" flexShrink={0}>
+                    <Block marginLeft="8px" flexShrink={0}> {/* This 8px could be a token */}
                       {subtextSlot}
                     </Block>
                   )}
