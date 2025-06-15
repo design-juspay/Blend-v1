@@ -100,30 +100,48 @@
   - Ensured HDFC theme tokens for Checkbox (`HDFC_COMPONENT_TOKENS.ts`) match the new structure.
   - Updated Checkbox demo (`CheckboxDemo.tsx`) to reflect token changes and improve interactivity of themed examples.
   - Verified changes with a successful project build.
+- **Integrated ThemeProvider support for multiple components**:
+  - **Breadcrumb Component**:
+    - Added full ThemeProvider support with `breadcrumb.token.ts`.
+    - Replaced custom overflow dropdown with the main `Menu` component.
+    - Resolved HTML nesting issues related to menu integration.
+  - **Avatar Component**:
+    - Added full ThemeProvider support with `avatar.token.ts`.
+    - Old `token.ts` (if present) should be deleted.
+  - **AvatarGroup Component**:
+    - Added full ThemeProvider support with `avatarGroup.token.ts`.
+    - Replaced stubbed overflow menu with the main `Menu` component, including controlled open state.
+    - Old `token.ts` (if present) should be deleted.
+  - **StatCard Component**:
+    - Added full ThemeProvider support with `statcard.tokens.ts`.
+    - Refactored component to use tokens instead of direct `FOUNDATION_THEME` access.
+    - Resolved HTML nesting issues related to `Text` and `Block` components.
+  - **General Pattern**: For each, created `componentName.token.ts`, defined `ComponentNameTokensType` (using the standard hierarchical structure), implemented `getComponentNameTokens`, refactored the component to use `useComponentToken`, and updated theme context files (`ThemeContext.tsx`, `useComponentToken.ts`, `initComponentTokens.ts`).
 
 ## Recent Implementation Patterns
 
 ### ThemeProvider Integration
-We have successfully implemented the ThemeProvider pattern in the Radio and Tags components, establishing key patterns:
+The ThemeProvider pattern has been successfully implemented and extended across several components, solidifying key practices:
 
-1. **Token Structure Standardization**
-   - Implemented consistent token hierarchy
-   - Established pattern for state management in tokens
-   - Created reusable patterns for layout and typography tokens
+1. **Token Structure Standardization**:
+   - Consistent token hierarchy (`$component.[$target].$property.[$variant].[$type].[$state]`) applied.
+   - Patterns for state management (e.g., hover, active, disabled, open) and variants (e.g., size, type) within tokens are established.
+   - Reusable patterns for layout, typography, color, and border tokens are consistently used.
 
-2. **Component-Specific Achievements**
-   - Radio Component:
-     - Implemented comprehensive token structure for states (default, hover, disabled, error)
-     - Added support for sublabels with proper theming
-     - Fixed vertical alignment issues using token-based spacing
-     - Implemented transient props pattern for styled-components
+2. **Component-Specific Achievements & Patterns**:
+   - **Radio, Checkbox, Switch**: Comprehensive state and interaction tokens. Integration with primitive components.
+   - **Tags**: Variant and color token patterns.
+   - **Breadcrumb**: Theming for items, dividers, and the overflow dropdown (which now uses the main `Menu` component).
+   - **Avatar**: Tokens for container, fallback text, and online indicator, covering different sizes and shapes.
+   - **AvatarGroup**: Tokens for group layout, individual avatar wrappers (borders, selection rings), and the overflow counter (which mirrors Avatar appearance through consistent token derivation). Overflow menu uses the main `Menu` component.
+   - **StatCard**: Extensive theming for container, header elements, value/change/subtitle text, various chart types (line, bar, area gradients, tooltips), and progress bar.
 
-   - Tags Component:
-     - Established variant and color token patterns
-     - Created extensible token structure for future variants
-
-3. **Current Best Practices**
-   - Using transient props ($) for styled-components to avoid DOM warnings
+3. **Current Best Practices**:
+   - All component-specific tokens are defined in a `componentName.token.ts` file.
+   - Each token file includes `ComponentNameTokensType` and a `getComponentNameTokens` function.
+   - Components consume tokens via `useComponentToken("COMPONENT_NAME")`.
+   - Central theme context files (`ThemeContext.tsx`, `useComponentToken.ts`, `initComponentTokens.ts`) are updated for each new themed component.
+   - Using transient props (`$`) for styled-components to avoid DOM warnings.
    - Implementing proper type safety with Readonly and mapped types
    - Maintaining consistent token structure across components
 

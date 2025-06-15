@@ -42,7 +42,13 @@
   - ✅ Created dedicated demo with comprehensive examples
   - ✅ Applied DRY principles with reusable rendering functions
   - ✅ Used self-documenting code over verbose comments
-  - ✅ Maintained consistent token structure for better readability
+  - ✅ **ThemeProvider Integration**:
+    - ✅ Added full ThemeProvider support with `breadcrumb.token.ts`.
+    - ✅ Component refactored to use `useComponentToken("BREADCRUMB")`.
+    - ✅ Integrated with theme context files.
+  - ✅ **Menu Integration**:
+    - ✅ Replaced custom overflow dropdown with the main `Menu` component from `lib/components/Menu/`.
+    - ✅ Resolved HTML nesting issues related to menu integration.
 - ✅ Avatar component with sizes, shapes, and online indicator
   - ✅ Support for different avatar sizes (small, medium, large, xlarge)
   - ✅ Circular and rounded shape options
@@ -65,6 +71,11 @@
   - ✅ Error handling for failed image loads with automatic fallback display
   - ✅ Slot-based API implementation in component (removed from demo for simplicity)
   - ✅ Comprehensive demo showcasing sizes, shapes, online status, and fallback types
+  - ✅ **ThemeProvider Integration**:
+    - ✅ Added full ThemeProvider support with `avatar.token.ts`.
+    - ✅ Component refactored to use `useComponentToken("AVATAR")`.
+    - ✅ Integrated with theme context files.
+    - ✅ Old `token.ts` (if present) should be deleted by user.
 
 - ✅ AvatarGroup component for grouping and managing multiple avatars
   - ✅ Integration with Avatar component for consistent styling and behavior
@@ -109,6 +120,14 @@
     - Selection states with interactive examples
     - Mixed content types demonstration
     - Plain avatar example with initials only
+  - ✅ **ThemeProvider Integration**:
+    - ✅ Added full ThemeProvider support with `avatarGroup.token.ts`.
+    - ✅ Component refactored to use `useComponentToken("AVATAR_GROUP")`.
+    - ✅ Integrated with theme context files.
+    - ✅ Old `token.ts` (if present) should be deleted by user.
+  - ✅ **Menu Integration**:
+    - ✅ Replaced stubbed overflow menu with the main `Menu` component from `lib/components/Menu/`.
+    - ✅ Menu state is controlled via `open` and `onOpenChange` props.
 
 - ✅ Checkbox component with different sizes, states, and positioning
   - ✅ Support for different sizes (small, medium)
@@ -306,6 +325,16 @@
     - ✅ Other components use `foundationToken` from `"../../foundationToken"`
     - ✅ Avoided breaking changes by keeping existing token structure
     - ✅ TypeScript declaration warnings are acceptable as they don't affect functionality
+- ✅ StatCard component with multiple variants (line, bar, progress, number)
+  - ✅ Displays title, value, subtitle, and optional change percentage.
+  - ✅ Supports icons for title and actions, and help text via Tooltip.
+  - ✅ Renders line charts, bar charts, or progress bars based on variant and data.
+  - ✅ Includes custom tooltip for charts.
+  - ✅ **ThemeProvider Integration**:
+    - ✅ Added full ThemeProvider support with `statcard.tokens.ts`.
+    - ✅ Component refactored to use `useComponentToken("STAT_CARD")` instead of direct `FOUNDATION_THEME` access.
+    - ✅ Integrated with theme context files.
+    - ✅ Resolved HTML nesting issues related to `Text` and `Block` components.
 
 #### Demo System
 - ✅ Basic demo layout
@@ -399,7 +428,7 @@
 
 ## Current Status
 - Documentation and rules are in place
-- Ten components (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Avatar, AvatarGroup, Checkbox, Radio, and Switch) now follow the modular structure described in the system patterns document. The component library is growing with consistent patterns applied across all implementations.
+- Eleven components (Button, ButtonGroup, Tag, SplitTag, Breadcrumb, Avatar, AvatarGroup, Checkbox, Radio, Switch, and StatCard) now follow the modular structure and have ThemeProvider support where applicable. The component library is growing with consistent patterns applied across all implementations.
 - Demo system has been enhanced with beautified demos and better organization
 - All components use a pure slot-based API without deprecated icon props
 - SplitTag component demonstrates proper component reuse and extension patterns
