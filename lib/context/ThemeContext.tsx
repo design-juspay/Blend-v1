@@ -43,6 +43,7 @@ import {
 } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 import { CheckboxTokensType, getCheckboxTokens } from "../components/Checkbox/checkbox.token";
 import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
+import { getBreadcrumbTokens, BreadcrumbTokensType } from "../components/Breadcrumb/breadcrumb.token"; // Renamed import path
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -60,6 +61,7 @@ export type ComponentTokenType = {
   DROPDOWN_INPUT?: DropdownInputTokensType;
   CHECKBOX?: CheckboxTokensType;
   TABS?: TabsTokensType; // Added TABS
+  BREADCRUMB?: BreadcrumbTokensType;
   // add supprort for other components here
 };
 
@@ -86,6 +88,7 @@ const ThemeContext = createContext<ThemeContextType>({
     DROPDOWN_INPUT: getDropdownInputTokens(FOUNDATION_THEME),
     CHECKBOX: getCheckboxTokens(FOUNDATION_THEME),
     TABS: getTabsTokens(FOUNDATION_THEME), // Added TABS
+    BREADCRUMB: getBreadcrumbTokens(FOUNDATION_THEME),
   },
 });
 

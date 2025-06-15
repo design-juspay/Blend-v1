@@ -1,6 +1,7 @@
 import { SearchInputTokensType } from "../components/Inputs/SearchInput/searchInput.tokens";
 import { TextAreaTokensType } from "../components/Inputs/TextArea/textarea.token";
 import { TagTokensType } from "../components/Tags/tag.tokens";
+import { BreadcrumbTokensType } from "../components/Breadcrumb/breadcrumb.token"; // Renamed import path
 import { RadioTokensType } from "../components/Radio/radio.token";
 import { SwitchTokensType } from "../components/Switch/switch.token";
 import { CheckboxTokensType } from "../components/Checkbox/checkbox.token";
@@ -35,7 +36,8 @@ export const useComponentToken = (
   | CheckboxTokensType
   | TabsTokensType
   | TooltipTokensType
-  | DropdownInputTokensType => {
+  | DropdownInputTokensType
+  | BreadcrumbTokensType => { // Added BreadcrumbTokensType
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -64,6 +66,8 @@ export const useComponentToken = (
       return componentTokens.TABS;
     case "DROPDOWN_INPUT":
       return componentTokens.DROPDOWN_INPUT;
+    case "BREADCRUMB": // Added BREADCRUMB case
+      return componentTokens.BREADCRUMB;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }

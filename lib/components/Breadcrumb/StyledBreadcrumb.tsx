@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import breadcrumbTokens from './token';
-import { foundationToken } from '../../foundationToken';
+import styled, { css } from 'styled-components';
+import { useComponentToken } from '../../context/useComponentToken';
+import { BreadcrumbTokensType, BreadcrumbItemInteractionState } from './breadcrumb.token'; // Renamed import path
+// import { foundationToken } from '../../foundationToken'; // No longer needed directly
 
 type StyledProps = {
   $isActive?: boolean;
@@ -8,109 +9,143 @@ type StyledProps = {
 }
 
 export const StyledBreadcrumbContainer = styled.nav`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: ${breadcrumbTokens.spacing.gap};
+  ${() => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    return css`
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: ${tokens.layout.gap};
+    `;
+  }}
 `;
 
 export const StyledBreadcrumbList = styled.ol`
-  display: flex;
-  align-items: center;
-  gap: ${breadcrumbTokens.spacing.gap};
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+  ${() => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    return css`
+      display: flex;
+      align-items: center;
+      gap: ${tokens.layout.gap};
+      list-style-type: none;
+      padding: 0;
+    `;
+  }}
 `;
 
 export const StyledBreadcrumbItem = styled.li`
-  display: flex;
-  align-items: center;
-  gap: ${breadcrumbTokens.spacing.gap};
+  ${() => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    return css`
+      display: flex;
+      align-items: center;
+      gap: ${tokens.layout.gap};
+    `;
+  }}
 `;
 
 export const StyledBreadcrumbLink = styled.a<StyledProps>`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: ${({ $isActive }) => breadcrumbTokens.getTextColor($isActive || false)};
-  font-weight: ${({ $isActive }) => breadcrumbTokens.getFontWeight($isActive || false)};
-  font-size: ${breadcrumbTokens.fontSize.md};
-  cursor: ${({ $isActive }) => $isActive ? 'default' : 'pointer'};
-  text-decoration: none;
-  transition: color 0.2s ease;
-  
-  &:hover {
-    color: ${({ $isActive }) => $isActive ? breadcrumbTokens.text.active : breadcrumbTokens.text.hover};
-  }
+  ${({ $isActive }) => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    const active = $isActive || false;
+    return css`
+      display: inline-flex;
+      align-items: center;
+      gap: ${tokens.item.spacing.gap};
+      color: ${active ? tokens.item.text.color.active : tokens.item.text.color.default};
+      font-weight: ${active ? tokens.item.text.font.weight.active : tokens.item.text.font.weight.default};
+      font-size: ${tokens.item.text.font.size};
+      cursor: ${active ? 'default' : 'pointer'};
+      text-decoration: none;
+      transition: color ${tokens.item.transition.duration} ${tokens.item.transition.timingFunction};
+      
+      &:hover {
+        color: ${active ? tokens.item.text.color.active : tokens.item.text.color.hover};
+      }
+    `;
+  }}
 `;
 
 export const StyledBreadcrumbSpan = styled.span<StyledProps>`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: ${({ $isActive }) => breadcrumbTokens.getTextColor($isActive || false)};
-  font-weight: ${({ $isActive }) => breadcrumbTokens.getFontWeight($isActive || false)};
-  font-size: ${breadcrumbTokens.fontSize.md};
-  cursor: default;
+  ${({ $isActive }) => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    const active = $isActive || false; // Should always be true for span if $isActive is passed
+    return css`
+      display: inline-flex;
+      align-items: center;
+      gap: ${tokens.item.spacing.gap};
+      color: ${tokens.item.text.color.active}; // Span is always for active/current item
+      font-weight: ${tokens.item.text.font.weight.active};
+      font-size: ${tokens.item.text.font.size};
+      cursor: default;
+    `;
+  }}
 `;
 
 export const StyledDivider = styled.span`
-  color: ${breadcrumbTokens.background.separator.default};
+  ${() => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    return css`
+      color: ${tokens.divider.color};
+    `;
+  }}
 `;
 
-export const StyledMoreButton = styled.button<{ $isActive: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: ${breadcrumbTokens.spacing.moreButtonSize};
-  height: ${breadcrumbTokens.spacing.moreButtonSize};
-  padding: ${breadcrumbTokens.spacing.dropdownPadding};
-  border-radius: ${breadcrumbTokens.borderRadius.moreButton};
-  color: ${({ $isActive }) => 
-    $isActive ? breadcrumbTokens.icon.more.active : breadcrumbTokens.icon.more.default};
-  background-color: ${({ $isActive }) => 
-    breadcrumbTokens.getMoreButtonBgColor($isActive)};
-  border: 1px solid ${({ $isActive }) => 
-    breadcrumbTokens.getMoreButtonBorderColor($isActive)};
-  font-weight: ${breadcrumbTokens.fontWeight.default};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    color: ${breadcrumbTokens.icon.more.hover};
-    border-color: ${breadcrumbTokens.border.more.hover};
-  }
+export const StyledMoreButton = styled.button` // Removed <{ $isActive: boolean }>
+  ${() => { // Removed $isActive from props
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    return css`
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: ${tokens.moreButton.size.width};
+      height: ${tokens.moreButton.size.height};
+      padding: ${tokens.moreButton.spacing.padding};
+      border-radius: ${tokens.moreButton.border.radius};
+      font-weight: ${tokens.moreButton.font.weight};
+      cursor: pointer;
+      transition: all ${tokens.moreButton.transition.duration} ${tokens.moreButton.transition.timingFunction};
+
+      /* Default (closed) state styles */
+      color: ${tokens.moreButton.icon.color.default};
+      background-color: ${tokens.moreButton.background.color.default};
+      border: ${tokens.moreButton.border.width} solid ${tokens.moreButton.border.color.default};
+      
+      &[data-state="open"] {
+        color: ${tokens.moreButton.icon.color.active};
+        background-color: ${tokens.moreButton.background.color.active};
+        border-color: ${tokens.moreButton.border.color.active};
+      }
+      
+      &:hover:not([data-state="open"]) {
+        color: ${tokens.moreButton.icon.color.hover};
+        border-color: ${tokens.moreButton.border.color.hover};
+        /* background-color for hover can be added if defined in tokens, e.g. tokens.moreButton.background.color.hover */
+      }
+      /* Ensure focus styles are applied if needed, Radix might handle some of this */
+      &:focus-visible {
+        /* Example: outline: 2px solid [some_focus_color_token_here]; */
+        /* Add appropriate focus styling based on design system,
+           e.g., using a token like tokens.moreButton.focus.outlineColor if defined,
+           or a foundation token like foundationToken.colors.primary[500]
+        */
+      }
+    `;
+  }}
 `;
 
-export const StyledDropdown = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 50;
-  transform: translateY(4px);
-  min-width: 192px; // 48 * 4px
-  padding: ${breadcrumbTokens.spacing.dropdownPadding} 0;
-  background-color: ${breadcrumbTokens.background.dropdown.default};
-  border: 1px solid ${breadcrumbTokens.border.dropdown.default};
-  border-radius: ${breadcrumbTokens.borderRadius.dropdown};
-  box-shadow: ${breadcrumbTokens.shadow.dropdown};
-`;
-
-export const StyledBreadcrumbDropdown = StyledDropdown;
-
-export const StyledDropdownItem = styled.div`
-  padding: ${breadcrumbTokens.spacing.itemPadding};
-  
-  &:hover {
-    background-color: ${foundationToken.colors.gray[50]};
-  }
-`;
+// StyledDropdown, StyledBreadcrumbDropdown, and StyledDropdownItem are no longer used
+// as the Menu component is now used for the dropdown functionality.
 
 export const StyledIconSlot = styled.span<{ $position: 'left' | 'right' }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: ${breadcrumbTokens.spacing.iconSlotSize};
-  height: ${breadcrumbTokens.spacing.iconSlotSize};
+  ${() => {
+    const tokens = useComponentToken("BREADCRUMB") as BreadcrumbTokensType;
+    return css`
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: ${tokens.iconSlot.size.width};
+      height: ${tokens.iconSlot.size.height};
+    `;
+  }}
 `;

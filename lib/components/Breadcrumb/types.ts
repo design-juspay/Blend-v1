@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { CSSObject } from 'styled-components';
 
 export enum BreadcrumbVariant {
   DEFAULT = 'default',
