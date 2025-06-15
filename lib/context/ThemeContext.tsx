@@ -1,48 +1,21 @@
 import { createContext, useContext } from "react";
 import { FOUNDATION_THEME, ThemeType } from "../tokens";
-import { TagTokensType } from "../components/Tags/tag.tokens";
-import { getTagTokens } from "../components/Tags/tag.tokens";
-import {
-  getSearchInputTokens,
-  SearchInputTokensType,
-} from "../components/Inputs/SearchInput/searchInput.tokens";
-import {
-  getTextAreaTokens,
-  TextAreaTokensType,
-} from "../components/Inputs/TextArea/textarea.token";
+import { TagTokensType, getTagTokens } from "../components/Tags/tag.tokens";
+import { SearchInputTokensType, getSearchInputTokens } from "../components/Inputs/SearchInput/searchInput.tokens";
+import { TextAreaTokensType, getTextAreaTokens } from "../components/Inputs/TextArea/textarea.token";
 import { RadioTokensType, getRadioTokens } from "../components/Radio/radio.token";
 import { SwitchTokensType, getSwitchTokens } from "../components/Switch/switch.token";
-import {
-  getTextInputTokens,
-  TextInputTokensType,
-} from "../components/Inputs/TextInput/textInput.tokens";
-import {
-  getNumberInputTokens,
-  NumberInputTokensType,
-} from "../components/Inputs/NumberInput/numberInput.tokens";
-import {
-  AlertTokenType,
-  getAlertTokens,
-} from "../components/Alert/alert.tokens";
-import {
-  getOTPInputTokens,
-  OTPInputTokensType,
-} from "../components/Inputs/OTPInput/otpInput.tokens";
-import {
-  getTooltipTokens,
-  TooltipTokensType,
-} from "../components/Tooltip/tooltip.tokens";
-import {
-  getUnitInputTokens,
-  UnitInputTokensType,
-} from "../components/Inputs/UnitInput/unitInput.tokens";
-import { getMultiValueInputTokens, MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
-import {
-  DropdownInputTokensType,
-  getDropdownInputTokens,
-} from "../components/Inputs/DropdownInput/dropdownInput.tokens";
+import { TextInputTokensType, getTextInputTokens } from "../components/Inputs/TextInput/textInput.tokens";
+import { NumberInputTokensType, getNumberInputTokens } from "../components/Inputs/NumberInput/numberInput.tokens";
+import { AlertTokenType, getAlertTokens } from "../components/Alert/alert.tokens";
+import { OTPInputTokensType, getOTPInputTokens } from "../components/Inputs/OTPInput/otpInput.tokens";
+import { TooltipTokensType, getTooltipTokens } from "../components/Tooltip/tooltip.tokens";
+import { UnitInputTokensType, getUnitInputTokens } from "../components/Inputs/UnitInput/unitInput.tokens";
+import { MultiValueInputTokensType, getMultiValueInputTokens } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
+import { DropdownInputTokensType, getDropdownInputTokens } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 import { CheckboxTokensType, getCheckboxTokens } from "../components/Checkbox/checkbox.token";
-import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
+import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token";
+import { AccordionTokensType, getAccordionTokens } from "../components/Accordion/accordion.tokens"; // Keep ACCORDION
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -59,7 +32,8 @@ export type ComponentTokenType = {
   MULTI_VALUE_INPUT?: MultiValueInputTokensType;
   DROPDOWN_INPUT?: DropdownInputTokensType;
   CHECKBOX?: CheckboxTokensType;
-  TABS?: TabsTokensType; // Added TABS
+  TABS?: TabsTokensType;
+  ACCORDION?: AccordionTokensType;
   // add supprort for other components here
 };
 
@@ -85,7 +59,8 @@ const ThemeContext = createContext<ThemeContextType>({
     MULTI_VALUE_INPUT: getMultiValueInputTokens(FOUNDATION_THEME),
     DROPDOWN_INPUT: getDropdownInputTokens(FOUNDATION_THEME),
     CHECKBOX: getCheckboxTokens(FOUNDATION_THEME),
-    TABS: getTabsTokens(FOUNDATION_THEME), // Added TABS
+    TABS: getTabsTokens(FOUNDATION_THEME),
+    ACCORDION: getAccordionTokens(FOUNDATION_THEME),
   },
 });
 

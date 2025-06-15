@@ -14,6 +14,7 @@ import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
 import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
+import { AccordionTokensType } from "../components/Accordion/accordion.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -35,7 +36,8 @@ export const useComponentToken = (
   | CheckboxTokensType
   | TabsTokensType
   | TooltipTokensType
-  | DropdownInputTokensType => {
+  | DropdownInputTokensType
+  | AccordionTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -64,7 +66,16 @@ export const useComponentToken = (
       return componentTokens.TABS;
     case "DROPDOWN_INPUT":
       return componentTokens.DROPDOWN_INPUT;
-    default:
-      throw new Error(`Unknown component token: ${component}`);
+    case "ACCORDION":
+      return componentTokens.ACCORDION;
+    case "UNIT_INPUT": 
+      return componentTokens.UNIT_INPUT;
+    case "MULTI_VALUE_INPUT": 
+      return componentTokens.MULTI_VALUE_INPUT;
+    default: {
+      // Ensure all cases are handled, or throw error for unknown component
+      const _exhaustiveCheck: never = component;
+      throw new Error(`Unknown component token: ${_exhaustiveCheck}`);
+    }
   }
 };

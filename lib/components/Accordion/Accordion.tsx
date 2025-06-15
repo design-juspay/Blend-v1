@@ -1,16 +1,23 @@
 import * as React from "react";
 import * as RadixAccordion from "@radix-ui/react-accordion";
 import { forwardRef } from "react";
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
 import { AccordionProps, AccordionType } from "./types";
-import accordionTokens from "./accordion.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
+import { AccordionTokensType } from "./accordion.tokens";
 
 const StyledAccordionRoot = styled(RadixAccordion.Root)<{ 
   $accordionType: AccordionType 
-}>((props) => ({
-  ...accordionTokens.base.container,
-  ...accordionTokens.type[props.$accordionType].container,
-}));
+}>`
+  ${(props) => {
+    const tokens = useComponentToken("ACCORDION") as AccordionTokensType;
+    return css`
+      width: ${tokens.root.layout.width};
+      /* Applying object styles directly within css template literal */
+      ${tokens.root.containerStyling[props.$accordionType]}
+    `;
+  }}
+`;
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
   (
@@ -21,6 +28,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       value,
       isMultiple = false,
       onValueChange,
+      className,
     },
     ref
   ) => {
@@ -40,6 +48,7 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const commonProps = {
       ref: ref,
       $accordionType: accordionType,
+      className,
     };
 
     return isMultiple ? (
