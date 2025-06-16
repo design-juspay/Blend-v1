@@ -14,8 +14,14 @@ import {
   Trash,
   Check,
   Plus,
+  Circle,
 } from "lucide-react";
 import "./ButtonDemo.css";
+import ButtonV2 from "../../../lib/components/ButtonV2/ButtonV2";
+import {
+  ButtonSizeV2,
+  ButtonTypeV2,
+} from "../../../lib/components/ButtonV2/types";
 
 const ButtonDemo: React.FC = () => {
   const buttonTypes = [
@@ -61,6 +67,103 @@ const ButtonDemo: React.FC = () => {
 
   return (
     <div className="button-demo">
+      <div
+        className="button-grid"
+        style={{ display: "flex", gap: 10, marginBottom: 100 }}
+      >
+        <ButtonV2
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.LARGE}
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.SECONDARY}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.LARGE}
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.DANGER}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.LARGE}
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.SUCCESS}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.LARGE}
+          // disabled
+          trailingIcon={<ChevronRight size={16} />}
+        />
+      </div>
+      <div
+        className="button-grid"
+        style={{ display: "flex", gap: 10, marginBottom: 100 }}
+      >
+        <ButtonV2
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.SECONDARY}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.DANGER}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.SUCCESS}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          // disabled
+          trailingIcon={<ChevronRight size={16} />}
+        />
+      </div>
+
+      <div
+        className="button-grid"
+        style={{ display: "flex", gap: 10, marginBottom: 100 }}
+      >
+        <ButtonV2
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.SMALL}
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.SECONDARY}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.SMALL}
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.DANGER}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.SMALL}
+          trailingIcon={<ChevronRight size={16} />}
+        />
+        <ButtonV2
+          buttonType={ButtonTypeV2.SUCCESS}
+          leadingIcon={<Circle size={12} />}
+          text="Button"
+          size={ButtonSizeV2.SMALL}
+          // disabled
+          trailingIcon={<ChevronRight size={16} />}
+        />
+      </div>
+
       <h1>Button Component Demo</h1>
 
       <div className="demo-section">

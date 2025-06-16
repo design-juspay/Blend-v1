@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled, { css, CSSObject } from "styled-components";
 
 // State-specific style overrides
@@ -229,6 +229,7 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
 
   // Visual
   if (props.backgroundColor) styles.backgroundColor = props.backgroundColor;
+  if (props.background) styles.background = props.background;
   if (props.color) styles.color = props.color;
   if (props.border) styles.border = props.border;
   if (props.borderTop) styles.borderTop = props.borderTop;
@@ -289,12 +290,21 @@ export type ButtonProps = PrimitiveButtonProps &
   };
 
 // Component
-const PrimitiveButton: React.FC<ButtonProps> = ({ children, ...rest }) => {
-  return (
-    <StyledButton className={rest.className} {...rest}>
-      {children}
-    </StyledButton>
-  );
-};
+const PrimitiveButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, disabled, ...rest }, ref) => {
+    return (
+      <StyledButton
+        ref={ref}
+        className={rest.className}
+        disabled={disabled}
+        {...rest}
+      >
+        {children}
+      </StyledButton>
+    );
+  }
+);
+
+PrimitiveButton.displayName = "PrimitiveButton";
 
 export default PrimitiveButton;
