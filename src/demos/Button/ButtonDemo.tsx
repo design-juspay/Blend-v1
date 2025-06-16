@@ -81,23 +81,24 @@ const ButtonDemo: React.FC = () => {
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.PRIMARY}
-          onClick={() => alert("Primary")}
-
+          // onClick={() => alert("Primary")}
         />
-        <ButtonV2
-          text="Button"
-          buttonType={ButtonTypeV2.SECONDARY}
-          onClick={() => alert("Secondary")}
-        />
+        <div className="test-button-for-aryan" >
+          <ButtonV2
+            text="Button"
+            buttonType={ButtonTypeV2.SECONDARY}
+            // onClick={() => alert("Secondary")}
+          />
+        </div>
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.DANGER}
-          onClick={() => alert("Danger")}
+          // onClick={() => alert("Danger")}
         />
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.SUCCESS}
-          onClick={() => alert("Success")}
+          // onClick={() => alert("Success")}
         />
       </div>
       <div
@@ -143,25 +144,25 @@ const ButtonDemo: React.FC = () => {
           text="Button"
           buttonType={ButtonTypeV2.PRIMARY}
           subType={ButtonSubTypeV2.INLINE}
-          onClick={() => alert("Primary")}
+          // onClick={() => alert("Primary")}
         />
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.SECONDARY}
           subType={ButtonSubTypeV2.INLINE}
-          onClick={() => alert("Secondary")}
+          // onClick={() => alert("Secondary")}
         />
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.DANGER}
           subType={ButtonSubTypeV2.INLINE}
-          onClick={() => alert("Danger")}
+          // onClick={() => alert("Danger")}
         />
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.SUCCESS}
           subType={ButtonSubTypeV2.INLINE}
-          onClick={() => alert("Success")}
+          // onClick={() => alert("Success")}
         />
       </div>
 

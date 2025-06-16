@@ -26,6 +26,11 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const buttonTokens = useComponentToken("BUTTON") as ButtonTokensType;
+    console.log(
+      "-->>",buttonType, subType,
+      buttonTokens.backgroundColor[buttonType][subType].default
+    );
+    
     return (
       <PrimitiveButton
         onClick={onClick}
