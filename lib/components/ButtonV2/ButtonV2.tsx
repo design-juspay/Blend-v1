@@ -28,35 +28,42 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
         display="flex"
         alignItems="center"
         justifyContent="center"
+        height={subType === ButtonSubTypeV2.INLINE ? "fit-content" : "auto"}
         ref={ref}
         gap={buttonTokens.gap}
-        background={buttonTokens.backgroundColor[buttonType].default}
+        background={buttonTokens.backgroundColor[buttonType][subType].default}
         disabled={disabled}
-        color={buttonTokens.color[buttonType].default}
-        borderRadius={buttonTokens.borderRadius[buttonType].default}
-        padding={buttonTokens.padding[size]}
-        border={buttonTokens.border[buttonType].default}
+        color={buttonTokens.color[buttonType][subType].default}
+        borderRadius={buttonTokens.borderRadius[buttonType][subType].default}
+        padding={buttonTokens.padding[size][subType]}
+        border={buttonTokens.border[buttonType][subType].default}
+        outline={buttonTokens.outline[buttonType][subType].default}
         _active={
           !disabled
             ? {
-                background: buttonTokens.backgroundColor[buttonType].active,
-                border: buttonTokens.border[buttonType].active,
-                boxShadow: buttonTokens.shadow[buttonType].active,
+                background:
+                  buttonTokens.backgroundColor[buttonType][subType].active,
+                border: buttonTokens.border[buttonType][subType].active,
+                boxShadow: buttonTokens.shadow[buttonType][subType].active,
               }
             : undefined
         }
         _hover={{
-          border: buttonTokens.border[buttonType].hover,
-          background: buttonTokens.backgroundColor[buttonType].hover,
+          border: buttonTokens.border[buttonType][subType].hover,
+          background: buttonTokens.backgroundColor[buttonType][subType].hover,
+          outline: buttonTokens.outline[buttonType][subType].hover,
+          color: buttonTokens.color[buttonType][subType].hover,
         }}
         _focusVisible={{
-          border: buttonTokens.border[buttonType].default,
-          outline: buttonTokens.outline[buttonType].active,
+          border: buttonTokens.border[buttonType][subType].default,
+          outline: buttonTokens.outline[buttonType][subType].active,
         }}
         cursor={disabled ? "not-allowed" : "pointer"}
         _disabled={{
-          background: buttonTokens.backgroundColor[buttonType].disabled,
-          border: buttonTokens.border[buttonType].disabled,
+          background:
+            buttonTokens.backgroundColor[buttonType][subType].disabled,
+          border: buttonTokens.border[buttonType][subType].disabled,
+          color: buttonTokens.color[buttonType][subType].disabled,
         }}
       >
         {leadingIcon && (

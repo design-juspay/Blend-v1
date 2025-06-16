@@ -14,7 +14,7 @@ export enum ButtonSizeV2 {
 export enum ButtonSubTypeV2 {
   DEFAULT = "default",
   ICON_ONLY = "iconOnly",
-  LINK = "link",
+  INLINE = "inline",
 }
 
 export type ButtonProps = {

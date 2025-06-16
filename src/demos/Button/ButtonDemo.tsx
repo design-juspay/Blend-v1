@@ -20,8 +20,10 @@ import "./ButtonDemo.css";
 import ButtonV2 from "../../../lib/components/ButtonV2/ButtonV2";
 import {
   ButtonSizeV2,
+  ButtonSubTypeV2,
   ButtonTypeV2,
 } from "../../../lib/components/ButtonV2/types";
+import PrimitiveButton from "../../../lib/components/Primitives/PrimitiveButton/PrimitiveButton";
 
 const ButtonDemo: React.FC = () => {
   const buttonTypes = [
@@ -69,64 +71,46 @@ const ButtonDemo: React.FC = () => {
     <div className="button-demo">
       <div
         className="button-grid"
-        style={{ display: "flex", gap: 10, marginBottom: 100 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 100,
+        }}
       >
-        <ButtonV2
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          size={ButtonSizeV2.LARGE}
-          trailingIcon={<ChevronRight size={16} />}
-        />
-        <ButtonV2
-          buttonType={ButtonTypeV2.SECONDARY}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          size={ButtonSizeV2.LARGE}
-          trailingIcon={<ChevronRight size={16} />}
-        />
-        <ButtonV2
-          buttonType={ButtonTypeV2.DANGER}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          size={ButtonSizeV2.LARGE}
-          trailingIcon={<ChevronRight size={16} />}
-        />
-        <ButtonV2
-          buttonType={ButtonTypeV2.SUCCESS}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          size={ButtonSizeV2.LARGE}
-          // disabled
-          trailingIcon={<ChevronRight size={16} />}
-        />
+        <ButtonV2 text="Button" buttonType={ButtonTypeV2.PRIMARY} />
+        <ButtonV2 text="Button" buttonType={ButtonTypeV2.SECONDARY} />
+        <ButtonV2 text="Button" buttonType={ButtonTypeV2.DANGER} />
+        <ButtonV2 text="Button" buttonType={ButtonTypeV2.SUCCESS} />
       </div>
       <div
         className="button-grid"
-        style={{ display: "flex", gap: 10, marginBottom: 100 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 100,
+        }}
       >
         <ButtonV2
-          leadingIcon={<Circle size={12} />}
           text="Button"
-          trailingIcon={<ChevronRight size={16} />}
+          buttonType={ButtonTypeV2.PRIMARY}
+          subType={ButtonSubTypeV2.INLINE}
         />
         <ButtonV2
+          text="Button"
           buttonType={ButtonTypeV2.SECONDARY}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          trailingIcon={<ChevronRight size={16} />}
+          subType={ButtonSubTypeV2.INLINE}
         />
         <ButtonV2
+          text="Button"
           buttonType={ButtonTypeV2.DANGER}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          trailingIcon={<ChevronRight size={16} />}
+          subType={ButtonSubTypeV2.INLINE}
         />
         <ButtonV2
-          buttonType={ButtonTypeV2.SUCCESS}
-          leadingIcon={<Circle size={12} />}
           text="Button"
-          // disabled
-          trailingIcon={<ChevronRight size={16} />}
+          buttonType={ButtonTypeV2.SUCCESS}
+          subType={ButtonSubTypeV2.INLINE}
         />
       </div>
 
