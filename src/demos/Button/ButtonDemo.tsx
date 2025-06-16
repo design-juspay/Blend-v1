@@ -15,6 +15,7 @@ import {
   Check,
   Plus,
   Circle,
+  CircleAlert,
 } from "lucide-react";
 import "./ButtonDemo.css";
 import ButtonV2 from "../../../lib/components/ButtonV2/ButtonV2";
@@ -23,7 +24,6 @@ import {
   ButtonSubTypeV2,
   ButtonTypeV2,
 } from "../../../lib/components/ButtonV2/types";
-import PrimitiveButton from "../../../lib/components/Primitives/PrimitiveButton/PrimitiveButton";
 
 const ButtonDemo: React.FC = () => {
   const buttonTypes = [
@@ -78,10 +78,27 @@ const ButtonDemo: React.FC = () => {
           marginBottom: 100,
         }}
       >
-        <ButtonV2 text="Button" buttonType={ButtonTypeV2.PRIMARY} />
-        <ButtonV2 text="Button" buttonType={ButtonTypeV2.SECONDARY} />
-        <ButtonV2 text="Button" buttonType={ButtonTypeV2.DANGER} />
-        <ButtonV2 text="Button" buttonType={ButtonTypeV2.SUCCESS} />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.PRIMARY}
+          onClick={() => alert("Primary")}
+
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.SECONDARY}
+          onClick={() => alert("Secondary")}
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.DANGER}
+          onClick={() => alert("Danger")}
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.SUCCESS}
+          onClick={() => alert("Success")}
+        />
       </div>
       <div
         className="button-grid"
@@ -93,24 +110,28 @@ const ButtonDemo: React.FC = () => {
         }}
       >
         <ButtonV2
-          text="Button"
+          leadingIcon={<CircleAlert size={16} />}
           buttonType={ButtonTypeV2.PRIMARY}
-          subType={ButtonSubTypeV2.INLINE}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Primary")}
         />
         <ButtonV2
-          text="Button"
+          leadingIcon={<CircleAlert size={16} />}
           buttonType={ButtonTypeV2.SECONDARY}
-          subType={ButtonSubTypeV2.INLINE}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Secondary")}
         />
         <ButtonV2
-          text="Button"
+          leadingIcon={<CircleAlert size={16} />}
           buttonType={ButtonTypeV2.DANGER}
-          subType={ButtonSubTypeV2.INLINE}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Danger")}
         />
         <ButtonV2
-          text="Button"
+          leadingIcon={<CircleAlert size={16} />}
           buttonType={ButtonTypeV2.SUCCESS}
-          subType={ButtonSubTypeV2.INLINE}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Success")}
         />
       </div>
 
@@ -119,32 +140,28 @@ const ButtonDemo: React.FC = () => {
         style={{ display: "flex", gap: 10, marginBottom: 100 }}
       >
         <ButtonV2
-          leadingIcon={<Circle size={12} />}
           text="Button"
-          size={ButtonSizeV2.SMALL}
-          trailingIcon={<ChevronRight size={16} />}
+          buttonType={ButtonTypeV2.PRIMARY}
+          subType={ButtonSubTypeV2.INLINE}
+          onClick={() => alert("Primary")}
         />
         <ButtonV2
+          text="Button"
           buttonType={ButtonTypeV2.SECONDARY}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          size={ButtonSizeV2.SMALL}
-          trailingIcon={<ChevronRight size={16} />}
+          subType={ButtonSubTypeV2.INLINE}
+          onClick={() => alert("Secondary")}
         />
         <ButtonV2
+          text="Button"
           buttonType={ButtonTypeV2.DANGER}
-          leadingIcon={<Circle size={12} />}
-          text="Button"
-          size={ButtonSizeV2.SMALL}
-          trailingIcon={<ChevronRight size={16} />}
+          subType={ButtonSubTypeV2.INLINE}
+          onClick={() => alert("Danger")}
         />
         <ButtonV2
-          buttonType={ButtonTypeV2.SUCCESS}
-          leadingIcon={<Circle size={12} />}
           text="Button"
-          size={ButtonSizeV2.SMALL}
-          // disabled
-          trailingIcon={<ChevronRight size={16} />}
+          buttonType={ButtonTypeV2.SUCCESS}
+          subType={ButtonSubTypeV2.INLINE}
+          onClick={() => alert("Success")}
         />
       </div>
 

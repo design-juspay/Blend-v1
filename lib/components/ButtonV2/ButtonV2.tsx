@@ -7,8 +7,9 @@ import {
   ButtonSubTypeV2,
   ButtonTypeV2,
 } from "./types";
-import buttonTokens from "./button.tokens";
+import { ButtonTokensType } from "./button.tokens";
 import Text from "../Text/Text";
+import { useComponentToken } from "../../context/useComponentToken";
 
 const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -20,11 +21,14 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
       leadingIcon,
       trailingIcon,
       disabled,
+      onClick,
     },
     ref
   ) => {
+    const buttonTokens = useComponentToken("BUTTON") as ButtonTokensType;
     return (
       <PrimitiveButton
+        onClick={onClick}
         display="flex"
         alignItems="center"
         justifyContent="center"
@@ -73,10 +77,11 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {text && (
           <Text
+            fontFamily="InterDisplay"
+            variant="body.md"
             style={{
               fontWeight: 500,
             }}
-            variant="body.md"
             as="span"
             color="inherit"
           >

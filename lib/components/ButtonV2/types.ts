@@ -28,4 +28,5 @@ export type ButtonProps = {
   isDisabled?: boolean;
   ref?: React.RefObject<HTMLButtonElement>;
   disabled?: boolean;
+  onClick?: () => void;
 };

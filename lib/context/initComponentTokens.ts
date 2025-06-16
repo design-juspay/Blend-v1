@@ -15,6 +15,7 @@ import { getTooltipTokens } from "../components/Tooltip/tooltip.tokens";
 import { getUnitInputTokens } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { getMultiValueInputTokens } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 import { getDropdownInputTokens } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
+import { getButtonTokens } from "../components/ButtonV2/button.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -43,8 +44,8 @@ const initTokens = (
       componentTokens.DROPDOWN_INPUT ??
       getDropdownInputTokens(foundationTokens),
     CHECKBOX: componentTokens.CHECKBOX ?? getCheckboxTokens(foundationTokens),
-    TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens), // Added TABS
-    // add supprort for other components here
+    TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens),
+    BUTTON: componentTokens.BUTTON ?? getButtonTokens(foundationTokens),
   };
 };
 
