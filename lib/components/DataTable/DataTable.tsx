@@ -32,9 +32,14 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     enableSearch = false,
     searchPlaceholder = "Search...",
     enableFiltering = false,
+    serverSideSearch = false,
+    serverSideFiltering = false,
     enableColumnManager = true,
     showToolbar = true,
     enableInlineEdit = false,
+    enableRowExpansion = false,
+    renderExpandedRow,
+    isRowExpandable,
     pagination = {
       currentPage: 1,
       pageSize: 10,
@@ -48,8 +53,9 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onFilterChange,
     onRowSave,
     onRowCancel,
+    onRowExpansionChange,
     headerSlot1,
-    headeSlot2,
+    headerSlot2,
     headerSlot3,
     bulkActions
   }: DataTableProps<T>,
@@ -74,33 +80,42 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
   const [editValues, setEditValues] = useState<Record<string, T>>({});
 
+  // Row expansion state
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
   const totalRows = pagination?.totalRows || data.length;
 
   const processedData = useMemo(() => {
     let result = [...data];
 
-    // Apply search
-    if (enableSearch && searchConfig.query.trim()) {
+    // Apply search only if not server-side
+    if (enableSearch && !serverSideSearch && searchConfig.query.trim()) {
       result = searchData(result, searchConfig, visibleColumns);
     }
 
-    // Apply column filters
-    if (enableFiltering && columnFilters.length > 0) {
+    // Apply column filters only if not server-side
+    if (enableFiltering && !serverSideFiltering && columnFilters.length > 0) {
       result = applyColumnFilters(result, columnFilters);
     }
 
-    // Apply sorting
+    // Apply sorting (can be local or server-side, user controls via onSortChange)
     if (sortConfig && sortConfig.field) {
       result = sortData(result, sortConfig);
     }
 
     return result;
-  }, [data, searchConfig, columnFilters, sortConfig, visibleColumns, enableSearch, enableFiltering]);
+  }, [data, searchConfig, columnFilters, sortConfig, visibleColumns, enableSearch, enableFiltering, serverSideSearch, serverSideFiltering]);
 
   const currentData = useMemo(() => {
+    // If server-side search/filtering is enabled, assume data is already paginated by server
+    if (serverSideSearch || serverSideFiltering) {
+      return processedData;
+    }
+    
+    // Otherwise, apply local pagination
     const startIndex = (currentPage - 1) * pageSize;
     return processedData.slice(startIndex, startIndex + pageSize);
-  }, [processedData, currentPage, pageSize]);
+  }, [processedData, currentPage, pageSize, serverSideSearch, serverSideFiltering]);
 
   useEffect(() => {
     setSelectedRows({});
@@ -211,9 +226,13 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const handleSearch = (query: string) => {
     const newSearchConfig = { ...searchConfig, query };
-    setSearchConfig(newSearchConfig);
-    setCurrentPage(1); // Reset to first page when searching
     
+    setSearchConfig(newSearchConfig);
+    
+    // Reset to first page when searching (important for server-side)
+    setCurrentPage(1);
+    
+    // trigger callback - user handles server-side logic here
     if (onSearchChange) {
       onSearchChange(newSearchConfig);
     }
@@ -237,23 +256,29 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
 
     setColumnFilters(newFilters);
-    setCurrentPage(1); // Reset to first page when filtering
     
+    // Reset to first page when filtering (important for server-side)
+    setCurrentPage(1);
+    
+    // trigger callback - user handles server-side logic here
     if (onFilterChange) {
       onFilterChange(newFilters);
     }
   };
 
   const clearAllFilters = () => {
+    const clearedSearchConfig = { query: '', caseSensitive: false };
+    
     setColumnFilters([]);
-    setSearchConfig({ query: '', caseSensitive: false });
+    setSearchConfig(clearedSearchConfig);
     setCurrentPage(1);
     
+    // trigger callbacks - user handles server-side logic here
     if (onFilterChange) {
       onFilterChange([]);
     }
     if (onSearchChange) {
-      onSearchChange({ query: '', caseSensitive: false });
+      onSearchChange(clearedSearchConfig);
     }
   };
   const selectedCount = Object.values(selectedRows).filter(selected => selected).length;
@@ -327,6 +352,22 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }));
   };
 
+  const handleRowExpand = (rowId: unknown) => {
+    const rowIdStr = String(rowId);
+    const newExpandedRows = {
+      ...expandedRows,
+      [rowIdStr]: !expandedRows[rowIdStr]
+    };
+    setExpandedRows(newExpandedRows);
+
+    if (onRowExpansionChange) {
+      const rowData = currentData.find(row => row[idField] === rowId);
+      if (rowData) {
+        onRowExpansionChange(rowId, !expandedRows[rowIdStr], rowData);
+      }
+    }
+  };
+
   return (
     <Block ref={ref} style={{
       ...dataTableTokens.container,
@@ -349,7 +390,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         onColumnFilter={handleColumnFilter}
         onClearAllFilters={clearAllFilters}
         headerSlot1={headerSlot1}
-        headerSlot2={headeSlot2}
+        headerSlot2={headerSlot2}
         headerSlot3={headerSlot3}
       />
 
@@ -392,6 +433,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                 selectAll={selectAll}
                 enableInlineEdit={enableInlineEdit}
                 enableColumnManager={enableColumnManager}
+                enableRowExpansion={enableRowExpansion}
                 onSort={handleSort}
                 onSelectAll={handleSelectAll}
                 onColumnChange={setVisibleColumns}
@@ -404,12 +446,17 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                 selectedRows={selectedRows}
                 editingRows={editingRows}
                 editValues={editValues}
+                expandedRows={expandedRows}
                 enableInlineEdit={enableInlineEdit}
                 enableColumnManager={enableColumnManager}
+                enableRowExpansion={enableRowExpansion}
+                renderExpandedRow={renderExpandedRow}
+                isRowExpandable={isRowExpandable}
                 onRowSelect={handleRowSelect}
                 onEditRow={handleEditRow}
                 onSaveRow={handleSaveRow}
                 onCancelEdit={handleCancelEdit}
+                onRowExpand={handleRowExpand}
                 onFieldChange={handleFieldChange}
                 getColumnWidth={getColumnWidth}
               />

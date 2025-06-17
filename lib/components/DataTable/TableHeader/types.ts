@@ -8,6 +8,7 @@ export type TableHeaderProps<T extends Record<string, unknown>> = {
   selectAll: boolean;
   enableInlineEdit?: boolean;
   enableColumnManager?: boolean;
+  enableRowExpansion?: boolean;
   onSort: (field: keyof T) => void;
   onSelectAll: (checked: boolean | 'indeterminate') => void;
   onColumnChange: (columns: ColumnDefinition<T>[]) => void;

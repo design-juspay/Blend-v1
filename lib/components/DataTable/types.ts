@@ -1,3 +1,5 @@
+import { ColumnType } from './columnTypes';
+
 export enum SortDirection {
   ASCENDING = "asc",
   DESCENDING = "desc",
@@ -17,6 +19,8 @@ export type ColumnDefinition<T> = {
   field: keyof T;
   /** Header text to display */
   header: string;
+  /** Column type for filtering and display */
+  type: ColumnType;
   /** Width of the column */
   width?: string;
   /** Whether column is sortable */
@@ -134,12 +138,29 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   searchPlaceholder?: string;
   /** Whether to enable filtering */
   enableFiltering?: boolean;
+  /** Whether search is handled server-side (disables local search) */
+  serverSideSearch?: boolean;
+  /** Whether filtering is handled server-side (disables local filtering) */
+  serverSideFiltering?: boolean;
   /** Whether to show column manager */
   enableColumnManager?: boolean;
   /** Whether to show toolbar */
   showToolbar?: boolean;
   /** Whether to enable inline editing */
   enableInlineEdit?: boolean;
+  /** Whether to enable row expansion */
+  enableRowExpansion?: boolean;
+  /** Render function for expanded row content with access to row data and utilities */
+  renderExpandedRow?: (expandedData: {
+    row: T;
+    index: number;
+    isExpanded: boolean;
+    toggleExpansion: () => void;
+  }) => React.ReactNode;
+  /** Optional function to determine if a row should be expandable */
+  isRowExpandable?: (row: T, index: number) => boolean;
+  /** Optional expanded row data mapping function */
+  getExpandedRowData?: (row: T, index: number) => Record<string, unknown>;
   /** Pagination configuration */
   pagination?: PaginationConfig;
   /** Callback when page changes */
@@ -156,14 +177,16 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onRowSave?: (rowId: unknown, updatedRow: T) => void;
   /** Callback when row edit is cancelled */
   onRowCancel?: (rowId: unknown) => void;
+  /** Callback when row expansion changes */
+  onRowExpansionChange?: (rowId: unknown, isExpanded: boolean, rowData: T) => void;
   /** Optional additional class name */
   className?: string;
   /** Custom slot on the left side of the toolbar */
   headerSlot1?: React.ReactNode;
-  /** Custom slot in the center of the toolbar */
-  headeSlot2?: React.ReactNode;
+  /** Custom slot in the middle of the toolbar */
+  headerSlot2?: React.ReactNode;
   /** Custom slot on the right side of the toolbar */
   headerSlot3?: React.ReactNode;
-  /** Custom bulk actions to show in the floating action bar */
+  /** Custom bulk actions */
   bulkActions?: React.ReactNode;
 }

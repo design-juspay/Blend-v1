@@ -1,5 +1,5 @@
 import { forwardRef, useState, useRef, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Edit2 } from 'lucide-react';
+import { MoreVertical, Edit2 } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableHeaderProps } from './types';
 import { SortDirection } from '../types';
@@ -10,6 +10,9 @@ import { ColumnManager } from '../ColumnManager';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
 import { FOUNDATION_THEME } from '../../../tokens';
+import Menu from '../../Menu/Menu';
+import { MenuAlignment, MenuSide } from '../../Menu/types';
+import { ColumnType, getColumnTypeConfig } from '../columnTypes';
 
 const TableHead = styled.thead`
   ${dataTableTokens.thead.base}
@@ -47,13 +50,30 @@ const HeaderContainer = styled(Block)`
   }
 `;
 
+const MoreIcon = styled(MoreVertical)`
+  cursor: pointer;
+  color: ${FOUNDATION_THEME.colors.gray[400]};
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: ${FOUNDATION_THEME.colors.gray[600]};
+  }
+`;
+
+const HeaderCellContainer = styled(Block)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+`;
+
 const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>(({
   visibleColumns,
   initialColumns,
-  sortConfig,
   selectAll,
   enableInlineEdit = false,
   enableColumnManager = true,
+  enableRowExpansion = false,
   onSort,
   onSelectAll,
   onColumnChange,
@@ -84,8 +104,9 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
     setEditingField(field);
   };
 
-  const handleHeaderSave = (field: string, newValue: string) => {
-    const trimmedValue = newValue.trim();
+  const handleHeaderSave = (field: string, newValue?: string) => {
+    const valueToSave = newValue || editableRef.current?.textContent || '';
+    const trimmedValue = valueToSave.trim();
     const currentColumn = localColumns.find(col => String(col.field) === field);
     
     if (currentColumn && trimmedValue !== currentColumn.header) {
@@ -111,9 +132,38 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
     }
   };
 
+  const handleSort = (field: string, direction: SortDirection) => {
+    onSort(field as any);
+  };
+
+  const getColumnMenuItems = (column: any) => {
+    const columnType = column.type || ColumnType.TEXT;
+    const config = getColumnTypeConfig(columnType);
+    
+    return config.menuItems?.map(item => ({
+      ...item,
+      onClick: () => {
+        if (item.label === 'Sort Ascending') {
+          handleSort(String(column.field), SortDirection.ASCENDING);
+        } else if (item.label === 'Sort Descending') {
+          handleSort(String(column.field), SortDirection.DESCENDING);
+        } else {
+          item.onClick();
+        }
+      }
+    })) || [];
+  };
+
   return (
     <TableHead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 10 }}>
       <TableRow>
+        {enableRowExpansion && (
+          <TableHeaderCell $isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
+            <Block display='flex' alignItems='center' justifyContent='center'>
+            </Block>
+          </TableHeaderCell>
+        )}
+        
         <TableHeaderCell $isSortable={false} width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
           <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
             <Checkbox
@@ -127,6 +177,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
         {localColumns.map((column, index) => {
           const columnWidth = getColumnWidth(column, index);
           const isEditing = editingField === String(column.field);
+          const menuItems = getColumnMenuItems(column);
           
           return (
             <TableHeaderCell
@@ -138,16 +189,15 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                 minWidth: columnWidth,
                 maxWidth: columnWidth
               }}
-              onClick={() => column.isSortable && onSort(column.field)}
             >
-              <Block display='flex' alignItems='center' justifyContent='space-between'>
+              <HeaderCellContainer>
                 <HeaderContainer display='flex' alignItems='center' gap={8}>
                   {isEditing ? (
                     <Block
                       ref={editableRef}
                       contentEditable
                       suppressContentEditableWarning
-                      onBlur={() => handleHeaderSave(String(column.field), document.activeElement?.textContent || '')}
+                      onBlur={(e) => handleHeaderSave(String(column.field), e.currentTarget.textContent || '')}
                       onKeyDown={(e) => handleHeaderKeyDown(e, String(column.field))}
                       style={{
                         overflow: 'hidden',
@@ -163,8 +213,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                     </Block>
                   ) : (
                     <>
-                      <PrimitiveText 
-                        as='span' 
+                      <PrimitiveText
                         style={{
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -172,31 +221,31 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                           minWidth: 0,
                           flex: 1
                         }}
-                        title={column.header}
                       >
                         {column.header}
                       </PrimitiveText>
-                      <EditIcon size={14} onClick={() => handleHeaderEdit(String(column.field))} />
+                      {enableInlineEdit && (
+                        <EditIcon 
+                          size={14} 
+                          onClick={() => handleHeaderEdit(String(column.field))}
+                        />
+                      )}
                     </>
                   )}
                 </HeaderContainer>
+
                 {column.isSortable && (
-                  <Block display='flex' flexDirection='column' alignItems='center' style={{ flexShrink: 0, marginLeft: 8 }}>
-                    <ChevronUp 
-                      size={FOUNDATION_THEME.unit[12]} 
-                      style={{ 
-                        opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.ASCENDING ? 1 : 0.3,
-                      }} 
-                    />
-                    <ChevronDown 
-                      size={FOUNDATION_THEME.unit[12]} 
-                      style={{ 
-                        opacity: sortConfig?.field === String(column.field) && sortConfig.direction === SortDirection.DESCENDING ? 1 : 0.3,
-                      }} 
-                    />
-                  </Block>
+                  <Menu
+                    trigger={<MoreIcon size={16} />}
+                    items={[{
+                      label: column.header,
+                      items: menuItems
+                    }]}
+                    alignment={MenuAlignment.END}
+                    side={MenuSide.BOTTOM}
+                  />
                 )}
-              </Block>
+              </HeaderCellContainer>
             </TableHeaderCell>
           );
         })}
