@@ -1,12 +1,7 @@
-import { ButtonType } from "../Button/types";
 import { ReactNode } from "react";
+import { ButtonV2Props } from "../ButtonV2";
 
-export type ModalButtonAction = {
-  label: string;
-  onClick?: () => void;
-  isDisabled?: boolean;
-  type?: ButtonType;
-};
+type ModalButtonAction = Omit<ButtonV2Props, "buttonGroupPosition">;
 
 export type ModalProps = {
   isOpen: boolean;
