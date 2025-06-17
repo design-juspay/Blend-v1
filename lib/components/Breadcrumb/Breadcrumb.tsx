@@ -1,4 +1,3 @@
-import React from "react";
 import Block from "../Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../tokens";
 import PrimitiveLink from "../Primitives/PrimitiveLink";
@@ -7,15 +6,9 @@ import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import { BreadcrumbTokenType } from "./breadcrumb.tokens";
 import { useComponentToken } from "../../context/useComponentToken";
+import { BreadcrumbItemType } from "./types";
 
 const MAX_ITEMS = 4;
-
-type BreadcrumbItemType = {
-  leftSlot?: React.ReactNode;
-  rightSlot?: React.ReactNode;
-  label: string;
-  href: string;
-};
 
 const BreadcrumbItem = ({
   item,
