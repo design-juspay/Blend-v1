@@ -1,4 +1,4 @@
-import { Snackbar, Tag } from "../lib/main";
+import { Snackbar } from "../lib/main";
 import "./App.css";
 import SidebarDemo from "./demos/sidebar/SidebarDemo";
 
