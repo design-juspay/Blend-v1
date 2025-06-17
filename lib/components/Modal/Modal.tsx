@@ -36,6 +36,7 @@ const ModalHeader = ({
       flexShrink={0}
       overflow="auto"
       maxHeight="20vh"
+      gap={FOUNDATION_THEME.unit[16]}
       borderBottom={
         showDivider ? modalTokens.headerContainer.borderBottom : undefined
       }
@@ -44,8 +45,6 @@ const ModalHeader = ({
         display="flex"
         flexDirection="column"
         flexGrow={1}
-        minWidth="0"
-        paddingRight={FOUNDATION_THEME.unit[16]}
         gap={FOUNDATION_THEME.unit[4]}
       >
         <Block
