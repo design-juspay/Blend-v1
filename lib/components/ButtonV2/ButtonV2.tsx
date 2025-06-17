@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import Block from "../Primitives/Block/Block";
 import {
-  ButtonProps,
+  ButtonV2Props,
   ButtonSizeV2,
   ButtonSubTypeV2,
   ButtonTypeV2,
@@ -10,10 +10,12 @@ import {
 import { ButtonTokensType } from "./button.tokens";
 import Text from "../Text/Text";
 import { useComponentToken } from "../../context/useComponentToken";
+import { LoaderCircle } from "lucide-react";
 
-const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
+const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
   (
     {
+      key,
       buttonType = ButtonTypeV2.PRIMARY,
       size = ButtonSizeV2.SMALL,
       subType = ButtonSubTypeV2.DEFAULT,
@@ -22,17 +24,27 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
       trailingIcon,
       disabled,
       onClick,
+      loading,
+      buttonGroupPosition,
     },
     ref
   ) => {
     const buttonTokens = useComponentToken("BUTTON") as ButtonTokensType;
-    console.log(
-      "-->>",buttonType, subType,
-      buttonTokens.backgroundColor[buttonType][subType].default
-    );
-    
+    const getBorderRadius = () => {
+      const variantBorderRadius =
+        buttonTokens.borderRadius[buttonType][subType].default;
+      if (buttonGroupPosition === undefined) return variantBorderRadius;
+      if (buttonGroupPosition === "left") {
+        return `${variantBorderRadius} 0 0 ${variantBorderRadius}`;
+      } else if (buttonGroupPosition === "right") {
+        return `0 ${variantBorderRadius} ${variantBorderRadius} 0`;
+      }
+      return `0px 0px 0px 0px`;
+    };
+
     return (
       <PrimitiveButton
+        key={key}
         onClick={onClick}
         display="flex"
         alignItems="center"
@@ -43,7 +55,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
         background={buttonTokens.backgroundColor[buttonType][subType].default}
         disabled={disabled}
         color={buttonTokens.color[buttonType][subType].default}
-        borderRadius={buttonTokens.borderRadius[buttonType][subType].default}
+        borderRadius={getBorderRadius()}
         padding={buttonTokens.padding[size][subType]}
         border={buttonTokens.border[buttonType][subType].default}
         outline={buttonTokens.outline[buttonType][subType].default}
@@ -67,36 +79,48 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonProps>(
           border: buttonTokens.border[buttonType][subType].default,
           outline: buttonTokens.outline[buttonType][subType].active,
         }}
-        cursor={disabled ? "not-allowed" : "pointer"}
         _disabled={{
           background:
             buttonTokens.backgroundColor[buttonType][subType].disabled,
           border: buttonTokens.border[buttonType][subType].disabled,
           color: buttonTokens.color[buttonType][subType].disabled,
+          cursor: "not-allowed",
         }}
       >
-        {leadingIcon && (
-          <Block as="span" contentCentered>
-            {leadingIcon}
-          </Block>
-        )}
-        {text && (
-          <Text
-            fontFamily="InterDisplay"
-            variant="body.md"
+        {loading ? (
+          <LoaderCircle
+            size={16}
+            color={buttonTokens.color[buttonType][subType].default}
             style={{
-              fontWeight: 500,
+              animation: "spin 1s linear infinite",
             }}
-            as="span"
-            color="inherit"
-          >
-            {text}
-          </Text>
-        )}
-        {trailingIcon && (
-          <Block as="span" contentCentered>
-            {trailingIcon}
-          </Block>
+          />
+        ) : (
+          <>
+            {leadingIcon && (
+              <Block as="span" contentCentered>
+                {leadingIcon}
+              </Block>
+            )}
+            {text && (
+              <Text
+                fontFamily="InterDisplay"
+                variant="body.md"
+                style={{
+                  fontWeight: 500,
+                }}
+                as="span"
+                color="inherit"
+              >
+                {text}
+              </Text>
+            )}
+            {trailingIcon && (
+              <Block as="span" contentCentered>
+                {trailingIcon}
+              </Block>
+            )}
+          </>
         )}
       </PrimitiveButton>
     );

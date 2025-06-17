@@ -140,7 +140,7 @@ const SnackbarDemo = () => {
       </Block>
 
       {/* Snackbar Component (required for the toasts to appear) */}
-      <Snackbar position="top-right" />
+      {/* <Snackbar position="top-right" /> */}
     </Block>
   );
 };

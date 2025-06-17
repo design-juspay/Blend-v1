@@ -582,15 +582,13 @@ export const getButtonTokens = (
           default: `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
           hover: foundationToken.colors.primary[500],
           active: `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
-          disabled: FOUNDATION_THEME.colors.primary[300],
+          disabled: foundationToken.colors.primary[300],
         },
         iconOnly: {
-          default:
-            `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
+          default: `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
           hover: foundationToken.colors.primary[500],
-          active:
-            `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
-          disabled: FOUNDATION_THEME.colors.primary[300],
+          active: `linear-gradient(180deg, ${foundationToken.colors.primary[600]} -5%, ${foundationToken.colors.primary[500]} 107.5%)`,
+          disabled: foundationToken.colors.primary[300],
         },
         inline: {
           default: "none",
@@ -621,13 +619,13 @@ export const getButtonTokens = (
       },
       danger: {
         default: {
-          default: `linear-gradient(180deg, ${FOUNDATION_THEME.colors.red[600]} 0%, ${FOUNDATION_THEME.colors.red[500]} 93.75%)`,
+          default: `linear-gradient(180deg, ${foundationToken.colors.red[600]} 0%, ${foundationToken.colors.red[500]} 93.75%)`,
           hover: foundationToken.colors.red[500],
           active: foundationToken.colors.red[500],
           disabled: foundationToken.colors.red[300],
         },
         iconOnly: {
-          default: `linear-gradient(180deg, ${FOUNDATION_THEME.colors.red[600]} 0%, ${FOUNDATION_THEME.colors.red[500]} 93.75%)`,
+          default: `linear-gradient(180deg, ${foundationToken.colors.red[600]} 0%, ${foundationToken.colors.red[500]} 93.75%)`,
           hover: foundationToken.colors.red[500],
           active: foundationToken.colors.red[500],
           disabled: foundationToken.colors.red[300],
@@ -641,13 +639,13 @@ export const getButtonTokens = (
       },
       success: {
         default: {
-          default: `linear-gradient(180deg, ${FOUNDATION_THEME.colors.green[600]} 0%, ${FOUNDATION_THEME.colors.green[500]} 100%)`,
+          default: `linear-gradient(180deg, ${foundationToken.colors.green[600]} 0%, ${foundationToken.colors.green[500]} 100%)`,
           hover: foundationToken.colors.green[500],
           active: foundationToken.colors.green[600],
           disabled: foundationToken.colors.green[300],
         },
         iconOnly: {
-          default: `linear-gradient(180deg, ${FOUNDATION_THEME.colors.green[600]} 0%, ${FOUNDATION_THEME.colors.green[500]} 100%)`,
+          default: `linear-gradient(180deg, ${foundationToken.colors.green[600]} 0%, ${foundationToken.colors.green[500]} 100%)`,
           hover: foundationToken.colors.green[500],
           active: foundationToken.colors.green[600],
           disabled: foundationToken.colors.green[300],

@@ -26,5 +26,12 @@ export * from "./components/Sidebar";
 export * from "./components/MultiSelect";
 export * from "./components/SingleSelect";
 
+// V2 Components with Theme Support
+export * from "./components/ButtonGroupV2";
+export * from "./components/ButtonV2";
+
+
 export * from "./context";
 export * from "./tokens";
+
+

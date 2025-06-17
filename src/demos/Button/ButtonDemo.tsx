@@ -14,13 +14,11 @@ import {
   Trash,
   Check,
   Plus,
-  Circle,
   CircleAlert,
 } from "lucide-react";
 import "./ButtonDemo.css";
 import ButtonV2 from "../../../lib/components/ButtonV2/ButtonV2";
 import {
-  ButtonSizeV2,
   ButtonSubTypeV2,
   ButtonTypeV2,
 } from "../../../lib/components/ButtonV2/types";
@@ -81,9 +79,11 @@ const ButtonDemo: React.FC = () => {
         <ButtonV2
           text="Button"
           buttonType={ButtonTypeV2.PRIMARY}
+          // loading
+          // disabled
           // onClick={() => alert("Primary")}
         />
-        <div className="test-button-for-aryan" >
+        <div className="test-button-for-aryan">
           <ButtonV2
             text="Button"
             buttonType={ButtonTypeV2.SECONDARY}

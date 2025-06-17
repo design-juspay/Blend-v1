@@ -5,9 +5,8 @@ import SidebarDemo from "./demos/sidebar/SidebarDemo";
 function App() {
   return (
     <>
-      <Tag text="Tag" />
       <SidebarDemo />
-      <Snackbar />
+      <Snackbar duration={10000} />
     </>
   );
 }

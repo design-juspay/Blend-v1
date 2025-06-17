@@ -17,7 +17,7 @@ export enum ButtonSubTypeV2 {
   INLINE = "inline",
 }
 
-export type ButtonProps = {
+export type ButtonV2Props = {
   buttonType?: ButtonTypeV2;
   size?: ButtonSizeV2;
   subType?: ButtonSubTypeV2;
@@ -29,4 +29,7 @@ export type ButtonProps = {
   ref?: React.RefObject<HTMLButtonElement>;
   disabled?: boolean;
   onClick?: () => void;
+  loading?: boolean;
+  buttonGroupPosition?: "center" | "left" | "right";
+  key?: string | number;
 };
