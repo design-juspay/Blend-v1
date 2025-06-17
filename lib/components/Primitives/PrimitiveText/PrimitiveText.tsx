@@ -88,7 +88,11 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
   if (letterSpacing !== undefined) styles.letterSpacing = letterSpacing;
   if (textAlign !== undefined) styles.textAlign = textAlign;
   if (opacity !== undefined) styles.opacity = opacity;
-  if (fontFamily !== undefined) styles.fontFamily = fontFamily;
+  if (fontFamily !== undefined) {
+    styles.fontFamily = fontFamily;
+  } else {
+    styles.fontFamily = "inherit";
+  }
   if (color !== undefined) styles.color = color;
 
   // Spacing

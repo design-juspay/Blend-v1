@@ -1,9 +1,5 @@
-import Snackbar, {
-  addSnackbar,
-} from "../../../lib/components/Snackbar/Snackbar";
-import { SnackbarVariant } from "../../../lib/components/Snackbar/types";
-import Button from "../../../lib/components/Button/Button";
-import { ButtonSize, ButtonType } from "../../../lib/components/Button";
+import { addSnackbar, SnackbarVariant } from "../../../lib/main";
+import { ButtonSize, ButtonType, Button } from "../../../lib/main";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Text from "../../../lib/components/Text/Text";
 
@@ -140,7 +136,7 @@ const SnackbarDemo = () => {
       </Block>
 
       {/* Snackbar Component (required for the toasts to appear) */}
-      <Snackbar position="top-right" />
+      {/* <Snackbar position="top-right" /> */}
     </Block>
   );
 };

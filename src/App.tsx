@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <SidebarDemo />
-      <Snackbar />
+      <Snackbar duration={10000} />
     </>
   );
 }
