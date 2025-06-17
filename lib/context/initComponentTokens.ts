@@ -16,6 +16,7 @@ import { getUnitInputTokens } from "../components/Inputs/UnitInput/unitInput.tok
 import { getMultiValueInputTokens } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 import { getDropdownInputTokens } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 import { getButtonTokens } from "../components/ButtonV2/button.tokens";
+import { getModalComponentTokens } from "../components/Modal/modal.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -46,6 +47,7 @@ const initTokens = (
     CHECKBOX: componentTokens.CHECKBOX ?? getCheckboxTokens(foundationTokens),
     TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens),
     BUTTON: componentTokens.BUTTON ?? getButtonTokens(foundationTokens),
+    MODAL: componentTokens.MODAL ?? getModalComponentTokens(foundationTokens),
   };
 };
 
