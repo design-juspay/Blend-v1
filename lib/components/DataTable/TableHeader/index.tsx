@@ -33,22 +33,6 @@ const TableRow = styled.tr`
   ${dataTableTokens.tr.base}
 `;
 
-const EditIcon = styled(Edit2)`
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  cursor: pointer;
-  color: ${FOUNDATION_THEME.colors.gray[500]};
-  
-  &:hover {
-    color: ${FOUNDATION_THEME.colors.primary[600]};
-  }
-`;
-
-const HeaderContainer = styled(Block)`
-  &:hover ${EditIcon} {
-    opacity: 1;
-  }
-`;
 
 const MoreIcon = styled(MoreVertical)`
   cursor: pointer;
@@ -60,11 +44,13 @@ const MoreIcon = styled(MoreVertical)`
   }
 `;
 
-const HeaderCellContainer = styled(Block)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+const EditIcon = styled(Edit2)`
+  cursor: pointer;
+  color: ${FOUNDATION_THEME.colors.gray[500]};
+  
+  &:hover {
+    color: ${FOUNDATION_THEME.colors.primary[600]};
+  }
 `;
 
 const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>(({
@@ -81,6 +67,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
   getColumnWidth,
 }, ref) => {
   const [editingField, setEditingField] = useState<string | null>(null);
+  const [hoveredField, setHoveredField] = useState<string | null>(null);
   const [localColumns, setLocalColumns] = useState(visibleColumns);
   const editableRef = useRef<HTMLDivElement>(null);
 
@@ -190,8 +177,23 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                 maxWidth: columnWidth
               }}
             >
-              <HeaderCellContainer>
-                <HeaderContainer display='flex' alignItems='center' gap={8}>
+              <Block
+                display='flex'
+                alignItems='center'
+                justifyContent='space-between'
+                gap='8px'
+                width='100%'
+                minWidth={0}
+                onMouseEnter={() => setHoveredField(String(column.field))}
+                onMouseLeave={() => setHoveredField(null)}
+              >
+                <Block 
+                  display='flex' 
+                  alignItems='center' 
+                  minWidth={0}
+                  flexGrow={1}
+                  overflow='hidden'
+                >
                   {isEditing ? (
                     <Block
                       ref={editableRef}
@@ -200,20 +202,26 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                       onBlur={(e) => handleHeaderSave(String(column.field), e.currentTarget.textContent || '')}
                       onKeyDown={(e) => handleHeaderKeyDown(e, String(column.field))}
                       style={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
                         minWidth: 0,
                         flex: 1,
                         outline: 'none',
-                        cursor: 'text'
+                        cursor: 'text',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
                       }}
                     >
                       {column.header}
                     </Block>
                   ) : (
-                    <>
+                    <Block
+                      display='flex'
+                      alignItems='center'
+                      minWidth={0}
+                      flexGrow={1}
+                      position='relative'
+                    >
                       <PrimitiveText
+                        title={column.header}
                         style={{
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -225,27 +233,48 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                         {column.header}
                       </PrimitiveText>
                       {enableInlineEdit && (
-                        <EditIcon 
-                          size={14} 
-                          onClick={() => handleHeaderEdit(String(column.field))}
-                        />
+                        <Block
+                          as='span'
+                          className="edit-icon-wrapper"
+                          display='flex'
+                          alignItems='center'
+                          marginLeft='4px'
+                          opacity={hoveredField === String(column.field) ? 1 : 0}
+                          transition='opacity 0.2s'
+                          zIndex={2}
+                          flexShrink={0}
+                        >
+                          <EditIcon 
+                            size={14} 
+                            onClick={() => handleHeaderEdit(String(column.field))}
+                          />
+                        </Block>
                       )}
-                    </>
+                    </Block>
                   )}
-                </HeaderContainer>
+                </Block>
 
                 {column.isSortable && (
-                  <Menu
-                    trigger={<MoreIcon size={16} />}
-                    items={[{
-                      label: column.header,
-                      items: menuItems
-                    }]}
-                    alignment={MenuAlignment.END}
-                    side={MenuSide.BOTTOM}
-                  />
+                  <Block
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'
+                    flexShrink={0}
+                    width='16px'
+                    height='16px'
+                  >
+                    <Menu
+                      trigger={<MoreIcon size={16} />}
+                      items={[{
+                        label: column.header,
+                        items: menuItems
+                      }]}
+                      alignment={MenuAlignment.END}
+                      side={MenuSide.BOTTOM}
+                    />
+                  </Block>
                 )}
-              </HeaderCellContainer>
+              </Block>
             </TableHeaderCell>
           );
         })}
@@ -278,4 +307,4 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
 
 TableHeader.displayName = "TableHeader";
 
-export default TableHeader; 
+export default TableHeader;

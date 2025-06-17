@@ -118,7 +118,7 @@ const dataTableTokens: DataTableToken = {
     base: {
       height: FOUNDATION_THEME.unit[56],
       "&:hover": {
-        backgroundColor: FOUNDATION_THEME.colors.gray[25],
+        backgroundColor: FOUNDATION_THEME.colors.gray[50],
       },
     },
   },

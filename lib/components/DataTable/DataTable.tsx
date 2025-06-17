@@ -69,7 +69,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const [pageSize, setPageSize] = useState<number>(pagination?.pageSize || 10);
 
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
-  const [selectAll, setSelectAll] = useState(false);
+  const [selectAll, setSelectAll] = useState<boolean | 'indeterminate'>(false);
   
   // Search and filter state
   const [searchConfig, setSearchConfig] = useState<SearchConfig>({ query: '', caseSensitive: false });
@@ -117,21 +117,42 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     return processedData.slice(startIndex, startIndex + pageSize);
   }, [processedData, currentPage, pageSize, serverSideSearch, serverSideFiltering]);
 
+  const updateSelectAllState = (selectedRowsState: Record<string, boolean>) => {
+    const currentPageRowIds = currentData.map(row => String(row[idField]));
+    const selectedCurrentPageRows = currentPageRowIds.filter(rowId => selectedRowsState[rowId]);
+    
+    if (selectedCurrentPageRows.length === 0) {
+      setSelectAll(false);
+    } else if (selectedCurrentPageRows.length === currentPageRowIds.length) {
+      setSelectAll(true);
+    } else {
+      setSelectAll('indeterminate');
+    }
+  };
+
   useEffect(() => {
-    setSelectedRows({});
-    setSelectAll(false);
-  }, [data]);
+    updateSelectAllState(selectedRows);
+  }, [currentData, selectedRows]);
 
   const handleSelectAll = (checked: boolean | 'indeterminate') => {
     const newSelectAll = checked === true;
-    setSelectAll(newSelectAll);
-
+    
     const newSelectedRows = { ...selectedRows };
-    currentData.forEach(row => {
-      const rowId = row[idField] as string;
-      newSelectedRows[rowId] = newSelectAll;
-    });
+    
+    if (newSelectAll) {
+      currentData.forEach(row => {
+        const rowId = String(row[idField]);
+        newSelectedRows[rowId] = true;
+      });
+    } else {
+      currentData.forEach(row => {
+        const rowId = String(row[idField]);
+        newSelectedRows[rowId] = false;
+      });
+    }
+    
     setSelectedRows(newSelectedRows);
+        updateSelectAllState(newSelectedRows);
   };
 
   const handleRowSelect = (rowId: unknown) => {
@@ -144,12 +165,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     };
     setSelectedRows(newSelectedRows);
 
-    // Check if all rows are selected
-    const allSelected = currentData.every(row => {
-      const currentRowId = String(row[idField]);
-      return newSelectedRows[currentRowId];
-    });
-    setSelectAll(allSelected);
+    // Update selectAll state based on current page selection
+    updateSelectAllState(newSelectedRows);
   };
 
   // Export selected rows to CSV
@@ -429,7 +446,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               <TableHeader
                 visibleColumns={visibleColumns}
                 initialColumns={initialColumns}
-                sortConfig={sortConfig}
                 selectAll={selectAll}
                 enableInlineEdit={enableInlineEdit}
                 enableColumnManager={enableColumnManager}

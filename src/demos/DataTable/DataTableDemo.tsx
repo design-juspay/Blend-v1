@@ -595,7 +595,7 @@ const DataTableDemo = () => {
 
         <DataTable
           data={data}
-          columns={columns as ColumnDefinition<Record<string, unknown>>[]}
+          columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
           description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, and expandable rows`}

@@ -1,11 +1,9 @@
 import { ColumnDefinition } from '../types';
-import { SortConfig } from '../types';
 
 export type TableHeaderProps<T extends Record<string, unknown>> = {
   visibleColumns: ColumnDefinition<T>[];
   initialColumns: ColumnDefinition<T>[];
-  sortConfig: SortConfig | null;
-  selectAll: boolean;
+  selectAll: boolean | 'indeterminate';
   enableInlineEdit?: boolean;
   enableColumnManager?: boolean;
   enableRowExpansion?: boolean;

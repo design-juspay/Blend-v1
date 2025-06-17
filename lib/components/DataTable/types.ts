@@ -14,14 +14,14 @@ export enum FilterType {
   NUMBER = "number",
 }
 
-export type ColumnDefinition<T> = {
-  /** Field key in data object */
+export type ColumnDefinition<T extends Record<string, unknown>> = {
+  /** Field key in data object - must be a valid key of T */
   field: keyof T;
-  /** Header text to display */
+  /** Header text to display - must be a string */
   header: string;
-  /** Column type for filtering and display */
+  /** Column type for filtering and display - must be a valid ColumnType */
   type: ColumnType;
-  /** Width of the column */
+  /** Width of the column - must be a valid CSS width string */
   width?: string;
   /** Whether column is sortable */
   isSortable?: boolean;
@@ -33,23 +33,24 @@ export type ColumnDefinition<T> = {
   isEditable?: boolean;
   /** Whether column is filterable */
   isFilterable?: boolean;
-  /** Type of filter for this column */
+  /** Type of filter for this column - must be a valid FilterType */
   filterType?: FilterType;
   /** Filter options for select/multiselect filters */
   filterOptions?: FilterOption[];
-  /** Custom classes to apply to the column */
+  /** Custom classes to apply to the column - must be a string */
   className?: string;
-  renderCell?: (value: unknown, row: T) => React.ReactNode;
+  /** Custom render function for display mode */
+  renderCell?: (value: T[keyof T], row: T) => React.ReactNode;
   /** Custom render for edit mode */
-  renderEditCell?: (value: unknown, row: T, onChange: (value: unknown) => void) => React.ReactNode;
+  renderEditCell?: (value: T[keyof T], row: T, onChange: (value: unknown) => void) => React.ReactNode;
 }
 
 export type FilterOption = {
-  /** Unique identifier for the filter option */
+  /** Unique identifier for the filter option - must be a non-empty string */
   id: string;
-  /** Display label for the filter */
+  /** Display label for the filter - must be a non-empty string */
   label: string;
-  /** Value to filter by */
+  /** Value to filter by - must be a string */
   value: string;
   /** Optional nested options */
   options?: FilterOption[];
@@ -102,7 +103,7 @@ export type PaginationConfig = {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-export type ColumnManagerProps<T> = {
+export type ColumnManagerProps<T extends Record<string, unknown>> = {
   columns: ColumnDefinition<T>[];
   visibleColumns: ColumnDefinition<T>[];
   onColumnChange: (columns: ColumnDefinition<T>[]) => void;
