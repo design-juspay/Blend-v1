@@ -17,6 +17,7 @@ import { getMultiValueInputTokens } from "../components/Inputs/MultiValueInput/m
 import { getDropdownInputTokens } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 import { getButtonTokens } from "../components/ButtonV2/button.tokens";
 import { getModalComponentTokens } from "../components/Modal/modal.tokens";
+import { getBreadcrumbTokens } from "../components/Breadcrumb/breadcrumb.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -48,6 +49,8 @@ const initTokens = (
     TABS: componentTokens.TABS ?? getTabsTokens(foundationTokens),
     BUTTON: componentTokens.BUTTON ?? getButtonTokens(foundationTokens),
     MODAL: componentTokens.MODAL ?? getModalComponentTokens(foundationTokens),
+    BREADCRUMB:
+      componentTokens.BREADCRUMB ?? getBreadcrumbTokens(foundationTokens),
   };
 };
 

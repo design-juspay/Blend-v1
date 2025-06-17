@@ -8,9 +8,9 @@ export type ButtonState = "default" | "hover" | "active" | "disabled";
 export type ButtonTokensType = {
   gap: CSSObject["gap"];
   backgroundColor: {
-    [key in ButtonTypeV2]: {
-      [key in ButtonSubTypeV2]: {
-        [key in ButtonState]: CSSObject["background"];
+    [key in ButtonTypeV2]: { 
+      [key in ButtonSubTypeV2]: { 
+        [key in ButtonState]: CSSObject["background"]; 
       };
     };
   };
