@@ -34,6 +34,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     enableFiltering = false,
     serverSideSearch = false,
     serverSideFiltering = false,
+    serverSidePagination = false,
+    isLoading = false,
     enableColumnManager = true,
     showToolbar = true,
     enableInlineEdit = false,
@@ -88,6 +90,11 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const processedData = useMemo(() => {
     let result = [...data];
 
+    // Skip processing if server-side pagination is enabled since data comes pre-processed
+    if (serverSidePagination) {
+      return result;
+    }
+
     // Apply search only if not server-side
     if (enableSearch && !serverSideSearch && searchConfig.query.trim()) {
       result = searchData(result, searchConfig, visibleColumns);
@@ -104,18 +111,18 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
 
     return result;
-  }, [data, searchConfig, columnFilters, sortConfig, visibleColumns, enableSearch, enableFiltering, serverSideSearch, serverSideFiltering]);
+  }, [data, searchConfig, columnFilters, sortConfig, visibleColumns, enableSearch, enableFiltering, serverSideSearch, serverSideFiltering, serverSidePagination]);
 
   const currentData = useMemo(() => {
-    // If server-side search/filtering is enabled, assume data is already paginated by server
-    if (serverSideSearch || serverSideFiltering) {
+    // If server-side search/filtering/pagination is enabled, assume data is already processed by server
+    if (serverSideSearch || serverSideFiltering || serverSidePagination) {
       return processedData;
     }
     
     // Otherwise, apply local pagination
     const startIndex = (currentPage - 1) * pageSize;
     return processedData.slice(startIndex, startIndex + pageSize);
-  }, [processedData, currentPage, pageSize, serverSideSearch, serverSideFiltering]);
+  }, [processedData, currentPage, pageSize, serverSideSearch, serverSideFiltering, serverSidePagination]);
 
   const updateSelectAllState = (selectedRowsState: Record<string, boolean>) => {
     const currentPageRowIds = currentData.map(row => String(row[idField]));
@@ -485,6 +492,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
           currentPage={currentPage}
           pageSize={pageSize}
           totalRows={totalRows}
+          isLoading={isLoading}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
         />

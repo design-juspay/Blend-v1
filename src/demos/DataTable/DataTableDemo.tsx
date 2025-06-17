@@ -289,34 +289,49 @@ const DataTableDemo = () => {
 
     // Handle pagination change (server-side only)
     const handlePageChange = (page: number) => {
+      console.log('🔄 Page change requested:', { page, isServerSideMode });
       setCurrentPage(page);
       
       if (isServerSideMode) {
+        // For server-side mode, fetch new data for the requested page
+        console.log('📡 Fetching server data for page:', page);
         fetchServerData(serverState.searchQuery, serverState.filters, page, pageSize);
+      } else {
+        console.log('💻 Local pagination - no server call needed');
       }
     };
 
     const handlePageSizeChange = (size: number) => {
+      console.log('🔄 Page size change requested:', { size, isServerSideMode });
       setPageSize(size);
       setCurrentPage(1);
       
       if (isServerSideMode) {
+        // For server-side mode, fetch new data with new page size
+        console.log('📡 Fetching server data with new page size:', size);
         fetchServerData(serverState.searchQuery, serverState.filters, 1, size);
+      } else {
+        console.log('💻 Local pagination - no server call needed');
       }
     };
 
     // Toggle between local and server-side modes
     const toggleMode = () => {
       const newMode = !isServerSideMode;
+      console.log('🔀 Switching mode:', { from: isServerSideMode ? 'server' : 'local', to: newMode ? 'server' : 'local' });
       setIsServerSideMode(newMode);
+      
+      // Reset pagination state when switching modes
+      setCurrentPage(1);
       
       if (newMode) {
         // Switching to server-side: Load initial server data
+        console.log('📡 Loading initial server data...');
         fetchServerData('', [], 1, pageSize);
       } else {
         // Switching to local: Load smaller local dataset
+        console.log('💻 Loading local dataset...');
         setData(generateLargeDataset(50));
-        setCurrentPage(1);
       }
     };
 
@@ -611,14 +626,16 @@ const DataTableDemo = () => {
           // Server-side configuration
           serverSideSearch={isServerSideMode}
           serverSideFiltering={isServerSideMode}
+          serverSidePagination={isServerSideMode}
+          isLoading={isLoading}
           pagination={{
             currentPage,
             pageSize,
             totalRows: isServerSideMode ? serverState.totalRecords : data.length,
             pageSizeOptions: [5, 10, 25, 50],
-            onPageChange: handlePageChange,
-            onPageSizeChange: handlePageSizeChange
           }}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
           defaultSort={sortConfig}
           onSortChange={(newSortConfig) => setSortConfig(newSortConfig)}
           onSearchChange={handleSearchChange}

@@ -143,6 +143,10 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   serverSideSearch?: boolean;
   /** Whether filtering is handled server-side (disables local filtering) */
   serverSideFiltering?: boolean;
+  /** Whether pagination is handled server-side (disables local pagination) */
+  serverSidePagination?: boolean;
+  /** Whether data is currently being loaded (shows loading states) */
+  isLoading?: boolean;
   /** Whether to show column manager */
   enableColumnManager?: boolean;
   /** Whether to show toolbar */
