@@ -4,7 +4,7 @@ import { FOUNDATION_THEME } from "../../tokens";
 import { MenuV2Props, MenuAlignment, MenuSide } from "./types";
 import React, { useState } from "react";
 import { filterMenuGroups } from "./utils";
-import MenuGroupSeperator from "./MenuGroupSeperator";
+
 import MenuItem from "./MenuItem";
 import Block from "../Primitives/Block/Block";
 import SearchInput from "../Inputs/SearchInput/SearchInput";
@@ -106,7 +106,13 @@ const Menu = ({
                 />
               ))}
               {groupId !== filteredItems.length - 1 && group.showSeparator && (
-                <MenuGroupSeperator />
+                <RadixMenu.Separator asChild>
+                  <Block
+                    height={1}
+                    backgroundColor={FOUNDATION_THEME.colors.gray[200]}
+                    margin="6px 0"
+                  ></Block>
+                </RadixMenu.Separator>
               )}
             </React.Fragment>
           ))}

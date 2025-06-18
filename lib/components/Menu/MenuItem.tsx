@@ -8,50 +8,47 @@ import {
 import { SubMenu } from "./SubMenu";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
-
-const getHoverBgColor = (item: MenuItemV2Type): string => {
-  if (item.variant === MenuItemV2Variant.ACTION) {
-    if (item.actionType === MenuItemV2ActionType.DANGER) {
-      return (
-        FOUNDATION_THEME.colors.red[50] ||
-        FOUNDATION_THEME.colors.gray[50] ||
-        ""
-      );
-    }
-    return (
-      FOUNDATION_THEME.colors.primary[50] ||
-      FOUNDATION_THEME.colors.gray[50] ||
-      ""
-    );
-  }
-  return FOUNDATION_THEME.colors.gray[50] || "";
-};
-
-const getTextColor = (item: MenuItemV2Type) => {
-  if (item.variant === MenuItemV2Variant.ACTION) {
-    if (item.actionType === MenuItemV2ActionType.DANGER) {
-      if (item.disabled === true) {
-        return FOUNDATION_THEME.colors.red[400];
-      }
-      return FOUNDATION_THEME.colors.red[600];
-    }
-    if (item.disabled === true) {
-      return FOUNDATION_THEME.colors.primary[300];
-    }
-    return FOUNDATION_THEME.colors.primary[600];
-  } else {
-    if (item.disabled === true) {
-      return FOUNDATION_THEME.colors.gray[400];
-    }
-    return FOUNDATION_THEME.colors.gray[600];
-  }
-};
+import { getTextColor } from "./menu.utils";
+import menuTokens, { MenuItemStates } from "./menu.tokens";
 
 const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
   if (item.subMenu) {
     return <SubMenu item={item} idx={idx} />;
   }
-  const hoverBg = getHoverBgColor(item);
+  if (item.variant === undefined) {
+    item.variant = MenuItemV2Variant.DEFAULT;
+  }
+
+  const getBgColor = (state: MenuItemStates) => {
+    const bg = menuTokens.item.backgroundColor;
+
+    // check for variant
+    if (item.variant === MenuItemV2Variant.DEFAULT) {
+      if (!item.disabled) {
+        return bg.default.enabled[state];
+      } else {
+        return bg.default.disabled[state];
+      }
+    } else {
+      // check for action type
+      if (item.actionType === undefined) {
+        item.actionType = MenuItemV2ActionType.PRIMARY;
+      }
+      if (item.actionType === MenuItemV2ActionType.PRIMARY) {
+        if (!item.disabled) {
+          return bg.action.primary.enabled[state];
+        } else {
+          return bg.action.primary.disabled[state];
+        }
+      } else {
+        if (!item.disabled) {
+          return bg.action.danger.enabled[state];
+        } else {
+          return bg.action.danger.disabled[state];
+        }
+      }
+    }
+  };
 
   return (
     <RadixMenu.Item
@@ -62,32 +59,45 @@ const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
       <Block
         key={idx}
         display="flex"
-        padding="6px"
-        margin="0px 6px"
-        borderRadius={4}
+        padding={menuTokens.item.padding}
+        margin={menuTokens.item.margin}
+        borderRadius={menuTokens.item.borderRadius}
         onClick={item.disabled ? undefined : item.onClick}
         cursor={item.disabled ? "not-allowed" : "pointer"}
-        border="none"
-        outline="none" // tokenised
+        border={menuTokens.item.border.default}
+        outline={menuTokens.item.outline.default}
         flexDirection="column"
-        gap={4} // tokenised
+        gap={menuTokens.item.gap}
+        backgroundColor={getBgColor("default")}
         _hover={{
-          backgroundColor: item.disabled ? "none" : hoverBg,
-          outline: "none !important",
-          border: "none !important",
+          backgroundColor: getBgColor("hover"),
         }}
-        _focus={{
-          outline: "none !important",
-          border: "none !important",
-        }}
-        _active={{
-          outline: "none !important",
-          border: "none !important",
-        }}
-        _focusVisible={{
-          outline: "none !important",
-          border: "none !important",
-        }}
+        // _hover={{
+        //   backgroundColor: menuTokens.item.backgroundColor.hover,
+        //   outline: menuTokens.item.outline.hover,
+        //   border: menuTokens.item.border.hover,
+        // }}
+        // _focus={{
+        //   outline: menuTokens.item.outline.focus,
+        //   border: menuTokens.item.border.focus,
+        //   backgroundColor: item.disabled
+        //     ? menuTokens.item.backgroundColor.disabled
+        //     : menuTokens.item.backgroundColor.focus,
+        // }}
+        // _active={{
+        //   outline: menuTokens.item.outline.active,
+        //   border: menuTokens.item.border.active,
+        //   backgroundColor: item.disabled
+        //     ? menuTokens.item.backgroundColor.disabled
+        //     : menuTokens.item.backgroundColor.active,
+        // }}
+        // _focusVisible={{
+        //   outline: menuTokens.item.outline.focusVisible,
+        //   border: menuTokens.item.border.focusVisible,
+        //   backgroundColor: item.disabled
+        //     ? menuTokens.item.backgroundColor.disabled
+        //     : menuTokens.item.backgroundColor.focusVisible,
+        // }}
         color={getTextColor(item)}
       >
         <Block
