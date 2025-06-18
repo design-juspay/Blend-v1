@@ -1,6 +1,5 @@
-import { CheckboxSize } from './types';
-import checkboxTokens from './token';
-import { FOUNDATION_THEME } from '../../tokens';
+// import { CheckboxSize } from './types'; // Not strictly needed if getSpacingBySize etc. are removed
+// import { FOUNDATION_THEME } from '../../tokens'; // Not needed if token-specific utils are removed
 
 export const getCheckboxDataState = (checked: boolean | 'indeterminate'): string => {
   if (checked === 'indeterminate') return 'indeterminate';
@@ -9,40 +8,34 @@ export const getCheckboxDataState = (checked: boolean | 'indeterminate'): string
 
 export const extractPixelValue = (tokenValue: string | number | undefined): number => {
   if (typeof tokenValue === 'number') return tokenValue;
-  if (typeof tokenValue === 'string') return parseInt(tokenValue.replace('px', ''));
-  return 0; // fallback for undefined
+  if (typeof tokenValue === 'string') {
+    if (tokenValue.endsWith('px')) {
+      return parseInt(tokenValue.replace('px', ''), 10);
+    } else if (tokenValue.endsWith('rem')) {
+      return parseInt(tokenValue.replace('rem', ''), 10) * 16; // Assuming 1rem = 16px
+    } else if (tokenValue.endsWith('em')) {
+      return parseInt(tokenValue.replace('em', ''), 10) * 16; // Assuming 1em = 16px for base
+    }
+    // Attempt to parse as a number if no unit, or if it's just a number string
+    const parsedAsNumber = parseInt(tokenValue, 10);
+    if (!isNaN(parsedAsNumber)) {
+      return parsedAsNumber;
+    }
+  }
+  return 0; // fallback for undefined or unparsable
 };
 
+// This function is not currently used in Checkbox.tsx but kept for potential future use.
+// If it were to be used with the new token system, it would likely need access to the `tokens` object.
 export const getAccessibilityAttributes = (uniqueId: string, isIndeterminate: boolean) => {
   return {
     role: "checkbox",
     "aria-checked": isIndeterminate ? "mixed" : undefined,
     "aria-labelledby": `${uniqueId}-label`,
-    "aria-describedby": `${uniqueId}-description`
+    "aria-describedby": `${uniqueId}-description` // Assuming a description element exists
   };
 };
 
-export const getIconSize = (size: CheckboxSize): { width: string; height: string } => {
-  return {
-    width: String(checkboxTokens.sizes[size].icon.width || '0px'),
-    height: String(checkboxTokens.sizes[size].icon.height || '0px')
-  };
-};
-
-export const getSpacingBySize = (size: CheckboxSize): { margin: string; padding: string } => {
-  // Use foundation tokens for consistent spacing
-  const margin = size === CheckboxSize.SMALL ? String(FOUNDATION_THEME.unit[4]) : String(FOUNDATION_THEME.unit[6]);
-  const padding = String(FOUNDATION_THEME.unit[2]); // Consistent padding for both sizes
-  
-  return { margin, padding };
-};
-
-export const getFocusRingStyles = (isFocusVisible: boolean): string => {
-  if (!isFocusVisible) return '';
-  
-  return `
-    outline: ${FOUNDATION_THEME.border.width[2]} solid ${checkboxTokens.border.focus};
-    outline-offset: ${FOUNDATION_THEME.unit[2]};
-    box-shadow: 0 0 0 ${FOUNDATION_THEME.border.width[4]} rgba(0, 0, 0, ${FOUNDATION_THEME.opacity[10]});
-  `;
-}; 
+// getIconSize is now handled by tokens.indicator.iconSize
+// getSpacingBySize is now handled by tokens.subtext.spacing and tokens.slotGap
+// getFocusRingStyles is now handled by tokens.root.focus

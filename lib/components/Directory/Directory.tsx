@@ -7,6 +7,7 @@ import Section from "./Section";
 import Block from "../Primitives/Block/Block";
 import styled from "styled-components";
 import { handleSectionNavigation } from "./utils";
+import { ActiveItemProvider } from "./NavItem";
 
 const StyledNav = styled(Block)`
   &::-webkit-scrollbar {
@@ -26,35 +27,37 @@ const Directory = ({ directoryData, className }: DirectoryProps) => {
   }, [directoryData]);
 
   return (
-    <StyledNav
-      as="nav"
-      width="100%"
-      height="100%"
-      flexGrow={1}
-      display="flex"
-      flexDirection="column"
-      gap="16px"
-      alignItems="center"
-      overflow="auto"
-      paddingY="16px"
-      className={className}
-      aria-label="Directory navigation"
-    >
-      {directoryData.map((section, sectionIndex) => (
-        <Section
-          key={sectionIndex}
-          section={section}
-          sectionIndex={sectionIndex}
-          onNavigateBetweenSections={(direction, currentIndex) =>
-            handleSectionNavigation(
-              direction,
-              currentIndex,
-              directoryData.length
-            )
-          }
-        />
-      ))}
-    </StyledNav>
+    <ActiveItemProvider>
+      <StyledNav
+        as="nav"
+        width="100%"
+        height="100%"
+        flexGrow={1}
+        display="flex"
+        flexDirection="column"
+        gap="16px"
+        alignItems="center"
+        overflow="auto"
+        paddingY="16px"
+        className={className}
+        aria-label="Directory navigation"
+      >
+        {directoryData.map((section, sectionIndex) => (
+          <Section
+            key={sectionIndex}
+            section={section}
+            sectionIndex={sectionIndex}
+            onNavigateBetweenSections={(direction, currentIndex) =>
+              handleSectionNavigation(
+                direction,
+                currentIndex,
+                directoryData.length
+              )
+            }
+          />
+        ))}
+      </StyledNav>
+    </ActiveItemProvider>
   );
 };
 

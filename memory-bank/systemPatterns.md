@@ -130,3 +130,240 @@ The AvatarGroup component follows the modular architecture pattern with a focus 
 - Components in the same family share tokens for consistent styling (Tag and SplitTag).
 - Component-specific utilities can be shared between related components.
 - Related components maintain consistent prop naming and behavior.
+
+## ThemeProvider Implementation Patterns
+
+### Component Token Structure
+We follow a consistent token structure across components:
+
+```typescript
+$component.[$target].$property.[$variant].[$type].[$state]
+
+// Where:
+// $target: Specific part of component (e.g., indicator, label, sublabel)
+// $property: CSS property (e.g., background, color, border)
+// $variant: Component variants (e.g., subtle, filled)
+// $type: Subtype within variant (e.g., primary, secondary)
+// $state: Component states (e.g., default, hover, disabled)
+```
+
+### Example Token Implementations
+
+#### Switch Component
+```typescript
+export type SwitchTokensType = Readonly<{
+  // Base spacing
+  gap: CSSObject["gap"];
+  slotGap: CSSObject["gap"];
+
+  // Core dimensions
+  height: {
+    [key in SwitchSize]: CSSObject["height"];
+  };
+  width: {
+    [key in SwitchSize]: CSSObject["width"];
+  };
+
+  // Border radius
+  borderRadius: {
+    base: CSSObject["borderRadius"];
+    thumb: CSSObject["borderRadius"];
+  };
+
+  // Indicator (main switch)
+  indicator: {
+    [key in SwitchIndicatorState]: {
+      background: {
+        [key in Exclude<SwitchState, "error">]: CSSObject["backgroundColor"];
+      };
+      border: {
+        [key in Exclude<SwitchState, "error">]: CSSObject["borderColor"];
+      };
+    };
+  };
+
+  // Thumb (moving circle)
+  thumb: {
+    background: CSSObject["backgroundColor"];
+    border: {
+      color: CSSObject["borderColor"];
+      width: CSSObject["borderWidth"];
+    };
+    size: {
+      [key in SwitchSize]: {
+        width: CSSObject["width"];
+        height: CSSObject["height"];
+        top: CSSObject["top"];
+        offset: {
+          active: CSSObject["left"];
+          inactive: CSSObject["left"];
+        };
+      };
+    };
+  };
+
+  // Content styling
+  content: {
+    label: {
+      color: {
+        [key in SwitchState]: CSSObject["color"];
+      };
+      font: {
+        [key in SwitchSize]: {
+          fontSize: CSSObject["fontSize"];
+          fontWeight: CSSObject["fontWeight"];
+        };
+      };
+    };
+    sublabel: {
+      color: {
+        [key in SwitchState]: CSSObject["color"];
+      };
+      font: {
+        [key in SwitchSize]: {
+          fontSize: CSSObject["fontSize"];
+          fontWeight: CSSObject["fontWeight"];
+        };
+      };
+      spacing: {
+        left: {
+          [key in SwitchSize]: CSSObject["marginLeft"];
+        };
+        top: CSSObject["marginTop"];
+      };
+    };
+  };
+}>;
+```
+
+#### Radio Component
+```typescript
+// radio.token.ts
+export type RadioTokensType = Readonly<{
+  // Layout tokens
+  gap: CSSObject["gap"];
+  slotGap: CSSObject["gap"];
+  
+  // Indicator states
+  indicator: {
+    [key in RadioIndicatorState]: {
+      background: {
+        [key in Exclude<RadioState, "error">]: CSSObject["backgroundColor"];
+      };
+      border: {
+        [key in Exclude<RadioState, "error">]: CSSObject["borderColor"];
+      };
+    };
+  };
+  
+  // Content styling
+  content: {
+    label: {
+      color: {
+        [key in RadioState]: CSSObject["color"];
+      };
+      font: {
+        [key in RadioSize]: {
+          fontSize: CSSObject["fontSize"];
+          fontWeight: CSSObject["fontWeight"];
+        };
+      };
+    };
+    sublabel: {
+      color: {
+        [key in RadioState]: CSSObject["color"];
+      };
+      font: {
+        [key in RadioSize]: FontTokens;
+      };
+    };
+  };
+}>;
+```
+
+#### Tag Component
+```typescript
+// tag.tokens.ts
+export type TagTokensType = Readonly<{
+  background: {
+    [key in TagVariant]: {
+      [key in TagColor]: CSSObject["color"];
+    };
+  };
+  color: {
+    [key in TagVariant]: {
+      [key in TagColor]: CSSObject["color"];
+    };
+  };
+}>;
+```
+
+### Token Generation Pattern
+Components must provide a token generation function that maps foundation tokens to component tokens. The function should be the primary export, with a default export of the tokens using FOUNDATION_THEME for standalone usage:
+
+```typescript
+// Primary export - token generation function
+export const getSwitchTokens = (foundationToken: ThemeType): SwitchTokensType => {
+  return {
+    gap: foundationToken.unit[8],
+    slotGap: foundationToken.unit[6],
+    height: {
+      sm: foundationToken.unit[12],
+      md: foundationToken.unit[16]
+    },
+    // ... other tokens mapped from foundation tokens
+  };
+};
+
+// Default export for standalone usage
+const switchTokens: SwitchTokensType = getSwitchTokens(FOUNDATION_THEME);
+export default switchTokens;
+```
+
+### Component Implementation Pattern
+1. Use `useComponentToken` hook to access tokens (imported directly from source):
+```typescript
+import { useComponentToken } from '../../context/useContextToken';
+
+const Component = () => {
+  const tokens = useComponentToken("COMPONENT_NAME") as ComponentTokensType;
+  // Use tokens for styling
+};
+```
+
+2. Use transient props ($) for styled-components to avoid DOM pollution:
+```typescript
+const StyledComponent = styled.div<{
+  $isDisabled?: boolean;
+  $variant?: string;
+}>`
+  // Use tokens for styling
+  ${({ $isDisabled }) => css`
+    opacity: ${$isDisabled ? 0.7 : 1};
+  `}
+`;
+```
+
+3. Keep hooks internal to the library:
+```typescript
+// In context/index.ts
+export { default as ThemeProvider } from "./ThemeProvider";
+// Do NOT export internal hooks like useComponentToken
+```
+
+### Best Practices
+1. Always use Readonly<> for token types to prevent runtime modifications
+2. Use [key in ...] syntax for extensible token types
+3. Reference all values from foundation tokens
+4. Use transient props ($) for styled-components
+5. Keep token structure consistent across components
+6. Document component-specific token patterns in component files
+
+### Migration Steps for New Components
+1. Create `componentName.token.ts` with token type definitions
+2. Implement token generation function
+3. Add to ThemeProvider's initTokens
+4. Use useComponentToken in component
+5. Update tests to include token variations
+
+This standardization ensures consistent theming across the component library while maintaining type safety and extensibility.

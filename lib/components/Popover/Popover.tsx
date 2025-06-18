@@ -1,140 +1,95 @@
+import { useState } from "react";
 import * as RadixPopover from "@radix-ui/react-popover";
 import Block from "../Primitives/Block/Block";
-import styled from "styled-components";
-import { X } from "lucide-react";
-import { useState } from "react";
-import { Button, ButtonType, ButtonSubType } from "../Button";
 import { PopoverProps, PopoverSize } from "./types";
-import Text from "../Text/Text";
-import popoverTokens from "./popover.tokens";
+import PopoverHeader from "./PopoverHeader";
+import PopoverFooter from "./PopoverFooter";
+import { PopoverTokenType } from "./popover.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
 
-const StyledContent = styled(RadixPopover.Content)<{ $size: PopoverSize }>(
-  ({ $size }) => ({
-    borderRadius: popoverTokens.border.radius,
-    border: `${popoverTokens.border.width} solid ${popoverTokens.border.color}`,
-    background: popoverTokens.background.color,
-    boxShadow: popoverTokens.shadow,
-    padding: popoverTokens.padding[$size],
-    gap: popoverTokens.gap.content,
-    display: "flex",
-    flexDirection: "column",
-    width: popoverTokens.width[$size],
-    maxWidth: "100%",
-    zIndex: 1000
-  })
-);
-
-const PopoverHeader = ({
-  heading,
-  description,
-  showCloseButton,
-  onClose,
-  size = PopoverSize.SM,
-}: {
-  heading?: string;
-  description?: string;
-  showCloseButton?: boolean;
-  onClose?: () => void;
-  size?: PopoverSize;
-}) => {
-  return (
-    <Block display="flex" flexDirection="column" gap={popoverTokens.gap.header}>
-      <Block display="flex" justifyContent="space-between">
-        {heading && (
-          <Text
-            variant={popoverTokens.font.size.heading[size]}
-            fontWeight={popoverTokens.font.weight.heading}
-            color={popoverTokens.color.heading}
-          >
-            {heading}
-          </Text>
-        )}
-        {showCloseButton && (
-          <X
-            className="cursor-pointer"
-            size={popoverTokens.icon.close.size}
-            onClick={onClose}
-            color={popoverTokens.color.closeIcon}
-          />
-        )}
-      </Block>
-      {description && (
-        <Text
-          variant={popoverTokens.font.size[size]}
-          color={popoverTokens.color.description}
-        >
-          {description}
-        </Text>
-      )}
-    </Block>
-  );
-};
-
-const PopoverFooter = ({
-  primaryAction,
-  secondaryAction,
-}: {
-  primaryAction?: PopoverProps["primaryAction"];
-  secondaryAction?: PopoverProps["secondaryAction"];
-}) => {
-  if (!primaryAction && !secondaryAction) return null;
-
-  return (
-    <Block display="flex" gap={popoverTokens.gap.content}>
-      {primaryAction && (
-        <RadixPopover.Close asChild>
-          <Button
-            buttonType={primaryAction.type || ButtonType.PRIMARY}
-            text={primaryAction.label}
-            onClick={primaryAction.onClick}
-            isDisabled={primaryAction.isDisabled}
-            subType={primaryAction.subType || ButtonSubType.LINK}
-          />
-        </RadixPopover.Close>
-      )}
-      {secondaryAction && (
-        <RadixPopover.Close asChild>
-          <Button
-            buttonType={secondaryAction.type || ButtonType.SECONDARY}
-            text={secondaryAction.label}
-            onClick={secondaryAction.onClick}
-            isDisabled={secondaryAction.isDisabled}
-            subType={secondaryAction.subType || ButtonSubType.LINK}
-          />
-        </RadixPopover.Close>
-      )}
-    </Block>
-  );
-};
-
-export const Popover = ({
+const Popover = ({
   heading,
   description,
   trigger,
   children,
   showCloseButton = true,
+  onOpenChange,
+  open,
+  asModal = false,
   primaryAction,
   secondaryAction,
-  size = PopoverSize.SM,
+  sideOffset = 8,
+  side = "bottom",
+  align = "center",
+  alignOffset = 0,
+  width,
+  minWidth = 320,
+  maxWidth = 400,
+  height,
+  minHeight,
+  maxHeight,
+  zIndex = 1000,
+  size = PopoverSize.MEDIUM,
+  onClose,
 }: PopoverProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open);
+  const popoverTokens = useComponentToken("POPOVER") as PopoverTokenType;
   return (
-    <RadixPopover.Root open={isOpen} onOpenChange={setIsOpen}>
+    <RadixPopover.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (onOpenChange) {
+          onOpenChange(open);
+        }
+      }}
+      modal={asModal}
+    >
       <RadixPopover.Trigger asChild>{trigger}</RadixPopover.Trigger>
-      <StyledContent $size={size} sideOffset={8}>
-        <PopoverHeader
-          heading={heading}
-          description={description}
-          onClose={() => setIsOpen(false)}
-          showCloseButton={showCloseButton}
-          size={size}
-        />
-        <Block>{children}</Block>
-        <PopoverFooter
-          primaryAction={primaryAction}
-          secondaryAction={secondaryAction}
-        />
-      </StyledContent>
+      <RadixPopover.Content
+        style={{ zIndex }}
+        asChild
+        sideOffset={sideOffset}
+        side={side}
+        align={align}
+        alignOffset={alignOffset}
+      >
+        <Block
+          zIndex={popoverTokens.zIndex}
+          backgroundColor={popoverTokens.background}
+          padding={popoverTokens.padding}
+          boxShadow={popoverTokens.shadow}
+          borderRadius={popoverTokens.borderRadius}
+          border={popoverTokens.border}
+          width={width}
+          minWidth={minWidth}
+          maxWidth={maxWidth}
+          height={height}
+          minHeight={minHeight}
+          maxHeight={maxHeight}
+          display="flex"
+          flexDirection="column"
+          gap={popoverTokens.gap}
+        >
+          <PopoverHeader
+            heading={heading}
+            description={description}
+            showCloseButton={showCloseButton}
+            size={size}
+            onClose={() => {
+              setIsOpen(false);
+              if (onClose) {
+                onClose();
+              }
+            }}
+          />
+          {children}
+          <PopoverFooter
+            primaryAction={primaryAction}
+            secondaryAction={secondaryAction}
+          />
+        </Block>
+      </RadixPopover.Content>
     </RadixPopover.Root>
   );
 };

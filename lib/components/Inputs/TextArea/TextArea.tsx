@@ -1,9 +1,10 @@
-import { FOUNDATION_THEME } from "../../../tokens";
 import Block from "../../Primitives/Block/Block";
 import PrimitiveTextarea from "../../Primitives/PrimitiveTextArea";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import { TextAreaProps } from "./types";
+import { useComponentToken } from "../../../context/useComponentToken";
+import { TextAreaTokensType } from "./textarea.token";
 
 const TextArea = ({
   value,
@@ -25,6 +26,7 @@ const TextArea = ({
   wrap,
   resize = "none",
 }: TextAreaProps) => {
+  const textAreaTokens = useComponentToken("TEXT_AREA") as TextAreaTokensType;
   return (
     <Block display="flex" flexDirection="column" gap={8} width="100%">
       <InputLabels
@@ -46,36 +48,26 @@ const TextArea = ({
         required={required}
         cols={cols}
         wrap={wrap}
-        borderRadius={8}
+        borderRadius={textAreaTokens.borderRadius}
         resize={resize}
-        padding={"10px 14px"}
-        boxShadow={FOUNDATION_THEME.shadows.sm}
-        border={
-          error
-            ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-            : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
-        }
-        outline="none"
+        paddingX={textAreaTokens.paddingX}
+        paddingY={textAreaTokens.paddingY}
+        boxShadow={textAreaTokens.boxShadow}
+        fontFamily={textAreaTokens.fontFamily}
+        border={textAreaTokens.border[error ? "error" : "default"]}
+        outline={textAreaTokens.outline[error ? "error" : "default"]}
         _hover={{
-          border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
+          border: textAreaTokens.border.hover,
         }}
-        color={
-          disabled
-            ? FOUNDATION_THEME.colors.gray[300]
-            : FOUNDATION_THEME.colors.gray[800]
-        }
-        _focusVisible={{
-          border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
-          outline: "none !important",
-        }}
+        color={textAreaTokens.color[disabled ? "disabled" : "default"]}
         _focus={{
-          border: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
-          outline: "none !important",
+          border: textAreaTokens.border.focus,
+          outline: textAreaTokens.outline.focus,
         }}
         disabled={disabled}
         _disabled={{
-          backgroundColor: FOUNDATION_THEME.colors.gray[50],
-          border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+          backgroundColor: textAreaTokens.backgroundColor.disabled,
+          border: textAreaTokens.border.disabled,
           cursor: "not-allowed",
         }}
       />

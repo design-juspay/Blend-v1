@@ -1,10 +1,10 @@
 import React from 'react';
 import { RadioProps, RadioSize } from './types';
 import { getRadioDataState } from './utils';
-import { StyledRadioInput, StyledRadioLabel } from './StyledRadio';
+import { StyledRadioInput, StyledRadioLabel, StyledRadioText } from './StyledRadio';
 import Block from '../Primitives/Block/Block';
-import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import radioTokens from './token';
+import { RadioTokensType } from './radio.token';
+import { useComponentToken } from '../../context/useComponentToken';
 
 export const Radio = ({
   id,
@@ -21,8 +21,7 @@ export const Radio = ({
   slot,
   name,
 }: RadioProps) => {
-  // TODO: This is a temporary fix to avoid the warning about useId.
-  // We need to find a better solution to handle the id.
+  const radioTokens = useComponentToken("RADIO") as RadioTokensType;
   const generatedId = React.useId();
   const uniqueId = id || generatedId;
   
@@ -45,8 +44,8 @@ export const Radio = ({
   const currentChecked = isControlled ? checked : defaultChecked;
 
   return (
-    <Block display="flex" flexDirection="column">
-      <Block display="flex" alignItems="center">
+    <Block display="flex" flexDirection="column" gap={radioTokens.gap}>
+      <Block display="flex" alignItems={subtext ? "flex-start" : "center"} gap={radioTokens.slotGap}>
         <StyledRadioInput
           type="radio"
           id={uniqueId}
@@ -63,53 +62,56 @@ export const Radio = ({
           $error={error}
         />
         
-        {children && (
-          <StyledRadioLabel
-            htmlFor={uniqueId}
-            $isDisabled={disabled}
-            $error={error}
-          >
-            <PrimitiveText
-              as="span"
-              fontSize={radioTokens.sizes[size].fontSize}
-              fontWeight={radioTokens.label.fontWeight}
+        <Block display="flex" flexDirection="column" gap={radioTokens.gap}>
+          {children && (
+            <StyledRadioLabel
+              htmlFor={uniqueId}
+              $isDisabled={disabled}
+              $error={error}
             >
-              {children}
-              {required && (
-                <PrimitiveText
-                  as="span"
-                  color={radioTokens.required.color}
-                  margin={`0 0 0 ${radioTokens.required.spacing}`}
-                >
-                  *
-                </PrimitiveText>
-              )}
-            </PrimitiveText>
-          </StyledRadioLabel>
-        )}
+              <StyledRadioText
+                as="span"
+                fontSize={radioTokens.content.label.font[size].fontSize}
+                fontWeight={radioTokens.content.label.font[size].fontWeight}
+                $isDisabled={disabled}
+                $error={error}
+              >
+                {children}
+                {required && (
+                  <StyledRadioText
+                    as="span"
+                    $error={error}
+                    $isDisabled={disabled}
+                    $margin={`0 0 0 ${radioTokens.slotGap}`}
+                  >
+                    *
+                  </StyledRadioText>
+                )}
+              </StyledRadioText>
+            </StyledRadioLabel>
+          )}
+          {subtext && (
+            <StyledRadioText
+              as="span"
+              fontSize={radioTokens.content.sublabel.font[size].fontSize}
+              fontWeight={radioTokens.content.sublabel.font[size].fontWeight}
+              $isDisabled={disabled}
+              $error={error}
+              $isSubtext={true}
+            >
+              {subtext}
+            </StyledRadioText>
+          )}
+        </Block>
         {slot && (
-          <Block as="span" marginLeft={radioTokens.spacing.rightSlot}>
+          <Block 
+            as="span" 
+            width={radioTokens.slot.size[size]}
+          >
             {slot}
           </Block>
         )}
       </Block>
-
-      {subtext && (
-        <Block 
-          marginLeft={radioTokens.sizes[size].subtext.marginLeft}
-          marginTop={radioTokens.sizes[size].subtext.marginTop}
-        >
-          <PrimitiveText
-            as="span"
-            color={disabled ? radioTokens.subtext.disabled : 
-                   error ? radioTokens.subtext.error : 
-                   radioTokens.subtext.default}
-            fontSize={radioTokens.sizes[size].subtext.fontSize}
-          >
-            {subtext}
-          </PrimitiveText>
-        </Block>
-      )}
     </Block>
   );
 };

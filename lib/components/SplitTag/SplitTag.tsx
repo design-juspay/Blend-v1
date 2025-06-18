@@ -27,5 +27,7 @@ const SplitTag = ({ primaryTag, secondaryTag, size, shape }: SplitTagProps) => {
   );
 };
 
+SplitTag.displayName = "SplitTag";
+
 export default SplitTag;
 

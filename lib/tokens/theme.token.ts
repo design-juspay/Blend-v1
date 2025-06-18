@@ -2,10 +2,10 @@ import shadowTokens, { type ShadowTokensType } from "./shadows.tokens";
 import borderTokens, { type BorderTokensType } from "./border.tokens";
 import fontTokens, { type FontTokensType } from "./font.tokens";
 import opacityTokens, { type OpacityTokensType } from "./opacity.tokens";
-import unitTokens, { UnitTokensType } from "./unit.tokens";
-import colorTokens, { ColorTokensType } from "./color.tokens";
+import unitTokens, { type UnitTokensType } from "./unit.tokens";
+import colorTokens, { type ColorTokensType } from "./color.tokens";
 
-export type ThemeType = {
+export type FoundationTokenType = {
   shadows: ShadowTokensType;
   border: BorderTokensType;
   font: FontTokensType;
@@ -14,7 +14,7 @@ export type ThemeType = {
   colors: ColorTokensType;
 };
 
-const FOUNDATION_THEME: ThemeType = {
+const FOUNDATION_THEME: FoundationTokenType = {
   shadows: shadowTokens,
   border: borderTokens,
   font: fontTokens,

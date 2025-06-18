@@ -161,6 +161,13 @@
       - Required field indicator with red asterisk
       - Error state support with visual feedback
       - Slot support for additional content
+  - ✅ **Token Structure Refactor & ThemeProvider Integration**:
+    - ✅ Aligned `CheckboxTokensType` with Radio/Switch patterns (nested `content` object, `indicator` for square, `icon` for symbol).
+    - ✅ Updated `indicator.background` and `indicator.border.color` to use nested `[CheckedState][InteractionState]` structure.
+    - ✅ Corrected token filename to `checkbox.token.ts` and updated all imports.
+    - ✅ Ensured HDFC theme tokens for Checkbox match the new structure.
+    - ✅ Updated Checkbox demo for token changes and themed example interactivity.
+    - ✅ Verified with successful project build.
 
 - ✅ Radio and RadioGroup components with different sizes and states
   - ✅ Support for different sizes (small, medium)
@@ -427,4 +434,26 @@
 - Further enhance the demo system with interactive examples
 - Add keyboard navigation and accessibility improvements
 - Apply slot-based patterns to other components where applicable
-- Continue refining the codebase with DRY principles 
+- Continue refining the codebase with DRY principles
+
+## Component Library Progress
+
+### Recently Completed
+- Implemented ThemeProvider support in Radio component
+  - Added comprehensive token structure
+  - Fixed styling and alignment issues
+  - Implemented proper state management
+  - Added transient props pattern
+- Implemented ThemeProvider support in Tags component
+  - Created extensible token structure
+  - Established variant and color patterns
+
+### Documentation Updates
+- Added ThemeProvider implementation patterns to systemPatterns.md
+- Updated component documentation with token structure
+- Established guidelines for future component theming
+
+### In Progress
+- Reviewing other components for ThemeProvider integration
+- Standardizing token structure across components
+- Implementing transient props pattern where needed

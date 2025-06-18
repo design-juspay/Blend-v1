@@ -3,7 +3,7 @@ import { User2 } from "lucide-react";
 import { SelectMenuGroupType } from "../../../lib/components/Select/types";
 import {
   DropdownInput,
-  InputSize,
+  TextInputSize,
   MultiValueInput,
   NumberInput,
   NumberInputSize,
@@ -32,10 +32,12 @@ const InputDemo: React.FC = () => {
   const [dropdownValue, setDropdownValue] = useState<string>("");
   const [dropDownText, setDropDownText] = useState<string>("");
   const [unitValue, setUnitValue] = useState<number>(0);
-  const [inputSize, setInputSize] = useState<InputSize>(InputSize.MEDIUM);
+  const [inputSize, setInputSize] = useState<TextInputSize>(
+    TextInputSize.MEDIUM
+  );
   const [otp1, setOtp1] = useState("");
   const [selectedInput, setSelectedInput] =
-    useState<string>("multi-value-input");
+    useState<string>("dropdown");
   const [tags, setTags] = useState<string[]>([
     "Tag 1",
     "Tag 2",
@@ -100,6 +102,7 @@ const InputDemo: React.FC = () => {
         flexDirection: "column",
         gap: 16,
         maxWidth: 400,
+        padding: 16,
       }}
     >
       <div style={{ marginBottom: 16 }}>
@@ -144,9 +147,9 @@ const InputDemo: React.FC = () => {
           <input
             type="radio"
             name="inputSize"
-            value={InputSize.MEDIUM}
-            checked={inputSize === InputSize.MEDIUM}
-            onChange={() => setInputSize(InputSize.MEDIUM)}
+            value={TextInputSize.MEDIUM}
+            checked={inputSize === TextInputSize.MEDIUM}
+            onChange={() => setInputSize(TextInputSize.MEDIUM)}
           />
           Md
         </label>
@@ -154,9 +157,9 @@ const InputDemo: React.FC = () => {
           <input
             type="radio"
             name="inputSize"
-            value={InputSize.LARGE}
-            checked={inputSize === InputSize.LARGE}
-            onChange={() => setInputSize(InputSize.LARGE)}
+            value={TextInputSize.LARGE}
+            checked={inputSize === TextInputSize.LARGE}
+            onChange={() => setInputSize(TextInputSize.LARGE)}
           />
           Lg
         </label>
@@ -253,7 +256,7 @@ const InputDemo: React.FC = () => {
             max={100}
             step={5}
             size={
-              inputSize === InputSize.MEDIUM
+              inputSize === TextInputSize.MEDIUM
                 ? NumberInputSize.MEDIUM
                 : NumberInputSize.LARGE
             }
@@ -319,7 +322,7 @@ const InputDemo: React.FC = () => {
               hintText="This is a hint text to help user."
               helpIconHintText="This is a help icon hint text to help "
               size={
-                inputSize === InputSize.MEDIUM
+                inputSize === TextInputSize.MEDIUM
                   ? UnitInputSize.MEDIUM
                   : UnitInputSize.LARGE
               }
@@ -329,7 +332,7 @@ const InputDemo: React.FC = () => {
       )}
       {selectedInput === "multi-value-input" && (
         <>
-          <p style={{ color: "black" }}>Value: {unitValue} kgs</p>
+          <p style={{ color: "black" }}>Values: {tags.join(", ")}</p>
           <div style={{ width: "100%" }}>
             <MultiValueInput
               label="Multi Value Input"

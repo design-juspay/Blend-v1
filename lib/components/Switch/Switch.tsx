@@ -4,7 +4,8 @@ import { getSwitchDataState } from './utils';
 import { StyledSwitchRoot, StyledSwitchThumb, StyledSwitchLabel } from './StyledSwitch';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import switchTokens from './token';
+import { useComponentToken } from "../../context/useComponentToken";
+import { SwitchTokensType } from './switch.token';
 
 export const Switch = ({
   id,
@@ -15,12 +16,14 @@ export const Switch = ({
   required = false,
   error = false,
   size = SwitchSize.MEDIUM,
-  children,
+  label,
   subtext,
   slot,
   name,
   value,
 }: SwitchProps) => {
+  const tokens = useComponentToken('SWITCH') as SwitchTokensType;
+  
   // TODO: This is a temporary fix to avoid the warning about useId.
   // We need to find a better solution to handle the id.
   const generatedId = React.useId();
@@ -75,7 +78,7 @@ export const Switch = ({
           />
         </StyledSwitchRoot>
         
-        {children && (
+        {label && (
           <StyledSwitchLabel
             htmlFor={uniqueId}
             $isDisabled={disabled}
@@ -83,15 +86,15 @@ export const Switch = ({
           >
             <PrimitiveText
               as="span"
-              fontSize={switchTokens.sizes[size].fontSize}
-              fontWeight={switchTokens.label.fontWeight}
+              fontSize={tokens.content.label.font[size].fontSize}
+              fontWeight={tokens.content.label.font[size].fontWeight}
             >
-              {children}
+              {label}
               {required && (
                 <PrimitiveText
                   as="span"
-                  color={switchTokens.required.color}
-                  margin={`0 0 0 ${switchTokens.required.spacing}`}
+                  color={tokens.required.color}
+                  margin={`0 0 0 ${tokens.required.spacing}`}
                 >
                   *
                 </PrimitiveText>
@@ -100,7 +103,7 @@ export const Switch = ({
           </StyledSwitchLabel>
         )}
         {slot && (
-          <Block as="span" marginLeft={switchTokens.spacing.rightSlot}>
+          <Block as="span" marginLeft={tokens.slot.spacing}>
             {slot}
           </Block>
         )}
@@ -108,15 +111,15 @@ export const Switch = ({
 
       {subtext && (
         <Block 
-          marginLeft={switchTokens.sizes[size].subtext.marginLeft}
-          marginTop={switchTokens.sizes[size].subtext.marginTop}
+          marginLeft={tokens.content.sublabel.spacing.left[size]}
+          marginTop={tokens.content.sublabel.spacing.top}
         >
           <PrimitiveText
             as="span"
-            color={disabled ? switchTokens.subtext.disabled : 
-                   error ? switchTokens.subtext.error : 
-                   switchTokens.subtext.default}
-            fontSize={switchTokens.sizes[size].subtext.fontSize}
+            color={disabled ? tokens.content.sublabel.color.disabled : 
+                   error ? tokens.content.sublabel.color.error : 
+                   tokens.content.sublabel.color.default}
+            fontSize={tokens.content.sublabel.font[size].fontSize}
           >
             {subtext}
           </PrimitiveText>

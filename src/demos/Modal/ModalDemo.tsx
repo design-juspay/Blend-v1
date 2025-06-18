@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import styled from "styled-components";
 import { foundationToken } from "../../../lib/foundationToken";
-import { Button, ButtonType } from "../../../lib/main";
+import { Button, ButtonType, ButtonTypeV2 } from "../../../lib/main";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Text from "../../../lib/components/Text/Text";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
@@ -435,20 +435,20 @@ const ModalDemo = () => {
         primaryAction={
           config.showPrimaryButton
             ? {
-                label: config.primaryButtonText,
-                onClick: () => setIsModalOpen(false),
+                text: config.primaryButtonText,
+                onClick: () => alert("primaryAction"),
                 isDisabled: config.primaryButtonDisabled,
-                type: config.primaryButtonType as ButtonType,
+                buttonType: ButtonTypeV2.PRIMARY,
               }
             : undefined
         }
         secondaryAction={
           config.showSecondaryButton
             ? {
-                label: config.secondaryButtonText,
-                onClick: () => setIsModalOpen(false),
+                text: config.secondaryButtonText,
+                onClick: () => alert("secondaryAction"),
                 isDisabled: config.secondaryButtonDisabled,
-                type: config.secondaryButtonType as ButtonType,
+                buttonType: ButtonTypeV2.SECONDARY,
               }
             : undefined
         }

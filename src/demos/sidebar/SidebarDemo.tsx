@@ -8,7 +8,6 @@ import {
   Calendar as CalendarIcon,
   ListFilter,
   User as UserIcon,
-  ChevronDown,
   Info,
   FormInput,
   AlertCircle,
@@ -20,14 +19,12 @@ import {
   List,
   Grid,
   Box,
-  Search,
-  EyeClosed,
   IndianRupee,
   Table,
   Palette,
   MessageCircle,
+  CircleDot as Radio,
 } from "lucide-react";
-import styled from "styled-components";
 import { DirectoryData } from "../../../lib/components/Directory/types";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
@@ -43,37 +40,26 @@ import TabsDemo from "../Tabs/TabsDemo";
 import Text from "../../../lib/components/Text/Text";
 import TagsDemo from "../Tags/TagsDemo";
 import { Sidebar } from "../../../lib/components/Sidebar";
-
-const ChartDemo2 = () => (
-  <Block padding="24px" backgroundColor={FOUNDATION_THEME.colors.gray[0]}>
-    Chart Demo
-  </Block>
-);
-const FontDemo = () => (
-  <Block padding="24px" backgroundColor={FOUNDATION_THEME.colors.gray[0]}>
-    Font Demo
-  </Block>
-);
-const SelectorsDemo = () => <Block padding="24px">Selectors Demo</Block>;
-const TooltipDemoV2 = () => <Block padding="24px">Tooltip Demo</Block>;
-const ButtonGroupDemo = () => <Block padding="24px">Button Group Demo</Block>;
-const DatePickerDemo = () => <Block padding="24px">Date Picker Demo</Block>;
-const DropdownDemo = () => <Block padding="24px">Dropdown Demo</Block>;
-const InputDemo = () => <Block padding="24px">Input Demo</Block>;
-const DataTableDemo = () => <Block padding="24px">Data Table Demo</Block>;
-const ColorPaletteDemo = () => <Block padding="24px">Color Palette Demo</Block>;
-const SnackbarDemo = () => <Block padding="24px">Snackbar Demo</Block>;
-
-const SearchContainer = styled(Block)`
-  width: 160px;
-  height: 100%;
-  outline: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  border-radius: ${FOUNDATION_THEME.border.radius[4]};
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
+import TooltipDemo from "../Tooltip/TooltipDemo";
+import ChartDemo from "../Charts";
+import ButtonGroupDemo from "../ButtonGroup/ButtonGroupDemo";
+import DateRangePickerDemo from "../DateRangePicker/DateRangePickerDemo";
+import InputDemo from "../Input/InputDemo";
+import DataTableDemo from "../DataTable/DataTableDemo";
+import SplitTagDemo from "../SplitTag/SplitTagDemo";
+import BreadcrumbDemo from "../Breadcrumb/BreadcrumbDemo";
+import RadioDemo from "../Radio/RadioDemo";
+import CheckboxDemo from "../Checkbox/CheckboxDemo";
+import SwitchDemo from "../Switch/SwitchDemo";
+import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
+import SnackbarDemo from "../Snackbar/SnackbarDemo";
+import { SingleSelect, ThemeProvider } from "../../../lib/main";
+import {
+  SelectMenuAlignment,
+  SelectMenuVariant,
+} from "../../../lib/components/Select";
+import styled from "styled-components";
+import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -90,11 +76,17 @@ const ContentWrapper = styled(Block)`
 const SidebarDemo = () => {
   const [activeComponent, setActiveComponent] = useState<
     | "buttons"
-    | "tooltipsV2"
+    | "tooltips"
     | "tags"
+    | "splitTags"
+    | "breadcrumb"
     | "tabs"
+    | "checkbox"
+    | "radio"
+    | "switch"
     | "textInput"
     | "alerts"
+    | "avatarGroup"
     | "charts"
     | "chartsV2"
     | "fonts"
@@ -112,12 +104,23 @@ const SidebarDemo = () => {
     | "dataTable"
     | "colorPalette"
     | "popover"
-  >("buttons");
+    | "theme"
+  >("popover");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
     "Design System"
   );
+
+  const [theme, setTheme] = useState<"EULER" | "JUSBIZ">("EULER");
+
+  const themeProps =
+    theme === "EULER"
+      ? {}
+      : {
+          foundationTokens: ALT_FOUNDATION_TOKENS,
+          // componentTokens: HDFC_COMPONENT_TOKENS,
+        };
 
   const topbar = (
     <Block
@@ -127,14 +130,6 @@ const SidebarDemo = () => {
       justifyContent="space-between"
       flexGrow={1}
     >
-      <Block>
-        <SearchContainer>
-          <Search style={{ width: "16px", height: "16px" }} />
-          <Text variant="body.sm" fontWeight={400}>
-            Search
-          </Text>
-        </SearchContainer>
-      </Block>
       <Text
         variant="body.sm"
         fontWeight={400}
@@ -149,14 +144,32 @@ const SidebarDemo = () => {
       >
         {activeTenant}
       </Text>
-      <Text
-        variant="body.sm"
-        fontWeight={400}
-        color={FOUNDATION_THEME.colors.gray[600]}
-      >
-        {activeComponent}
-      </Text>
-      <EyeClosed style={{ width: "16px", height: "16px" }} />
+
+      <div>
+        <SingleSelect
+          label="Theme"
+          placeholder="Select Theme"
+          minWidth={200}
+          alignment={SelectMenuAlignment.END}
+          selected={theme}
+          onSelect={(value) => setTheme(value as "EULER" | "JUSBIZ")}
+          variant={SelectMenuVariant.NO_CONTAINER}
+          items={[
+            {
+              items: [
+                {
+                  value: "EULER",
+                  label: "EULER",
+                },
+                {
+                  value: "JUSBIZ",
+                  label: "JUSBIZ",
+                },
+              ],
+            },
+          ]}
+        />
+      </div>
     </Block>
   );
 
@@ -166,10 +179,20 @@ const SidebarDemo = () => {
         return <ButtonDemo />;
       case "buttonGroups":
         return <ButtonGroupDemo />;
-      case "tooltipsV2":
-        return <TooltipDemoV2 />;
+      case "tooltips":
+        return <TooltipDemo />;
       case "tags":
         return <TagsDemo />;
+      case "splitTags":
+        return <SplitTagDemo />;
+      case "checkbox":
+        return <CheckboxDemo />;
+      case "radio":
+        return <RadioDemo />;
+      case "switch":
+        return <SwitchDemo />;
+      case "breadcrumb":
+        return <BreadcrumbDemo />;
       case "tabs":
         return <TabsDemo />;
       case "alerts":
@@ -177,31 +200,25 @@ const SidebarDemo = () => {
       case "snackbar":
         return <SnackbarDemo />;
       case "charts":
-        return <ChartDemo2 />;
-      case "fonts":
-        return <FontDemo />;
+        return <ChartDemo />;
       case "datePicker":
-        return <DatePickerDemo />;
-      case "selectors":
-        return <SelectorsDemo />;
+        return <DateRangePickerDemo />;
       case "avatars":
         return <AvatarDemo />;
+      case "avatarGroup":
+        return <AvatarGroupDemo />;
       case "accordion":
         return <AccordionDemo />;
       case "statCard":
         return <StatCardDemo />;
       case "menu":
         return <MenuDemo />;
-      case "dropdown":
-        return <DropdownDemo />;
       case "modal":
         return <ModalDemo />;
       case "input":
         return <InputDemo />;
       case "dataTable":
         return <DataTableDemo />;
-      case "colorPalette":
-        return <ColorPaletteDemo />;
       case "popover":
         return <PopoverDemo />;
       default:
@@ -274,6 +291,16 @@ const SidebarDemo = () => {
           leftSlot: <Users style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("avatars"),
         },
+        {
+          label: "Avatar Group",
+          leftSlot: <Users style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("avatarGroup"),
+        },
+        {
+          label: "Breadcrumb",
+          leftSlot: <Grid style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("breadcrumb"),
+        },
       ],
     },
     {
@@ -313,11 +340,6 @@ const SidebarDemo = () => {
           ],
         },
         {
-          label: "Dropdown",
-          leftSlot: <ChevronDown style={{ width: "16px", height: "16px" }} />,
-          onClick: () => setActiveComponent("dropdown"),
-        },
-        {
           label: "Tabs",
           leftSlot: <Layout style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("tabs"),
@@ -345,7 +367,7 @@ const SidebarDemo = () => {
         {
           label: "Tooltip",
           leftSlot: <Info style={{ width: "16px", height: "16px" }} />,
-          onClick: () => setActiveComponent("tooltipsV2"),
+          onClick: () => setActiveComponent("tooltips"),
         },
         {
           label: "Modal",
@@ -390,6 +412,21 @@ const SidebarDemo = () => {
           label: "Date Picker",
           leftSlot: <CalendarIcon style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("datePicker"),
+        },
+        {
+          label: "Radio",
+          leftSlot: <Radio style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("radio"),
+        },
+        {
+          label: "Checkbox",
+          leftSlot: <Square style={{ width: "16px", height: "16px" }} />, // Using Square as a placeholder icon
+          onClick: () => setActiveComponent("checkbox"),
+        },
+        {
+          label: "Switch",
+          leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("switch"),
         },
         {
           label: "Selectors",
@@ -444,21 +481,24 @@ const SidebarDemo = () => {
 
   return (
     <Block height="100vh">
-      <Sidebar
-        tenants={tenants}
-        merchants={merchants}
-        data={sampleData}
-        topbar={topbar}
-        activeTenant={activeTenant}
-        setActiveTenant={setActiveTenant}
-        activeMerchant={activeMerchant}
-        setActiveMerchant={setActiveMerchant}
-        footer={footer}
-      >
-        <ContentWrapper>{renderContent()}</ContentWrapper>
-      </Sidebar>
+      <ThemeProvider {...themeProps}>
+        <Sidebar
+          tenants={tenants}
+          merchants={merchants}
+          data={sampleData}
+          topbar={topbar}
+          activeTenant={activeTenant}
+          setActiveTenant={setActiveTenant}
+          activeMerchant={activeMerchant}
+          setActiveMerchant={setActiveMerchant}
+          footer={footer}
+        >
+          <ContentWrapper>{renderContent()}</ContentWrapper>
+        </Sidebar>
+      </ThemeProvider>
     </Block>
   );
 };
+
 
 export default SidebarDemo;

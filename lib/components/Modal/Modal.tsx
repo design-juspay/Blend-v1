@@ -1,12 +1,13 @@
 import { forwardRef, useCallback } from "react";
 import { X } from "lucide-react";
-import { Button, ButtonType, ButtonSubType } from "../Button";
 import Block from "../Primitives/Block/Block";
 import useScrollLock from "../../hooks/useScrollLock";
 import { ModalProps } from "./types";
 import { FOUNDATION_THEME } from "../../tokens";
-import modalTokens from "./modal.tokens";
+import { ModalTokensType } from "./modal.tokens";
 import Text from "../Text/Text";
+import { ButtonSubTypeV2, ButtonTypeV2, ButtonV2 } from "../ButtonV2";
+import { useComponentToken } from "../../context/useComponentToken";
 
 const ModalHeader = ({
   title,
@@ -23,6 +24,7 @@ const ModalHeader = ({
   headerRightSlot?: React.ReactNode;
   showDivider?: boolean;
 }) => {
+  const modalTokens = useComponentToken("MODAL") as ModalTokensType;
   if (!title && !subtitle) return null;
 
   return (
@@ -30,21 +32,20 @@ const ModalHeader = ({
       display="flex"
       justifyContent="space-between"
       alignItems="flex-start"
-      padding={modalTokens.padding.header}
+      padding={modalTokens.headerContainer.padding}
       flexShrink={0}
       overflow="auto"
       maxHeight="20vh"
+      gap={FOUNDATION_THEME.unit[16]}
       borderBottom={
-        showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
+        showDivider ? modalTokens.headerContainer.borderBottom : undefined
       }
     >
       <Block
         display="flex"
         flexDirection="column"
         flexGrow={1}
-        minWidth="0"
-        paddingRight={FOUNDATION_THEME.unit[16]}
-        gap={FOUNDATION_THEME.unit[8]}
+        gap={FOUNDATION_THEME.unit[4]}
       >
         <Block
           display="flex"
@@ -55,7 +56,7 @@ const ModalHeader = ({
             <Text
               variant="heading.sm"
               fontWeight={600}
-              color={modalTokens.color.title}
+              color={modalTokens.headerContainer.header.color}
             >
               {title}
             </Text>
@@ -65,7 +66,7 @@ const ModalHeader = ({
         {subtitle && (
           <Text
             variant="code.lg"
-            color={modalTokens.color.subtitle}
+            color={modalTokens.headerContainer.subtitle.color}
             fontWeight={400}
           >
             {subtitle}
@@ -73,12 +74,12 @@ const ModalHeader = ({
         )}
       </Block>
       {showCloseButton && (
-        <Button
-          subType={ButtonSubType.PLAIN_ICON}
-          buttonType={ButtonType.SECONDARY}
-          leadingIcon={X}
+        <ButtonV2
+          subType={ButtonSubTypeV2.INLINE}
+          buttonType={ButtonTypeV2.SECONDARY}
+          leadingIcon={<X size={16} />}
           onClick={onClose}
-          ariaLabel="Close"
+          // ariaLabel="Close"
         />
       )}
     </Block>
@@ -94,33 +95,46 @@ const ModalFooter = ({
   secondaryAction?: ModalProps["secondaryAction"];
   showDivider?: boolean;
 }) => {
+  const modalTokens = useComponentToken("MODAL") as ModalTokensType;
   if (!primaryAction && !secondaryAction) return null;
 
   return (
     <Block
       display="flex"
-      justifyContent="flex-end"
-      gap={FOUNDATION_THEME.unit[12]}
-      padding={modalTokens.padding.footerY}
+      backgroundColor={modalTokens.footerContainer.backgroundColor}
+      justifyContent={modalTokens.footerContainer.alignItems}
+      gap={modalTokens.footerContainer.gap}
+      padding={modalTokens.footerContainer.padding}
       flexShrink={0}
       borderTop={
-        showDivider ? `1px solid ${modalTokens.border.divider}` : undefined
+        showDivider ? modalTokens.footerContainer.borderTop : undefined
       }
+      borderRadius={modalTokens.footerContainer.borderRadius}
     >
       {secondaryAction && (
-        <Button
-          buttonType={secondaryAction.type || ButtonType.SECONDARY}
-          text={secondaryAction.label}
+        <ButtonV2
+          buttonType={secondaryAction.buttonType || ButtonTypeV2.SECONDARY}
+          text={secondaryAction.text}
           onClick={secondaryAction.onClick}
           isDisabled={secondaryAction.isDisabled}
+          subType={secondaryAction.subType}
+          size={secondaryAction.size}
+          leadingIcon={secondaryAction.leadingIcon}
+          trailingIcon={secondaryAction.trailingIcon}
+          loading={secondaryAction.loading}
         />
       )}
       {primaryAction && (
-        <Button
-          buttonType={primaryAction.type || ButtonType.PRIMARY}
-          text={primaryAction.label}
+        <ButtonV2
+          buttonType={primaryAction.buttonType || ButtonTypeV2.PRIMARY}
+          text={primaryAction.text}
           onClick={primaryAction.onClick}
           isDisabled={primaryAction.isDisabled}
+          subType={primaryAction.subType}
+          size={primaryAction.size}
+          leadingIcon={primaryAction.leadingIcon}
+          trailingIcon={primaryAction.trailingIcon}
+          loading={primaryAction.loading}
         />
       )}
     </Block>
@@ -145,6 +159,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     },
     ref
   ) => {
+    const modalTokens = useComponentToken("MODAL") as ModalTokensType;
     useScrollLock(isOpen);
 
     const handleBackdropClick = useCallback(() => {
@@ -159,7 +174,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       <Block
         position="fixed"
         inset={0}
-        zIndex={modalTokens.z.index}
+        zIndex={modalTokens.zIndex}
         display="flex"
         alignItems="center"
         justifyContent="center"
@@ -173,9 +188,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           justifyContent="center"
           position="fixed"
           inset={0}
-          backgroundColor={modalTokens.background.backdrop}
-          opacity={modalTokens.opacity.backdrop}
-          pointerEvents={modalTokens.interaction.pointerEvents}
+          backgroundColor={FOUNDATION_THEME.colors.gray[700]}
+          opacity={0.5}
+          pointerEvents="auto"
           role="presentation"
           aria-hidden="true"
         />
@@ -186,11 +201,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           display="flex"
           flexDirection="column"
           position="relative"
-          backgroundColor={modalTokens.background.modal}
-          maxWidth={modalTokens.size.maxWidth}
-          maxHeight={modalTokens.size.maxHeight}
-          borderRadius={modalTokens.border.radius}
-          boxShadow={modalTokens.shadow.box}
+          backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+          maxWidth="500px"
+          maxHeight="500px"
+          borderRadius={FOUNDATION_THEME.border.radius[12]}
+          boxShadow={FOUNDATION_THEME.shadows.xs}
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
@@ -205,7 +220,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           />
 
           <Block
-            padding={modalTokens.padding.body}
+            padding={modalTokens.bodyContainer.padding}
             overflow="auto"
             flexGrow={1}
           >

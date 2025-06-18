@@ -14,8 +14,14 @@ import {
   Trash,
   Check,
   Plus,
+  CircleAlert,
 } from "lucide-react";
 import "./ButtonDemo.css";
+import ButtonV2 from "../../../lib/components/ButtonV2/ButtonV2";
+import {
+  ButtonSubTypeV2,
+  ButtonTypeV2,
+} from "../../../lib/components/ButtonV2/types";
 
 const ButtonDemo: React.FC = () => {
   const buttonTypes = [
@@ -61,6 +67,105 @@ const ButtonDemo: React.FC = () => {
 
   return (
     <div className="button-demo">
+      <div
+        className="button-grid"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 100,
+        }}
+      >
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.PRIMARY}
+          // loading
+          // disabled
+          // onClick={() => alert("Primary")}
+        />
+        <div className="test-button-for-aryan">
+          <ButtonV2
+            text="Button"
+            buttonType={ButtonTypeV2.SECONDARY}
+            // onClick={() => alert("Secondary")}
+          />
+        </div>
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.DANGER}
+          // onClick={() => alert("Danger")}
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.SUCCESS}
+          // onClick={() => alert("Success")}
+        />
+      </div>
+      <div
+        className="button-grid"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 100,
+        }}
+      >
+        <ButtonV2
+          leadingIcon={<CircleAlert size={16} />}
+          buttonType={ButtonTypeV2.PRIMARY}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Primary")}
+        />
+        <ButtonV2
+          leadingIcon={<CircleAlert size={16} />}
+          buttonType={ButtonTypeV2.SECONDARY}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Secondary")}
+        />
+        <ButtonV2
+          leadingIcon={<CircleAlert size={16} />}
+          buttonType={ButtonTypeV2.DANGER}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Danger")}
+        />
+        <ButtonV2
+          leadingIcon={<CircleAlert size={16} />}
+          buttonType={ButtonTypeV2.SUCCESS}
+          subType={ButtonSubTypeV2.ICON_ONLY}
+          // onClick={() => alert("Success")}
+        />
+      </div>
+
+      <div
+        className="button-grid"
+        style={{ display: "flex", gap: 10, marginBottom: 100 }}
+      >
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.PRIMARY}
+          subType={ButtonSubTypeV2.INLINE}
+          // onClick={() => alert("Primary")}
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.SECONDARY}
+          subType={ButtonSubTypeV2.INLINE}
+          // onClick={() => alert("Secondary")}
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.DANGER}
+          subType={ButtonSubTypeV2.INLINE}
+          // onClick={() => alert("Danger")}
+        />
+        <ButtonV2
+          text="Button"
+          buttonType={ButtonTypeV2.SUCCESS}
+          subType={ButtonSubTypeV2.INLINE}
+          // onClick={() => alert("Success")}
+        />
+      </div>
+
       <h1>Button Component Demo</h1>
 
       <div className="demo-section">

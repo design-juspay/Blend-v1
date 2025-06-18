@@ -1,37 +1,6 @@
-import { useState } from "react";
+import { Snackbar } from "../lib/main";
 import "./App.css";
-import { Menu, X } from "lucide-react";
-import { Button, ButtonSubType } from "../lib/components/Button";
-import ButtonDemo from "./demos/Button/ButtonDemo";
-import TagsDemo from "./demos/Tags/TagsDemo";
-import SplitTagDemo from "./demos/SplitTag/SplitTagDemo";
-import TabsDemo from "./demos/Tabs/TabsDemo";
-import TextDemo from "./demos/Text/TextDemo";
-import AlertDemo from "./demos/Alert/AlertDemo";
-import BreadcrumbDemo from "./demos/Breadcrumb/BreadcrumbDemo";
-import AvatarDemo from "./demos/Avatar/AvatarDemo";
-import AvatarGroupDemo from "./demos/AvatarGroup/AvatarGroupDemo";
-import ModalDemo from "./demos/Modal/ModalDemo";
-import AccordionDemo from "./demos/Accordion/AccordionDemo";
-import TooltipDemo from "./demos/Tooltip/TooltipDemo";
-import PopoverDemo from "./demos/Popover/PopoverDemo";
-import CheckboxDemo from "./demos/Checkbox/CheckboxDemo";
-import RadioDemo from "./demos/Radio/RadioDemo";
-import SwitchDemo from "./demos/Switch/SwitchDemo";
-import MenuDemo from "./demos/Menu/MenuDemo";
-import ChartDemo from "./demos/Charts";
-import DateRangePickerDemo from "./demos/DateRangePicker/DateRangePickerDemo";
-import StatCardDemo from "./demos/StatCard/StatCardDemo";
-import Snackbar from "../lib/components/Snackbar/Snackbar";
-import DataTableDemo from "./demos/DataTable/DataTableDemo";
-import InputDemo from "./demos/Input/InputDemo";
-
-// Component categories
-type ComponentCategory = {
-  id: string;
-  name: string;
-  component: React.ReactNode;
-};
+import SidebarDemo from "./demos/sidebar/SidebarDemo";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -157,42 +126,10 @@ function App() {
   )?.component;
 
   return (
-    <div className="app-container">
-      {/* Sidebar Toggle for Mobile */}
-      <div className="sidebar-toggle">
-        <Button
-          subType={ButtonSubType.PLAIN_ICON}
-          ariaLabel={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-          leadingIcon={isSidebarOpen ? X : Menu}
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
-      </div>
-
-      <Snackbar visibleToasts={5} />
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        <div className="sidebar-header">
-          <h1 className="sidebar-title">Component Library</h1>
-        </div>
-        <nav className="sidebar-nav">
-          {componentCategories.map((category) => (
-            <button
-              key={category.id}
-              className={`sidebar-nav-item ${
-                selectedCategory === category.id ? "active" : ""
-              }`}
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="main-content">{currentComponent}</main>
-    </div>
+    <>
+      <SidebarDemo />
+      <Snackbar duration={3000} />
+    </>
   );
 }
 

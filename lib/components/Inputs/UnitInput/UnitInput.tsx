@@ -7,6 +7,8 @@ import Block from "../../Primitives/Block/Block";
 import InputLabels from "../utils/InputLabels/InputLabels";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import InputFooter from "../utils/InputFooter/InputFooter";
+import { UnitInputTokensType } from "./unitInput.tokens";
+import { useComponentToken } from "../../../context/useComponentToken";
 
 const UnitInput = ({
   value,
@@ -30,8 +32,11 @@ const UnitInput = ({
   unitPosition = UnitPosition.RIGHT,
   name,
 }: UnitInputProps) => {
-  const paddingX = size === UnitInputSize.MEDIUM ? 12 : 14;
-  const paddingY = size === UnitInputSize.MEDIUM ? 8 : 10;
+  const unitInputTokens = useComponentToken(
+    "UNIT_INPUT"
+  ) as UnitInputTokensType;
+  const paddingX = unitInputTokens.input.paddingX[size];
+  const paddingY = unitInputTokens.input.paddingY[size];
 
   const leftSlotRef = useRef<HTMLDivElement>(null);
   const rightSlotRef = useRef<HTMLDivElement>(null);
@@ -83,20 +88,12 @@ const UnitInput = ({
         margin={1}
         contentCentered
         backgroundColor={FOUNDATION_THEME.colors.gray[50]}
-        borderLeft={
-          error
-            ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-            : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
-        }
-        borderRadius={`0px 8px 8px 0px`}
+        borderLeft={unitInputTokens.input.border.default}
+        borderRadius={`0px ${unitInputTokens.input.borderRadius} ${unitInputTokens.input.borderRadius} 0px`}
       >
         <Text
           variant="body.md"
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[500]
-          }
+          color={unitInputTokens.input.color[disabled ? "disabled" : "default"]}
         >
           {unit}
         </Text>
@@ -116,20 +113,12 @@ const UnitInput = ({
         margin={1}
         contentCentered
         backgroundColor={FOUNDATION_THEME.colors.gray[50]}
-        borderRight={
-          error
-            ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-            : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
-        }
-        borderRadius={`8px 0px 0px 8px`}
+        borderRight={unitInputTokens.input.border.default}
+        borderRadius={`${unitInputTokens.input.borderRadius} 0px 0px ${unitInputTokens.input.borderRadius}`}
       >
         <Text
           variant="body.md"
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[500]
-          }
+          color={unitInputTokens.input.color[disabled ? "disabled" : "default"]}
         >
           {unit}
         </Text>
@@ -147,12 +136,7 @@ const UnitInput = ({
         name={name}
         required={required}
       />
-      <Block
-        position="relative"
-        width={"100%"}
-        display="flex"
-        borderRadius={8}
-      >
+      <Block position="relative" width={"100%"} display="flex" borderRadius={8}>
         {leftSlot && (
           <Block
             ref={leftSlotRef}
@@ -195,35 +179,27 @@ const UnitInput = ({
           paddingTop={paddingY}
           paddingBottom={paddingY}
           required={required}
-          borderRadius={8}
-          boxShadow={FOUNDATION_THEME.shadows.sm}
-          border={
-            error
-              ? `1px solid ${FOUNDATION_THEME.colors.red[500]}`
-              : `1px solid ${FOUNDATION_THEME.colors.gray[200]}`
-          }
+          borderRadius={unitInputTokens.input.borderRadius}
+          boxShadow={unitInputTokens.input.boxShadow}
+          border={unitInputTokens.input.border[error ? "error" : "default"]}
           outline="none"
           width={"100%"}
           _hover={{
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[400]}`,
+            border: unitInputTokens.input.border.hover,
           }}
-          color={
-            disabled
-              ? FOUNDATION_THEME.colors.gray[300]
-              : FOUNDATION_THEME.colors.gray[800]
-          }
+          color={unitInputTokens.input.color[disabled ? "disabled" : "default"]}
           _focusVisible={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[0]} !important`,
+            border: unitInputTokens.input.border.focus,
             outline: "none !important",
           }}
           _focus={{
-            border: `1px solid ${FOUNDATION_THEME.colors.primary[500]} !important`,
+            border: unitInputTokens.input.border.focus,
             outline: "none !important",
           }}
           disabled={disabled}
           _disabled={{
-            backgroundColor: FOUNDATION_THEME.colors.gray[50],
-            border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            backgroundColor: unitInputTokens.input.backgroundColor.disabled,
+            border: unitInputTokens.input.border.disabled,
             cursor: "not-allowed",
           }}
         />

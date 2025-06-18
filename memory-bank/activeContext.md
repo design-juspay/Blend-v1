@@ -73,6 +73,64 @@
   - Applied modular directory structure with proper file separation
   - Added support for subtext, right slot, and disabled states
   - Created comprehensive demo showcasing all features and states
+- **Theme Provider Updates:**
+  - Moved useComponentToken hook to internal implementation
+  - Updated import paths to reference direct source files
+  - Removed unnecessary exports from context/index.ts
+  - Enhanced token structure documentation
+  - Added comprehensive example of Switch component token implementation
+  - Established pattern for token generation functions and default exports
+  - Improved type safety with proper token typing
+- **Switch Component Updates:**
+  - Restructured token organization for better clarity and maintainability
+  - Added comprehensive token types for all component parts
+  - Implemented proper sizing system with token-based dimensions
+  - Enhanced accessibility with proper ARIA attributes and focus states
+  - Added support for label, subtext, and slot content
+  - Improved animation with token-based transitions
+  - Updated styled components to use internal hook imports
+  - Fixed box-shadow implementation to use foundation tokens
+  - Maintained consistent token structure across all styled components
+- **Checkbox Component Token Refactor (Post-Switch updates):**
+  - Aligned `CheckboxTokensType` with `Radio` and `Switch` by nesting `label` and `subtext` under a `content` object.
+  - Renamed `CheckboxTokensType.root` (for the checkbox square) to `indicator` for conceptual consistency.
+  - Renamed `CheckboxTokensType.indicator` (for the check/minus icon) to `icon`.
+  - Updated `indicator.background` and `indicator.border.color` to use a nested structure: `[CheckboxCheckedState][CheckboxInteractionState]`.
+  - Corrected token filename from `token.ts` to `checkbox.token.ts` and updated all import paths.
+  - Ensured HDFC theme tokens for Checkbox (`HDFC_COMPONENT_TOKENS.ts`) match the new structure.
+  - Updated Checkbox demo (`CheckboxDemo.tsx`) to reflect token changes and improve interactivity of themed examples.
+  - Verified changes with a successful project build.
+
+## Recent Implementation Patterns
+
+### ThemeProvider Integration
+We have successfully implemented the ThemeProvider pattern in the Radio and Tags components, establishing key patterns:
+
+1. **Token Structure Standardization**
+   - Implemented consistent token hierarchy
+   - Established pattern for state management in tokens
+   - Created reusable patterns for layout and typography tokens
+
+2. **Component-Specific Achievements**
+   - Radio Component:
+     - Implemented comprehensive token structure for states (default, hover, disabled, error)
+     - Added support for sublabels with proper theming
+     - Fixed vertical alignment issues using token-based spacing
+     - Implemented transient props pattern for styled-components
+
+   - Tags Component:
+     - Established variant and color token patterns
+     - Created extensible token structure for future variants
+
+3. **Current Best Practices**
+   - Using transient props ($) for styled-components to avoid DOM warnings
+   - Implementing proper type safety with Readonly and mapped types
+   - Maintaining consistent token structure across components
+
+### Next Steps
+1. Apply these patterns to remaining components
+2. Document any component-specific token patterns
+3. Review and update existing components for consistency
 
 ## Next Steps
 
@@ -163,4 +221,4 @@ We've established a clear component hierarchy:
 - Primitives should be simple and focused
 - Higher-level components should compose primitives
 - Maintain consistent code style throughout
-- Document design decisions and patterns 
+- Document design decisions and patterns
