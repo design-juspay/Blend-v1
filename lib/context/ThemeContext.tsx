@@ -48,6 +48,10 @@ import {
   getModalComponentTokens,
   ModalTokensType,
 } from "../components/Modal/modal.tokens";
+import {
+  BreadcrumbTokenType,
+  getBreadcrumbTokens,
+} from "../components/Breadcrumb/breadcrumb.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -67,6 +71,7 @@ export type ComponentTokenType = {
   TABS?: TabsTokensType;
   BUTTON?: ButtonTokensType;
   MODAL?: ModalTokensType;
+  BREADCRUMB?: BreadcrumbTokenType;
   // add supprort for other components here
 };
 
@@ -95,6 +100,7 @@ const ThemeContext = createContext<ThemeContextType>({
     TABS: getTabsTokens(FOUNDATION_THEME),
     BUTTON: getButtonTokens(FOUNDATION_THEME),
     MODAL: getModalComponentTokens(FOUNDATION_THEME),
+    BREADCRUMB: getBreadcrumbTokens(FOUNDATION_THEME),
   },
 });
 

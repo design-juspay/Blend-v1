@@ -16,6 +16,7 @@ import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/
 import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 import { ButtonTokensType } from "../components/ButtonV2/button.tokens";
 import { ModalTokensType } from "../components/Modal/modal.tokens";
+import { BreadcrumbTokenType } from "../components/Breadcrumb/breadcrumb.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -39,7 +40,8 @@ export const useComponentToken = (
   | TooltipTokensType
   | DropdownInputTokensType
   | ButtonTokensType
-  | ModalTokensType => {
+  | ModalTokensType
+  | BreadcrumbTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -72,6 +74,8 @@ export const useComponentToken = (
       return componentTokens.BUTTON;
     case "MODAL":
       return componentTokens.MODAL;
+    case "BREADCRUMB":
+      return componentTokens.BREADCRUMB;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }
