@@ -80,11 +80,12 @@ const Item = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
       $hoverBg={hoverBg}
     >
       <Block
+        // width="calc(100% - 12px)"
+        margin="0px 6px"
         padding="6px"
         display="flex"
         flexDirection="column"
         gap={4}
-        width="100%"
       >
         <Block
           display="flex"

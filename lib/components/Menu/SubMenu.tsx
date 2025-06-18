@@ -53,8 +53,9 @@ const SubTrigger = styled(RadixMenu.SubTrigger)<{ $hoverBg: string }>(
 
 const SubContent = styled(RadixMenu.SubContent)(() => ({
   ...contentBaseStyle,
-  paddingTop: 10,
-  paddingBottom: 10,
+  paddingTop: 6,
+  paddingBottom: 6,
+  borderRadius: 8,
 }));
 
 export const SubMenu = ({
@@ -73,7 +74,8 @@ export const SubMenu = ({
           display="flex"
           flexDirection="column"
           gap={4}
-          width="100%"
+          width="calc(100% - 12px)"
+          margin="0px 6px"
         >
           <Block display="flex" alignItems="center" gap={4} width="100%">
             {item.slot1 && (

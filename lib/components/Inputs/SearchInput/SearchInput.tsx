@@ -6,6 +6,7 @@ import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { SearchInputProps } from "./types";
 import { SearchInputTokensType } from "./searchInput.tokens";
 import { useComponentToken } from "../../../context/useComponentToken";
+import { addSnackbar } from "../../Snackbar";
 
 const toPixels = (value: string | number | undefined): number => {
   if (typeof value === "number") {
