@@ -71,12 +71,12 @@ export type Filter = {
 
 export type ColumnFilter = {
   /** Column field to filter */
-  field: keyof any;
+  field: keyof Record<string, unknown>;
   /** Filter type */
   type: FilterType;
   /** Filter value(s) */
   value: string | string[] | number | Date;
-  /** Filter operator (equals, contains, greater than, etc.) */
+  /** Filter operator (equals, contains, startsWith, endsWith, greater than, etc.) */
   operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte';
 }
 

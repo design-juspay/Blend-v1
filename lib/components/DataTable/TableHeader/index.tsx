@@ -1,8 +1,8 @@
 import { forwardRef, useState, useRef, useEffect } from 'react';
-import { MoreVertical, Edit2 } from 'lucide-react';
+import { MoreVertical, Edit2, ArrowUp, ArrowDown } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableHeaderProps } from './types';
-import { SortDirection } from '../types';
+import { FilterType, ColumnDefinition } from '../types';
 import dataTableTokens from '../dataTable.tokens';
 import { Checkbox } from '../../../main';
 import { CheckboxSize } from '../../Checkbox/types';
@@ -10,9 +10,14 @@ import { ColumnManager } from '../ColumnManager';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
 import { FOUNDATION_THEME } from '../../../tokens';
-import Menu from '../../Menu/Menu';
-import { MenuAlignment, MenuSide } from '../../Menu/types';
+import { Popover } from '../../Popover';
+import { PopoverSize } from '../../Popover/types';
 import { ColumnType, getColumnTypeConfig } from '../columnTypes';
+import { getUniqueColumnValues } from '../utils';
+import { SearchInput } from '../../Inputs/SearchInput';
+import MultiSelectMenu from '../../MultiSelect/MultiSelectMenu';
+import SingleSelectMenu from '../../SingleSelect/SingleSelectMenu';
+import { SelectMenuGroupType } from '../../Select/types';
 
 const TableHead = styled.thead`
   ${dataTableTokens.thead.base}
@@ -33,7 +38,6 @@ const TableRow = styled.tr`
   ${dataTableTokens.tr.base}
 `;
 
-
 const MoreIcon = styled(MoreVertical)`
   cursor: pointer;
   color: ${FOUNDATION_THEME.colors.gray[400]};
@@ -53,22 +57,27 @@ const EditIcon = styled(Edit2)`
   }
 `;
 
-const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>(({
+const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<string, unknown>>>(({
   visibleColumns,
   initialColumns,
   selectAll,
   enableInlineEdit = false,
   enableColumnManager = true,
   enableRowExpansion = false,
+  data,
   onSort,
   onSelectAll,
   onColumnChange,
   onHeaderChange,
+  onColumnFilter,
   getColumnWidth,
 }, ref) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
   const [localColumns, setLocalColumns] = useState(visibleColumns);
+  const [columnSearchValues, setColumnSearchValues] = useState<Record<string, string>>({});
+  const [columnSelectedValues, setColumnSelectedValues] = useState<Record<string, string[]>>({});
+  const [selectMenuStates, setSelectMenuStates] = useState<Record<string, boolean>>({});
   const editableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -104,7 +113,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
       );
       setLocalColumns(updatedColumns);
       
-      onHeaderChange?.(field as any, trimmedValue);
+      onHeaderChange?.(field as keyof Record<string, unknown>, trimmedValue);
       onColumnChange?.(updatedColumns);
     }
     setEditingField(null);
@@ -119,26 +128,252 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
     }
   };
 
-  const handleSort = (field: string, direction: SortDirection) => {
-    onSort(field as any);
+  const handleSort = (field: string) => {
+    onSort(field as keyof Record<string, unknown>);
   };
 
-  const getColumnMenuItems = (column: any) => {
-    const columnType = column.type || ColumnType.TEXT;
-    const config = getColumnTypeConfig(columnType);
+  const getFilterOptions = (column: ColumnDefinition<Record<string, unknown>>) => {
+    if (column.filterOptions) {
+      return column.filterOptions;
+    }
     
-    return config.menuItems?.map(item => ({
-      ...item,
-      onClick: () => {
-        if (item.label === 'Sort Ascending') {
-          handleSort(String(column.field), SortDirection.ASCENDING);
-        } else if (item.label === 'Sort Descending') {
-          handleSort(String(column.field), SortDirection.DESCENDING);
-        } else {
-          item.onClick();
-        }
+    if (!data) return [];
+    const uniqueValues = getUniqueColumnValues(data, column.field);
+    return uniqueValues.map((val: unknown) => ({
+      id: String(val),
+      label: String(val),
+      value: String(val)
+    }));
+  };
+
+  const getMenuItems = (column: ColumnDefinition<Record<string, unknown>>): SelectMenuGroupType[] => {
+    const filterOptions = getFilterOptions(column);
+    return [
+      {
+        groupLabel: `${column.header} Options`,
+        items: filterOptions.map((option) => ({
+          label: option.label,
+          value: option.value,
+          onClick: () => {}
+        })),
+        showSeparator: false
       }
-    })) || [];
+    ];
+  };
+
+  const renderColumnFilter = (column: ColumnDefinition<Record<string, unknown>>) => {
+    const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
+    const fieldKey = String(column.field);
+
+    if (!columnConfig.supportsFiltering) {
+      return (
+        <Block padding={FOUNDATION_THEME.unit[12]}>
+          <PrimitiveText style={{ 
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+            color: FOUNDATION_THEME.colors.gray[500]
+          }}>
+            No filters available for this column
+          </PrimitiveText>
+        </Block>
+      );
+    }
+
+    return (
+      <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[8]} minWidth="250px" padding={FOUNDATION_THEME.unit[4]}>
+
+        {columnConfig.supportsSorting && (
+          <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[4]}>
+            <Block
+              display="flex"
+              alignItems="center"
+              gap={FOUNDATION_THEME.unit[8]}
+              padding={FOUNDATION_THEME.unit[8]}
+              borderRadius={FOUNDATION_THEME.border.radius[4]}
+              cursor="pointer"
+              _hover={{
+                backgroundColor: FOUNDATION_THEME.colors.gray[50]
+              }}
+              onClick={() => {
+                handleSort(fieldKey);
+              }}
+            >
+              <ArrowUp size={16} color={FOUNDATION_THEME.colors.gray[600]} />
+              <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+                Sort Ascending
+              </PrimitiveText>
+            </Block>
+            <Block
+              display="flex"
+              alignItems="center"
+              gap={FOUNDATION_THEME.unit[8]}
+              padding={FOUNDATION_THEME.unit[8]}
+              borderRadius={FOUNDATION_THEME.border.radius[4]}
+              cursor="pointer"
+              _hover={{
+                backgroundColor: FOUNDATION_THEME.colors.gray[50]
+              }}
+              onClick={() => {
+                handleSort(fieldKey);
+              }}
+            >
+              <ArrowDown size={16} color={FOUNDATION_THEME.colors.gray[600]} />
+              <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+                Sort Descending
+              </PrimitiveText>
+            </Block>
+          </Block>
+        )}
+
+        {/* Filter Section */}
+        <Block 
+          height="1px" 
+          backgroundColor={FOUNDATION_THEME.colors.gray[200]} 
+          marginY={FOUNDATION_THEME.unit[8]}
+        />
+
+        <Block display="flex" alignItems="center" justifyContent="space-between">
+          <PrimitiveText style={{ 
+            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize, 
+            fontWeight: FOUNDATION_THEME.font.weight[600] 
+          }}>
+            Filter {column.header}
+          </PrimitiveText>
+          {((columnSearchValues[fieldKey] && columnSearchValues[fieldKey] !== '') || 
+            (columnSelectedValues[fieldKey] && columnSelectedValues[fieldKey].length > 0)) && (
+            <PrimitiveText
+              onClick={() => {
+                setColumnSearchValues(prev => ({ ...prev, [fieldKey]: '' }));
+                setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: [] }));
+                onColumnFilter?.(column.field, FilterType.TEXT, '', 'equals');
+              }}
+              style={{
+                fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
+                color: FOUNDATION_THEME.colors.primary[600],
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              Clear
+            </PrimitiveText>
+          )}
+        </Block>
+
+        {/* Search Filter */}
+        {columnConfig.filterComponent === 'search' && (
+          <SearchInput
+            placeholder={`Search ${column.header}...`}
+            value={columnSearchValues[fieldKey] || ''}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              setColumnSearchValues(prev => ({ ...prev, [fieldKey]: value }));
+              onColumnFilter?.(column.field, FilterType.TEXT, value, 'contains');
+            }}
+          />
+        )}
+
+        {columnConfig.filterComponent === 'select' && (
+          <SingleSelectMenu
+            items={getMenuItems(column)}
+            selected={columnSelectedValues[fieldKey]?.[0] || ''}
+            onSelect={(value) => {
+              setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: [value] }));
+              onColumnFilter?.(column.field, FilterType.SELECT, value, 'equals');
+            }}
+            open={selectMenuStates[`${fieldKey}_single`] || false}
+            onOpenChange={(open) => {
+              setSelectMenuStates(prev => ({ ...prev, [`${fieldKey}_single`]: open }));
+            }}
+            enableSearch={true}
+            trigger={
+              <Block
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                padding={`${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[12]}`}
+                border={`1px solid ${FOUNDATION_THEME.colors.gray[300]}`}
+                borderRadius={FOUNDATION_THEME.border.radius[8]}
+                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                cursor="pointer"
+                _hover={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[25]
+                }}
+              >
+                <PrimitiveText style={{
+                  fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+                  color: columnSelectedValues[fieldKey]?.[0] ? FOUNDATION_THEME.colors.gray[700] : FOUNDATION_THEME.colors.gray[400]
+                }}>
+                  {columnSelectedValues[fieldKey]?.[0] || 'Select option...'}
+                </PrimitiveText>
+                <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+                  ▼
+                </PrimitiveText>
+              </Block>
+            }
+          />
+        )}
+
+        {columnConfig.filterComponent === 'multiselect' && (
+          <MultiSelectMenu
+            items={getMenuItems(column)}
+            selected={columnSelectedValues[fieldKey] || []}
+            onSelect={(value) => {
+              const currentSelected = columnSelectedValues[fieldKey] || [];
+              let newSelected = [...currentSelected];
+              if (newSelected.includes(value)) {
+                newSelected = newSelected.filter(v => v !== value);
+              } else {
+                newSelected.push(value);
+              }
+              setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: newSelected }));
+              onColumnFilter?.(column.field, FilterType.MULTISELECT, newSelected, 'equals');
+            }}
+            open={selectMenuStates[`${fieldKey}_multi`] || false}
+            onOpenChange={(open) => {
+              setSelectMenuStates(prev => ({ ...prev, [`${fieldKey}_multi`]: open }));
+            }}
+            trigger={
+              <Block
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                padding={`${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[12]}`}
+                border={`1px solid ${FOUNDATION_THEME.colors.gray[300]}`}
+                borderRadius={FOUNDATION_THEME.border.radius[8]}
+                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
+                cursor="pointer"
+                _hover={{
+                  backgroundColor: FOUNDATION_THEME.colors.gray[25]
+                }}
+              >
+                <PrimitiveText style={{
+                  fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+                  color: (columnSelectedValues[fieldKey]?.length || 0) > 0 ? FOUNDATION_THEME.colors.gray[700] : FOUNDATION_THEME.colors.gray[400]
+                }}>
+                  {(columnSelectedValues[fieldKey]?.length || 0) > 0 ? 
+                    `${columnSelectedValues[fieldKey]?.length} selected` :
+                    'Select options...'
+                  }
+                </PrimitiveText>
+                <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+                  ▼
+                </PrimitiveText>
+              </Block>
+            }
+          />
+        )}
+
+        {(columnConfig.filterComponent === 'dateRange' || columnConfig.filterComponent === 'numberRange') && (
+          <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[4]}>
+            <PrimitiveText style={{ 
+              fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
+              color: FOUNDATION_THEME.colors.gray[600]
+            }}>
+              {columnConfig.filterComponent === 'dateRange' ? 'Date range filtering coming soon...' : 'Number range filtering coming soon...'}
+            </PrimitiveText>
+          </Block>
+        )}
+      </Block>
+    );
   };
 
   return (
@@ -164,7 +399,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
         {localColumns.map((column, index) => {
           const columnWidth = getColumnWidth(column, index);
           const isEditing = editingField === String(column.field);
-          const menuItems = getColumnMenuItems(column);
+          const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
           
           return (
             <TableHeaderCell
@@ -254,7 +489,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                   )}
                 </Block>
 
-                {column.isSortable && (
+                {(columnConfig.supportsSorting || columnConfig.supportsFiltering) && (
                   <Block
                     display='flex'
                     alignItems='center'
@@ -263,15 +498,14 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<any>>((
                     width='16px'
                     height='16px'
                   >
-                    <Menu
+                    {/* Column-level filters - Local filtering and sorting for individual columns */}
+                    <Popover
                       trigger={<MoreIcon size={16} />}
-                      items={[{
-                        label: column.header,
-                        items: menuItems
-                      }]}
-                      alignment={MenuAlignment.END}
-                      side={MenuSide.BOTTOM}
-                    />
+                      heading={`${column.header} Options`}
+                      size={PopoverSize.SM}
+                    >
+                      {renderColumnFilter(column)}
+                    </Popover>
                   </Block>
                 )}
               </Block>

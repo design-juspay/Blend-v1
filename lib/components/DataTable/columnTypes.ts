@@ -1,5 +1,4 @@
 import { FilterType } from './types';
-import { MenuItemV2Variant, MenuItemV2ActionType } from '../Menu/types';
 
 export enum ColumnType {
   TEXT = 'text',
@@ -23,12 +22,10 @@ export type ColumnTypeConfig = {
   type: ColumnType;
   filterType: FilterType;
   filterOptions?: ColumnFilterOption[];
-  menuItems?: {
-    label: string;
-    variant: MenuItemV2Variant;
-    actionType?: MenuItemV2ActionType;
-    onClick: () => void;
-  }[];
+  supportsSorting: boolean;
+  supportsFiltering: boolean;
+  enableSearch?: boolean; // For text-based filtering with search
+  filterComponent?: 'search' | 'select' | 'multiselect' | 'dateRange' | 'numberRange';
 }
 
 export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
@@ -37,221 +34,90 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
       return {
         type,
         filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: true,
+        filterComponent: 'search'
       };
     case ColumnType.NUMBER:
       return {
         type,
-        filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        filterType: FilterType.NUMBER,
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: true,
+        filterComponent: 'search'
       };
     case ColumnType.SELECT:
       return {
         type,
         filterType: FilterType.SELECT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'select'
       };
     case ColumnType.MULTISELECT:
       return {
         type,
         filterType: FilterType.MULTISELECT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'multiselect'
       };
     case ColumnType.AVATAR:
       return {
         type,
         filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: true,
+        filterComponent: 'search'
       };
     case ColumnType.TAG:
       return {
         type,
         filterType: FilterType.SELECT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'select'
       };
     case ColumnType.DATE:
       return {
         type,
-        filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        filterType: FilterType.DATE,
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'dateRange'
       };
     case ColumnType.DATE_RANGE:
       return {
         type,
-        filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        filterType: FilterType.DATE,
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'dateRange'
       };
     case ColumnType.CUSTOM:
       return {
         type,
         filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: false,
+        enableSearch: false
       };
     default:
       return {
         type: ColumnType.TEXT,
         filterType: FilterType.TEXT,
-        menuItems: [
-          {
-            label: 'Sort Ascending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Sort Descending',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          },
-          {
-            label: 'Filter',
-            variant: MenuItemV2Variant.DEFAULT,
-            onClick: () => {}
-          }
-        ]
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: true,
+        filterComponent: 'search'
       };
   }
 }; 

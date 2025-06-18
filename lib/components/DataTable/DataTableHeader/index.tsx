@@ -89,20 +89,21 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<any>>(({
                 </Block>
               )}
               
-              {enableFiltering && (
-                <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
-                  <Popover
-                    trigger={
-                      <Button
-                        buttonType={showFilters ? ButtonType.PRIMARY : ButtonType.SECONDARY}
-                        leadingIcon={Filter}
-                        size={ButtonSize.SMALL}
-                      >
-                        Filters {columnFilters.length > 0 && `(${columnFilters.length})`}
-                      </Button>
-                    }
-                    heading="Advanced Filters"
-                    description="Apply multiple filters to narrow down your data"
+                             {enableFiltering && (
+                 <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
+                   {/* Advanced Filters - Global filtering interface for complex filters and API calls */}
+                   <Popover
+                     trigger={
+                       <Button
+                         buttonType={showFilters ? ButtonType.PRIMARY : ButtonType.SECONDARY}
+                         leadingIcon={Filter}
+                         size={ButtonSize.SMALL}
+                       >
+                         Advanced Filters {columnFilters.length > 0 && `(${columnFilters.length})`}
+                       </Button>
+                     }
+                     heading="Advanced Filters"
+                     description="Configure complex filters for server-side filtering"
                     size={PopoverSize.MD}
                     primaryAction={{
                       label: "Apply Filters",

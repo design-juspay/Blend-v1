@@ -142,7 +142,7 @@ const dataTableTokens: DataTableToken = {
       position: "sticky",
       bottom: 0,
       backgroundColor: FOUNDATION_THEME.colors.gray[25],
-      zIndex: 10,
+      zIndex: 0,
     },
     text: {
       fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,

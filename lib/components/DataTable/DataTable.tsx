@@ -272,11 +272,11 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         newFilters.splice(existingFilterIndex, 1);
       } else {
         // Update existing filter
-        newFilters[existingFilterIndex] = { field, type, value, operator };
+        newFilters[existingFilterIndex] = { field: String(field), type, value, operator };
       }
     } else if (value && (!Array.isArray(value) || value.length > 0)) {
       // Add new filter
-      newFilters.push({ field, type, value, operator });
+      newFilters.push({ field: String(field), type, value, operator });
     }
 
     setColumnFilters(newFilters);
@@ -407,7 +407,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         enableFiltering={enableFiltering}
         showFilters={showFilters}
         columnFilters={columnFilters}
-        visibleColumns={visibleColumns}
+        visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
         data={data}
         onSearch={handleSearch}
         onToggleFilters={() => setShowFilters(!showFilters)}
@@ -451,16 +451,19 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
           }}>
             <Table $isStriped={isStriped} $isHoverable={isHoverable}>
               <TableHeader
-                visibleColumns={visibleColumns}
-                initialColumns={initialColumns}
+                visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
+                initialColumns={initialColumns as ColumnDefinition<Record<string, unknown>>[]}
                 selectAll={selectAll}
                 enableInlineEdit={enableInlineEdit}
                 enableColumnManager={enableColumnManager}
                 enableRowExpansion={enableRowExpansion}
+                data={data}
+                columnFilters={columnFilters}
                 onSort={handleSort}
                 onSelectAll={handleSelectAll}
-                onColumnChange={setVisibleColumns}
-                getColumnWidth={getColumnWidth}
+                onColumnChange={(columns) => setVisibleColumns(columns as ColumnDefinition<T>[])}
+                onColumnFilter={handleColumnFilter}
+                getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => string}
               />
               <TableBodyComponent
                 currentData={currentData}
