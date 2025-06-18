@@ -1,100 +1,136 @@
-import { FOUNDATION_THEME } from "../../tokens";
-import { VariantType } from "../Text/Text";
-import { PopoverSize } from "./types";
 import { CSSObject } from "styled-components";
+import { PopoverSize } from "./types";
+import { FOUNDATION_THEME } from "../../tokens";
+import { FoundationTokenType } from "../../tokens/theme.token";
 
-type PopoverToken = {
-  background: {
-    color: CSSObject["backgroundColor"];
-  };
-  border: {
-    width: CSSObject["borderWidth"];
-    color: CSSObject["borderColor"];
-    radius: CSSObject["borderRadius"];
-  };
+export type PopoverTokenType = {
+  background: CSSObject["backgroundColor"];
+  border: CSSObject["border"];
   shadow: CSSObject["boxShadow"];
-  padding: {
-    [PopoverSize.SM]: CSSObject["padding"];
-    [PopoverSize.MD]: CSSObject["padding"];
-  };
-  gap: {
-    content: CSSObject["gap"];
-    header: CSSObject["gap"];
-  };
-  width: {
-    [PopoverSize.SM]: CSSObject["width"];
-    [PopoverSize.MD]: CSSObject["width"];
-  };
-  color: {
-    heading: CSSObject["color"];
-    description: CSSObject["color"];
-    closeIcon: CSSObject["color"];
-  };
-  font: {
-    size: {
-      [PopoverSize.SM]: VariantType;
-      [PopoverSize.MD]: VariantType;
-      heading: {
-        [PopoverSize.SM]: VariantType;
-        [PopoverSize.MD]: VariantType;
+  padding: CSSObject["padding"];
+  gap: CSSObject["gap"];
+  zIndex: CSSObject["zIndex"];
+  borderRadius: CSSObject["borderRadius"];
+  headerContainer: {
+    heading: {
+      fontSize: {
+        [key in PopoverSize]: CSSObject["fontSize"];
+      };
+      fontWeight: {
+        [key in PopoverSize]: CSSObject["fontWeight"];
+      };
+      color: {
+        [key in PopoverSize]: CSSObject["color"];
       };
     };
-    weight: {
-      heading: CSSObject["fontWeight"];
+    description: {
+      fontSize: {
+        [key in PopoverSize]: CSSObject["fontSize"];
+      };
+      color: {
+        [key in PopoverSize]: CSSObject["color"];
+      };
+      fontWeight: {
+        [key in PopoverSize]: CSSObject["fontWeight"];
+      };
     };
   };
-  icon: {
-    close: {
-      size: CSSObject["width"];
-    };
+  footer: {
+    justifyContent: CSSObject["justifyContent"];
+    gap: CSSObject["gap"];
   };
 };
 
-const popoverTokens: PopoverToken = {
-  background: {
-    color: FOUNDATION_THEME.colors.gray[0],
-  },
-  border: {
-    width: "1px",
-    color: FOUNDATION_THEME.colors.gray[200] as string,
-    radius: FOUNDATION_THEME.border.radius[8],
-  },
+const popoverTokens: PopoverTokenType = {
+  background: FOUNDATION_THEME.colors.gray[0],
+  border: FOUNDATION_THEME.border.radius[8],
   shadow: FOUNDATION_THEME.shadows.md,
-  padding: {
-    [PopoverSize.SM]: FOUNDATION_THEME.unit[12],
-    [PopoverSize.MD]: FOUNDATION_THEME.unit[16],
-  },
-  gap: {
-    content: FOUNDATION_THEME.unit[16],
-    header: FOUNDATION_THEME.unit[8],
-  },
-  width: {
-    [PopoverSize.SM]: "280px",
-    [PopoverSize.MD]: "320px",
-  },
-  color: {
-    heading: FOUNDATION_THEME.colors.gray[900] as string,
-    description: FOUNDATION_THEME.colors.gray[500] as string,
-    closeIcon: FOUNDATION_THEME.colors.gray[500] as string,
-  },
-  font: {
-    size: {
-      [PopoverSize.SM]: "body.xs",
-      [PopoverSize.MD]: "body.sm",
-      heading: {
-        [PopoverSize.SM]: "body.md",
-        [PopoverSize.MD]: "body.lg",
+  padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[16]}`,
+  gap: FOUNDATION_THEME.unit[12],
+  zIndex: 1000,
+  borderRadius: FOUNDATION_THEME.border.radius[8],
+  headerContainer: {
+    heading: {
+      fontSize: {
+        small: "14px",
+        medium: "16px",
+      },
+      fontWeight: {
+        small: 600,
+        medium: 600,
+      },
+      color: {
+        small: FOUNDATION_THEME.colors.gray[900],
+        medium: FOUNDATION_THEME.colors.gray[900],
       },
     },
-    weight: {
-      heading: 600,
+    description: {
+      fontSize: {
+        small: "12px",
+        medium: "14px",
+      },
+      fontWeight: {
+        small: 400,
+        medium: 400,
+      },
+      color: {
+        small: FOUNDATION_THEME.colors.gray[500],
+        medium: FOUNDATION_THEME.colors.gray[500],
+      },
     },
   },
-  icon: {
-    close: {
-      size: 16,
-    },
+  footer: {
+    justifyContent: "flex-end",
+    gap: FOUNDATION_THEME.unit[12],
   },
+};
+
+export const getPopoverTokens = (
+  foundationTokens: FoundationTokenType
+): PopoverTokenType => {
+  return {
+    background: foundationTokens.colors.gray[0],
+    border: foundationTokens.border.radius[8],
+    shadow: foundationTokens.shadows.md,
+    padding: `${foundationTokens.unit[12]} ${foundationTokens.unit[16]}`,
+    gap: foundationTokens.unit[12],
+    zIndex: 1000,
+    borderRadius: foundationTokens.border.radius[8],
+    headerContainer: {
+      heading: {
+        fontSize: {
+          small: "14px",
+          medium: "16px",
+        },
+        fontWeight: {
+          small: 600,
+          medium: 600,
+        },
+        color: {
+          small: foundationTokens.colors.gray[900],
+          medium: foundationTokens.colors.gray[900],
+        },
+      },
+      description: {
+        fontSize: {
+          small: "12px",
+          medium: "14px",
+        },
+        fontWeight: {
+          small: 400,
+          medium: 400,
+        },
+        color: {
+          small: foundationTokens.colors.gray[500],
+          medium: foundationTokens.colors.gray[500],
+        },
+      },
+    },
+    footer: {
+      justifyContent: "flex-end",
+      gap: foundationTokens.unit[12],
+    },
+  };
 };
 
 export default popoverTokens;

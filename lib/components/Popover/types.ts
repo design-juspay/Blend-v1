@@ -1,27 +1,34 @@
-import { ButtonType, ButtonSubType } from "../Button/types";
-import { ReactNode } from "react";
+import { ButtonV2Props } from "../ButtonV2";
+
+export type PopoverActionType = Omit<ButtonV2Props, "buttonGroupPosition" | "subType">;
 
 export enum PopoverSize {
-  SM = "sm",
-  MD = "md",
+  SMALL = "small",
+  MEDIUM = "medium",
 }
-
-export type PopoverActionType = {
-  label: string;
-  onClick: () => void;
-  isDisabled?: boolean;
-  type?: ButtonType;
-  subType?: ButtonSubType;
-};
 
 export type PopoverProps = {
   heading?: string;
   description?: string;
-  trigger: ReactNode;
-  children: ReactNode;
+  trigger: React.ReactNode;
+  children: React.ReactNode;
   showCloseButton?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  open?: boolean;
+  asModal?: boolean;
   primaryAction?: PopoverActionType;
   secondaryAction?: PopoverActionType;
-  className?: string;
+  sideOffset?: number;
+  side?: "top" | "right" | "bottom" | "left";
+  align?: "start" | "center" | "end";
+  alignOffset?: number;
+  width?: number;
+  minWidth?: number;
+  maxWidth?: number;
+  height?: number;
+  minHeight?: number;
+  maxHeight?: number;
+  zIndex?: number;
   size?: PopoverSize;
+  onClose?: () => void;
 };
