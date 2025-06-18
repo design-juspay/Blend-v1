@@ -216,7 +216,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     document.body.removeChild(link);
   };
 
-  const handleSort = (field: keyof any) => {
+  const handleSort = (field: keyof T) => {
     const direction = sortConfig?.field === field
       ? sortConfig.direction === SortDirection.ASCENDING
         ? SortDirection.DESCENDING
@@ -262,7 +262,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
   };
 
-  const handleColumnFilter = (field: keyof any, type: FilterType, value: string | string[], operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte') => {
+  const handleColumnFilter = (field: keyof T, type: FilterType, value: string | string[], operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte') => {
     const existingFilterIndex = columnFilters.findIndex(f => f.field === field);
     const newFilters = [...columnFilters];
 
@@ -365,7 +365,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     });
   };
 
-  const handleFieldChange = (rowId: unknown, field: keyof any, value: unknown) => {
+  const handleFieldChange = (rowId: unknown, field: keyof T, value: unknown) => {
     const rowIdStr = String(rowId);
     setEditValues(prev => ({
       ...prev,
@@ -467,7 +467,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               />
               <TableBodyComponent
                 currentData={currentData}
-                visibleColumns={visibleColumns}
+                visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
                 idField={idField}
                 selectedRows={selectedRows}
                 editingRows={editingRows}
@@ -476,15 +476,15 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
                 enableInlineEdit={enableInlineEdit}
                 enableColumnManager={enableColumnManager}
                 enableRowExpansion={enableRowExpansion}
-                renderExpandedRow={renderExpandedRow}
-                isRowExpandable={isRowExpandable}
+                renderExpandedRow={renderExpandedRow as ((expandedData: { row: Record<string, unknown>; index: number; isExpanded: boolean; toggleExpansion: () => void; }) => React.ReactNode) | undefined}
+                isRowExpandable={isRowExpandable as ((row: Record<string, unknown>, index: number) => boolean) | undefined}
                 onRowSelect={handleRowSelect}
                 onEditRow={handleEditRow}
                 onSaveRow={handleSaveRow}
                 onCancelEdit={handleCancelEdit}
                 onRowExpand={handleRowExpand}
                 onFieldChange={handleFieldChange}
-                getColumnWidth={getColumnWidth}
+                getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => string}
               />
             </Table>
           </Block>

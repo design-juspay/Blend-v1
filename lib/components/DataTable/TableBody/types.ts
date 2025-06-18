@@ -3,7 +3,7 @@ import { ColumnDefinition } from '../types';
 export type TableBodyProps<T extends Record<string, unknown>> = {
   currentData: T[];
   visibleColumns: ColumnDefinition<T>[];
-  idField: keyof T;
+  idField: string;
   selectedRows: Record<string, boolean>;
   editingRows: Record<string, boolean>;
   editValues: Record<string, T>;
@@ -23,6 +23,6 @@ export type TableBodyProps<T extends Record<string, unknown>> = {
   onSaveRow: (rowId: unknown) => void;
   onCancelEdit: (rowId: unknown) => void;
   onRowExpand: (rowId: unknown) => void;
-  onFieldChange: (rowId: unknown, field: keyof any, value: unknown) => void;
+  onFieldChange: (rowId: unknown, field: keyof T, value: unknown) => void;
   getColumnWidth: (column: ColumnDefinition<T>, index: number) => string;
 }; 

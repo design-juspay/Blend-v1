@@ -14,7 +14,7 @@ const StyledTableCell = styled.td<{ width?: string; $hasCustomContent?: boolean 
   max-width: 0;
 `;
 
-const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<any>>(({
+const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string, unknown>>>(({
   column,
   row,
   isEditing,

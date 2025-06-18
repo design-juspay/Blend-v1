@@ -122,7 +122,7 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   /** Column definitions */
   columns: ColumnDefinition<T>[];
   /** Field name to use as unique identifier for rows */
-  idField: keyof T;
+  idField: string;
   /** Optional table title */
   title?: string;
   /** Optional table description */

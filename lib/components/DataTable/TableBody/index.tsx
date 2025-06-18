@@ -81,7 +81,7 @@ const ExpandButton = styled.button`
   }
 `;
 
-const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<any>>(({
+const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<string, unknown>>>(({
   currentData,
   visibleColumns,
   idField,

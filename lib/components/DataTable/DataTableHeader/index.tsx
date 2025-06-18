@@ -14,7 +14,7 @@ import dataTableTokens from '../dataTable.tokens';
 import { Popover } from '../../Popover';
 import { PopoverSize } from '../../Popover/types';
 
-const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<any>>(({
+const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<string, unknown>>>(({
   title,
   description,
   showToolbar = true,
