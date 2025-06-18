@@ -1,4 +1,3 @@
-import styled, { CSSObject } from "styled-components";
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
 import { FOUNDATION_THEME } from "../../tokens";
 import {
@@ -10,29 +9,6 @@ import { SubMenu } from "./SubMenu";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
 
-export const itemBaseStyle: CSSObject = {
-  alignItems: "center",
-  gap: 8,
-  padding: "8px 6px",
-  borderRadius: 4,
-  cursor: "pointer",
-  userSelect: "none",
-  "&:hover": {
-    backgroundColor: FOUNDATION_THEME.colors.gray[50],
-  },
-
-  "&[data-disabled]": {
-    opacity: 0.5,
-    cursor: "not-allowed",
-  },
-
-  "&[data-highlighted]": {
-    border: "none",
-    outline: "none",
-    backgroundColor: FOUNDATION_THEME.colors.gray[50],
-  },
-};
-
 const getHoverBgColor = (item: MenuItemV2Type): string => {
   if (item.variant === MenuItemV2Variant.ACTION) {
     if (item.actionType === MenuItemV2ActionType.DANGER) {
@@ -42,7 +18,6 @@ const getHoverBgColor = (item: MenuItemV2Type): string => {
         ""
       );
     }
-    // PRIMARY or undefined
     return (
       FOUNDATION_THEME.colors.primary[50] ||
       FOUNDATION_THEME.colors.gray[50] ||
@@ -52,40 +27,68 @@ const getHoverBgColor = (item: MenuItemV2Type): string => {
   return FOUNDATION_THEME.colors.gray[50] || "";
 };
 
-const StyledItem = styled(RadixMenu.Item)<{ $hoverBg: string }>(
-  ({ $hoverBg }) => ({
-    ...itemBaseStyle,
-    "&:hover": {
-      backgroundColor: $hoverBg,
-    },
-    "&[data-highlighted]": {
-      border: "none",
-      outline: "none",
-      backgroundColor: $hoverBg,
-    },
-  })
-);
+const getTextColor = (item: MenuItemV2Type) => {
+  if (item.variant === MenuItemV2Variant.ACTION) {
+    if (item.actionType === MenuItemV2ActionType.DANGER) {
+      if (item.disabled === true) {
+        return FOUNDATION_THEME.colors.red[400];
+      }
+      return FOUNDATION_THEME.colors.red[600];
+    }
+    if (item.disabled === true) {
+      return FOUNDATION_THEME.colors.primary[300];
+    }
+    return FOUNDATION_THEME.colors.primary[600];
+  } else {
+    if (item.disabled === true) {
+      return FOUNDATION_THEME.colors.gray[400];
+    }
+    return FOUNDATION_THEME.colors.gray[600];
+  }
+};
 
-const Item = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
+const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
   if (item.subMenu) {
     return <SubMenu item={item} idx={idx} />;
   }
   const hoverBg = getHoverBgColor(item);
+
   return (
-    <StyledItem
-      onClick={item.onClick}
+    <RadixMenu.Item
       asChild
       disabled={item.disabled}
-      key={idx}
-      $hoverBg={hoverBg}
+      style={{ outline: "none", border: "none" }}
     >
       <Block
-        // width="calc(100% - 12px)"
-        margin="0px 6px"
-        padding="6px"
+        key={idx}
         display="flex"
+        padding="6px"
+        margin="0px 6px"
+        borderRadius={4}
+        onClick={item.disabled ? undefined : item.onClick}
+        cursor={item.disabled ? "not-allowed" : "pointer"}
+        border="none"
+        outline="none" // tokenised
         flexDirection="column"
-        gap={4}
+        gap={4} // tokenised
+        _hover={{
+          backgroundColor: item.disabled ? "none" : hoverBg,
+          outline: "none !important",
+          border: "none !important",
+        }}
+        _focus={{
+          outline: "none !important",
+          border: "none !important",
+        }}
+        _active={{
+          outline: "none !important",
+          border: "none !important",
+        }}
+        _focusVisible={{
+          outline: "none !important",
+          border: "none !important",
+        }}
+        color={getTextColor(item)}
       >
         <Block
           display="flex"
@@ -108,14 +111,7 @@ const Item = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
           >
             <Text
               variant="body.md"
-              color={
-                item.variant === MenuItemV2Variant.ACTION
-                  ? item.actionType === MenuItemV2ActionType.PRIMARY ||
-                    !item.actionType
-                    ? FOUNDATION_THEME.colors.primary[600]
-                    : FOUNDATION_THEME.colors.red[600]
-                  : FOUNDATION_THEME.colors.gray[600]
-              }
+              color={getTextColor(item)}
               fontWeight={500}
               truncate
             >
@@ -150,8 +146,10 @@ const Item = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
           </Block>
         )}
       </Block>
-    </StyledItem>
+    </RadixMenu.Item>
   );
 };
 
-export default Item;
+MenuItem.displayName = "MenuItem";
+
+export default MenuItem;

@@ -175,6 +175,7 @@ const dummyMenuItemsV2: MenuV2GroupType[] = [
         onClick: () => alert("Profile Settings"),
         slot1: <Settings2 size={13} />,
         variant: MenuItemV2Variant.DEFAULT,
+        disabled: true,
       },
       {
         label: "Billing & Subscription",
@@ -185,11 +186,11 @@ const dummyMenuItemsV2: MenuV2GroupType[] = [
       },
       {
         label: "Sign Out",
-        // subLabel: "Sign out of your account",
         onClick: () => alert("Sign Out"),
         slot1: <Settings2 size={13} />,
         variant: MenuItemV2Variant.ACTION,
         actionType: MenuItemV2ActionType.PRIMARY,
+        disabled: true,
       },
       {
         label: "Delete Account",

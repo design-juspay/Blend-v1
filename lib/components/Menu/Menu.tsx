@@ -1,18 +1,15 @@
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
-import Text from "../Text/Text";
-
-
 import styled, { CSSObject } from "styled-components";
 import { FOUNDATION_THEME } from "../../tokens";
 import { MenuV2Props, MenuAlignment, MenuSide } from "./types";
 import React, { useState } from "react";
 import { filterMenuGroups } from "./utils";
-import MenuGroupLabel from "./MenuGroupLabel";
 import MenuGroupSeperator from "./MenuGroupSeperator";
-import Item from "./MenuItem";
+import MenuItem from "./MenuItem";
 import Block from "../Primitives/Block/Block";
 import SearchInput from "../Inputs/SearchInput/SearchInput";
 import { Search } from "lucide-react";
+import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 
 export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
@@ -75,7 +72,9 @@ const Menu = ({
             zIndex={1000}
           >
             <SearchInput
-              leftSlot={<Search color={FOUNDATION_THEME.colors.gray[400]} size={16} />}
+              leftSlot={
+                <Search color={FOUNDATION_THEME.colors.gray[400]} size={16} />
+              }
               placeholder="Search"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
@@ -86,17 +85,21 @@ const Menu = ({
           filteredItems.map((group, groupId) => (
             <React.Fragment key={groupId}>
               {group.label && (
-                <MenuGroupLabel>
-                  <Text
-                    variant="body.sm"
+                <RadixMenu.Label asChild>
+                  <PrimitiveText
+                    fontSize={12}
+                    padding="6px 8px"
+                    userSelect="none"
+                    margin="0px 6px"
+                    textTransform="uppercase"
                     color={FOUNDATION_THEME.colors.gray[400]}
                   >
                     {group.label}
-                  </Text>
-                </MenuGroupLabel>
+                  </PrimitiveText>
+                </RadixMenu.Label>
               )}
               {group.items.map((item, itemIndex) => (
-                <Item
+                <MenuItem
                   key={`${groupId}-${itemIndex}`}
                   item={item}
                   idx={itemIndex}
@@ -112,26 +115,6 @@ const Menu = ({
   );
 };
 
+Menu.displayName = "Menu";
+
 export default Menu;
-// {
-//   /* {group.label && (
-//                 <MenuGroupLabel>
-//                   <Text
-//                     variant="body.sm"
-//                     color={FOUNDATION_THEME.colors.gray[400]}
-//                   >
-//                     {group.label}
-//                   </Text>
-//                 </MenuGroupLabel>
-//               )}
-//               {group.items.map((item, itemIndex) => (
-//                 <Item
-//                   key={`${groupId}-${itemIndex}`}
-//                   item={item}
-//                   idx={itemIndex}
-//                 />
-//               ))}
-//               {groupId !== filteredItems.length - 1 && group.showSeparator && (
-//                 <MenuGroupSeperator />
-//               )} */
-// }
