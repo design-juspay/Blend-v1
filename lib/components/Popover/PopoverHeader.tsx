@@ -17,9 +17,9 @@ const PopoverHeader = ({
   PopoverProps,
   "heading" | "description" | "showCloseButton" | "size" | "onClose"
 >) => {
-  if (!heading && !description) return null;
   const popoverTokens = useComponentToken("POPOVER") as PopoverTokenType;
 
+  if (!heading && !description) return null;
   const Header = () => {
     return (
       <PrimitiveText

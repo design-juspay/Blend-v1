@@ -41,58 +41,15 @@ export type PopoverTokenType = {
   };
 };
 
-const popoverTokens: PopoverTokenType = {
-  background: FOUNDATION_THEME.colors.gray[0],
-  border: FOUNDATION_THEME.border.radius[8],
-  shadow: FOUNDATION_THEME.shadows.md,
-  padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[16]}`,
-  gap: FOUNDATION_THEME.unit[12],
-  zIndex: 1000,
-  borderRadius: FOUNDATION_THEME.border.radius[8],
-  headerContainer: {
-    heading: {
-      fontSize: {
-        small: "14px",
-        medium: "16px",
-      },
-      fontWeight: {
-        small: 600,
-        medium: 600,
-      },
-      color: {
-        small: FOUNDATION_THEME.colors.gray[900],
-        medium: FOUNDATION_THEME.colors.gray[900],
-      },
-    },
-    description: {
-      fontSize: {
-        small: "12px",
-        medium: "14px",
-      },
-      fontWeight: {
-        small: 400,
-        medium: 400,
-      },
-      color: {
-        small: FOUNDATION_THEME.colors.gray[500],
-        medium: FOUNDATION_THEME.colors.gray[500],
-      },
-    },
-  },
-  footer: {
-    justifyContent: "flex-end",
-    gap: FOUNDATION_THEME.unit[12],
-  },
-};
-
 export const getPopoverTokens = (
   foundationTokens: FoundationTokenType
 ): PopoverTokenType => {
+  const popoverPadding = `${foundationTokens.unit[12]} ${foundationTokens.unit[16]} ${foundationTokens.unit[16]} ${foundationTokens.unit[16]}`;
   return {
     background: foundationTokens.colors.gray[0],
     border: foundationTokens.border.radius[8],
-    shadow: foundationTokens.shadows.md,
-    padding: `${foundationTokens.unit[12]} ${foundationTokens.unit[16]}`,
+    shadow: foundationTokens.shadows.lg,
+    padding: popoverPadding,
     gap: foundationTokens.unit[12],
     zIndex: 1000,
     borderRadius: foundationTokens.border.radius[8],
@@ -103,8 +60,8 @@ export const getPopoverTokens = (
           medium: "16px",
         },
         fontWeight: {
-          small: 600,
-          medium: 600,
+          small: FOUNDATION_THEME.font.weight[600],
+          medium: FOUNDATION_THEME.font.weight[600],
         },
         color: {
           small: foundationTokens.colors.gray[900],
@@ -117,8 +74,8 @@ export const getPopoverTokens = (
           medium: "14px",
         },
         fontWeight: {
-          small: 400,
-          medium: 400,
+          small: FOUNDATION_THEME.font.weight[500],
+          medium: FOUNDATION_THEME.font.weight[500],
         },
         color: {
           small: foundationTokens.colors.gray[500],
@@ -133,4 +90,3 @@ export const getPopoverTokens = (
   };
 };
 
-export default popoverTokens;
