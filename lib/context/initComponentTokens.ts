@@ -18,6 +18,7 @@ import { getDropdownInputTokens } from "../components/Inputs/DropdownInput/dropd
 import { getButtonTokens } from "../components/ButtonV2/button.tokens";
 import { getModalComponentTokens } from "../components/Modal/modal.tokens";
 import { getBreadcrumbTokens } from "../components/Breadcrumb/breadcrumb.tokens";
+import { getPopoverTokens } from "../components/Popover/popover.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -51,6 +52,7 @@ const initTokens = (
     MODAL: componentTokens.MODAL ?? getModalComponentTokens(foundationTokens),
     BREADCRUMB:
       componentTokens.BREADCRUMB ?? getBreadcrumbTokens(foundationTokens),
+    POPOVER: componentTokens.POPOVER ?? getPopoverTokens(foundationTokens),
   };
 };
 

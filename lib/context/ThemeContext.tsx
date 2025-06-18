@@ -52,6 +52,7 @@ import {
   BreadcrumbTokenType,
   getBreadcrumbTokens,
 } from "../components/Breadcrumb/breadcrumb.tokens";
+import { getPopoverTokens, PopoverTokenType } from "../components/Popover/popover.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -72,6 +73,7 @@ export type ComponentTokenType = {
   BUTTON?: ButtonTokensType;
   MODAL?: ModalTokensType;
   BREADCRUMB?: BreadcrumbTokenType;
+  POPOVER?: PopoverTokenType;
   // add supprort for other components here
 };
 
@@ -101,6 +103,7 @@ const ThemeContext = createContext<ThemeContextType>({
     BUTTON: getButtonTokens(FOUNDATION_THEME),
     MODAL: getModalComponentTokens(FOUNDATION_THEME),
     BREADCRUMB: getBreadcrumbTokens(FOUNDATION_THEME),
+    POPOVER: getPopoverTokens(FOUNDATION_THEME),
   },
 });
 
