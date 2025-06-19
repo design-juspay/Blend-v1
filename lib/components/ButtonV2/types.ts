@@ -1,4 +1,5 @@
 import React from "react";
+import { CSSObject } from "styled-components";
 
 export enum ButtonTypeV2 {
   PRIMARY = "primary",
@@ -32,4 +33,6 @@ export type ButtonV2Props = {
   onClick?: () => void;
   loading?: boolean;
   buttonGroupPosition?: "center" | "left" | "right";
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+  fullWidth?: boolean;
+  justifyContent?: CSSObject["justifyContent"];
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "style">;
