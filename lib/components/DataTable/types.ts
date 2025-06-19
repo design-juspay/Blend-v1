@@ -112,13 +112,6 @@ export type ColumnManagerProps<T extends Record<string, unknown>> = {
 export type DataTableProps<T extends Record<string, unknown>> = {
   /** Array of data objects to display */
   data: T[];
-  /** Data summary information */
-  summary?: {
-    count: number;
-    sum?: number;
-    totalCount: number;
-    [key: string]: unknown;
-  };
   /** Column definitions */
   columns: ColumnDefinition<T>[];
   /** Field name to use as unique identifier for rows */
@@ -127,8 +120,6 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   title?: string;
   /** Optional table description */
   description?: string;
-  /** Whether to show striped rows */
-  isStriped?: boolean;
   /** Whether to show hover effects on rows */
   isHoverable?: boolean;
   /** Default sort configuration */

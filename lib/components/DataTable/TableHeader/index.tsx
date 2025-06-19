@@ -498,7 +498,6 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                     width='16px'
                     height='16px'
                   >
-                    {/* Column-level filters - Local filtering and sorting for individual columns */}
                     <Popover
                       trigger={<MoreIcon size={16} />}
                       heading={`${column.header} Options`}

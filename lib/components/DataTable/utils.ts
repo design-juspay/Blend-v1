@@ -70,9 +70,11 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
         case FilterType.SELECT:
           return String(cellValue) === String(filterValue);
         
-        case FilterType.MULTISELECT:
-          const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-          return filterValues.some(val => String(cellValue) === String(val));
+        case FilterType.MULTISELECT: {
+            const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+            return filterValues.some(val => String(cellValue) === String(val));
+        }
+          
         
         case FilterType.NUMBER:
           return applyNumberFilter(cellValue, filterValue as number, operator);
@@ -172,12 +174,10 @@ export const sortData = <T extends Record<string, unknown>>(
     const aValue = a[sortConfig.field];
     const bValue = b[sortConfig.field];
 
-    // Handle null/undefined values
     if (aValue == null && bValue == null) return 0;
     if (aValue == null) return 1;
     if (bValue == null) return -1;
 
-    // Convert to strings for comparison if they're not numbers
     const aCompare = typeof aValue === 'number' ? aValue : String(aValue).toLowerCase();
     const bCompare = typeof bValue === 'number' ? bValue : String(bValue).toLowerCase();
 
@@ -203,7 +203,7 @@ export const getDefaultColumnWidth = <T extends Record<string, unknown>>(
   
   switch (column.type) {
     case ColumnType.AVATAR:
-      return `'250px'`;
+      return '250px';
     case ColumnType.TAG:
       return '120px';
     case ColumnType.SELECT:
@@ -231,4 +231,118 @@ export const formatDate = (dateString: string): string => {
     month: 'short',
     year: 'numeric',
   }).format(date);
-}; 
+};
+
+
+export const updateColumnFilter = <T extends Record<string, unknown>>(
+  currentFilters: ColumnFilter[],
+  field: keyof T,
+  type: FilterType,
+  value: string | string[],
+  operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte'
+): ColumnFilter[] => {
+  const existingFilterIndex = currentFilters.findIndex(f => f.field === field);
+  const newFilters = [...currentFilters];
+
+  if (existingFilterIndex >= 0) {
+    if (!value || (Array.isArray(value) && value.length === 0)) {
+      newFilters.splice(existingFilterIndex, 1);
+    } else {
+      newFilters[existingFilterIndex] = { field: String(field), type, value, operator };
+    }
+  } else if (value && (!Array.isArray(value) || value.length > 0)) {
+    newFilters.push({ field: String(field), type, value, operator });
+  }
+
+  return newFilters;
+};
+
+export const generateCSVContent = <T extends Record<string, unknown>>(
+  data: T[],
+  columns: ColumnDefinition<T>[]
+): string => {
+  if (data.length === 0) {
+    throw new Error('No data available for export');
+  }
+
+  const headers = columns.map(col => col.header);
+  const fields = columns.map(col => col.field);
+
+  let csvContent = headers.join(',') + '\n';
+  
+  data.forEach(row => {
+    const rowData = fields.map(field => {
+      const value = row[field];
+      if (value != null) {
+        const stringValue = String(value);
+        const escapedValue = stringValue.replace(/"/g, '""');
+        return `"${escapedValue}"`;
+      }
+      return '';
+    });
+    csvContent += rowData.join(',') + '\n';
+  });
+
+  return csvContent;
+};
+
+
+export const downloadCSV = (csvContent: string, filename?: string): void => {
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename || `export-${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  URL.revokeObjectURL(url);
+};
+
+
+export const exportSelectedRowsToCSV = <T extends Record<string, unknown>>(
+  allData: T[],
+  selectedRows: Record<string, boolean>,
+  columns: ColumnDefinition<T>[],
+  idField: string,
+  filename?: string
+): void => {
+  const selectedData = allData.filter(row => {
+    const rowId = String(row[idField]);
+    return selectedRows[rowId];
+  });
+
+  if (selectedData.length === 0) {
+    throw new Error('Please select at least one row to export');
+  }
+
+  const csvContent = generateCSVContent(selectedData, columns);
+  downloadCSV(csvContent, filename);
+};
+
+export const getSelectedRowCount = (selectedRows: Record<string, boolean>): number => {
+  return Object.values(selectedRows).filter(selected => selected).length;
+};
+
+export const createSearchConfig = (
+  query: string,
+  caseSensitive = false,
+  searchFields?: string[]
+): SearchConfig => ({
+  query: query.trim(),
+  caseSensitive,
+  searchFields
+});
+
+
+export const clearAllFiltersAndSearch = (): {
+  filters: ColumnFilter[];
+  searchConfig: SearchConfig;
+} => ({
+  filters: [],
+  searchConfig: createSearchConfig('')
+}); 

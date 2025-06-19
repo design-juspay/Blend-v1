@@ -614,7 +614,6 @@ const DataTableDemo = () => {
           idField="id"
           title="User Management"
           description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, and expandable rows`}
-          isStriped
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}

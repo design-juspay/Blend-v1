@@ -1,29 +1,13 @@
 import { Plus } from 'lucide-react';
-import { styled } from 'styled-components';
-import { FOUNDATION_THEME } from '../../tokens';
 import { Checkbox } from '../Checkbox';
 import { CheckboxSize } from '../Checkbox/types';
 import Menu from '../Menu/Menu';
 import { MenuAlignment } from '../Menu/types';
-import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
+import { Button, ButtonSize, ButtonType } from '../Button';
 import Block from '../Primitives/Block/Block';
 import { ColumnManagerProps } from './types';
 
-// Styled Components
-const TriggerButton = styled(PrimitiveButton)`
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
-  color: ${FOUNDATION_THEME.colors.gray[500]};
-
-  &:hover {
-    background-color: ${FOUNDATION_THEME.colors.gray[50]};
-    color: ${FOUNDATION_THEME.colors.gray[700]};
-  }
-`;
-
-export const ColumnManager = <T,>({ 
+export const ColumnManager = <T extends Record<string, unknown>>({ 
   columns, 
   visibleColumns, 
   onColumnChange 
@@ -33,14 +17,11 @@ export const ColumnManager = <T,>({
     const isCurrentlyVisible = visibleColumns.some(col => col.field === field);
     
     if (isCurrentlyVisible) {
-      // Don't allow hiding all columns - at least one must remain visible
       if (visibleColumns.length <= 1) return;
       
-      // Remove column from visible list
       const newVisibleColumns = visibleColumns.filter(col => col.field !== field);
       onColumnChange(newVisibleColumns);
     } else {
-      // Add column to visible list
       const columnToAdd = columns.find(col => col.field === field);
       if (columnToAdd) {
         onColumnChange([...visibleColumns, columnToAdd]);
@@ -78,9 +59,7 @@ export const ColumnManager = <T,>({
         alignment={MenuAlignment.END}
         enableSearch={false}
         trigger={
-          <TriggerButton contentCentered>
-            <Plus size={16} />
-          </TriggerButton>
+          <Button buttonType={ButtonType.SECONDARY} size={ButtonSize.SMALL} leadingIcon={Plus}/>
         }
         items={menuItems}
       />

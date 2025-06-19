@@ -3,7 +3,9 @@ import { styled } from 'styled-components';
 import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from './types';
 import dataTableTokens from './dataTable.tokens';
 import {
-  sortData, searchData, applyColumnFilters, getDefaultColumnWidth
+  sortData, searchData, applyColumnFilters, getDefaultColumnWidth,
+  updateColumnFilter, exportSelectedRowsToCSV, getSelectedRowCount,
+  createSearchConfig, clearAllFiltersAndSearch
 } from './utils';
 import DataTableHeader from './DataTableHeader';
 import TableHeader from './TableHeader';
@@ -11,8 +13,9 @@ import TableBodyComponent from './TableBody';
 import TableFooter from './TableFooter';
 import BulkActionBar from './TableBody/BulkActionBar';
 import Block from '../Primitives/Block/Block';
+import { FOUNDATION_THEME } from '../../tokens';
 
-const Table = styled.table<{ $isStriped?: boolean; $isHoverable?: boolean }>`
+const Table = styled.table<{ $isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
   table-layout: fixed;
   width: 100%;
@@ -26,7 +29,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     idField,
     title,
     description,
-    isStriped = false,
     isHoverable = true,
     defaultSort,
     enableSearch = false,
@@ -90,22 +92,18 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const processedData = useMemo(() => {
     let result = [...data];
 
-    // Skip processing if server-side pagination is enabled since data comes pre-processed
     if (serverSidePagination) {
       return result;
     }
 
-    // Apply search only if not server-side
     if (enableSearch && !serverSideSearch && searchConfig.query.trim()) {
       result = searchData(result, searchConfig, visibleColumns);
     }
 
-    // Apply column filters only if not server-side
     if (enableFiltering && !serverSideFiltering && columnFilters.length > 0) {
       result = applyColumnFilters(result, columnFilters);
     }
 
-    // Apply sorting (can be local or server-side, user controls via onSortChange)
     if (sortConfig && sortConfig.field) {
       result = sortData(result, sortConfig);
     }
@@ -114,12 +112,10 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   }, [data, searchConfig, columnFilters, sortConfig, visibleColumns, enableSearch, enableFiltering, serverSideSearch, serverSideFiltering, serverSidePagination]);
 
   const currentData = useMemo(() => {
-    // If server-side search/filtering/pagination is enabled, assume data is already processed by server
     if (serverSideSearch || serverSideFiltering || serverSidePagination) {
       return processedData;
     }
     
-    // Otherwise, apply local pagination
     const startIndex = (currentPage - 1) * pageSize;
     return processedData.slice(startIndex, startIndex + pageSize);
   }, [processedData, currentPage, pageSize, serverSideSearch, serverSideFiltering, serverSidePagination]);
@@ -163,7 +159,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   };
 
   const handleRowSelect = (rowId: unknown) => {
-    // Ensure rowId is a string for the Record key
     const rowIdStr = String(rowId);
 
     const newSelectedRows = {
@@ -172,48 +167,21 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     };
     setSelectedRows(newSelectedRows);
 
-    // Update selectAll state based on current page selection
     updateSelectAllState(newSelectedRows);
   };
 
-  // Export selected rows to CSV
   const exportToCSV = () => {
-    const selectedData = processedData.filter(row => {
-      const rowId = String(row[idField]);
-      return selectedRows[rowId];
-    });
-
-    if (selectedData.length === 0) {
-      alert('Please select at least one row to export');
-      return;
+    try {
+      exportSelectedRowsToCSV(
+        processedData,
+        selectedRows,
+        visibleColumns,
+        idField,
+        `${title || 'data'}-export-${new Date().toISOString().split('T')[0]}.csv`
+      );
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Export failed');
     }
-
-    const headers = visibleColumns.map(col => col.header);
-    const fields = visibleColumns.map(col => col.field);
-
-    let csvContent = headers.join(',') + '\n';
-    selectedData.forEach(row => {
-      const rowData = fields.map(field => {
-        const value = row[field];
-        if (value != null) {
-          const stringValue = String(value);
-          const escapedValue = stringValue.replace(/"/g, '""');
-          return `"${escapedValue}"`;
-        }
-        return '';
-      });
-      csvContent += rowData.join(',') + '\n';
-    });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `export-${new Date().toISOString()}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const handleSort = (field: keyof T) => {
@@ -249,10 +217,9 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   };
 
   const handleSearch = (query: string) => {
-    const newSearchConfig = { ...searchConfig, query };
+    const newSearchConfig = createSearchConfig(query, searchConfig.caseSensitive, searchConfig.searchFields);
     
     setSearchConfig(newSearchConfig);
-    
     setCurrentPage(1);
     
     if (onSearchChange) {
@@ -261,55 +228,37 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   };
 
   const handleColumnFilter = (field: keyof T, type: FilterType, value: string | string[], operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte') => {
-    const existingFilterIndex = columnFilters.findIndex(f => f.field === field);
-    const newFilters = [...columnFilters];
-
-    if (existingFilterIndex >= 0) {
-      if (!value || (Array.isArray(value) && value.length === 0)) {
-        // Remove filter if no value
-        newFilters.splice(existingFilterIndex, 1);
-      } else {
-        // Update existing filter
-        newFilters[existingFilterIndex] = { field: String(field), type, value, operator };
-      }
-    } else if (value && (!Array.isArray(value) || value.length > 0)) {
-      // Add new filter
-      newFilters.push({ field: String(field), type, value, operator });
-    }
-
-    setColumnFilters(newFilters);
+    const newFilters = updateColumnFilter(columnFilters, field, type, value, operator);
     
-    // Reset to first page when filtering (important for server-side)
+    setColumnFilters(newFilters);
     setCurrentPage(1);
     
-    // trigger callback - user handles server-side logic here
     if (onFilterChange) {
       onFilterChange(newFilters);
     }
   };
 
   const clearAllFilters = () => {
-    const clearedSearchConfig = { query: '', caseSensitive: false };
+    const { filters, searchConfig: clearedSearchConfig } = clearAllFiltersAndSearch();
     
-    setColumnFilters([]);
+    setColumnFilters(filters);
     setSearchConfig(clearedSearchConfig);
     setCurrentPage(1);
     
     if (onFilterChange) {
-      onFilterChange([]);
+      onFilterChange(filters);
     }
     if (onSearchChange) {
       onSearchChange(clearedSearchConfig);
     }
   };
-  const selectedCount = Object.values(selectedRows).filter(selected => selected).length;
+  const selectedCount = getSelectedRowCount(selectedRows);
 
   const handleDeselectAll = () => {
     setSelectedRows({});
     setSelectAll(false);
   };
 
-  // Calculate column widths using the generic utility function
   const getColumnWidth = (column: ColumnDefinition<T>) => {
     return getDefaultColumnWidth(column);
   };
@@ -405,7 +354,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
       <Block style={{
         borderRadius: 8,
-        border: '1px solid #e5e7eb',
+        border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
         maxHeight: 'calc(100vh - 200px)',
         flex: 1,
         display: 'flex',
@@ -434,7 +383,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
             flex: 1,
             minHeight: 0,
           }}>
-            <Table $isStriped={isStriped} $isHoverable={isHoverable}>
+            <Table $isHoverable={isHoverable}>
               <TableHeader
                 visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
                 initialColumns={initialColumns as ColumnDefinition<Record<string, unknown>>[]}

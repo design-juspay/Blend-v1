@@ -10,7 +10,7 @@ import SingleSelectMenu from '../../SingleSelect/SingleSelectMenu';
 import { FOUNDATION_THEME } from '../../../tokens';
 import { SelectMenuGroupType } from '../../Select/types';
 
-export interface ColumnFilterProps<T extends Record<string, unknown>> {
+export type ColumnFilterProps<T extends Record<string, unknown>> = {
   column: ColumnDefinition<T>;
   data: T[];
   currentFilter?: ColumnFilter;

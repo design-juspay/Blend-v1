@@ -89,9 +89,8 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                 </Block>
               )}
               
-                             {enableFiltering && (
+              {enableFiltering && (
                  <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
-                   {/* Advanced Filters - Global filtering interface for complex filters and API calls */}
                    <Popover
                      trigger={
                        <Button
@@ -179,7 +178,7 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                                 }}
                                 style={{
                                   width: '100%',
-                                  height: '32px',
+                                  height: `${FOUNDATION_THEME.unit[32]}`,
                                   border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[300]}`,
                                   borderRadius: FOUNDATION_THEME.border.radius[12],
                                   padding: `0 ${FOUNDATION_THEME.unit[8]}`,

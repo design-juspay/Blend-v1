@@ -123,7 +123,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
             <>
               <TableRow key={rowId}>
                 {enableRowExpansion && (
-                  <StyledTableCell width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
+                  <StyledTableCell width="50px" style={{ minWidth: `${FOUNDATION_THEME.unit[52]}`, maxWidth: `${FOUNDATION_THEME.unit[52]}` }}>
                     <Block display='flex' alignItems='center' justifyContent='center'>
                       {canExpand ? (
                         <ExpandButton

@@ -31,7 +31,6 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
           onFieldChange
         );
       } else {
-        // Default edit input
         return (
           <Block style={{ 
             width: '100%', 
@@ -44,14 +43,14 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
               onChange={(e) => onFieldChange(e.target.value)}
               style={{
                 width: 'calc(100% - 8px)',
-                height: '32px',
+                height: `${FOUNDATION_THEME.unit[32]}`,
                 border: `1px solid ${FOUNDATION_THEME.colors.gray[300]}`,
                 borderRadius: '4px',
                 padding: `${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[8]}`,
                 fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
-                color: '#6b7280',
+                color: `${FOUNDATION_THEME.colors.gray[600]}`,
                 fontWeight: FOUNDATION_THEME.font.weight[500],
-                backgroundColor: '#ffffff',
+                backgroundColor: `${FOUNDATION_THEME.colors.gray[0]}`,
                 outline: 'none',
                 boxSizing: 'border-box',
                 margin: '0',
@@ -59,11 +58,11 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
                 maxWidth: '100%'
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#3b82f6';
-                e.target.style.boxShadow = '0 0 0 1px #dbeafe';
+                e.target.style.borderColor = `${FOUNDATION_THEME.colors.primary[600]}`;
+                e.target.style.boxShadow = `0 0 0 1px ${FOUNDATION_THEME.colors.primary[100]}`;
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = '#d1d5db';
+                e.target.style.borderColor = `${FOUNDATION_THEME.colors.gray[300]}`;
                 e.target.style.boxShadow = 'none';
               }}
             />
@@ -72,7 +71,6 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
       }
     }
 
-    // Display mode
     if (column.renderCell) {
       return (
         <Block style={{ width: '100%' }}>
@@ -112,7 +110,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
     >
       <Block style={{ 
         width: '100%', 
-        minHeight: '36px',
+        minHeight: `${FOUNDATION_THEME.unit[36]}`,
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden'
