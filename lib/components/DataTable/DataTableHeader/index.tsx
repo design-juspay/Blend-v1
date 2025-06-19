@@ -1,18 +1,16 @@
 import { forwardRef } from 'react';
 import { Filter } from 'lucide-react';
 import { DataTableHeaderProps } from './types';
-import { FilterType } from '../types';
-import { getUniqueColumnValues } from '../utils';
 import Button from '../../Button/Button';
 import { ButtonSize, ButtonType } from '../../Button/types';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
-import PrimitiveInput from '../../Primitives/PrimitiveInput/PrimitiveInput';
 import { SearchInput } from '../../Inputs/SearchInput';
 import { FOUNDATION_THEME } from '../../../tokens';
-import dataTableTokens from '../dataTable.tokens';
+import {  TableTokenType } from '../dataTable.tokens';
 import { Popover } from '../../Popover';
 import { PopoverSize } from '../../Popover/types';
+import { useComponentToken } from '../../../context/useComponentToken';
 
 const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<string, unknown>>>(({
   title,
@@ -21,19 +19,17 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
   enableSearch = false,
   searchPlaceholder = "Search...",
   searchConfig,
-  enableFiltering = false,
-  showFilters,
-  columnFilters,
-  visibleColumns,
-  data,
+  enableAdvancedFilter = false,
+  advancedFilterComponent: AdvancedFilterComponent,
+  advancedFilters = [],
   onSearch,
-  onToggleFilters,
-  onColumnFilter,
+  onAdvancedFiltersChange,
   onClearAllFilters,
   headerSlot1,
   headerSlot2,
   headerSlot3
 }, ref) => {
+  const tableToken = useComponentToken("TABLE") as TableTokenType ;
   if (!title && !description && !showToolbar) {
     return null;
   }
@@ -41,17 +37,21 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
   return (
     <Block
       ref={ref}
-      style={{
-        ...dataTableTokens.header.container,
-      }}
+      display={tableToken.header.display}
+      justifyContent={tableToken.header.justifyContent}
+      alignItems={tableToken.header.alignItems}
+      marginBottom={tableToken.header.marginBottom}
+      gap={tableToken.header.gap}
+      maxWidth={tableToken.header.maxWidth}
+      overflowX={tableToken.header.overflowX}
     >
       <Block display='flex' flexDirection='column' gap={FOUNDATION_THEME.unit[10]} maxWidth={"60%"}>
         {title && (
           <PrimitiveText
             as='h2'
-            style={{
-              ...dataTableTokens.header.title,
-            }}
+            fontSize={tableToken.header.title.fontSize}
+            fontWeight={tableToken.header.title.fontWeight}
+            color={tableToken.header.title.color}
           >
             {title}
           </PrimitiveText>
@@ -59,16 +59,10 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
         {description && (
           <PrimitiveText
             as='p'
-            style={{
-              ...dataTableTokens.header.description,
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              maxHeight: '2.5em',
-              lineHeight: '1.25em',
-            }}
+            fontSize={tableToken.header.description.fontSize}
+            color={tableToken.header.description.color}
+            style={{ maxWidth: tableToken.header.description.maxWidth, lineHeight: tableToken.header.description.lineHeight}}
+            truncate
           >
             {description}
           </PrimitiveText>
@@ -77,7 +71,7 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
 
       {showToolbar && (
         <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[12]}>
-          {(enableSearch || enableFiltering) && (
+          {(enableSearch || enableAdvancedFilter) && (
             <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[12]} style={{ flex: 1 }}>
               {enableSearch && (
                 <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]} style={{ minWidth: '300px' }}>
@@ -89,27 +83,26 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                 </Block>
               )}
               
-              {enableFiltering && (
+              {enableAdvancedFilter && (
                  <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
                    <Popover
                      trigger={
                        <Button
-                         buttonType={showFilters ? ButtonType.PRIMARY : ButtonType.SECONDARY}
+                         buttonType={advancedFilters.length > 0 ? ButtonType.PRIMARY : ButtonType.SECONDARY}
                          leadingIcon={Filter}
                          size={ButtonSize.SMALL}
                        >
-                         Advanced Filters {columnFilters.length > 0 && `(${columnFilters.length})`}
+                         Advanced Filters {advancedFilters.length > 0 && `(${advancedFilters.length})`}
                        </Button>
                      }
                      heading="Advanced Filters"
-                     description="Configure complex filters for server-side filtering"
+                     description="Configure complex filters for your data"
                     size={PopoverSize.MEDIUM}
-                    primaryAction={{
-                      onClick: () => onToggleFilters(),
-                    }}
+                    align="end"
+                    alignOffset={-20}
                     secondaryAction={{
                       onClick: onClearAllFilters,
-                      isDisabled: !searchConfig.query.trim() && columnFilters.length === 0,
+                      isDisabled: !searchConfig.query.trim() && advancedFilters.length === 0,
                     }}
                   >
                     <Block 
@@ -119,77 +112,34 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                       style={{
                         maxHeight: '400px',
                         overflowY: 'auto',
+                        minWidth: '300px',
                       }}
                     >
-                      {visibleColumns
-                        .filter(col => col.isFilterable)
-                        .map(column => {
-                          const currentFilter = columnFilters.find(f => f.field === column.field);
-                          const filterType = column.filterType || FilterType.TEXT;
-                          
-                          if (filterType === FilterType.SELECT || filterType === FilterType.MULTISELECT) {
-                            const options = column.filterOptions || 
-                              getUniqueColumnValues(data, column.field).map(val => ({ id: val, label: val, value: val }));
-                            
-                            return (
-                              <Block key={String(column.field)} display='flex' flexDirection='column' gap={FOUNDATION_THEME.unit[4]} style={{ minWidth: '200px' }}>
-                                <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize, fontWeight: FOUNDATION_THEME.font.weight[500] }}>
-                                  {column.header}
-                                </PrimitiveText>
-                                <select
-                                  value={Array.isArray(currentFilter?.value) ? '' : (currentFilter?.value as string || '')}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    onColumnFilter(column.field, filterType, value, 'equals');
-                                  }}
-                                  style={{
-                                    width: '100%',
-                                    height: '32px',
-                                    border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[300]}`,
-                                    borderRadius: FOUNDATION_THEME.border.radius[12],
-                                    padding: `0 ${FOUNDATION_THEME.unit[8]}`,
-                                    fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                                    backgroundColor: FOUNDATION_THEME.colors.gray[0],
-                                    outline: 'none',
-                                  }}
-                                >
-                                  <option value="">All</option>
-                                  {options.map(option => (
-                                    <option key={option.id} value={option.value}>
-                                      {option.label}
-                                    </option>
-                                  ))}
-                                </select>
-                              </Block>
-                            );
-                          }
-                          
-                          return (
-                            <Block key={String(column.field)} display='flex' flexDirection='column' gap={FOUNDATION_THEME.unit[4]} style={{ minWidth: '200px' }}>
-                              <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize, fontWeight: FOUNDATION_THEME.font.weight[500] }}>
-                                {column.header}
-                              </PrimitiveText>
-                              <PrimitiveInput
-                                placeholder={`Filter ${column.header}...`}
-                                value={(currentFilter?.value as string) || ''}
-                                onChange={(e) => {
-                                  const value = e.target.value;
-                                  onColumnFilter(column.field, filterType, value, 'equals');
-                                }}
-                                style={{
-                                  width: '100%',
-                                  height: `${FOUNDATION_THEME.unit[32]}`,
-                                  border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[300]}`,
-                                  borderRadius: FOUNDATION_THEME.border.radius[12],
-                                  padding: `0 ${FOUNDATION_THEME.unit[8]}`,
-                                  fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                                  backgroundColor: FOUNDATION_THEME.colors.gray[0],
-                                  outline: 'none',
-                                }}
-                              />
-                            </Block>
-                          );
-                        })}
+                      {AdvancedFilterComponent ? (
+                        <AdvancedFilterComponent
+                          filters={advancedFilters}
+                          onFiltersChange={onAdvancedFiltersChange || (() => {})}
+                          onClearFilters={onClearAllFilters}
+                        />
+                      ) : (
+                        <Block 
+                          display="flex" 
+                          flexDirection="column" 
+                          alignItems="center" 
+                          justifyContent="center" 
+                          gap={FOUNDATION_THEME.unit[8]}
+                          style={{ padding: FOUNDATION_THEME.unit[16] }}
+                        >
+                          <PrimitiveText 
+                            fontSize={FOUNDATION_THEME.font.size.body.sm.fontSize}
+                            color={FOUNDATION_THEME.colors.gray[500]}
+                            style={{ textAlign: 'center' }}
+                          >
+                            No advanced filter component provided.
+                            Pass an advancedFilterComponent prop to enable custom filtering.
+                          </PrimitiveText>
+                        </Block>
+                      )}
                     </Block>
                   </Popover>
                 </Block>

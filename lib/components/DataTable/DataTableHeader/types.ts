@@ -1,4 +1,4 @@
-import { ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from '../types';
+import { ColumnDefinition, SearchConfig, AdvancedFilterProps } from '../types';
 
 export type DataTableHeaderProps<T extends Record<string, unknown>> = {
   title?: string;
@@ -7,14 +7,13 @@ export type DataTableHeaderProps<T extends Record<string, unknown>> = {
   enableSearch?: boolean;
   searchPlaceholder?: string;
   searchConfig: SearchConfig;
-  enableFiltering?: boolean;
-  showFilters: boolean;
-  columnFilters: ColumnFilter[];
+  enableAdvancedFilter?: boolean;
+  advancedFilterComponent?: React.ComponentType<AdvancedFilterProps>;
+  advancedFilters?: unknown[];
   visibleColumns: ColumnDefinition<T>[];
   data: T[];
   onSearch: (query: string) => void;
-  onToggleFilters: () => void;
-  onColumnFilter: (field: keyof T, type: FilterType, value: string | string[], operator: 'equals') => void;
+  onAdvancedFiltersChange?: (filters: unknown[]) => void;
   onClearAllFilters: () => void;
   headerSlot1?: React.ReactNode;
   headerSlot2?: React.ReactNode;

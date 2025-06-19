@@ -5,13 +5,15 @@ import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
-import { RefreshCw, Plus, CircleX, Server, Database } from 'lucide-react';
+import { RefreshCw, Plus, CircleX, Server, Database, Zap } from 'lucide-react';
 import { ColumnType, AvatarData, TagData } from '../../../lib/components/DataTable/columnTypes';
+import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
 
 const DataTableDemo = () => {
     // Demo mode toggle
     const [isServerSideMode, setIsServerSideMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [autoSwitchToApi, setAutoSwitchToApi] = useState(true); 
 
     // Generate larger dataset for server-side demo
     const generateLargeDataset = (count: number) => {
@@ -79,7 +81,7 @@ const DataTableDemo = () => {
     // Server-side state
     const [serverState, setServerState] = useState({
       searchQuery: '',
-      filters: [] as ColumnFilter[],
+      filters: [] as FilterRule[],
       currentPage: 1,
       pageSize: 10,
       totalRecords: 3000
@@ -230,7 +232,7 @@ const DataTableDemo = () => {
     });
 
     // Simulate server-side API call
-    const fetchServerData = async (searchQuery: string, filters: ColumnFilter[], page: number, size: number) => {
+    const fetchServerData = async (searchQuery: string, filters: FilterRule[], page: number, size: number) => {
       setIsLoading(true);
       
       // Simulate API delay
@@ -247,15 +249,32 @@ const DataTableDemo = () => {
         );
       }
       
-             // Apply server-side filters
        filters.forEach(filter => {
-         if (filter.value) {
+         if (filter.value && filter.value.trim()) {
            filteredData = filteredData.filter(row => {
-             const cellValue = (row as Record<string, unknown>)[filter.field as string];
-             if (Array.isArray(filter.value)) {
-               return filter.value.includes(String(cellValue));
+             let cellValue = (row as Record<string, unknown>)[filter.field as string];
+             
+             if (filter.field === 'name' && cellValue && typeof cellValue === 'object') {
+               cellValue = (cellValue as AvatarData).label;
+             } else if (filter.field === 'status' && cellValue && typeof cellValue === 'object') {
+               cellValue = (cellValue as TagData).text;
              }
-             return String(cellValue).toLowerCase().includes(String(filter.value).toLowerCase());
+             
+             const cellValueStr = String(cellValue).toLowerCase();
+             const filterValueStr = filter.value.toLowerCase();
+             
+             switch (filter.operator) {
+               case 'equals':
+                 return cellValueStr === filterValueStr;
+               case 'contains':
+                 return cellValueStr.includes(filterValueStr);
+               case 'startsWith':
+                 return cellValueStr.startsWith(filterValueStr);
+               case 'endsWith':
+                 return cellValueStr.endsWith(filterValueStr);
+               default:
+                 return cellValueStr.includes(filterValueStr);
+             }
            });
          }
        });
@@ -286,6 +305,15 @@ const DataTableDemo = () => {
       });
     };
 
+    const autoSwitchToServerMode = () => {
+      if (!isServerSideMode && autoSwitchToApi) {
+        console.log('🔄 Auto-switching to server-side mode for advanced filtering...');
+        setIsServerSideMode(true);
+        return true;
+      }
+      return false;
+    };
+
     // Handle search change (both local and server-side)
     const handleSearchChange = (searchConfig: SearchConfig) => {
       console.log('🔍 Search changed:', searchConfig);
@@ -299,16 +327,26 @@ const DataTableDemo = () => {
       }
     };
 
-    // Handle filter change (both local and server-side)
+    // Handle local column filter change 
     const handleFilterChange = (filters: ColumnFilter[]) => {
-      console.log('🔧 Filters changed:', filters);
+      console.log('🔧 Local Column Filters changed:', filters);
+      // Local filters are handled automatically by the DataTable component
+    };
+
+    // Handle advanced filter change (both local and server-side)
+    const handleAdvancedFiltersChange = (filters: FilterRule[]) => {
+      console.log('🔧 Advanced Filters changed:', filters);
       
-      if (isServerSideMode) {
-        // Server-side: Make API call
+      // Auto-switch to server-side if filters are applied and auto-switch is enabled
+      const switched = autoSwitchToServerMode();
+      
+      if (isServerSideMode || switched) {
+        // Server-side: Make API call (either already in server mode or just switched)
         fetchServerData(serverState.searchQuery, filters, 1, pageSize);
       } else {
-        // Local: Let DataTable handle it internally
-        console.log('Local filtering will be handled by DataTable component');
+        // Local: Just update the server state for consistency
+        setServerState(prev => ({ ...prev, filters }));
+        console.log('Local advanced filtering will be handled by DataTable component');
       }
     };
 
@@ -357,7 +395,21 @@ const DataTableDemo = () => {
         // Switching to local: Load smaller local dataset
         console.log('💻 Loading local dataset...');
         setData(generateLargeDataset(50));
+        // Reset server state when switching to local
+        setServerState({
+          searchQuery: '',
+          filters: [],
+          currentPage: 1,
+          pageSize: 10,
+          totalRecords: 3000
+        });
       }
+    };
+
+    // Toggle auto-switch feature
+    const toggleAutoSwitch = () => {
+      setAutoSwitchToApi(!autoSwitchToApi);
+      console.log('🔧 Auto-switch to API:', !autoSwitchToApi ? 'enabled' : 'disabled');
     };
 
     // Initialize server data on mount if in server mode
@@ -587,7 +639,7 @@ const DataTableDemo = () => {
 
     return (
       <div>
-        {/* Mode Toggle */}
+        {/* Mode Toggle and Controls */}
         <div style={{ 
           marginBottom: '20px', 
           padding: '16px', 
@@ -595,7 +647,7 @@ const DataTableDemo = () => {
           borderRadius: '8px',
           border: '1px solid #e2e8f0'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <div>
               <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>
                 Demo Mode: {isServerSideMode ? 'Server-Side' : 'Local'} Search & Filtering
@@ -603,20 +655,47 @@ const DataTableDemo = () => {
               <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
                 {isServerSideMode 
                   ? `🚀 Server-side mode: Simulating 3,000 records with API calls for search/filter. Currently showing ${data.length} records.`
-                  : `💻 Local mode: All operations handled client-side with ${data.length} records.`
+                  : `💻 Local mode: All operations handled client-side with ${data.length} records. Both column filters and advanced filters work locally.`
                 }
               </p>
             </div>
-            <Button
-              buttonType={isServerSideMode ? ButtonType.PRIMARY : ButtonType.SECONDARY}
-              leadingIcon={isServerSideMode ? Server : Database}
-              size={ButtonSize.SMALL}
-              onClick={toggleMode}
-              disabled={isLoading}
-            >
-              Switch to {isServerSideMode ? 'Local' : 'Server-Side'}
-            </Button>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <Button
+                buttonType={autoSwitchToApi ? ButtonType.PRIMARY : ButtonType.SECONDARY}
+                leadingIcon={Zap}
+                size={ButtonSize.SMALL}
+                onClick={toggleAutoSwitch}
+                disabled={isServerSideMode}
+              >
+                Auto API Switch: {autoSwitchToApi ? 'ON' : 'OFF'}
+              </Button>
+              <Button
+                buttonType={isServerSideMode ? ButtonType.PRIMARY : ButtonType.SECONDARY}
+                leadingIcon={isServerSideMode ? Server : Database}
+                size={ButtonSize.SMALL}
+                onClick={toggleMode}
+                disabled={isLoading}
+              >
+                Switch to {isServerSideMode ? 'Local' : 'Server-Side'}
+              </Button>
+            </div>
           </div>
+          
+          {/* Auto-switch explanation */}
+          {!isServerSideMode && (
+            <div style={{ 
+              marginTop: '12px', 
+              padding: '12px', 
+              backgroundColor: autoSwitchToApi ? '#e0f2fe' : '#fef3c7', 
+              borderRadius: '6px',
+              fontSize: '12px'
+            }}>
+              <strong>🔧 Auto API Switch:</strong> {autoSwitchToApi 
+                ? 'When you use Advanced Filters, the table will automatically switch to server-side mode to handle API calls.'
+                : 'Advanced Filters will work locally only. Toggle this to enable automatic API switching.'
+              }
+            </div>
+          )}
           
           {isServerSideMode && (
             <div style={{ 
@@ -640,11 +719,14 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, and expandable rows`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, and expandable rows. Try the column header filters and advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}
-          enableFiltering
+          enableFiltering={true}
+          enableAdvancedFilter
+          advancedFilterComponent={AdvancedFilterComponent}
+          advancedFilters={serverState.filters}
           enableInlineEdit
           enableRowExpansion
           renderExpandedRow={renderExpandedRow}
@@ -665,6 +747,7 @@ const DataTableDemo = () => {
           onSortChange={(newSortConfig) => setSortConfig(newSortConfig)}
           onSearchChange={handleSearchChange}
           onFilterChange={handleFilterChange}
+          onAdvancedFiltersChange={handleAdvancedFiltersChange}
           onRowSave={handleRowSave}
           onRowCancel={handleRowCancel}
           onRowExpansionChange={handleRowExpansionChange}

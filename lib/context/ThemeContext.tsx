@@ -53,6 +53,7 @@ import {
   getBreadcrumbTokens,
 } from "../components/Breadcrumb/breadcrumb.tokens";
 import { getPopoverTokens, PopoverTokenType } from "../components/Popover/popover.tokens";
+import { getTableToken, TableTokenType } from "../components/DataTable/dataTable.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -74,6 +75,7 @@ export type ComponentTokenType = {
   MODAL?: ModalTokensType;
   BREADCRUMB?: BreadcrumbTokenType;
   POPOVER?: PopoverTokenType;
+  TABLE?: TableTokenType
   // add supprort for other components here
 };
 
@@ -104,6 +106,7 @@ const ThemeContext = createContext<ThemeContextType>({
     MODAL: getModalComponentTokens(FOUNDATION_THEME),
     BREADCRUMB: getBreadcrumbTokens(FOUNDATION_THEME),
     POPOVER: getPopoverTokens(FOUNDATION_THEME),
+    TABLE: getTableToken(FOUNDATION_THEME)
   },
 });
 

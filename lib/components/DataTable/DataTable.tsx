@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo, forwardRef } from 'react';
 import { styled } from 'styled-components';
 import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from './types';
-import dataTableTokens from './dataTable.tokens';
+import dataTableTokens, { TableTokenType } from './dataTable.tokens';
 import {
-  sortData, searchData, applyColumnFilters, getDefaultColumnWidth,
+  sortData, searchData, applyColumnFilters, getDefaultColumnWidth, 
   updateColumnFilter, exportSelectedRowsToCSV, getSelectedRowCount,
   createSearchConfig, clearAllFiltersAndSearch
 } from './utils';
@@ -14,6 +14,8 @@ import TableFooter from './TableFooter';
 import BulkActionBar from './TableBody/BulkActionBar';
 import Block from '../Primitives/Block/Block';
 import { FOUNDATION_THEME } from '../../tokens';
+
+import { useComponentToken } from '../../context/useComponentToken';
 
 const Table = styled.table<{ $isHoverable?: boolean }>`
   ${dataTableTokens.table.base}
@@ -34,6 +36,9 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     enableSearch = false,
     searchPlaceholder = "Search...",
     enableFiltering = false,
+    enableAdvancedFilter = false,
+    advancedFilterComponent,
+    advancedFilters = [],
     serverSideSearch = false,
     serverSideFiltering = false,
     serverSidePagination = false,
@@ -55,6 +60,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onSortChange,
     onSearchChange,
     onFilterChange,
+    onAdvancedFiltersChange,
     onRowSave,
     onRowCancel,
     onRowExpansionChange,
@@ -65,6 +71,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   }: DataTableProps<T>,
   ref: React.Ref<HTMLDivElement>
 ) => {
+  const tableToken = useComponentToken("TABLE") as TableTokenType;
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(defaultSort || null);
   const [visibleColumns, setVisibleColumns] = useState<ColumnDefinition<T>[]>(() => {
     return initialColumns.filter(col => col.isVisible !== false);
@@ -78,7 +85,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   // Search and filter state
   const [searchConfig, setSearchConfig] = useState<SearchConfig>({ query: '', caseSensitive: false });
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
   
   // Inline edit state
   const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
@@ -100,6 +106,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
       result = searchData(result, searchConfig, visibleColumns);
     }
 
+    // Apply local column filters if not server-side filtering
     if (enableFiltering && !serverSideFiltering && columnFilters.length > 0) {
       result = applyColumnFilters(result, columnFilters);
     }
@@ -227,29 +234,32 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
   };
 
-  const handleColumnFilter = (field: keyof T, type: FilterType, value: string | string[], operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte') => {
-    const newFilters = updateColumnFilter(columnFilters, field, type, value, operator);
+  const handleColumnFilter = (field: keyof Record<string, unknown>, type: FilterType, value: string | string[], operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' = 'contains') => {
+    const updatedFilters = updateColumnFilter(columnFilters, field, type, value, operator);
     
-    setColumnFilters(newFilters);
+    setColumnFilters(updatedFilters);
     setCurrentPage(1);
     
     if (onFilterChange) {
-      onFilterChange(newFilters);
+      onFilterChange(updatedFilters);
     }
   };
 
   const clearAllFilters = () => {
-    const { filters, searchConfig: clearedSearchConfig } = clearAllFiltersAndSearch();
+    const { searchConfig: clearedSearchConfig } = clearAllFiltersAndSearch();
     
-    setColumnFilters(filters);
     setSearchConfig(clearedSearchConfig);
+    setColumnFilters([]);
     setCurrentPage(1);
     
-    if (onFilterChange) {
-      onFilterChange(filters);
+    if (onAdvancedFiltersChange) {
+      onAdvancedFiltersChange([]);
     }
     if (onSearchChange) {
       onSearchChange(clearedSearchConfig);
+    }
+    if (onFilterChange) {
+      onFilterChange([]);
     }
   };
   const selectedCount = getSelectedRowCount(selectedRows);
@@ -328,8 +338,11 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   return (
     <Block ref={ref} style={{
-      ...dataTableTokens.container,
-      position: 'relative',
+      position: tableToken.position,
+      padding: tableToken.padding,
+      width: tableToken.width,
+      display: tableToken.display,
+      flexDirection: tableToken.flexDirection,
     }}>
       <DataTableHeader
         title={title}
@@ -338,14 +351,13 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         enableSearch={enableSearch}
         searchPlaceholder={searchPlaceholder}
         searchConfig={searchConfig}
-        enableFiltering={enableFiltering}
-        showFilters={showFilters}
-        columnFilters={columnFilters}
+        enableAdvancedFilter={enableAdvancedFilter}
+        advancedFilterComponent={advancedFilterComponent}
+        advancedFilters={advancedFilters}
         visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
         data={data}
         onSearch={handleSearch}
-        onToggleFilters={() => setShowFilters(!showFilters)}
-        onColumnFilter={handleColumnFilter}
+        onAdvancedFiltersChange={onAdvancedFiltersChange}
         onClearAllFilters={clearAllFilters}
         headerSlot1={headerSlot1}
         headerSlot2={headerSlot2}

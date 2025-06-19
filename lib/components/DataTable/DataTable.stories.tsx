@@ -152,7 +152,11 @@ const data: User[] = [
       control: 'boolean',
     },
     enableFiltering: {
-      description: 'Enable column-specific filtering',
+      description: 'Enable local column-level filtering',
+      control: 'boolean',
+    },
+    enableAdvancedFilter: {
+      description: 'Enable advanced filtering with custom filter component',
       control: 'boolean',
     },
     enableInlineEdit: {
@@ -393,7 +397,7 @@ export const Default: Story = {
     description: 'Manage your team members and their information',
     isHoverable: true,
     enableSearch: false,
-    enableFiltering: false,
+    enableAdvancedFilter: false,
     enableInlineEdit: false,
     enableRowExpansion: false,
     enableColumnManager: true,
@@ -433,6 +437,7 @@ export const WithSearchAndFiltering: Story = {
     enableSearch: true,
     searchPlaceholder: 'Search employees...',
     enableFiltering: true,
+    enableAdvancedFilter: false,
     enableColumnManager: true,
   },
   parameters: {
@@ -450,9 +455,189 @@ This story demonstrates:
 
 Try:
 1. Search for "john" in the search box
-2. Filter by "Engineering" department
-3. Filter by "Active" status
+2. Filter by "Engineering" department (click column header)
+3. Filter by "Active" status (click column header)
 4. Combine multiple filters
+        `,
+      },
+    },
+  },
+};
+
+export const WithAdvancedFiltering: Story = {
+  render: (args) => {
+    const [advancedFilters, setAdvancedFilters] = useState<any[]>([]);
+
+    // Simple Advanced Filter Component for demo
+    const DemoAdvancedFilterComponent = ({ filters, onFiltersChange, onClearFilters }: any) => {
+      const [localFilters, setLocalFilters] = useState(filters || []);
+
+      const addFilter = () => {
+        const newFilter = {
+          id: Date.now().toString(),
+          field: 'name',
+          operator: 'contains',
+          value: ''
+        };
+        const updatedFilters = [...localFilters, newFilter];
+        setLocalFilters(updatedFilters);
+        onFiltersChange(updatedFilters);
+      };
+
+      const removeFilter = (id: string) => {
+        const updatedFilters = localFilters.filter((f: any) => f.id !== id);
+        setLocalFilters(updatedFilters);
+        onFiltersChange(updatedFilters);
+      };
+
+      const updateFilter = (id: string, field: string, value: string) => {
+        const updatedFilters = localFilters.map((f: any) =>
+          f.id === id ? { ...f, [field]: value } : f
+        );
+        setLocalFilters(updatedFilters);
+        onFiltersChange(updatedFilters);
+      };
+
+      return (
+        <div style={{ minWidth: '400px', padding: '16px' }}>
+          <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Advanced Filters</h4>
+            {localFilters.length > 0 && (
+              <button 
+                onClick={() => { setLocalFilters([]); onClearFilters(); }}
+                style={{ padding: '4px 8px', fontSize: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+              >
+                Clear All
+              </button>
+            )}
+          </div>
+
+          {localFilters.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '32px', border: '2px dashed #e2e8f0', borderRadius: '8px' }}>
+              <p style={{ margin: '0 0 16px 0', color: '#6b7280' }}>No advanced filters applied</p>
+              <button
+                onClick={addFilter}
+                style={{ padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px' }}
+              >
+                Add Filter Rule
+              </button>
+            </div>
+          ) : (
+            <div>
+              {localFilters.map((filter: any, index: number) => (
+                <div key={filter.id} style={{ marginBottom: '12px', padding: '12px', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    {index > 0 && <span style={{ fontSize: '12px', color: '#6b7280' }}>AND</span>}
+                    <span style={{ fontSize: '14px', fontWeight: 500 }}>Filter {index + 1}</span>
+                    <button 
+                      onClick={() => removeFilter(filter.id)}
+                      style={{ marginLeft: 'auto', padding: '2px 6px', fontSize: '12px', color: '#dc2626', border: '1px solid #dc2626', borderRadius: '3px' }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '8px' }}>
+                    <select
+                      value={filter.field}
+                      onChange={(e) => updateFilter(filter.id, 'field', e.target.value)}
+                      style={{ padding: '4px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                    >
+                      <option value="name">Name</option>
+                      <option value="email">Email</option>
+                      <option value="role">Role</option>
+                      <option value="department">Department</option>
+                      <option value="status">Status</option>
+                    </select>
+                    <select
+                      value={filter.operator}
+                      onChange={(e) => updateFilter(filter.id, 'operator', e.target.value)}
+                      style={{ padding: '4px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                    >
+                      <option value="contains">Contains</option>
+                      <option value="equals">Equals</option>
+                      <option value="startsWith">Starts with</option>
+                      <option value="endsWith">Ends with</option>
+                    </select>
+                    <input
+                      type="text"
+                      placeholder="Filter value..."
+                      value={filter.value}
+                      onChange={(e) => updateFilter(filter.id, 'value', e.target.value)}
+                      style={{ padding: '4px 8px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                    />
+                  </div>
+                </div>
+              ))}
+              <button
+                onClick={addFilter}
+                style={{ padding: '6px 12px', backgroundColor: '#f3f4f6', border: '1px dashed #9ca3af', borderRadius: '4px', color: '#374151' }}
+              >
+                + Add Another Filter
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const handleAdvancedFiltersChange = (filters: any[]) => {
+      setAdvancedFilters(filters);
+      console.log('Advanced Filters changed:', filters);
+    };
+
+    const handleClearAllFilters = () => {
+      setAdvancedFilters([]);
+      console.log('All filters cleared');
+    };
+
+    return (
+      <DataTable
+        {...args}
+        advancedFilterComponent={DemoAdvancedFilterComponent}
+        advancedFilters={advancedFilters}
+        onAdvancedFiltersChange={handleAdvancedFiltersChange}
+      />
+    );
+  },
+  args: {
+    data: sampleUsers,
+    columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
+    idField: 'id',
+    title: 'Employee Directory',
+    description: 'Try the advanced filters for complex filtering scenarios',
+    isHoverable: true,
+    enableSearch: true,
+    enableFiltering: true,
+    enableAdvancedFilter: true,
+    enableColumnManager: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+### DataTable with Advanced Filtering
+
+This story demonstrates the advanced filtering capabilities:
+- **Custom Filter Component**: User-defined filter interface
+- **Complex Filter Rules**: Multiple field, operator, value combinations  
+- **Server-Side Ready**: Filters can be sent to APIs for server-side processing
+- **Combined with Local Filters**: Works alongside column-level filters
+- **User Control**: Full control over filter logic and API calls
+
+Advanced Filter Features:
+- Add/remove filter rules dynamically
+- Choose field, operator, and value for each rule
+- Combine multiple filters with AND logic
+- Clear all filters at once
+- Custom filter component with full UI control
+
+Try:
+1. Click "Advanced Filters" button
+2. Add filter rules with different combinations
+3. Use both column filters (header dropdowns) and advanced filters
+4. Notice how they work together for comprehensive filtering
+
+The advanced filter component can be customized for your specific needs and can trigger API calls for server-side filtering.
         `,
       },
     },

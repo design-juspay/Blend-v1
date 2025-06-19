@@ -118,6 +118,15 @@ export type ColumnManagerProps<T extends Record<string, unknown>> = {
   onColumnChange: (columns: ColumnDefinition<T>[]) => void;
 };
 
+export type AdvancedFilterProps = {
+  /** Current filters applied */
+  filters: any[];
+  /** Callback when filters change */
+  onFiltersChange: (filters: any[]) => void;
+  /** Callback to clear all filters */
+  onClearFilters: () => void;
+}
+
 export type DataTableProps<T extends Record<string, unknown>> = {
   /** Array of data objects to display */
   data: T[];
@@ -137,8 +146,14 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   enableSearch?: boolean;
   /** Search placeholder text */
   searchPlaceholder?: string;
-  /** Whether to enable filtering */
+  /** Whether to enable column filtering (local) */
   enableFiltering?: boolean;
+  /** Whether to enable advanced filtering (user-controlled) */
+  enableAdvancedFilter?: boolean;
+  /** Custom advanced filter component */
+  advancedFilterComponent?: React.ComponentType<AdvancedFilterProps>;
+  /** Current filters for advanced filter */
+  advancedFilters?: unknown[];
   /** Whether search is handled server-side (disables local search) */
   serverSideSearch?: boolean;
   /** Whether filtering is handled server-side (disables local filtering) */
@@ -176,8 +191,10 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onSortChange?: (sortConfig: SortConfig) => void;
   /** Callback when search changes */
   onSearchChange?: (searchConfig: SearchConfig) => void;
-  /** Callback when filters change */
+  /** Callback when column filters change (local) */
   onFilterChange?: (filters: ColumnFilter[]) => void;
+  /** Callback when advanced filters change */
+  onAdvancedFiltersChange?: (filters: any[]) => void;
   /** Callback when row is saved after editing */
   onRowSave?: (rowId: unknown, updatedRow: T) => void;
   /** Callback when row edit is cancelled */

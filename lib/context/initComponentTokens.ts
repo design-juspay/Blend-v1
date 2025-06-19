@@ -19,6 +19,7 @@ import { getButtonTokens } from "../components/ButtonV2/button.tokens";
 import { getModalComponentTokens } from "../components/Modal/modal.tokens";
 import { getBreadcrumbTokens } from "../components/Breadcrumb/breadcrumb.tokens";
 import { getPopoverTokens } from "../components/Popover/popover.tokens";
+import { getTableToken } from "../components/DataTable/dataTable.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -53,6 +54,7 @@ const initTokens = (
     BREADCRUMB:
       componentTokens.BREADCRUMB ?? getBreadcrumbTokens(foundationTokens),
     POPOVER: componentTokens.POPOVER ?? getPopoverTokens(foundationTokens),
+    TABLE: componentTokens.TABLE ?? getTableToken(foundationTokens),
   };
 };
 
