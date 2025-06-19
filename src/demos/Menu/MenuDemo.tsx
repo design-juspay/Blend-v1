@@ -1,21 +1,38 @@
-import { AlertTriangle, Bell, CreditCard, Lock, LogOut, Palette, Shield,   Trash, User } from "lucide-react";
-import { Button } from "../../../lib/components/Button";
+import {
+  AlertTriangle,
+  Bell,
+  CreditCard,
+  Lock,
+  LogOut,
+  Palette,
+  Shield,
+  Trash,
+  User,
+} from "lucide-react";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Menu from "../../../lib/components/Menu/Menu";
 import Select, {
   SelectionTagType,
 } from "../../../lib/components/Select/Select";
 import { useState } from "react";
-import { MenuAlignment } from "../../../lib/components/Menu/types";
+import {
+  MenuAlignment,
+  MenuItemV2ActionType,
+  MenuItemV2Variant,
+  MenuSide,
+  MenuV2GroupType,
+} from "../../../lib/components/Menu/types";
 import {
   SelectMenuAlignment,
   SelectMenuSize,
   SelectMenuVariant,
 } from "../../../lib/components/Select/types";
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
-import { addSnackbar, Tag } from "../../../lib/main";
+import { addSnackbar, ButtonV2, Tag } from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
+import { Settings2 } from "lucide-react";
+import { TagColor, TagShape, TagSize } from "../../../lib/components/Tags";
 
 export const dummyMenuItems = [
   {
@@ -152,6 +169,177 @@ export const dummyMenuItems = [
             subLabel: "Manage content sharing settings",
           },
         ],
+      },
+    ],
+  },
+];
+
+const dummyMenuItemsV2: MenuV2GroupType[] = [
+  {
+    label: "Account GGWP",
+    showSeparator: true,
+    items: [
+      {
+        label: "Profile Settings",
+        onClick: () => alert("Profile Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Billing & Subscription",
+        onClick: () => alert("Billing"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Sign Out",
+        onClick: () => alert("Sign Out"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.ACTION,
+        actionType: MenuItemV2ActionType.PRIMARY,
+        // disabled: true,
+      },
+      {
+        label: "Delete Account",
+        subLabel: "Permanently delete your account and all data",
+        onClick: () => alert("Delete Account"),
+        slot1: <Settings2 size={13} />,
+        // disabled: true,
+
+        slot3: (
+          <Tag
+            shape={TagShape.ROUNDED}
+            color={TagColor.ERROR}
+            size={TagSize.XS}
+            text="Permanent"
+          />
+        ),
+        variant: MenuItemV2Variant.ACTION,
+        actionType: MenuItemV2ActionType.DANGER,
+      },
+    ],
+  },
+  {
+    label: "Workspace",
+    showSeparator: true,
+    items: [
+      {
+        label: "Workspace Settings",
+        // subLabel: "Configure workspace preferences",
+        onClick: () => alert("Workspace Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Members & Permissions",
+        // subLabel: "Manage team members and their roles",
+        onClick: () => alert("Members"),
+        slot1: <Settings2 size={13} />,
+        slot2: (
+          <Tag
+            shape={TagShape.ROUNDED}
+            color={TagColor.SUCCESS}
+            size={TagSize.XS}
+            text="8 members"
+          />
+        ),
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Integrations",
+        subLabel: "Connect third-party apps and services",
+        slot1: <Settings2 size={13} />,
+        subMenu: [
+          {
+            label: "Slack",
+            variant: MenuItemV2Variant.ACTION,
+            actionType: MenuItemV2ActionType.PRIMARY,
+            subLabel: "Connect your Slack workspace",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Connect Slack"),
+          },
+          {
+            label: "GitHub",
+            subLabel: "Link your GitHub repositories",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Connect GitHub"),
+          },
+          {
+            label: "Google Drive",
+            subLabel: "Sync with Google Drive",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Connect Google Drive"),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Preferences",
+    items: [
+      {
+        label: "Notifications",
+        subLabel: "Configure your notification preferences",
+        actionType: MenuItemV2ActionType.DANGER,
+        variant: MenuItemV2Variant.ACTION,
+        slot1: <Settings2 size={13} />,
+        subMenu: [
+          {
+            label: "Email Notifications",
+            variant: MenuItemV2Variant.ACTION,
+            actionType: MenuItemV2ActionType.PRIMARY,
+            subLabel: "Receive updates via email",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Email Notifications"),
+            subMenu: [
+              {
+                label: "Slack",
+                variant: MenuItemV2Variant.ACTION,
+                actionType: MenuItemV2ActionType.DANGER,
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect Slack"),
+              },
+              {
+                label: "GitHub",
+                subLabel: "Link your GitHub repositories",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect GitHub"),
+              },
+              {
+                label: "Google Drive",
+                subLabel: "Sync with Google Drive",
+                slot1: <Settings2 size={13} />,
+                onClick: () => alert("Connect Google Drive"),
+              },
+            ],
+          },
+          {
+            label: "Push Notifications",
+            subLabel: "Get notifications on your device",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Push Notifications"),
+          },
+          {
+            label: "Slack Notifications",
+            subLabel: "Receive alerts in Slack",
+            slot1: <Settings2 size={13} />,
+            onClick: () => alert("Slack Notifications"),
+          },
+        ],
+      },
+      {
+        label: "Theme",
+        subLabel: "Customize your interface appearance",
+        onClick: () => alert("Theme Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
+      },
+      {
+        label: "Language & Region",
+        subLabel: "Set your language and timezone",
+        onClick: () => alert("Language Settings"),
+        slot1: <Settings2 size={13} />,
+        variant: MenuItemV2Variant.DEFAULT,
       },
     ],
   },
@@ -306,17 +494,20 @@ const MenuDemo = () => {
           />
         </div>
         <Menu
+          items={dummyMenuItemsV2}
           alignment={MenuAlignment.END}
-          enableSearch={false}
-          trigger={<Button text="Open MenuV2" onClick={() => {}} />}
+          enableSearch={true}
+          // maxHeight={300}
+          minWidth={300}
+          side={MenuSide.TOP}
+          trigger={<ButtonV2 text="Open MenuV2" onClick={() => {}} />}
         />
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
             items={dummyMenuItems}
             slot={<User size={16} />}
-            // enableSearch={true}
-            enableSearch={false}
+            enableSearch={true}
             placeholder="Gateway"
             variant={containerType}
             size={menuSize}

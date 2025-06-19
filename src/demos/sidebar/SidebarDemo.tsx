@@ -105,7 +105,7 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
-  >("popover");
+  >("menu");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(

@@ -11,13 +11,13 @@ import "./ChartDemo.css";
 const ChartDemo = () => {
   const sampleNestedData: NewNestedDataPoint[] = [
     {
-      name: "Jan",
+      name: "Jan", // May 1
       data: {
-        revenue: {
+        revenue: { // May 1 - May 30
           primary: { label: "Total Revenue", val: 4000 },
           aux: [{ label: "Growth", val: 12 }],
         },
-        profit: {
+        profit: { // Jun 1 - Jun 30
           primary: { label: "Net Profit", val: 2400 },
           aux: [{ label: "Margin", val: 24 }],
         },

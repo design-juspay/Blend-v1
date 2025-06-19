@@ -9,6 +9,7 @@ type StateStyles = {
   _active?: StyledBlockProps;
   _disabled?: StyledBlockProps;
   _visited?: StyledBlockProps;
+  _focusVisible?: StyledBlockProps;
 };
 
 type StyledBlockProps = StateStyles & {
@@ -194,6 +195,7 @@ const blockedProps = [
   "_active",
   "_disabled",
   "_visited",
+  "_focusVisible",
 
   //font
   "fontSize",
@@ -347,6 +349,7 @@ const stateToSelector: Record<keyof StateStyles, string> = {
   _active: "&:active",
   _disabled: "&:disabled",
   _visited: "&:visited",
+  _focusVisible: "&:focus-visible",
 };
 
 const StyledBlock = styled.div.withConfig({

@@ -1,3 +1,5 @@
+import React from "react";
+
 export enum ButtonTypeV2 {
   PRIMARY = "primary",
   SECONDARY = "secondary",
@@ -26,10 +28,8 @@ export type ButtonV2Props = {
   trailingIcon?: React.ReactNode;
   isLoading?: boolean;
   isDisabled?: boolean;
-  ref?: React.RefObject<HTMLButtonElement>;
   disabled?: boolean;
   onClick?: () => void;
   loading?: boolean;
   buttonGroupPosition?: "center" | "left" | "right";
-  key?: string | number;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;

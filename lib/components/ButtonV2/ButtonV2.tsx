@@ -15,7 +15,6 @@ import { LoaderCircle } from "lucide-react";
 const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
   (
     {
-      key,
       buttonType = ButtonTypeV2.PRIMARY,
       size = ButtonSizeV2.SMALL,
       subType = ButtonSubTypeV2.DEFAULT,
@@ -26,6 +25,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
       onClick,
       loading,
       buttonGroupPosition,
+      ...htmlProps
     },
     ref
   ) => {
@@ -44,13 +44,12 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
 
     return (
       <PrimitiveButton
-        key={key}
+        ref={ref}
         onClick={onClick}
         display="flex"
         alignItems="center"
         justifyContent="center"
         height={subType === ButtonSubTypeV2.INLINE ? "fit-content" : "auto"}
-        ref={ref}
         gap={buttonTokens.gap}
         background={buttonTokens.backgroundColor[buttonType][subType].default}
         disabled={disabled}
@@ -86,6 +85,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
           color: buttonTokens.color[buttonType][subType].disabled,
           cursor: "not-allowed",
         }}
+        {...htmlProps}
       >
         {loading ? (
           <LoaderCircle
@@ -126,5 +126,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
     );
   }
 );
+
+ButtonV2.displayName = "ButtonV2";
 
 export default ButtonV2;
