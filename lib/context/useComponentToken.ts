@@ -18,6 +18,7 @@ import { ButtonTokensType } from "../components/ButtonV2/button.tokens";
 import { ModalTokensType } from "../components/Modal/modal.tokens";
 import { BreadcrumbTokenType } from "../components/Breadcrumb/breadcrumb.tokens";
 import { PopoverTokenType } from "../components/Popover/popover.tokens";
+import { MenuTokensType } from "../components/Menu/menu.tokens";
 import { TableTokenType } from "../components/DataTable/dataTable.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
@@ -45,6 +46,7 @@ export const useComponentToken = (
   | ModalTokensType
   | BreadcrumbTokenType
   | PopoverTokenType
+  | MenuTokensType
   | TableTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
@@ -82,6 +84,8 @@ export const useComponentToken = (
       return componentTokens.BREADCRUMB;
     case "POPOVER":
       return componentTokens.POPOVER;
+    case "MENU":
+      return componentTokens.MENU;
     case "TABLE": 
       return componentTokens.TABLE;
     default:
