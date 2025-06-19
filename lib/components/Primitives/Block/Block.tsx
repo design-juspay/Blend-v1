@@ -195,6 +195,7 @@ const blockedProps = [
   "_active",
   "_disabled",
   "_visited",
+  "_focusVisible",
 
   //font
   "fontSize",

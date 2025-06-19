@@ -1,5 +1,14 @@
-import { AlertTriangle, Bell, CreditCard, Lock, LogOut, Palette, Shield,   Trash, User } from "lucide-react";
-import { Button } from "../../../lib/components/Button";
+import {
+  AlertTriangle,
+  Bell,
+  CreditCard,
+  Lock,
+  LogOut,
+  Palette,
+  Shield,
+  Trash,
+  User,
+} from "lucide-react";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import Menu from "../../../lib/components/Menu/Menu";
 import Select, {
@@ -19,7 +28,7 @@ import {
   SelectMenuVariant,
 } from "../../../lib/components/Select/types";
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
-import { addSnackbar, Tag } from "../../../lib/main";
+import { addSnackbar, ButtonV2, Tag } from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
 import { Settings2 } from "lucide-react";
@@ -485,19 +494,18 @@ const MenuDemo = () => {
         <Menu
           items={dummyMenuItemsV2}
           alignment={MenuAlignment.END}
-          enableSearch={false}
+          enableSearch={true}
           // maxHeight={300}
-          maxHeight={500}
+          minWidth={300}
           side={MenuSide.TOP}
-          trigger={<Button text="Open MenuV2" onClick={() => {}} />}
+          trigger={<ButtonV2 text="Open MenuV2" onClick={() => {}} />}
         />
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
           <Select
             items={dummyMenuItems}
             slot={<User size={16} />}
-            // enableSearch={true}
-            enableSearch={false}
+            enableSearch={true}
             placeholder="Gateway"
             variant={containerType}
             size={menuSize}

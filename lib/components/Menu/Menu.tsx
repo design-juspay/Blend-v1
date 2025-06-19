@@ -4,18 +4,16 @@ import { FOUNDATION_THEME } from "../../tokens";
 import { MenuV2Props, MenuAlignment, MenuSide } from "./types";
 import React, { useState } from "react";
 import { filterMenuGroups } from "./utils";
-
 import MenuItem from "./MenuItem";
 import Block from "../Primitives/Block/Block";
 import SearchInput from "../Inputs/SearchInput/SearchInput";
 import { Search } from "lucide-react";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import menuTokens from "./menu.tokens";
+import { MenuTokensType } from "./menu.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
 
 export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
-  color: "black",
-  borderRadius: 8,
   boxShadow: FOUNDATION_THEME.shadows.lg,
   zIndex: 9999,
   minWidth: 200,
@@ -24,8 +22,8 @@ export const contentBaseStyle: CSSObject = {
   overflowX: "hidden",
   scrollbarWidth: "none",
   scrollbarColor: "transparent transparent",
-  border: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
   paddingBottom: 6,
+  borderRadius: 8,
 };
 
 const Content = styled(RadixMenu.Content)(() => ({
@@ -43,10 +41,13 @@ const Menu = ({
   collisonBoundaryRef,
   maxHeight,
   enableSearch = false,
+  searchPlaceholder = "Search",
+  minWidth,
+  maxWidth,
 }: MenuV2Props) => {
   const [searchText, setSearchText] = useState<string>("");
   const filteredItems = filterMenuGroups(items, searchText);
-
+  const menuTokens = useComponentToken("MENU") as MenuTokensType;
   return (
     <RadixMenu.Root modal={asModal} open={true}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
@@ -57,8 +58,12 @@ const Menu = ({
         align={alignment}
         collisionBoundary={collisonBoundaryRef}
         style={{
-          maxHeight: maxHeight ? `${maxHeight}px` : "auto",
-          paddingTop: 6,
+          maxHeight: maxHeight
+            ? `${maxHeight}px`
+            : "var(--radix-popper-available-height)",
+          minWidth: minWidth ? `${minWidth}px` : "auto",
+          maxWidth: maxWidth ? `${maxWidth}px` : "auto",
+          paddingTop: enableSearch ? 0 : menuTokens.paddingTop,
         }}
       >
         {enableSearch && (
@@ -75,7 +80,7 @@ const Menu = ({
               leftSlot={
                 <Search color={FOUNDATION_THEME.colors.gray[400]} size={16} />
               }
-              placeholder="Search"
+              placeholder={searchPlaceholder}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
@@ -110,7 +115,7 @@ const Menu = ({
                   <Block
                     height={menuTokens.seperator.height}
                     backgroundColor={menuTokens.seperator.color}
-                    margin="6px 0"
+                    margin={menuTokens.seperator.margin}
                   ></Block>
                 </RadixMenu.Separator>
               )}

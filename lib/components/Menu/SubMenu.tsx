@@ -151,6 +151,15 @@ export const SubMenu = ({
           _hover={{
             backgroundColor: getBgColor("hover"),
           }}
+          _focus={{
+            backgroundColor: getBgColor("focus"),
+          }}
+          _active={{
+            backgroundColor: getBgColor("active"),
+          }}
+          _focusVisible={{
+            backgroundColor: getBgColor("focusVisible"),
+          }}
         >
           <Block display="flex" alignItems="center" gap={4} width="100%">
             {item.slot1 && <MenuSlot slot={item.slot1} />}

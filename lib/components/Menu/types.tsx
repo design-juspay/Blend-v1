@@ -14,14 +14,24 @@ export enum MenuSide {
 export type MenuV2Props = {
   trigger: React.ReactNode;
   items?: MenuV2GroupType[];
+
+  maxHeight?: number;
+  minHeight?: number;
+  maxWidth?: number;
+  minWidth?: number;
+  width?: number;
+  height?: number;
+  enableSearch?: boolean;
+  searchPlaceholder?: string;
+  // Radix Menu Props
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   asModal?: boolean;
   alignment?: MenuAlignment;
   side?: MenuSide;
   sideOffset?: number;
   alignOffset?: number;
   collisonBoundaryRef?: Element | null | Array<Element | null>;
-  maxHeight?: number;
-  enableSearch?: boolean;
 };
 
 export enum MenuItemV2Variant {

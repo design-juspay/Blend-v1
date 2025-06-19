@@ -8,7 +8,8 @@ import {
 import { SubMenu } from "./SubMenu";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
-import menuTokens, { MenuItemStates } from "./menu.tokens";
+import { MenuItemStates, MenuTokensType } from "./menu.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
 
 const MenuSlot = ({ slot }: { slot: React.ReactNode }) => {
   return (
@@ -16,6 +17,76 @@ const MenuSlot = ({ slot }: { slot: React.ReactNode }) => {
       {slot}
     </Block>
   );
+};
+
+const getBgColor = (
+  state: MenuItemStates,
+  menuTokens: MenuTokensType,
+  item: MenuItemV2Type
+) => {
+  const bg = menuTokens.item.backgroundColor;
+
+  // check for variant
+  if (item.variant === MenuItemV2Variant.DEFAULT) {
+    if (!item.disabled) {
+      return bg.default.enabled[state];
+    } else {
+      return bg.default.disabled[state];
+    }
+  } else {
+    // check for action type
+    if (item.actionType === undefined) {
+      item.actionType = MenuItemV2ActionType.PRIMARY;
+    }
+    if (item.actionType === MenuItemV2ActionType.PRIMARY) {
+      if (!item.disabled) {
+        return bg.action.primary.enabled[state];
+      } else {
+        return bg.action.primary.disabled[state];
+      }
+    } else {
+      if (!item.disabled) {
+        return bg.action.danger.enabled[state];
+      } else {
+        return bg.action.danger.disabled[state];
+      }
+    }
+  }
+};
+
+const getColor = (
+  state: MenuItemStates,
+  menuTokens: MenuTokensType,
+  item: MenuItemV2Type
+) => {
+  const bg = menuTokens.item.label.color;
+
+  // check for variant
+  if (item.variant === MenuItemV2Variant.DEFAULT) {
+    if (!item.disabled) {
+      return bg.default.enabled[state];
+    } else {
+      return bg.default.disabled[state];
+    }
+  } else {
+    // check for action type
+    if (item.actionType === undefined) {
+      item.actionType = MenuItemV2ActionType.PRIMARY;
+    }
+    if (item.actionType === MenuItemV2ActionType.PRIMARY) {
+      if (!item.disabled) {
+        return bg.action.primary.enabled[state];
+      } else {
+        return bg.action.primary.disabled[state];
+      }
+    } else {
+      if (!item.disabled) {
+        return bg.action.danger.enabled[state];
+      } else {
+        return bg.action.danger.disabled[state];
+      }
+    }
+  }
 };
 
 const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
@@ -26,67 +97,7 @@ const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
     item.variant = MenuItemV2Variant.DEFAULT;
   }
 
-  const getBgColor = (state: MenuItemStates) => {
-    const bg = menuTokens.item.backgroundColor;
-
-    // check for variant
-    if (item.variant === MenuItemV2Variant.DEFAULT) {
-      if (!item.disabled) {
-        return bg.default.enabled[state];
-      } else {
-        return bg.default.disabled[state];
-      }
-    } else {
-      // check for action type
-      if (item.actionType === undefined) {
-        item.actionType = MenuItemV2ActionType.PRIMARY;
-      }
-      if (item.actionType === MenuItemV2ActionType.PRIMARY) {
-        if (!item.disabled) {
-          return bg.action.primary.enabled[state];
-        } else {
-          return bg.action.primary.disabled[state];
-        }
-      } else {
-        if (!item.disabled) {
-          return bg.action.danger.enabled[state];
-        } else {
-          return bg.action.danger.disabled[state];
-        }
-      }
-    }
-  };
-
-  const getColor = (state: MenuItemStates) => {
-    const bg = menuTokens.item.label.color;
-
-    // check for variant
-    if (item.variant === MenuItemV2Variant.DEFAULT) {
-      if (!item.disabled) {
-        return bg.default.enabled[state];
-      } else {
-        return bg.default.disabled[state];
-      }
-    } else {
-      // check for action type
-      if (item.actionType === undefined) {
-        item.actionType = MenuItemV2ActionType.PRIMARY;
-      }
-      if (item.actionType === MenuItemV2ActionType.PRIMARY) {
-        if (!item.disabled) {
-          return bg.action.primary.enabled[state];
-        } else {
-          return bg.action.primary.disabled[state];
-        }
-      } else {
-        if (!item.disabled) {
-          return bg.action.danger.enabled[state];
-        } else {
-          return bg.action.danger.disabled[state];
-        }
-      }
-    }
-  };
+  const menuTokens = useComponentToken("MENU") as MenuTokensType;
 
   return (
     <RadixMenu.Item
@@ -104,19 +115,19 @@ const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
         cursor={item.disabled ? "not-allowed" : "pointer"}
         flexDirection="column"
         gap={menuTokens.item.gap}
-        backgroundColor={getBgColor("default")}
-        color={getColor("default")}
+        backgroundColor={getBgColor("default", menuTokens, item)}
+        color={getColor("default", menuTokens, item)}
         _hover={{
-          backgroundColor: getBgColor("hover"),
+          backgroundColor: getBgColor("hover", menuTokens, item),
         }}
         _focus={{
-          backgroundColor: getBgColor("focus"),
+          backgroundColor: getBgColor("focus", menuTokens, item),
         }}
         _active={{
-          backgroundColor: getBgColor("active"),
+          backgroundColor: getBgColor("active", menuTokens, item),
         }}
         _focusVisible={{
-          backgroundColor: getBgColor("focusVisible"),
+          backgroundColor: getBgColor("focusVisible", menuTokens, item),
         }}
       >
         <Block
@@ -136,7 +147,7 @@ const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
           >
             <Text
               variant="body.md"
-              color={getColor("default")}
+              color={getColor("default", menuTokens, item)}
               fontWeight={500}
               truncate
             >
