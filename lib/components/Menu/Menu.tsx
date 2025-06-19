@@ -10,6 +10,7 @@ import Block from "../Primitives/Block/Block";
 import SearchInput from "../Inputs/SearchInput/SearchInput";
 import { Search } from "lucide-react";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
+import menuTokens from "./menu.tokens";
 
 export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
@@ -44,7 +45,6 @@ const Menu = ({
   enableSearch = false,
 }: MenuV2Props) => {
   const [searchText, setSearchText] = useState<string>("");
-
   const filteredItems = filterMenuGroups(items, searchText);
 
   return (
@@ -108,8 +108,8 @@ const Menu = ({
               {groupId !== filteredItems.length - 1 && group.showSeparator && (
                 <RadixMenu.Separator asChild>
                   <Block
-                    height={1}
-                    backgroundColor={FOUNDATION_THEME.colors.gray[200]}
+                    height={menuTokens.seperator.height}
+                    backgroundColor={menuTokens.seperator.color}
                     margin="6px 0"
                   ></Block>
                 </RadixMenu.Separator>

@@ -50,114 +50,146 @@ const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
     }
   };
 
-  return (
-    <RadixMenu.Item
-      asChild
-      disabled={item.disabled}
-      style={{ outline: "none", border: "none" }}
-    >
-      <Block
-        key={idx}
-        display="flex"
-        padding={menuTokens.item.padding}
-        margin={menuTokens.item.margin}
-        borderRadius={menuTokens.item.borderRadius}
-        onClick={item.disabled ? undefined : item.onClick}
-        cursor={item.disabled ? "not-allowed" : "pointer"}
-        border={menuTokens.item.border.default}
-        outline={menuTokens.item.outline.default}
-        flexDirection="column"
-        gap={menuTokens.item.gap}
-        backgroundColor={getBgColor("default")}
-        _hover={{
-          backgroundColor: getBgColor("hover"),
-        }}
-        // _hover={{
-        //   backgroundColor: menuTokens.item.backgroundColor.hover,
-        //   outline: menuTokens.item.outline.hover,
-        //   border: menuTokens.item.border.hover,
-        // }}
-        // _focus={{
-        //   outline: menuTokens.item.outline.focus,
-        //   border: menuTokens.item.border.focus,
-        //   backgroundColor: item.disabled
-        //     ? menuTokens.item.backgroundColor.disabled
-        //     : menuTokens.item.backgroundColor.focus,
-        // }}
-        // _active={{
-        //   outline: menuTokens.item.outline.active,
-        //   border: menuTokens.item.border.active,
-        //   backgroundColor: item.disabled
-        //     ? menuTokens.item.backgroundColor.disabled
-        //     : menuTokens.item.backgroundColor.active,
-        // }}
-        // _focusVisible={{
-        //   outline: menuTokens.item.outline.focusVisible,
-        //   border: menuTokens.item.border.focusVisible,
-        //   backgroundColor: item.disabled
-        //     ? menuTokens.item.backgroundColor.disabled
-        //     : menuTokens.item.backgroundColor.focusVisible,
-        // }}
-        color={getTextColor(item)}
+    const getColor = (state: MenuItemStates) => {
+      const bg = menuTokens.item.color;
+
+      // check for variant
+      if (item.variant === MenuItemV2Variant.DEFAULT) {
+        if (!item.disabled) {
+          return bg.default.enabled[state];
+        } else {
+          return bg.default.disabled[state];
+        }
+      } else {
+        // check for action type
+        if (item.actionType === undefined) {
+          item.actionType = MenuItemV2ActionType.PRIMARY;
+        }
+        if (item.actionType === MenuItemV2ActionType.PRIMARY) {
+          if (!item.disabled) {
+            return bg.action.primary.enabled[state];
+          } else {
+            return bg.action.primary.disabled[state];
+          }
+        } else {
+          if (!item.disabled) {
+            return bg.action.danger.enabled[state];
+          } else {
+            return bg.action.danger.disabled[state];
+          }
+        }
+      }
+    };
+
+    return (
+      <RadixMenu.Item
+        asChild
+        disabled={item.disabled}
+        style={{ outline: "none", border: "none" }}
       >
         <Block
+          key={idx}
           display="flex"
-          alignItems="center"
-          gap={4}
-          width="100%"
-          overflow="hidden"
+          padding={menuTokens.item.padding}
+          margin={menuTokens.item.margin}
+          borderRadius={menuTokens.item.borderRadius}
+          onClick={item.disabled ? undefined : item.onClick}
+          cursor={item.disabled ? "not-allowed" : "pointer"}
+          border={menuTokens.item.border.default}
+          outline={menuTokens.item.outline.default}
+          flexDirection="column"
+          gap={menuTokens.item.gap}
+          backgroundColor={getBgColor("default")}
+          color={getColor("default")}
+          _hover={{
+            backgroundColor: getBgColor("hover"),
+          }}
+          // _hover={{
+          //   backgroundColor: menuTokens.item.backgroundColor.hover,
+          //   outline: menuTokens.item.outline.hover,
+          //   border: menuTokens.item.border.hover,
+          // }}
+          // _focus={{
+          //   outline: menuTokens.item.outline.focus,
+          //   border: menuTokens.item.border.focus,
+          //   backgroundColor: item.disabled
+          //     ? menuTokens.item.backgroundColor.disabled
+          //     : menuTokens.item.backgroundColor.focus,
+          // }}
+          // _active={{
+          //   outline: menuTokens.item.outline.active,
+          //   border: menuTokens.item.border.active,
+          //   backgroundColor: item.disabled
+          //     ? menuTokens.item.backgroundColor.disabled
+          //     : menuTokens.item.backgroundColor.active,
+          // }}
+          // _focusVisible={{
+          //   outline: menuTokens.item.outline.focusVisible,
+          //   border: menuTokens.item.border.focusVisible,
+          //   backgroundColor: item.disabled
+          //     ? menuTokens.item.backgroundColor.disabled
+          //     : menuTokens.item.backgroundColor.focusVisible,
+          // }}
+          // color={getTextColor(item)}
         >
-          {item.slot1 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot1}
-            </Block>
-          )}
           <Block
             display="flex"
-            flexGrow={1}
             alignItems="center"
-            maxWidth="100%"
+            gap={4}
+            width="100%"
             overflow="hidden"
           >
-            <Text
-              variant="body.md"
-              color={getTextColor(item)}
-              fontWeight={500}
-              truncate
+            {item.slot1 && (
+              <Block flexShrink={0} height="auto" contentCentered>
+                {item.slot1}
+              </Block>
+            )}
+            <Block
+              display="flex"
+              flexGrow={1}
+              alignItems="center"
+              maxWidth="100%"
+              overflow="hidden"
             >
-              {item.label}
-            </Text>
+              <Text
+                variant="body.md"
+                color={getColor("default")}
+                fontWeight={500}
+                truncate
+              >
+                {item.label}
+              </Text>
+            </Block>
+            {item.slot2 && (
+              <Block flexShrink={0} height="auto" contentCentered>
+                {item.slot2}
+              </Block>
+            )}
+            {item.slot3 && (
+              <Block flexShrink={0} height="auto" contentCentered>
+                {item.slot3}
+              </Block>
+            )}
+            {item.slot4 && (
+              <Block flexShrink={0} height="auto" contentCentered>
+                {item.slot4}
+              </Block>
+            )}
           </Block>
-          {item.slot2 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot2}
-            </Block>
-          )}
-          {item.slot3 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot3}
-            </Block>
-          )}
-          {item.slot4 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot4}
+          {item.subLabel && (
+            <Block display="flex" alignItems="center" width="100%">
+              <Text
+                variant="body.sm"
+                color={FOUNDATION_THEME.colors.gray[400]}
+                fontWeight={400}
+              >
+                {item.subLabel}
+              </Text>
             </Block>
           )}
         </Block>
-        {item.subLabel && (
-          <Block display="flex" alignItems="center" width="100%">
-            <Text
-              variant="body.sm"
-              color={FOUNDATION_THEME.colors.gray[400]}
-              fontWeight={400}
-            >
-              {item.subLabel}
-            </Text>
-          </Block>
-        )}
-      </Block>
-    </RadixMenu.Item>
-  );
+      </RadixMenu.Item>
+    );
 };
 
 MenuItem.displayName = "MenuItem";

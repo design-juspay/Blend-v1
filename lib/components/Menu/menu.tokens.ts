@@ -35,6 +35,26 @@ type MenuTokensType = {
         };
       };
     };
+    color: {
+      [MenuItemV2Variant.DEFAULT]: {
+        enabled: {
+          [key in MenuItemStates]: CSSObject["color"];
+        };
+        disabled: {
+          [key in MenuItemStates]: CSSObject["color"];
+        };
+      };
+      [MenuItemV2Variant.ACTION]: {
+        [key in MenuItemV2ActionType]: {
+          enabled: {
+            [key in MenuItemStates]: CSSObject["color"];
+          };
+          disabled: {
+            [key in MenuItemStates]: CSSObject["color"];
+          };
+        };
+      };
+    };
     cursor: CSSObject["cursor"];
     border: {
       [key in MenuItemStates]: CSSObject["border"];
@@ -53,6 +73,10 @@ type MenuTokensType = {
       fontWeight: CSSObject["fontWeight"];
       color: CSSObject["color"];
     };
+  };
+  seperator: {
+    color: CSSObject["color"];
+    height: CSSObject["height"];
   };
 };
 
@@ -120,6 +144,65 @@ const menuTokens: MenuTokensType = {
         },
       },
     },
+    color: {
+      default: {
+        enabled: {
+          default: FOUNDATION_THEME.colors.gray[600],
+          hover: FOUNDATION_THEME.colors.gray[600],
+          active: FOUNDATION_THEME.colors.gray[600],
+          focus: FOUNDATION_THEME.colors.gray[600],
+          focusVisible: FOUNDATION_THEME.colors.gray[600],
+          disabled: FOUNDATION_THEME.colors.gray[400],
+        },
+        disabled: {
+          default: FOUNDATION_THEME.colors.gray[400],
+          hover: FOUNDATION_THEME.colors.gray[400],
+          active: FOUNDATION_THEME.colors.gray[400],
+          focus: FOUNDATION_THEME.colors.gray[400],
+          focusVisible: FOUNDATION_THEME.colors.gray[400],
+          disabled: FOUNDATION_THEME.colors.gray[400],
+        },
+      },
+      action: {
+        primary: {
+          enabled: {
+            default: FOUNDATION_THEME.colors.primary[600],
+            hover: FOUNDATION_THEME.colors.primary[600],
+            active: FOUNDATION_THEME.colors.primary[600],
+            focus: FOUNDATION_THEME.colors.primary[600],
+            focusVisible: FOUNDATION_THEME.colors.primary[600],
+            disabled: FOUNDATION_THEME.colors.gray[400],
+          },
+          disabled: {
+            default: FOUNDATION_THEME.colors.primary[400],
+            hover: FOUNDATION_THEME.colors.primary[400],
+            active: FOUNDATION_THEME.colors.primary[400],
+            focus: FOUNDATION_THEME.colors.primary[400],
+            focusVisible: FOUNDATION_THEME.colors.primary[400],
+            disabled: FOUNDATION_THEME.colors.primary[400],
+          },
+        },
+        danger: {
+          enabled: {
+            default: FOUNDATION_THEME.colors.red[600],
+            hover: FOUNDATION_THEME.colors.red[600],
+            active: FOUNDATION_THEME.colors.red[600],
+            focus: FOUNDATION_THEME.colors.red[600],
+            focusVisible: FOUNDATION_THEME.colors.red[600],
+            disabled: FOUNDATION_THEME.colors.red[400],
+          },
+          disabled: {
+            default: FOUNDATION_THEME.colors.red[400],
+            hover: FOUNDATION_THEME.colors.red[400],
+            active: FOUNDATION_THEME.colors.red[400],
+            focus: FOUNDATION_THEME.colors.red[400],
+            focusVisible: FOUNDATION_THEME.colors.red[400],
+            disabled: FOUNDATION_THEME.colors.red[400],
+          },
+        },
+      },
+    },
+
     border: {
       default: "none",
       hover: "none",
@@ -147,6 +230,10 @@ const menuTokens: MenuTokensType = {
       fontWeight: 400,
       color: FOUNDATION_THEME.colors.gray[400],
     },
+  },
+  seperator: {
+    color: FOUNDATION_THEME.colors.gray[200],
+    height: 1,
   },
 };
 
