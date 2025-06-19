@@ -178,7 +178,6 @@ const dummyMenuItemsV2: MenuV2GroupType[] = [
       },
       {
         label: "Billing & Subscription",
-        // subLabel: "Manage your payment methods and plans",
         onClick: () => alert("Billing"),
         slot1: <Settings2 size={13} />,
         variant: MenuItemV2Variant.DEFAULT,
@@ -189,15 +188,13 @@ const dummyMenuItemsV2: MenuV2GroupType[] = [
         slot1: <Settings2 size={13} />,
         variant: MenuItemV2Variant.ACTION,
         actionType: MenuItemV2ActionType.PRIMARY,
-        disabled: true,
       },
       {
         label: "Delete Account",
         subLabel: "Permanently delete your account and all data",
         onClick: () => alert("Delete Account"),
         slot1: <Settings2 size={13} />,
-        disabled: true,
-        // slot2: <Terminal size={13} />,
+
         slot3: (
           <Tag
             shape={TagShape.ROUNDED}
@@ -273,6 +270,7 @@ const dummyMenuItemsV2: MenuV2GroupType[] = [
         label: "Notifications",
         subLabel: "Configure your notification preferences",
         actionType: MenuItemV2ActionType.DANGER,
+        variant: MenuItemV2Variant.ACTION,
         slot1: <Settings2 size={13} />,
         subMenu: [
           {

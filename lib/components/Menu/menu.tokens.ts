@@ -14,6 +14,7 @@ type MenuTokensType = {
   item: {
     padding: CSSObject["padding"];
     margin: CSSObject["margin"];
+
     borderRadius: CSSObject["borderRadius"];
     backgroundColor: {
       [MenuItemV2Variant.DEFAULT]: {
@@ -35,17 +36,39 @@ type MenuTokensType = {
         };
       };
     };
-    color: {
-      [MenuItemV2Variant.DEFAULT]: {
-        enabled: {
-          [key in MenuItemStates]: CSSObject["color"];
-        };
-        disabled: {
-          [key in MenuItemStates]: CSSObject["color"];
-        };
-      };
-      [MenuItemV2Variant.ACTION]: {
-        [key in MenuItemV2ActionType]: {
+    // color: {
+    //   [MenuItemV2Variant.DEFAULT]: {
+    //     enabled: {
+    //       [key in MenuItemStates]: CSSObject["color"];
+    //     };
+    //     disabled: {
+    //       [key in MenuItemStates]: CSSObject["color"];
+    //     };
+    //   };
+    //   [MenuItemV2Variant.ACTION]: {
+    //     [key in MenuItemV2ActionType]: {
+    //       enabled: {
+    //         [key in MenuItemStates]: CSSObject["color"];
+    //       };
+    //       disabled: {
+    //         [key in MenuItemStates]: CSSObject["color"];
+    //       };
+    //     };
+    //   };
+    // };
+    cursor: CSSObject["cursor"];
+    // border: {
+    //   [key in MenuItemStates]: CSSObject["border"];
+    // };
+    // outline: {
+    //   [key in MenuItemStates]: CSSObject["outline"];
+    // };
+    gap: CSSObject["gap"];
+    label: {
+      fontSize: CSSObject["fontSize"];
+      fontWeight: CSSObject["fontWeight"];
+      color: {
+        [MenuItemV2Variant.DEFAULT]: {
           enabled: {
             [key in MenuItemStates]: CSSObject["color"];
           };
@@ -53,25 +76,41 @@ type MenuTokensType = {
             [key in MenuItemStates]: CSSObject["color"];
           };
         };
+        [MenuItemV2Variant.ACTION]: {
+          [key in MenuItemV2ActionType]: {
+            enabled: {
+              [key in MenuItemStates]: CSSObject["color"];
+            };
+            disabled: {
+              [key in MenuItemStates]: CSSObject["color"];
+            };
+          };
+        };
       };
-    };
-    cursor: CSSObject["cursor"];
-    border: {
-      [key in MenuItemStates]: CSSObject["border"];
-    };
-    outline: {
-      [key in MenuItemStates]: CSSObject["outline"];
-    };
-    gap: CSSObject["gap"];
-    label: {
-      fontSize: CSSObject["fontSize"];
-      fontWeight: CSSObject["fontWeight"];
-      color: CSSObject["color"];
     };
     subLabel: {
       fontSize: CSSObject["fontSize"];
       fontWeight: CSSObject["fontWeight"];
-      color: CSSObject["color"];
+      color: {
+        [MenuItemV2Variant.DEFAULT]: {
+          enabled: {
+            [key in MenuItemStates]: CSSObject["color"];
+          };
+          disabled: {
+            [key in MenuItemStates]: CSSObject["color"];
+          };
+        };
+        [MenuItemV2Variant.ACTION]: {
+          [key in MenuItemV2ActionType]: {
+            enabled: {
+              [key in MenuItemStates]: CSSObject["color"];
+            };
+            disabled: {
+              [key in MenuItemStates]: CSSObject["color"];
+            };
+          };
+        };
+      };
     };
   };
   seperator: {
@@ -86,6 +125,7 @@ const menuTokens: MenuTokensType = {
     margin: `${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[6]}`,
     borderRadius: FOUNDATION_THEME.unit[4],
     cursor: "pointer",
+
     backgroundColor: {
       default: {
         enabled: {
@@ -130,7 +170,7 @@ const menuTokens: MenuTokensType = {
             hover: FOUNDATION_THEME.colors.red[50],
             active: FOUNDATION_THEME.colors.red[50],
             focus: FOUNDATION_THEME.colors.red[50],
-            focusVisible: FOUNDATION_THEME.colors.gray[0],
+            focusVisible: FOUNDATION_THEME.colors.red[50],
             disabled: FOUNDATION_THEME.colors.gray[0],
           },
           disabled: {
@@ -144,91 +184,205 @@ const menuTokens: MenuTokensType = {
         },
       },
     },
-    color: {
-      default: {
-        enabled: {
-          default: FOUNDATION_THEME.colors.gray[600],
-          hover: FOUNDATION_THEME.colors.gray[600],
-          active: FOUNDATION_THEME.colors.gray[600],
-          focus: FOUNDATION_THEME.colors.gray[600],
-          focusVisible: FOUNDATION_THEME.colors.gray[600],
-          disabled: FOUNDATION_THEME.colors.gray[400],
-        },
-        disabled: {
-          default: FOUNDATION_THEME.colors.gray[400],
-          hover: FOUNDATION_THEME.colors.gray[400],
-          active: FOUNDATION_THEME.colors.gray[400],
-          focus: FOUNDATION_THEME.colors.gray[400],
-          focusVisible: FOUNDATION_THEME.colors.gray[400],
-          disabled: FOUNDATION_THEME.colors.gray[400],
-        },
-      },
-      action: {
-        primary: {
-          enabled: {
-            default: FOUNDATION_THEME.colors.primary[600],
-            hover: FOUNDATION_THEME.colors.primary[600],
-            active: FOUNDATION_THEME.colors.primary[600],
-            focus: FOUNDATION_THEME.colors.primary[600],
-            focusVisible: FOUNDATION_THEME.colors.primary[600],
-            disabled: FOUNDATION_THEME.colors.gray[400],
-          },
-          disabled: {
-            default: FOUNDATION_THEME.colors.primary[400],
-            hover: FOUNDATION_THEME.colors.primary[400],
-            active: FOUNDATION_THEME.colors.primary[400],
-            focus: FOUNDATION_THEME.colors.primary[400],
-            focusVisible: FOUNDATION_THEME.colors.primary[400],
-            disabled: FOUNDATION_THEME.colors.primary[400],
-          },
-        },
-        danger: {
-          enabled: {
-            default: FOUNDATION_THEME.colors.red[600],
-            hover: FOUNDATION_THEME.colors.red[600],
-            active: FOUNDATION_THEME.colors.red[600],
-            focus: FOUNDATION_THEME.colors.red[600],
-            focusVisible: FOUNDATION_THEME.colors.red[600],
-            disabled: FOUNDATION_THEME.colors.red[400],
-          },
-          disabled: {
-            default: FOUNDATION_THEME.colors.red[400],
-            hover: FOUNDATION_THEME.colors.red[400],
-            active: FOUNDATION_THEME.colors.red[400],
-            focus: FOUNDATION_THEME.colors.red[400],
-            focusVisible: FOUNDATION_THEME.colors.red[400],
-            disabled: FOUNDATION_THEME.colors.red[400],
-          },
-        },
-      },
-    },
+    // color: {
+    //   default: {
+    //     enabled: {
+    //       default: FOUNDATION_THEME.colors.gray[600],
+    //       hover: FOUNDATION_THEME.colors.gray[600],
+    //       active: FOUNDATION_THEME.colors.gray[600],
+    //       focus: FOUNDATION_THEME.colors.gray[600],
+    //       focusVisible: FOUNDATION_THEME.colors.gray[600],
+    //       disabled: FOUNDATION_THEME.colors.gray[400],
+    //     },
+    //     disabled: {
+    //       default: FOUNDATION_THEME.colors.gray[400],
+    //       hover: FOUNDATION_THEME.colors.gray[400],
+    //       active: FOUNDATION_THEME.colors.gray[400],
+    //       focus: FOUNDATION_THEME.colors.gray[400],
+    //       focusVisible: FOUNDATION_THEME.colors.gray[400],
+    //       disabled: FOUNDATION_THEME.colors.gray[400],
+    //     },
+    //   },
+    //   action: {
+    //     primary: {
+    //       enabled: {
+    //         default: FOUNDATION_THEME.colors.primary[600],
+    //         hover: FOUNDATION_THEME.colors.primary[600],
+    //         active: FOUNDATION_THEME.colors.primary[600],
+    //         focus: FOUNDATION_THEME.colors.primary[600],
+    //         focusVisible: FOUNDATION_THEME.colors.primary[600],
+    //         disabled: FOUNDATION_THEME.colors.gray[400],
+    //       },
+    //       disabled: {
+    //         default: FOUNDATION_THEME.colors.primary[400],
+    //         hover: FOUNDATION_THEME.colors.primary[400],
+    //         active: FOUNDATION_THEME.colors.primary[400],
+    //         focus: FOUNDATION_THEME.colors.primary[400],
+    //         focusVisible: FOUNDATION_THEME.colors.primary[400],
+    //         disabled: FOUNDATION_THEME.colors.primary[400],
+    //       },
+    //     },
+    //     danger: {
+    //       enabled: {
+    //         default: FOUNDATION_THEME.colors.red[600],
+    //         hover: FOUNDATION_THEME.colors.red[600],
+    //         active: FOUNDATION_THEME.colors.red[600],
+    //         focus: FOUNDATION_THEME.colors.red[600],
+    //         focusVisible: FOUNDATION_THEME.colors.red[600],
+    //         disabled: FOUNDATION_THEME.colors.red[400],
+    //       },
+    //       disabled: {
+    //         default: FOUNDATION_THEME.colors.red[400],
+    //         hover: FOUNDATION_THEME.colors.red[400],
+    //         active: FOUNDATION_THEME.colors.red[400],
+    //         focus: FOUNDATION_THEME.colors.red[400],
+    //         focusVisible: FOUNDATION_THEME.colors.red[400],
+    //         disabled: FOUNDATION_THEME.colors.red[400],
+    //       },
+    //     },
+    //   },
+    // },
 
-    border: {
-      default: "none",
-      hover: "none",
-      active: "none",
-      focus: "none",
-      focusVisible: "none",
-      disabled: "none",
-    },
-    outline: {
-      default: "none",
-      hover: "none",
-      active: "none",
-      focus: "none",
-      focusVisible: "none",
-      disabled: "none",
-    },
+    // border: {
+    //   default: "none",
+    //   hover: "none",
+    //   active: "none",
+    //   focus: "none",
+    //   focusVisible: "none",
+    //   disabled: "none",
+    // },
+    // outline: {
+    //   default: "none",
+    //   hover: "none",
+    //   active: "none",
+    //   focus: "none",
+    //   focusVisible: "none",
+    //   disabled: "none",
+    // },
     gap: 4,
     label: {
       fontSize: 14,
       fontWeight: 500,
-      color: FOUNDATION_THEME.colors.gray[600],
+      color: {
+        default: {
+          enabled: {
+            default: FOUNDATION_THEME.colors.gray[600],
+            hover: FOUNDATION_THEME.colors.gray[600],
+            active: FOUNDATION_THEME.colors.gray[600],
+            focus: FOUNDATION_THEME.colors.gray[600],
+            focusVisible: FOUNDATION_THEME.colors.gray[600],
+            disabled: FOUNDATION_THEME.colors.gray[400],
+          },
+          disabled: {
+            default: FOUNDATION_THEME.colors.gray[400],
+            hover: FOUNDATION_THEME.colors.gray[400],
+            active: FOUNDATION_THEME.colors.gray[400],
+            focus: FOUNDATION_THEME.colors.gray[400],
+            focusVisible: FOUNDATION_THEME.colors.gray[400],
+            disabled: FOUNDATION_THEME.colors.gray[400],
+          },
+        },
+        action: {
+          primary: {
+            enabled: {
+              default: FOUNDATION_THEME.colors.primary[600],
+              hover: FOUNDATION_THEME.colors.primary[600],
+              active: FOUNDATION_THEME.colors.primary[600],
+              focus: FOUNDATION_THEME.colors.primary[600],
+              focusVisible: FOUNDATION_THEME.colors.primary[600],
+              disabled: FOUNDATION_THEME.colors.gray[400],
+            },
+            disabled: {
+              default: FOUNDATION_THEME.colors.primary[400],
+              hover: FOUNDATION_THEME.colors.primary[400],
+              active: FOUNDATION_THEME.colors.primary[400],
+              focus: FOUNDATION_THEME.colors.primary[400],
+              focusVisible: FOUNDATION_THEME.colors.primary[400],
+              disabled: FOUNDATION_THEME.colors.primary[400],
+            },
+          },
+          danger: {
+            enabled: {
+              default: FOUNDATION_THEME.colors.red[600],
+              hover: FOUNDATION_THEME.colors.red[600],
+              active: FOUNDATION_THEME.colors.red[600],
+              focus: FOUNDATION_THEME.colors.red[600],
+              focusVisible: FOUNDATION_THEME.colors.red[600],
+              disabled: FOUNDATION_THEME.colors.red[400],
+            },
+            disabled: {
+              default: FOUNDATION_THEME.colors.red[400],
+              hover: FOUNDATION_THEME.colors.red[400],
+              active: FOUNDATION_THEME.colors.red[400],
+              focus: FOUNDATION_THEME.colors.red[400],
+              focusVisible: FOUNDATION_THEME.colors.red[400],
+              disabled: FOUNDATION_THEME.colors.red[400],
+            },
+          },
+        },
+      },
     },
     subLabel: {
       fontSize: 12,
       fontWeight: 400,
-      color: FOUNDATION_THEME.colors.gray[400],
+      color: {
+        default: {
+          enabled: {
+            default: FOUNDATION_THEME.colors.gray[600],
+            hover: FOUNDATION_THEME.colors.gray[600],
+            active: FOUNDATION_THEME.colors.gray[600],
+            focus: FOUNDATION_THEME.colors.gray[600],
+            focusVisible: FOUNDATION_THEME.colors.gray[600],
+            disabled: FOUNDATION_THEME.colors.gray[400],
+          },
+          disabled: {
+            default: FOUNDATION_THEME.colors.gray[400],
+            hover: FOUNDATION_THEME.colors.gray[400],
+            active: FOUNDATION_THEME.colors.gray[400],
+            focus: FOUNDATION_THEME.colors.gray[400],
+            focusVisible: FOUNDATION_THEME.colors.gray[400],
+            disabled: FOUNDATION_THEME.colors.gray[400],
+          },
+        },
+        action: {
+          primary: {
+            enabled: {
+              default: FOUNDATION_THEME.colors.primary[600],
+              hover: FOUNDATION_THEME.colors.primary[600],
+              active: FOUNDATION_THEME.colors.primary[600],
+              focus: FOUNDATION_THEME.colors.primary[600],
+              focusVisible: FOUNDATION_THEME.colors.primary[600],
+              disabled: FOUNDATION_THEME.colors.gray[400],
+            },
+            disabled: {
+              default: FOUNDATION_THEME.colors.primary[400],
+              hover: FOUNDATION_THEME.colors.primary[400],
+              active: FOUNDATION_THEME.colors.primary[400],
+              focus: FOUNDATION_THEME.colors.primary[400],
+              focusVisible: FOUNDATION_THEME.colors.primary[400],
+              disabled: FOUNDATION_THEME.colors.primary[400],
+            },
+          },
+          danger: {
+            enabled: {
+              default: FOUNDATION_THEME.colors.red[600],
+              hover: FOUNDATION_THEME.colors.red[600],
+              active: FOUNDATION_THEME.colors.red[600],
+              focus: FOUNDATION_THEME.colors.red[600],
+              focusVisible: FOUNDATION_THEME.colors.red[600],
+              disabled: FOUNDATION_THEME.colors.red[400],
+            },
+            disabled: {
+              default: FOUNDATION_THEME.colors.red[400],
+              hover: FOUNDATION_THEME.colors.red[400],
+              active: FOUNDATION_THEME.colors.red[400],
+              focus: FOUNDATION_THEME.colors.red[400],
+              focusVisible: FOUNDATION_THEME.colors.red[400],
+              disabled: FOUNDATION_THEME.colors.red[400],
+            },
+          },
+        },
+      },
     },
   },
   seperator: {
