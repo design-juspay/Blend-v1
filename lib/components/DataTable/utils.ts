@@ -1,4 +1,5 @@
 import { SortDirection, SortConfig, ColumnFilter, SearchConfig, FilterType, ColumnDefinition } from './types';
+import { ColumnType } from './columnTypes';
 
 export const filterData = <T extends Record<string, unknown>>(
   data: T[],
@@ -193,6 +194,34 @@ export const formatCurrency = (amount: number, currency = 'INR'): string => {
     style: 'currency',
     currency: currency,
   }).format(amount);
+};
+
+export const getDefaultColumnWidth = <T extends Record<string, unknown>>(
+  column: ColumnDefinition<T>
+): string => {
+  if (column.width) return column.width;
+  
+  switch (column.type) {
+    case ColumnType.AVATAR:
+      return `'250px'`;
+    case ColumnType.TAG:
+      return '120px';
+    case ColumnType.SELECT:
+      return '140px';
+    case ColumnType.MULTISELECT:
+      return '180px';
+    case ColumnType.DATE:
+    case ColumnType.DATE_RANGE:
+      return '130px';
+    case ColumnType.NUMBER:
+      return '100px';
+    case ColumnType.TEXT:
+      return '200px';
+    case ColumnType.CUSTOM:
+      return '200px';
+    default:
+      return '150px';
+  }
 };
 
 export const formatDate = (dateString: string): string => {

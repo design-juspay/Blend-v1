@@ -502,7 +502,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                     <Popover
                       trigger={<MoreIcon size={16} />}
                       heading={`${column.header} Options`}
-                      size={PopoverSize.SM}
+                      size={PopoverSize.SMALL}
                     >
                       {renderColumnFilter(column)}
                     </Popover>

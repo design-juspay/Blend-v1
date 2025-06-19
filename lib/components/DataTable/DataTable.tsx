@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from './types';
 import dataTableTokens from './dataTable.tokens';
 import {
-  sortData, searchData, applyColumnFilters
+  sortData, searchData, applyColumnFilters, getDefaultColumnWidth
 } from './utils';
 import DataTableHeader from './DataTableHeader';
 import TableHeader from './TableHeader';
@@ -253,10 +253,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     
     setSearchConfig(newSearchConfig);
     
-    // Reset to first page when searching (important for server-side)
     setCurrentPage(1);
     
-    // trigger callback - user handles server-side logic here
     if (onSearchChange) {
       onSearchChange(newSearchConfig);
     }
@@ -297,7 +295,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     setSearchConfig(clearedSearchConfig);
     setCurrentPage(1);
     
-    // trigger callbacks - user handles server-side logic here
     if (onFilterChange) {
       onFilterChange([]);
     }
@@ -312,23 +309,11 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     setSelectAll(false);
   };
 
-  // Calculate column widths to ensure fixed layout
+  // Calculate column widths using the generic utility function
   const getColumnWidth = (column: ColumnDefinition<T>) => {
-    if (column.width) return column.width;
-    
-    // Default widths based on field type or content
-    const field = String(column.field);
-    if (field === 'id' || field === 'number') return '80px';
-    if (field === 'email') return '200px';
-    if (field === 'name') return '200px';
-    if (field === 'status') return '120px';
-    if (field === 'role') return '120px';
-    
-    // Default width for other columns
-    return '150px';
+    return getDefaultColumnWidth(column);
   };
 
-  // Inline edit functions
   const handleEditRow = (rowId: unknown) => {
     const rowIdStr = String(rowId);
     const row = currentData.find(r => String(r[idField]) === rowIdStr);

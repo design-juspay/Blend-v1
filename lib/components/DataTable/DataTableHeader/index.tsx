@@ -104,13 +104,11 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                      }
                      heading="Advanced Filters"
                      description="Configure complex filters for server-side filtering"
-                    size={PopoverSize.MD}
+                    size={PopoverSize.MEDIUM}
                     primaryAction={{
-                      label: "Apply Filters",
                       onClick: () => onToggleFilters(),
                     }}
                     secondaryAction={{
-                      label: "Clear All",
                       onClick: onClearAllFilters,
                       isDisabled: !searchConfig.query.trim() && columnFilters.length === 0,
                     }}

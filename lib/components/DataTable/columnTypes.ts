@@ -24,7 +24,7 @@ export type ColumnTypeConfig = {
   filterOptions?: ColumnFilterOption[];
   supportsSorting: boolean;
   supportsFiltering: boolean;
-  enableSearch?: boolean; // For text-based filtering with search
+  enableSearch?: boolean;
   filterComponent?: 'search' | 'select' | 'multiselect' | 'dateRange' | 'numberRange';
 }
 
