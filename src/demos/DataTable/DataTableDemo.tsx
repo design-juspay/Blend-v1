@@ -6,7 +6,7 @@ import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
 import { RefreshCw, Plus, CircleX, Server, Database } from 'lucide-react';
-import { ColumnType } from '../../../lib/components/DataTable/columnTypes';
+import { ColumnType, AvatarData, TagData } from '../../../lib/components/DataTable/columnTypes';
 
 const DataTableDemo = () => {
     // Demo mode toggle
@@ -15,36 +15,57 @@ const DataTableDemo = () => {
 
     // Generate larger dataset for server-side demo
     const generateLargeDataset = (count: number) => {
-      return Array.from({ length: count }, (_, index) => ({
-        id: index + 1,
-        name: [
-          'Jesse Leos', 'Jane Smith', 'Robert Johnson', 'Lisa Brown', 'David Miller',
-          'Emma Wilson', 'Michael Clark', 'Sarah Davis', 'James Taylor', 'Anna White',
-          'John Doe', 'Mary Johnson', 'Chris Wilson', 'Patricia Brown', 'Daniel Garcia',
-          'Jennifer Martinez', 'Matthew Anderson', 'Linda Taylor', 'Anthony Thomas', 'Barbara Jackson'
-        ][index % 20],
-        joinDate: [
-          'August 2014', 'September 2015', 'March 2016', 'November 2017', 'July 2018',
-          'January 2019', 'April 2020', 'June 2021', 'October 2022', 'February 2023',
-          'May 2020', 'December 2021', 'March 2022', 'August 2023', 'November 2019'
-        ][index % 15],
-        number: `${300 + index}`,
-        gateway: ['Gateway A', 'Gateway B', 'Gateway C', 'Gateway D', 'Gateway E'][index % 5],
-        contact: [
-          'Samantha Smith', 'John Doe', 'Emily White', 'Michael Green', 'Sarah Johnson',
-          'Peter Brown', 'Lucy Chen', 'Mark Wilson', 'Rachel Lee', 'Tom Anderson',
-          'Alice Cooper', 'Bob Dylan', 'Carol King', 'Dave Matthews', 'Eva Green'
-        ][index % 15],
-        status: index % 4 === 0 ? 'Active' : index % 4 === 1 ? 'Inactive' : index % 4 === 2 ? 'Pending' : 'Suspended',
-        email: [
-          'jesse@example.com', 'jane@example.com', 'robert@example.com',
-          'lisa@example.com', 'david@example.com', 'emma@example.com',
-          'michael@example.com', 'sarah@example.com', 'james@example.com',
-          'anna@example.com', 'john@example.com', 'mary@example.com'
-        ][index % 12],
-        role: ['Admin', 'User', 'Manager', 'Editor', 'Viewer', 'Moderator'][index % 6],
-        department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'][index % 6]
-      }));
+      const names = [
+        'Jesse Leos', 'Jane Smith', 'Robert Johnson', 'Lisa Brown', 'David Miller',
+        'Emma Wilson', 'Michael Clark', 'Sarah Davis', 'James Taylor', 'Anna White',
+        'John Doe', 'Mary Johnson', 'Chris Wilson', 'Patricia Brown', 'Daniel Garcia',
+        'Jennifer Martinez', 'Matthew Anderson', 'Linda Taylor', 'Anthony Thomas', 'Barbara Jackson'
+      ];
+      
+      const statuses = ['Active', 'Inactive', 'Pending', 'Suspended'];
+      
+      return Array.from({ length: count }, (_, index) => {
+        const userName = names[index % names.length];
+        const userStatus = statuses[index % statuses.length];
+        
+        return {
+          id: index + 1,
+          name: {
+            label: userName,
+            sublabel: [
+              'August 2014', 'September 2015', 'March 2016', 'November 2017', 'July 2018',
+              'January 2019', 'April 2020', 'June 2021', 'October 2022', 'February 2023',
+              'May 2020', 'December 2021', 'March 2022', 'August 2023', 'November 2019'
+            ][index % 15],
+            imageUrl: `https://randomuser.me/api/portraits/${index % 2 ? 'men' : 'women'}/${index % 70}.jpg`
+          } as AvatarData,
+          joinDate: [
+            'August 2014', 'September 2015', 'March 2016', 'November 2017', 'July 2018',
+            'January 2019', 'April 2020', 'June 2021', 'October 2022', 'February 2023',
+            'May 2020', 'December 2021', 'March 2022', 'August 2023', 'November 2019'
+          ][index % 15],
+          number: `${300 + index}`,
+          gateway: ['Gateway A', 'Gateway B', 'Gateway C', 'Gateway D', 'Gateway E'][index % 5],
+          contact: [
+            'Samantha Smith', 'John Doe', 'Emily White', 'Michael Green', 'Sarah Johnson',
+            'Peter Brown', 'Lucy Chen', 'Mark Wilson', 'Rachel Lee', 'Tom Anderson',
+            'Alice Cooper', 'Bob Dylan', 'Carol King', 'Dave Matthews', 'Eva Green'
+          ][index % 15],
+          status: {
+            text: userStatus,
+            color: userStatus === 'Active' ? 'success' : userStatus === 'Inactive' ? 'error' : userStatus === 'Pending' ? 'warning' : 'neutral',
+            variant: 'subtle'
+          } as TagData,
+          email: [
+            'jesse@example.com', 'jane@example.com', 'robert@example.com',
+            'lisa@example.com', 'david@example.com', 'emma@example.com',
+            'michael@example.com', 'sarah@example.com', 'james@example.com',
+            'anna@example.com', 'john@example.com', 'mary@example.com'
+          ][index % 12],
+          role: ['Admin', 'User', 'Manager', 'Editor', 'Viewer', 'Moderator'][index % 6],
+          department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'][index % 6]
+        };
+      });
     };
 
     // Simulate full dataset (3000 records)
@@ -66,14 +87,14 @@ const DataTableDemo = () => {
 
     type UserRow = {
       id: number;
-      name: string;
+      name: AvatarData;
       joinDate: string;
       email: string;
       role: string;
       number: string;
       gateway: string;
       contact: string;
-      status: 'Active' | 'Inactive' | 'Pending' | 'Suspended';
+      status: TagData;
       department: string;
     } & Record<string, unknown>;
     
@@ -82,15 +103,18 @@ const DataTableDemo = () => {
         field: 'name',
         header: 'Name',
         type: ColumnType.AVATAR,
-        renderCell: (_value, row) => (
-          <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
-            <Avatar src={`https://randomuser.me/api/portraits/${row.id % 2 ? 'men' : 'women'}/${row.id % 70}.jpg`} />
-            <div>
-              <div style={{ fontWeight: 500, fontSize: '14px' }}>{row.name}</div>
-              <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {row.joinDate}</div>
+        renderCell: (value) => {
+          const avatarData = value as AvatarData;
+          return (
+            <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
+              <Avatar src={avatarData.imageUrl} alt={avatarData.label} />
+              <div>
+                <div style={{ fontWeight: 500, fontSize: '14px' }}>{avatarData.label}</div>
+                <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {avatarData.sublabel}</div>
+              </div>
             </div>
-          </div>
-        ),
+          );
+        },
         isSortable: true,
         isFilterable: true,
         filterType: FilterType.TEXT,
@@ -160,7 +184,8 @@ const DataTableDemo = () => {
         field: 'status',
         header: 'Status',
         type: ColumnType.TAG,
-        renderCell: (_value, row) => {
+        renderCell: (value) => {
+          const tagData = value as TagData;
           const getStatusColor = (status: string): TagColor => {
             switch (status) {
               case 'Active':
@@ -178,9 +203,9 @@ const DataTableDemo = () => {
 
           return (
             <Tag
-              text={row.status}
+              text={tagData.text}
               variant={TagVariant.SUBTLE}
-              color={getStatusColor(row.status)}
+              color={getStatusColor(tagData.text)}
               size={TagSize.SM}
             />
           );
@@ -365,7 +390,8 @@ const DataTableDemo = () => {
 
     const isRowExpandable = (row: Record<string, unknown>) => {
       const userRow = row as UserRow;
-      return userRow.status === 'Active' || userRow.role === 'Admin';
+      const statusText = (userRow.status as TagData).text;
+      return statusText === 'Active' || userRow.role === 'Admin';
     };
 
     const renderExpandedRow = ({ row, index, toggleExpansion }: {
@@ -377,8 +403,9 @@ const DataTableDemo = () => {
       const userRow = row as UserRow;
       
       const getActivityData = (user: UserRow) => {
+        const statusText = (user.status as TagData).text;
         const activities = [
-          `Last login: ${user.status === 'Active' ? '2 hours ago' : '1 week ago'}`,
+          `Last login: ${statusText === 'Active' ? '2 hours ago' : '1 week ago'}`,
           `Profile updated: ${user.role === 'Admin' ? '1 day ago' : '3 days ago'}`,
           `Password changed: ${user.gateway === 'Gateway A' ? '1 week ago' : '2 weeks ago'}`,
           `Role assigned: ${user.joinDate}`
@@ -401,10 +428,10 @@ const DataTableDemo = () => {
       return (
         <div style={{ 
           padding: '20px', 
-          backgroundColor: userRow.status === 'Active' ? '#f0f9ff' : '#fef2f2',
+          backgroundColor: (userRow.status as TagData).text === 'Active' ? '#f0f9ff' : '#fef2f2',
           borderRadius: '8px',
           margin: '8px 0',
-          border: `1px solid ${userRow.status === 'Active' ? '#bfdbfe' : '#fecaca'}`
+          border: `1px solid ${(userRow.status as TagData).text === 'Active' ? '#bfdbfe' : '#fecaca'}`
         }}>
           <div style={{ 
             display: 'flex', 
@@ -418,7 +445,7 @@ const DataTableDemo = () => {
               fontWeight: 600,
               color: '#1f2937'
             }}>
-              Detailed Profile: {userRow.name} (Row #{index + 1})
+              Detailed Profile: {(userRow.name as AvatarData).label} (Row #{index + 1})
             </h4>
             <button
               onClick={toggleExpansion}
@@ -458,11 +485,11 @@ const DataTableDemo = () => {
                 <div><strong>Department:</strong> {userRow.department}</div>
                 <div><strong>Status:</strong> 
                   <span style={{ 
-                    color: userRow.status === 'Active' ? '#059669' : '#dc2626',
+                    color: (userRow.status as TagData).text === 'Active' ? '#059669' : '#dc2626',
                     fontWeight: 'bold',
                     marginLeft: '4px'
                   }}>
-                    {userRow.status}
+                    {(userRow.status as TagData).text}
                   </span>
                 </div>
               </div>
@@ -622,7 +649,6 @@ const DataTableDemo = () => {
           enableRowExpansion
           renderExpandedRow={renderExpandedRow}
           isRowExpandable={isRowExpandable}
-          // Server-side configuration
           serverSideSearch={isServerSideMode}
           serverSideFiltering={isServerSideMode}
           serverSidePagination={isServerSideMode}

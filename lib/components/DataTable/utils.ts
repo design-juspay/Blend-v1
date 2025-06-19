@@ -1,5 +1,5 @@
 import { SortDirection, SortConfig, ColumnFilter, SearchConfig, FilterType, ColumnDefinition } from './types';
-import { ColumnType } from './columnTypes';
+import { ColumnType, validateColumnData, AvatarData, TagData, SelectData, MultiSelectData, DateData, DateRangeData } from './columnTypes';
 
 export const filterData = <T extends Record<string, unknown>>(
   data: T[],
@@ -345,4 +345,142 @@ export const clearAllFiltersAndSearch = (): {
 } => ({
   filters: [],
   searchConfig: createSearchConfig('')
-}); 
+});
+
+
+export const createAvatarData = (
+  label: string,
+  options?: {
+    sublabel?: string;
+    imageUrl?: string;
+    initials?: string;
+  }
+): AvatarData => ({
+  label,
+  ...options
+});
+
+export const createTagData = (
+  text: string,
+  options?: {
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral';
+    variant?: 'solid' | 'subtle' | 'outline';
+    size?: 'sm' | 'md' | 'lg';
+  }
+): TagData => ({
+  text,
+  ...options
+});
+
+export const createSelectData = (
+  value: string,
+  options?: {
+    label?: string;
+    disabled?: boolean;
+  }
+): SelectData => ({
+  value,
+  ...options
+});
+
+export const createMultiSelectData = (
+  values: string[],
+  labels?: string[]
+): MultiSelectData => ({
+  values,
+  labels
+});
+
+export const createDateData = (
+  date: Date | string,
+  format?: string
+): DateData => ({
+  date,
+  format
+});
+
+export const createDateRangeData = (
+  startDate: Date | string,
+  endDate: Date | string,
+  format?: string
+): DateRangeData => ({
+  startDate,
+  endDate,
+  format
+});
+
+export const validateDataForColumnType = <T extends Record<string, unknown>>(
+  data: T,
+  columns: ColumnDefinition<T>[]
+): { isValid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+  
+  for (const column of columns) {
+    const fieldValue = data[column.field];
+    const validator = validateColumnData[column.type];
+    
+    if (!validator(fieldValue)) {
+      errors.push(
+        `Field "${String(column.field)}" (${column.type}) has invalid data type. Expected: ${getExpectedTypeDescription(column.type)}, Got: ${typeof fieldValue}`
+      );
+    }
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+
+const getExpectedTypeDescription = (columnType: ColumnType): string => {
+  switch (columnType) {
+    case ColumnType.AVATAR:
+      return 'AvatarData { label: string, sublabel?: string, imageUrl?: string, initials?: string }';
+    case ColumnType.TAG:
+      return 'TagData { text: string, color?: string, variant?: string, size?: string }';
+    case ColumnType.SELECT:
+      return 'SelectData { value: string, label?: string, disabled?: boolean } or string';
+    case ColumnType.MULTISELECT:
+      return 'MultiSelectData { values: string[], labels?: string[] } or string[]';
+    case ColumnType.DATE:
+      return 'DateData { date: Date | string, format?: string } or Date or string';
+    case ColumnType.DATE_RANGE:
+      return 'DateRangeData { startDate: Date | string, endDate: Date | string, format?: string }';
+    case ColumnType.TEXT:
+      return 'string or number';
+    case ColumnType.NUMBER:
+      return 'number';
+    case ColumnType.CUSTOM:
+      return 'any';
+    default:
+      return 'unknown';
+  }
+};
+
+export const enforceDataTypeMatching = <T extends Record<string, unknown>>(
+  data: T[],
+  columns: ColumnDefinition<T>[],
+  options?: { throwOnError?: boolean; logWarnings?: boolean }
+): boolean => {
+  const { throwOnError = false, logWarnings = true } = options || {};
+  let hasErrors = false;
+  
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
+    const validation = validateDataForColumnType(row, columns);
+    
+    if (!validation.isValid) {
+      hasErrors = true;
+      const errorMessage = `DataTable type validation failed for row ${i}:\n${validation.errors.join('\n')}`;
+      
+      if (throwOnError) {
+        throw new Error(errorMessage);
+      } else if (logWarnings) {
+        console.warn(errorMessage);
+      }
+    }
+  }
+  
+  return !hasErrors;
+}; 

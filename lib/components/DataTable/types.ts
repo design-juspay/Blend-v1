@@ -43,7 +43,16 @@ export type ColumnDefinition<T extends Record<string, unknown>> = {
   renderCell?: (value: T[keyof T], row: T) => React.ReactNode;
   /** Custom render for edit mode */
   renderEditCell?: (value: T[keyof T], row: T, onChange: (value: unknown) => void) => React.ReactNode;
-}
+};
+
+export type TypeSafeColumn<T extends Record<string, unknown>, Field extends keyof T> = 
+  ColumnDefinition<T> & {
+    field: Field;
+  };
+
+export type CreateColumnDefinition<T extends Record<string, unknown>> = {
+  <K extends keyof T>(column: TypeSafeColumn<T, K>): TypeSafeColumn<T, K>;
+};
 
 export type FilterOption = {
   /** Unique identifier for the filter option - must be a non-empty string */

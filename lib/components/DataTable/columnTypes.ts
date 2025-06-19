@@ -18,6 +18,124 @@ export type ColumnFilterOption = {
   value: string;
 }
 
+export type AvatarData = {
+  label: string;
+  sublabel?: string;
+  imageUrl?: string;
+  initials?: string;
+}
+
+export type TagData = {
+  text: string;
+  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral';
+  variant?: 'solid' | 'subtle' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export type SelectData = {
+  value: string;
+  label?: string;
+  disabled?: boolean;
+}
+
+export type MultiSelectData = {
+  values: string[];
+  labels?: string[];
+}
+
+export type DateData = {
+  date: Date | string;
+  format?: string;
+}
+
+export type DateRangeData = {
+  startDate: Date | string;
+  endDate: Date | string;
+  format?: string;
+}
+
+export type ColumnDataTypeMap = {
+  [ColumnType.TEXT]: string | number;
+  [ColumnType.NUMBER]: number;
+  [ColumnType.SELECT]: SelectData | string;
+  [ColumnType.MULTISELECT]: MultiSelectData | string[];
+  [ColumnType.DATE]: DateData | Date | string;
+  [ColumnType.DATE_RANGE]: DateRangeData;
+  [ColumnType.AVATAR]: AvatarData;
+  [ColumnType.TAG]: TagData;
+  [ColumnType.CUSTOM]: unknown;
+};
+
+export type GetColumnDataType<T extends ColumnType> = ColumnDataTypeMap[T];
+
+export const validateColumnData = {
+  [ColumnType.TEXT]: (data: unknown): data is string | number => {
+    return typeof data === 'string' || typeof data === 'number';
+  },
+  
+  [ColumnType.NUMBER]: (data: unknown): data is number => {
+    return typeof data === 'number' && !isNaN(data);
+  },
+  
+  [ColumnType.SELECT]: (data: unknown): data is SelectData | string => {
+    if (typeof data === 'string') return true;
+    if (typeof data === 'object' && data !== null) {
+      const selectData = data as Record<string, unknown>;
+      return typeof selectData.value === 'string';
+    }
+    return false;
+  },
+  
+  [ColumnType.MULTISELECT]: (data: unknown): data is MultiSelectData | string[] => {
+    if (Array.isArray(data) && data.every(item => typeof item === 'string')) return true;
+    if (typeof data === 'object' && data !== null) {
+      const multiSelectData = data as Record<string, unknown>;
+      return Array.isArray(multiSelectData.values) && 
+             multiSelectData.values.every(item => typeof item === 'string');
+    }
+    return false;
+  },
+  
+  [ColumnType.DATE]: (data: unknown): data is DateData | Date | string => {
+    if (data instanceof Date) return true;
+    if (typeof data === 'string') return !isNaN(Date.parse(data));
+    if (typeof data === 'object' && data !== null) {
+      const dateData = data as Record<string, unknown>;
+      return typeof dateData.date === 'string' || dateData.date instanceof Date;
+    }
+    return false;
+  },
+  
+  [ColumnType.DATE_RANGE]: (data: unknown): data is DateRangeData => {
+    if (typeof data === 'object' && data !== null) {
+      const rangeData = data as Record<string, unknown>;
+      return (typeof rangeData.startDate === 'string' || rangeData.startDate instanceof Date) &&
+             (typeof rangeData.endDate === 'string' || rangeData.endDate instanceof Date);
+    }
+    return false;
+  },
+  
+  [ColumnType.AVATAR]: (data: unknown): data is AvatarData => {
+    if (typeof data === 'object' && data !== null) {
+      const avatarData = data as Record<string, unknown>;
+      return typeof avatarData.label === 'string';
+    }
+    return false;
+  },
+  
+  [ColumnType.TAG]: (data: unknown): data is TagData => {
+    if (typeof data === 'object' && data !== null) {
+      const tagData = data as Record<string, unknown>;
+      return typeof tagData.text === 'string';
+    }
+    return false;
+  },
+  
+  [ColumnType.CUSTOM]: (_data: unknown): _data is unknown => {
+    return true;
+  }
+};
+
 export type ColumnTypeConfig = {
   type: ColumnType;
   filterType: FilterType;
