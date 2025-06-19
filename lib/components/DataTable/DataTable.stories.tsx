@@ -677,7 +677,8 @@ const WithInlineEditingComponent = (args: typeof WithInlineEditing.args) => {
     <DataTable
       {...args}
       data={data as Record<string, unknown>[]}
-      columns={userColumns as ColumnDefinition<Record<string, unknown>>[]}
+      columns={userColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+      idField="id"
       onRowSave={handleRowSave}
       onRowCancel={handleRowCancel}
     />
@@ -827,6 +828,9 @@ const WithRowExpansionComponent = (args: typeof WithRowExpansion.args) => {
   return (
     <DataTable
       {...args}
+      data={sampleUsers as Record<string, unknown>[]}
+      columns={userColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+      idField="id"
       onRowExpansionChange={handleRowExpansionChange}
       isRowExpandable={isRowExpandable}
       renderExpandedRow={renderExpandedRow}
@@ -891,6 +895,9 @@ const WithPaginationComponent = (args: typeof WithPagination.args) => {
   return (
     <DataTable
       {...args}
+      data={sampleUsers as Record<string, unknown>[]}
+      columns={userColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+      idField="id"
       pagination={{
         currentPage,
         pageSize,
@@ -1119,7 +1126,9 @@ const ServerSideOperationsComponent = (args: typeof ServerSideOperations.args) =
       
       <DataTable
         {...args}
-        data={data}
+        data={data as Record<string, unknown>[]}
+        columns={userColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+        idField="id"
         isLoading={isLoading}
         serverSideSearch={true}
         serverSideFiltering={true}
