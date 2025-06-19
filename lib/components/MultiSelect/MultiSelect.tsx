@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Block from "../Primitives/Block/Block";
-import { SelectMenuGroupType, SelectMenuItemType } from "../Select";
 import { dummyMenuItems } from "../../../src/demos/Menu/MenuDemo";
 import InputLabels from "../Inputs/utils/InputLabels/InputLabels";
 import InputFooter from "../Inputs/utils/InputFooter/InputFooter";
@@ -11,6 +10,8 @@ import Text from "../Text/Text";
 import { ChevronDown, User, X } from "lucide-react";
 import selectTokens from "../Select/select.token";
 import {
+  MultiSelectMenuGroupType,
+  MultiSelectMenuItemType,
   MultiSelectMenuSize,
   MultiSelectProps,
   MultiSelectSelectionTagType,
@@ -18,11 +19,11 @@ import {
 } from "./types";
 
 const map = function getValueLabelMap(
-  groups: SelectMenuGroupType[]
+  groups: MultiSelectMenuGroupType[]
 ): Record<string, string> {
   const map: Record<string, string> = {};
 
-  function traverse(items: SelectMenuItemType[]) {
+  function traverse(items: MultiSelectMenuItemType[]) {
     for (const item of items) {
       map[item.value] = item.label;
       if (item.subMenu) {

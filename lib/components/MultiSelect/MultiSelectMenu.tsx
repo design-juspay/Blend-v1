@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
 import styled from "styled-components";
-import { SelectMenuItemType } from "../Select";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
 import { FOUNDATION_THEME } from "../../tokens";
 import { Checkbox } from "../Checkbox";
 import { ChevronRight } from "lucide-react";
-import { SearchInput } from "../Inputs";
 import {
   MultiSelectMenuAlignment,
+  MultiSelectMenuItemType,
   MultiSelectMenuProps,
   MultiSelectMenuSide,
 } from "./types";
@@ -110,7 +109,7 @@ const SubMenu = ({
   onSelect,
   selected,
 }: {
-  item: SelectMenuItemType;
+  item: MultiSelectMenuItemType;
   onSelect: (value: string) => void;
   selected: string[];
 }) => {
@@ -184,7 +183,7 @@ const Item = ({
   onSelect,
   selected,
 }: {
-  item: SelectMenuItemType;
+  item: MultiSelectMenuItemType;
   onSelect: (value: string) => void;
   selected: string[];
 }) => {
@@ -287,7 +286,7 @@ const MultiSelectMenu = ({
           maxHeight,
         }}
       >
-        <Block
+        {/* <Block
           position="sticky"
           top={0}
           left={0}
@@ -302,7 +301,8 @@ const MultiSelectMenu = ({
               setSearch(e.target.value);
             }}
           />
-        </Block>
+        </Block> */}
+
         {items.map((group, groupId) => (
           <React.Fragment key={groupId}>
             {group.groupLabel && (

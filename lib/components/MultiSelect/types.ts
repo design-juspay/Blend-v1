@@ -1,5 +1,3 @@
-import { SelectMenuGroupType } from "../Select";
-
 export enum MultiSelectVariant {
   CONTAINER = "container",
   NO_CONTAINER = "no-container",
@@ -29,10 +27,31 @@ export enum MultiSelectSelectionTagType {
   TEXT = "text",
 }
 
+export type MultiSelectMenuItemType = {
+  label: string;
+  value: string;
+  checked?: boolean;
+  subLabel?: string;
+  slot1?: React.ReactNode;
+  slot2?: React.ReactNode;
+  slot3?: React.ReactNode;
+  slot4?: React.ReactNode;
+  disabled?: boolean;
+  onClick?: () => void;
+  subMenu?: MultiSelectMenuItemType[];
+};
+
+export type MultiSelectMenuGroupType = {
+  groupLabel?: string;
+  items: MultiSelectMenuItemType[];
+  showSeparator?: boolean;
+};
+
+// Multi Select Component Props
 export type MultiSelectProps = {
   selectedValues: string[];
   onChange: (selectedValue: string) => void;
-  items: SelectMenuGroupType[];
+  items: MultiSelectMenuGroupType[];
 
   // labels
   label: string;
@@ -60,8 +79,9 @@ export type MultiSelectProps = {
   alignOffset?: number;
 };
 
+// Multi Select Menu Dropdpown
 export type MultiSelectMenuProps = {
-  items: SelectMenuGroupType[];
+  items: MultiSelectMenuGroupType[];
   selected: string[];
   onSelect: (value: string) => void;
   trigger: React.ReactNode;
