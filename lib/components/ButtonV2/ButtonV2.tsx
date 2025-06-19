@@ -25,6 +25,8 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
       onClick,
       loading,
       buttonGroupPosition,
+      fullWidth,
+      justifyContent = "center",
       ...htmlProps
     },
     ref
@@ -48,7 +50,8 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
         onClick={onClick}
         display="flex"
         alignItems="center"
-        justifyContent="center"
+        justifyContent={justifyContent}
+        width={fullWidth ? "100%" : "fit-content"}
         height={subType === ButtonSubTypeV2.INLINE ? "fit-content" : "auto"}
         gap={buttonTokens.gap}
         background={buttonTokens.backgroundColor[buttonType][subType].default}
