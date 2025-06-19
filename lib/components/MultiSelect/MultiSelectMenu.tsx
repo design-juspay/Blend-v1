@@ -1,38 +1,18 @@
 import React, { useState } from "react";
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
 import styled from "styled-components";
-import {
-  SelectMenuAlignment,
-  SelectMenuGroupType,
-  SelectMenuItemType,
-  SelectMenuSide,
-} from "../Select";
+import { SelectMenuItemType } from "../Select";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
 import { FOUNDATION_THEME } from "../../tokens";
 import { Checkbox } from "../Checkbox";
 import { ChevronRight } from "lucide-react";
 import { SearchInput } from "../Inputs";
-
-type MultiSelectProps = {
-  items: SelectMenuGroupType[];
-  selected: string[];
-  onSelect: (value: string) => void;
-  trigger: React.ReactNode;
-  minWidth?: number;
-  maxWidth?: number;
-  maxHeight?: number;
-
-  // alignment
-  alignment?: SelectMenuAlignment;
-  side?: SelectMenuSide;
-  sideOffset?: number;
-  alignOffset?: number;
-
-  // open
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-};
+import {
+  MultiSelectMenuAlignment,
+  MultiSelectMenuProps,
+  MultiSelectMenuSide,
+} from "./types";
 
 const Content = styled(RadixMenu.Content)(() => ({
   position: "relative",
@@ -280,18 +260,18 @@ const MultiSelectMenu = ({
   maxHeight,
 
   // alignment
-  alignment = SelectMenuAlignment.CENTER,
-  side = SelectMenuSide.BOTTOM,
+  alignment = MultiSelectMenuAlignment.CENTER,
+  side = MultiSelectMenuSide.BOTTOM,
   sideOffset = 8,
   alignOffset = 0,
 
   // open
   open,
   onOpenChange,
-}: MultiSelectProps) => {
+}: MultiSelectMenuProps) => {
   const [search, setSearch] = useState("");
   return (
-    <RadixMenu.Root modal={false} open={open} onOpenChange={onOpenChange}>
+    <RadixMenu.Root modal={false} open={true} onOpenChange={onOpenChange}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         align={alignment}

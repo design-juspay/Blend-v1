@@ -28,7 +28,12 @@ import {
   SelectMenuVariant,
 } from "../../../lib/components/Select/types";
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
-import { addSnackbar, ButtonV2, Tag } from "../../../lib/main";
+import {
+  addSnackbar,
+  ButtonV2,
+  MultiSelectVariant,
+  Tag,
+} from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
 import { Settings2 } from "lucide-react";
@@ -354,8 +359,8 @@ const MenuDemo = () => {
   const [mv, setMv] = useState<string[]>(["profile"]);
 
   // Controls for container type, size, and selectionTagType
-  const [containerType, setContainerType] = useState<SelectMenuVariant>(
-    SelectMenuVariant.CONTAINER
+  const [containerType, setContainerType] = useState<MultiSelectVariant>(
+    MultiSelectVariant.CONTAINER
   );
   const [menuSize, setMenuSize] = useState<SelectMenuSize>(
     SelectMenuSize.SMALL
@@ -414,7 +419,7 @@ const MenuDemo = () => {
             label="Container Type"
             selected={containerType}
             onSelectChange={(v) =>
-              typeof v === "string" && setContainerType(v as SelectMenuVariant)
+              typeof v === "string" && setContainerType(v as MultiSelectVariant)
             }
             enableSearch={false}
             placeholder="Container Type"

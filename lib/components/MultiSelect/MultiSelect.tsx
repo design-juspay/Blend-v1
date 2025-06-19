@@ -1,14 +1,8 @@
 import { useState } from "react";
 import Block from "../Primitives/Block/Block";
-import {
-  SelectMenuGroupType,
-  SelectMenuItemType,
-  SelectMenuSize,
-  SelectMenuVariant,
-} from "../Select";
+import { SelectMenuGroupType, SelectMenuItemType } from "../Select";
 import { dummyMenuItems } from "../../../src/demos/Menu/MenuDemo";
 import InputLabels from "../Inputs/utils/InputLabels/InputLabels";
-import { SelectionTagType } from "../Select/Select";
 import InputFooter from "../Inputs/utils/InputFooter/InputFooter";
 import MultiSelectMenu from "./MultiSelectMenu";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
@@ -16,7 +10,12 @@ import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
 import { ChevronDown, User, X } from "lucide-react";
 import selectTokens from "../Select/select.token";
-import { MultiSelectProps } from "./types";
+import {
+  MultiSelectMenuSize,
+  MultiSelectProps,
+  MultiSelectSelectionTagType,
+  MultiSelectVariant,
+} from "./types";
 
 const map = function getValueLabelMap(
   groups: SelectMenuGroupType[]
@@ -49,18 +48,15 @@ const MultiSelect = ({
   helpIconHintText,
   name,
   required,
-  variant = SelectMenuVariant.CONTAINER,
-  selectionTagType = SelectionTagType.COUNT,
+  variant = MultiSelectVariant.CONTAINER,
+  selectionTagType = MultiSelectSelectionTagType.COUNT,
   slot = <User size={13} />,
   hintText,
   placeholder,
-  size = SelectMenuSize.MEDIUM,
-  // dim
+  size = MultiSelectMenuSize.MEDIUM,
   minWidth,
   maxWidth,
   maxHeight,
-
-  // alignment
   alignment,
   side,
   sideOffset,
@@ -70,7 +66,7 @@ const MultiSelect = ({
   const valueLabelMap = map(items);
 
   const showCancelButton =
-    variant === SelectMenuVariant.CONTAINER && selectedValues.length > 0;
+    variant === MultiSelectVariant.CONTAINER && selectedValues.length > 0;
 
   return (
     <Block
@@ -80,7 +76,7 @@ const MultiSelect = ({
       gap={8}
       maxWidth={"100%"}
     >
-      {variant === SelectMenuVariant.CONTAINER && (
+      {variant === MultiSelectVariant.CONTAINER && (
         <InputLabels
           label={label}
           sublabel={sublabel}
@@ -92,9 +88,9 @@ const MultiSelect = ({
       )}
       <Block display="flex">
         <Block
-          width={variant === SelectMenuVariant.CONTAINER ? "100%" : "auto"}
+          width={variant === MultiSelectVariant.CONTAINER ? "100%" : "auto"}
           maxWidth={
-            variant === SelectMenuVariant.NO_CONTAINER ? "100%" : "auto"
+            variant === MultiSelectVariant.NO_CONTAINER ? "100%" : "auto"
           }
           display="flex"
           alignItems="center"
@@ -122,7 +118,7 @@ const MultiSelect = ({
                   showCancelButton ? 0 : 8
                 }px 8px`}
                 boxShadow={
-                  variant === SelectMenuVariant.CONTAINER
+                  variant === MultiSelectVariant.CONTAINER
                     ? FOUNDATION_THEME.shadows.xs
                     : undefined
                 }
@@ -135,7 +131,7 @@ const MultiSelect = ({
                     : FOUNDATION_THEME.colors.gray[0]
                 }
                 outline={
-                  variant === SelectMenuVariant.CONTAINER
+                  variant === MultiSelectVariant.CONTAINER
                     ? `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
                     : undefined
                 }
@@ -165,7 +161,7 @@ const MultiSelect = ({
                   }}
                 >
                   {/* NO CONTAINER Label*/}
-                  {variant === SelectMenuVariant.NO_CONTAINER && (
+                  {variant === MultiSelectVariant.NO_CONTAINER && (
                     <Text
                       as="span"
                       variant="body.md"
@@ -177,15 +173,15 @@ const MultiSelect = ({
                   )}
 
                   {/* Variant == Container - always show the placeholder*/}
-                  {variant === SelectMenuVariant.NO_CONTAINER ||
-                    (variant === SelectMenuVariant.CONTAINER && (
+                  {variant === MultiSelectVariant.NO_CONTAINER ||
+                    (variant === MultiSelectVariant.CONTAINER && (
                       <Text
                         as="span"
                         variant="body.md"
                         color={FOUNDATION_THEME.colors.gray[700]}
                         fontWeight={500}
                       >
-                        {variant === SelectMenuVariant.CONTAINER
+                        {variant === MultiSelectVariant.CONTAINER
                           ? placeholder
                           : label}
                       </Text>
@@ -195,11 +191,13 @@ const MultiSelect = ({
                       as="span"
                       variant="body.md"
                       color={
-                        variant === SelectMenuVariant.CONTAINER
-                          ? selectionTagType === SelectionTagType.COUNT
+                        variant === MultiSelectVariant.CONTAINER
+                          ? selectionTagType ===
+                            MultiSelectSelectionTagType.COUNT
                             ? FOUNDATION_THEME.colors.gray[0]
                             : FOUNDATION_THEME.colors.gray[700]
-                          : selectionTagType === SelectionTagType.COUNT
+                          : selectionTagType ===
+                            MultiSelectSelectionTagType.COUNT
                           ? FOUNDATION_THEME.colors.gray[0]
                           : FOUNDATION_THEME.colors.gray[400]
                       }
@@ -209,17 +207,17 @@ const MultiSelect = ({
                         marginLeft: 8,
                         // border: "1px solid red",
                         backgroundColor:
-                          selectionTagType === SelectionTagType.COUNT
+                          selectionTagType === MultiSelectSelectionTagType.COUNT
                             ? FOUNDATION_THEME.colors.primary[600]
                             : "transparent",
                         borderRadius: 4,
                         padding:
-                          selectionTagType === SelectionTagType.COUNT
+                          selectionTagType === MultiSelectSelectionTagType.COUNT
                             ? "0px 6px"
                             : "0px 0px",
                       }}
                     >
-                      {selectionTagType === SelectionTagType.COUNT
+                      {selectionTagType === MultiSelectSelectionTagType.COUNT
                         ? selectedValues.length
                         : selectedValues
                             .map((v) => valueLabelMap[v])
@@ -241,7 +239,7 @@ const MultiSelect = ({
               </PrimitiveButton>
             }
           />
-          {variant === SelectMenuVariant.CONTAINER &&
+          {variant === MultiSelectVariant.CONTAINER &&
             selectedValues.length > 0 && (
               <PrimitiveButton
                 borderRadius={`0 8px 8px 0`}
@@ -264,7 +262,7 @@ const MultiSelect = ({
             )}
         </Block>
       </Block>
-      {variant === SelectMenuVariant.CONTAINER && (
+      {variant === MultiSelectVariant.CONTAINER && (
         <InputFooter hintText={hintText} />
       )}
     </Block>
