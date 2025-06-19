@@ -197,12 +197,14 @@ const dummyMenuItemsV2: MenuV2GroupType[] = [
         slot1: <Settings2 size={13} />,
         variant: MenuItemV2Variant.ACTION,
         actionType: MenuItemV2ActionType.PRIMARY,
+        // disabled: true,
       },
       {
         label: "Delete Account",
         subLabel: "Permanently delete your account and all data",
         onClick: () => alert("Delete Account"),
         slot1: <Settings2 size={13} />,
+        // disabled: true,
 
         slot3: (
           <Tag

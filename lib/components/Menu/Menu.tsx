@@ -16,8 +16,6 @@ export const contentBaseStyle: CSSObject = {
   backgroundColor: "white",
   boxShadow: FOUNDATION_THEME.shadows.lg,
   zIndex: 9999,
-  minWidth: 200,
-  maxWidth: 280,
   overflowY: "auto",
   overflowX: "hidden",
   scrollbarWidth: "none",
@@ -49,7 +47,7 @@ const Menu = ({
   const filteredItems = filterMenuGroups(items, searchText);
   const menuTokens = useComponentToken("MENU") as MenuTokensType;
   return (
-    <RadixMenu.Root modal={asModal} open={true}>
+    <RadixMenu.Root modal={asModal}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         sideOffset={sideOffset}
@@ -61,9 +59,10 @@ const Menu = ({
           maxHeight: maxHeight
             ? `${maxHeight}px`
             : "var(--radix-popper-available-height)",
-          minWidth: minWidth ? `${minWidth}px` : "auto",
-          maxWidth: maxWidth ? `${maxWidth}px` : "auto",
+          minWidth: minWidth ? `${minWidth}px` : "200px",
+          maxWidth: maxWidth ? `${maxWidth}px` : "280px",
           paddingTop: enableSearch ? 0 : menuTokens.paddingTop,
+          border: menuTokens.border,
         }}
       >
         {enableSearch && (

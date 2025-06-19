@@ -19,8 +19,8 @@ export type MenuV2Props = {
   minHeight?: number;
   maxWidth?: number;
   minWidth?: number;
-  width?: number;
-  height?: number;
+  // width?: number;
+  // height?: number;
   enableSearch?: boolean;
   searchPlaceholder?: string;
   // Radix Menu Props
