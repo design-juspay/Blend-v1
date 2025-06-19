@@ -120,9 +120,9 @@ export type ColumnManagerProps<T extends Record<string, unknown>> = {
 
 export type AdvancedFilterProps = {
   /** Current filters applied */
-  filters: any[];
+  filters: unknown[];
   /** Callback when filters change */
-  onFiltersChange: (filters: any[]) => void;
+  onFiltersChange: (filters: unknown[]) => void;
   /** Callback to clear all filters */
   onClearFilters: () => void;
 }
@@ -194,7 +194,7 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   /** Callback when column filters change (local) */
   onFilterChange?: (filters: ColumnFilter[]) => void;
   /** Callback when advanced filters change */
-  onAdvancedFiltersChange?: (filters: any[]) => void;
+  onAdvancedFiltersChange?: (filters: unknown[]) => void;
   /** Callback when row is saved after editing */
   onRowSave?: (rowId: unknown, updatedRow: T) => void;
   /** Callback when row edit is cancelled */

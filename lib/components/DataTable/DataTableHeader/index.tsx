@@ -83,7 +83,7 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                 </Block>
               )}
               
-              {enableAdvancedFilter && (
+              {enableAdvancedFilter && AdvancedFilterComponent && (
                  <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
                    <Popover
                      trigger={
@@ -115,31 +115,11 @@ const DataTableHeader = forwardRef<HTMLDivElement, DataTableHeaderProps<Record<s
                         minWidth: '300px',
                       }}
                     >
-                      {AdvancedFilterComponent ? (
-                        <AdvancedFilterComponent
-                          filters={advancedFilters}
-                          onFiltersChange={onAdvancedFiltersChange || (() => {})}
-                          onClearFilters={onClearAllFilters}
-                        />
-                      ) : (
-                        <Block 
-                          display="flex" 
-                          flexDirection="column" 
-                          alignItems="center" 
-                          justifyContent="center" 
-                          gap={FOUNDATION_THEME.unit[8]}
-                          style={{ padding: FOUNDATION_THEME.unit[16] }}
-                        >
-                          <PrimitiveText 
-                            fontSize={FOUNDATION_THEME.font.size.body.sm.fontSize}
-                            color={FOUNDATION_THEME.colors.gray[500]}
-                            style={{ textAlign: 'center' }}
-                          >
-                            No advanced filter component provided.
-                            Pass an advancedFilterComponent prop to enable custom filtering.
-                          </PrimitiveText>
-                        </Block>
-                      )}
+                      <AdvancedFilterComponent
+                        filters={advancedFilters}
+                        onFiltersChange={onAdvancedFiltersChange || (() => {})}
+                        onClearFilters={onClearAllFilters}
+                      />
                     </Block>
                   </Popover>
                 </Block>

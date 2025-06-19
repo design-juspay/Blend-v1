@@ -334,18 +334,19 @@ const DataTableDemo = () => {
     };
 
     // Handle advanced filter change (both local and server-side)
-    const handleAdvancedFiltersChange = (filters: FilterRule[]) => {
-      console.log('🔧 Advanced Filters changed:', filters);
+    const handleAdvancedFiltersChange = (filters: unknown[]) => {
+      const typedFilters = filters as FilterRule[];
+      console.log('🔧 Advanced Filters changed:', typedFilters);
       
       // Auto-switch to server-side if filters are applied and auto-switch is enabled
       const switched = autoSwitchToServerMode();
       
       if (isServerSideMode || switched) {
         // Server-side: Make API call (either already in server mode or just switched)
-        fetchServerData(serverState.searchQuery, filters, 1, pageSize);
+        fetchServerData(serverState.searchQuery, typedFilters, 1, pageSize);
       } else {
         // Local: Just update the server state for consistency
-        setServerState(prev => ({ ...prev, filters }));
+        setServerState(prev => ({ ...prev, filters: typedFilters }));
         console.log('Local advanced filtering will be handled by DataTable component');
       }
     };

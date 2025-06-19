@@ -19,7 +19,7 @@ const AdvancedFilterComponent: React.FC<AdvancedFilterProps> = ({
   onFiltersChange,
   onClearFilters
 }) => {
-  const [localFilters, setLocalFilters] = useState<FilterRule[]>(filters || []);
+  const [localFilters, setLocalFilters] = useState<FilterRule[]>(filters as FilterRule[] || []);
 
   const fieldOptions = [
     { value: 'name', label: 'Name' },

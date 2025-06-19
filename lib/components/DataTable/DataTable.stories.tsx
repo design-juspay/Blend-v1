@@ -67,6 +67,8 @@ Each has specific expected data structures for type safety.
 ### Basic Usage
 \`\`\`tsx
 <DataTable
+  idField="id" // Ensure idField is explicitly set to a valid string
+  idField="id" // Ensure idField is explicitly set to a valid string
   data={users}
   columns={columns}
   idField="id"
@@ -464,141 +466,151 @@ Try:
   },
 };
 
-export const WithAdvancedFiltering: Story = {
-  render: (args) => {
-    const [advancedFilters, setAdvancedFilters] = useState<any[]>([]);
+// Advanced Filter Component - using compatible types with DataTable
+type AdvancedFilter = {
+  id: string;
+  field: string;
+  operator: string;
+  value: string;
+};
 
-    // Simple Advanced Filter Component for demo
-    const DemoAdvancedFilterComponent = ({ filters, onFiltersChange, onClearFilters }: any) => {
-      const [localFilters, setLocalFilters] = useState(filters || []);
+// Import the actual AdvancedFilterProps type from DataTable
+import { AdvancedFilterProps } from './types';
 
-      const addFilter = () => {
-        const newFilter = {
-          id: Date.now().toString(),
-          field: 'name',
-          operator: 'contains',
-          value: ''
-        };
-        const updatedFilters = [...localFilters, newFilter];
-        setLocalFilters(updatedFilters);
-        onFiltersChange(updatedFilters);
-      };
+const DemoAdvancedFilterComponent = ({ filters, onFiltersChange, onClearFilters }: AdvancedFilterProps) => {
+  const [localFilters, setLocalFilters] = useState<AdvancedFilter[]>((filters as AdvancedFilter[]) || []);
 
-      const removeFilter = (id: string) => {
-        const updatedFilters = localFilters.filter((f: any) => f.id !== id);
-        setLocalFilters(updatedFilters);
-        onFiltersChange(updatedFilters);
-      };
-
-      const updateFilter = (id: string, field: string, value: string) => {
-        const updatedFilters = localFilters.map((f: any) =>
-          f.id === id ? { ...f, [field]: value } : f
-        );
-        setLocalFilters(updatedFilters);
-        onFiltersChange(updatedFilters);
-      };
-
-      return (
-        <div style={{ minWidth: '400px', padding: '16px' }}>
-          <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Advanced Filters</h4>
-            {localFilters.length > 0 && (
-              <button 
-                onClick={() => { setLocalFilters([]); onClearFilters(); }}
-                style={{ padding: '4px 8px', fontSize: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-              >
-                Clear All
-              </button>
-            )}
-          </div>
-
-          {localFilters.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '32px', border: '2px dashed #e2e8f0', borderRadius: '8px' }}>
-              <p style={{ margin: '0 0 16px 0', color: '#6b7280' }}>No advanced filters applied</p>
-              <button
-                onClick={addFilter}
-                style={{ padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px' }}
-              >
-                Add Filter Rule
-              </button>
-            </div>
-          ) : (
-            <div>
-              {localFilters.map((filter: any, index: number) => (
-                <div key={filter.id} style={{ marginBottom: '12px', padding: '12px', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    {index > 0 && <span style={{ fontSize: '12px', color: '#6b7280' }}>AND</span>}
-                    <span style={{ fontSize: '14px', fontWeight: 500 }}>Filter {index + 1}</span>
-                    <button 
-                      onClick={() => removeFilter(filter.id)}
-                      style={{ marginLeft: 'auto', padding: '2px 6px', fontSize: '12px', color: '#dc2626', border: '1px solid #dc2626', borderRadius: '3px' }}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '8px' }}>
-                    <select
-                      value={filter.field}
-                      onChange={(e) => updateFilter(filter.id, 'field', e.target.value)}
-                      style={{ padding: '4px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                    >
-                      <option value="name">Name</option>
-                      <option value="email">Email</option>
-                      <option value="role">Role</option>
-                      <option value="department">Department</option>
-                      <option value="status">Status</option>
-                    </select>
-                    <select
-                      value={filter.operator}
-                      onChange={(e) => updateFilter(filter.id, 'operator', e.target.value)}
-                      style={{ padding: '4px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                    >
-                      <option value="contains">Contains</option>
-                      <option value="equals">Equals</option>
-                      <option value="startsWith">Starts with</option>
-                      <option value="endsWith">Ends with</option>
-                    </select>
-                    <input
-                      type="text"
-                      placeholder="Filter value..."
-                      value={filter.value}
-                      onChange={(e) => updateFilter(filter.id, 'value', e.target.value)}
-                      style={{ padding: '4px 8px', border: '1px solid #d1d5db', borderRadius: '4px' }}
-                    />
-                  </div>
-                </div>
-              ))}
-              <button
-                onClick={addFilter}
-                style={{ padding: '6px 12px', backgroundColor: '#f3f4f6', border: '1px dashed #9ca3af', borderRadius: '4px', color: '#374151' }}
-              >
-                + Add Another Filter
-              </button>
-            </div>
-          )}
-        </div>
-      );
+  const addFilter = () => {
+    const newFilter: AdvancedFilter = {
+      id: Date.now().toString(),
+      field: 'name',
+      operator: 'contains',
+      value: ''
     };
+    const updatedFilters = [...localFilters, newFilter];
+    setLocalFilters(updatedFilters);
+    onFiltersChange(updatedFilters);
+  };
 
-    const handleAdvancedFiltersChange = (filters: any[]) => {
-      setAdvancedFilters(filters);
-      console.log('Advanced Filters changed:', filters);
-    };
+  const removeFilter = (id: string) => {
+    const updatedFilters = localFilters.filter((f) => f.id !== id);
+    setLocalFilters(updatedFilters);
+    onFiltersChange(updatedFilters);
+  };
 
-    const handleClearAllFilters = () => {
-      setAdvancedFilters([]);
-      console.log('All filters cleared');
-    };
-
-    return (
-      <DataTable
-        {...args}
-        advancedFilterComponent={DemoAdvancedFilterComponent}
-        advancedFilters={advancedFilters}
-        onAdvancedFiltersChange={handleAdvancedFiltersChange}
-      />
+  const updateFilter = (id: string, field: string, value: string) => {
+    const updatedFilters = localFilters.map((f) =>
+      f.id === id ? { ...f, [field]: value } : f
     );
-  },
+    setLocalFilters(updatedFilters);
+    onFiltersChange(updatedFilters);
+  };
+
+  return (
+    <div style={{ minWidth: '400px', padding: '16px' }}>
+      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Advanced Filters</h4>
+        {localFilters.length > 0 && (
+          <button 
+            onClick={() => { setLocalFilters([]); onClearFilters(); }}
+            style={{ padding: '4px 8px', fontSize: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
+          >
+            Clear All
+          </button>
+        )}
+      </div>
+
+      {localFilters.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '32px', border: '2px dashed #e2e8f0', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 16px 0', color: '#6b7280' }}>No advanced filters applied</p>
+          <button
+            onClick={addFilter}
+            style={{ padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px' }}
+          >
+            Add Filter Rule
+          </button>
+        </div>
+      ) : (
+        <div>
+          {localFilters.map((filter, index: number) => (
+            <div key={filter.id} style={{ marginBottom: '12px', padding: '12px', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                {index > 0 && <span style={{ fontSize: '12px', color: '#6b7280' }}>AND</span>}
+                <span style={{ fontSize: '14px', fontWeight: 500 }}>Filter {index + 1}</span>
+                <button 
+                  onClick={() => removeFilter(filter.id)}
+                  style={{ marginLeft: 'auto', padding: '2px 6px', fontSize: '12px', color: '#dc2626', border: '1px solid #dc2626', borderRadius: '3px' }}
+                >
+                  Remove
+                </button>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '8px' }}>
+                <select
+                  value={filter.field}
+                  onChange={(e) => updateFilter(filter.id, 'field', e.target.value)}
+                  style={{ padding: '4px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                >
+                  <option value="name">Name</option>
+                  <option value="email">Email</option>
+                  <option value="role">Role</option>
+                  <option value="department">Department</option>
+                  <option value="status">Status</option>
+                </select>
+                <select
+                  value={filter.operator}
+                  onChange={(e) => updateFilter(filter.id, 'operator', e.target.value)}
+                  style={{ padding: '4px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                >
+                  <option value="contains">Contains</option>
+                  <option value="equals">Equals</option>
+                  <option value="startsWith">Starts with</option>
+                  <option value="endsWith">Ends with</option>
+                </select>
+                <input
+                  type="text"
+                  placeholder="Filter value..."
+                  value={filter.value}
+                  onChange={(e) => updateFilter(filter.id, 'value', e.target.value)}
+                  style={{ padding: '4px 8px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                />
+              </div>
+            </div>
+          ))}
+          <button
+            onClick={addFilter}
+            style={{ padding: '6px 12px', backgroundColor: '#f3f4f6', border: '1px dashed #9ca3af', borderRadius: '4px', color: '#374151' }}
+          >
+            + Add Another Filter
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const WithAdvancedFilteringComponent = (args: typeof WithAdvancedFiltering.args) => {
+  const [advancedFilters, setAdvancedFilters] = useState<unknown[]>([]);
+
+  const handleAdvancedFiltersChange = (filters: unknown[]) => {
+    setAdvancedFilters(filters);
+    console.log('Advanced Filters changed:', filters);
+  };
+
+  return (
+    <DataTable
+      {...args}
+      data={sampleUsers as Record<string, unknown>[]}
+      columns={userColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+      idField="id" // Ensure idField is explicitly set to a valid string
+      advancedFilterComponent={DemoAdvancedFilterComponent}
+      advancedFilters={advancedFilters}
+      onAdvancedFiltersChange={handleAdvancedFiltersChange}
+    />
+  );
+};
+
+export const WithAdvancedFiltering: Story = {
+  render: WithAdvancedFilteringComponent,
   args: {
     data: sampleUsers,
     columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
@@ -645,32 +657,35 @@ The advanced filter component can be customized for your specific needs and can 
 };
 
 // Story: With Inline Editing
-export const WithInlineEditing: Story = {
-  render: (args) => {
-    const [data, setData] = useState(sampleUsers);
+const WithInlineEditingComponent = (args: typeof WithInlineEditing.args) => {
+  const [data, setData] = useState(sampleUsers);
 
-    const handleRowSave = (rowId: unknown, updatedRow: Record<string, unknown>) => {
-      setData(prevData =>
-        prevData.map(row =>
-          row.id === rowId ? { ...row, ...updatedRow } : row
-        )
-      );
-      console.log('Row saved:', { rowId, updatedRow });
-    };
-
-    const handleRowCancel = (rowId: unknown) => {
-      console.log('Edit cancelled for row:', rowId);
-    };
-
-    return (
-      <DataTable
-        {...args}
-        data={data}
-        onRowSave={handleRowSave}
-        onRowCancel={handleRowCancel}
-      />
+  const handleRowSave = (rowId: unknown, updatedRow: Record<string, unknown>) => {
+    setData(prevData =>
+      prevData.map(row =>
+        row.id === rowId ? { ...row, ...updatedRow } : row
+      )
     );
-  },
+    console.log('Row saved:', { rowId, updatedRow });
+  };
+
+  const handleRowCancel = (rowId: unknown) => {
+    console.log('Edit cancelled for row:', rowId);
+  };
+
+  return (
+    <DataTable
+      {...args}
+      data={data as Record<string, unknown>[]}
+      columns={userColumns as ColumnDefinition<Record<string, unknown>>[]}
+      onRowSave={handleRowSave}
+      onRowCancel={handleRowCancel}
+    />
+  );
+};
+
+export const WithInlineEditing: Story = {
+  render: WithInlineEditingComponent,
   args: {
     columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
     idField: 'id',
@@ -707,118 +722,120 @@ Editable columns in this example:
 };
 
 // Story: With Row Expansion
-export const WithRowExpansion: Story = {
-  render: (args) => {
-    const handleRowExpansionChange = (rowId: unknown, isExpanded: boolean, rowData: Record<string, unknown>) => {
-      console.log('Row expansion changed:', { rowId, isExpanded, rowData });
-    };
+const WithRowExpansionComponent = (args: typeof WithRowExpansion.args) => {
+  const handleRowExpansionChange = (rowId: unknown, isExpanded: boolean, rowData: Record<string, unknown>) => {
+    console.log('Row expansion changed:', { rowId, isExpanded, rowData });
+  };
 
-    const isRowExpandable = (row: Record<string, unknown>) => {
-      const user = row as User;
-      return (user.status as TagData).text === 'Active';
-    };
+  const isRowExpandable = (row: Record<string, unknown>) => {
+    const user = row as User;
+    return (user.status as TagData).text === 'Active';
+  };
 
-    const renderExpandedRow = ({ row, index, toggleExpansion }: {
-      row: Record<string, unknown>;
-      index: number;
-      isExpanded: boolean;
-      toggleExpansion: () => void;
-    }) => {
-      const user = row as User;
-      const userData = user.name as AvatarData;
-      const statusData = user.status as TagData;
+  const renderExpandedRow = ({ row, index, toggleExpansion }: {
+    row: Record<string, unknown>;
+    index: number;
+    isExpanded: boolean;
+    toggleExpansion: () => void;
+  }) => {
+    const user = row as User;
+    const userData = user.name as AvatarData;
+    const statusData = user.status as TagData;
 
-      return (
+    return (
+      <div style={{
+        padding: '20px',
+        backgroundColor: '#f8fafc',
+        borderRadius: '8px',
+        margin: '8px 0',
+        border: '1px solid #e2e8f0'
+      }}>
         <div style={{
-          padding: '20px',
-          backgroundColor: '#f8fafc',
-          borderRadius: '8px',
-          margin: '8px 0',
-          border: '1px solid #e2e8f0'
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '16px'
+        }}>
+          <h4 style={{
+            margin: '0',
+            fontSize: '18px',
+            fontWeight: 600,
+            color: '#1f2937'
+          }}>
+            Detailed Profile: {userData.label} (Row #{index + 1})
+          </h4>
+          <button
+            onClick={toggleExpansion}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Collapse
+          </button>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '20px'
         }}>
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '16px'
+            padding: '16px',
+            backgroundColor: 'white',
+            borderRadius: '6px',
+            border: '1px solid #e5e7eb'
           }}>
-            <h4 style={{
-              margin: '0',
-              fontSize: '18px',
-              fontWeight: 600,
-              color: '#1f2937'
-            }}>
-              Detailed Profile: {userData.label} (Row #{index + 1})
-            </h4>
-            <button
-              onClick={toggleExpansion}
-              style={{
-                padding: '6px 12px',
-                backgroundColor: '#3b82f6',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              Collapse
-            </button>
+            <strong style={{ color: '#6b7280', fontSize: '12px', textTransform: 'uppercase' }}>
+              Personal Information
+            </strong>
+            <div style={{ fontSize: '14px', marginTop: '8px' }}>
+              <div><strong>Name:</strong> {userData.label}</div>
+              <div><strong>Email:</strong> {user.email}</div>
+              <div><strong>Role:</strong> {user.role}</div>
+              <div><strong>Department:</strong> {user.department}</div>
+              <div><strong>Status:</strong> <span style={{ color: statusData.text === 'Active' ? '#059669' : '#dc2626' }}>{statusData.text}</span></div>
+            </div>
           </div>
 
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '20px'
+            padding: '16px',
+            backgroundColor: 'white',
+            borderRadius: '6px',
+            border: '1px solid #e5e7eb'
           }}>
-            <div style={{
-              padding: '16px',
-              backgroundColor: 'white',
-              borderRadius: '6px',
-              border: '1px solid #e5e7eb'
-            }}>
-              <strong style={{ color: '#6b7280', fontSize: '12px', textTransform: 'uppercase' }}>
-                Personal Information
-              </strong>
-              <div style={{ fontSize: '14px', marginTop: '8px' }}>
-                <div><strong>Name:</strong> {userData.label}</div>
-                <div><strong>Email:</strong> {user.email}</div>
-                <div><strong>Role:</strong> {user.role}</div>
-                <div><strong>Department:</strong> {user.department}</div>
-                <div><strong>Status:</strong> <span style={{ color: statusData.text === 'Active' ? '#059669' : '#dc2626' }}>{statusData.text}</span></div>
-              </div>
-            </div>
-
-            <div style={{
-              padding: '16px',
-              backgroundColor: 'white',
-              borderRadius: '6px',
-              border: '1px solid #e5e7eb'
-            }}>
-              <strong style={{ color: '#6b7280', fontSize: '12px', textTransform: 'uppercase' }}>
-                Employment Details
-              </strong>
-              <div style={{ fontSize: '14px', marginTop: '8px' }}>
-                <div><strong>Salary:</strong> ${user.salary.toLocaleString()}</div>
-                <div><strong>Join Date:</strong> {user.joinDate}</div>
-                <div><strong>Last Login:</strong> {user.lastLogin}</div>
-                <div><strong>Employee ID:</strong> EMP-{user.id.toString().padStart(4, '0')}</div>
-              </div>
+            <strong style={{ color: '#6b7280', fontSize: '12px', textTransform: 'uppercase' }}>
+              Employment Details
+            </strong>
+            <div style={{ fontSize: '14px', marginTop: '8px' }}>
+              <div><strong>Salary:</strong> ${user.salary.toLocaleString()}</div>
+              <div><strong>Join Date:</strong> {user.joinDate}</div>
+              <div><strong>Last Login:</strong> {user.lastLogin}</div>
+              <div><strong>Employee ID:</strong> EMP-{user.id.toString().padStart(4, '0')}</div>
             </div>
           </div>
         </div>
-      );
-    };
-
-    return (
-      <DataTable
-        {...args}
-        onRowExpansionChange={handleRowExpansionChange}
-        isRowExpandable={isRowExpandable}
-        renderExpandedRow={renderExpandedRow}
-      />
+      </div>
     );
-  },
+  };
+
+  return (
+    <DataTable
+      {...args}
+      onRowExpansionChange={handleRowExpansionChange}
+      isRowExpandable={isRowExpandable}
+      renderExpandedRow={renderExpandedRow}
+    />
+  );
+};
+
+export const WithRowExpansion: Story = {
+  render: WithRowExpansionComponent,
   args: {
     data: sampleUsers,
     columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
@@ -856,36 +873,38 @@ Features shown:
 };
 
 // Story: With Pagination
+const WithPaginationComponent = (args: typeof WithPagination.args) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    console.log('Page changed to:', page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+    console.log('Page size changed to:', size);
+  };
+
+  return (
+    <DataTable
+      {...args}
+      pagination={{
+        currentPage,
+        pageSize,
+        totalRows: sampleUsers.length,
+        pageSizeOptions: [5, 10, 15, 20],
+      }}
+      onPageChange={handlePageChange}
+      onPageSizeChange={handlePageSizeChange}
+    />
+  );
+};
+
 export const WithPagination: Story = {
-  render: (args) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
-
-    const handlePageChange = (page: number) => {
-      setCurrentPage(page);
-      console.log('Page changed to:', page);
-    };
-
-    const handlePageSizeChange = (size: number) => {
-      setPageSize(size);
-      setCurrentPage(1);
-      console.log('Page size changed to:', size);
-    };
-
-    return (
-      <DataTable
-        {...args}
-        pagination={{
-          currentPage,
-          pageSize,
-          totalRows: sampleUsers.length,
-          pageSizeOptions: [5, 10, 15, 20],
-        }}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
-    );
-  },
+  render: WithPaginationComponent,
   args: {
     data: sampleUsers,
     columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
@@ -1000,126 +1019,128 @@ Use cases:
 };
 
 // Story: Server-Side Operations
-export const ServerSideOperations: Story = {
-  render: (args) => {
-    const [data, setData] = useState(sampleUsers.slice(0, 5));
-    const [isLoading, setIsLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filters, setFilters] = useState<ColumnFilter[]>([]);
+const ServerSideOperationsComponent = (args: typeof ServerSideOperations.args) => {
+  const [data, setData] = useState(sampleUsers.slice(0, 5));
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState<ColumnFilter[]>([]);
 
-    // Simulate server-side API call
-    const fetchData = async (search?: string, filterList?: ColumnFilter[], page?: number, size?: number) => {
-      setIsLoading(true);
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      let filteredData = [...sampleUsers];
-      
-      // Apply search
-      if (search?.trim()) {
-        filteredData = filteredData.filter(user =>
-          (user.name as AvatarData).label.toLowerCase().includes(search.toLowerCase()) ||
-          user.email.toLowerCase().includes(search.toLowerCase()) ||
-          user.role.toLowerCase().includes(search.toLowerCase())
-        );
+  // Simulate server-side API call
+  const fetchData = async (search?: string, filterList?: ColumnFilter[], page?: number, size?: number) => {
+    setIsLoading(true);
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    let filteredData = [...sampleUsers];
+    
+    // Apply search
+    if (search?.trim()) {
+      filteredData = filteredData.filter(user =>
+        (user.name as AvatarData).label.toLowerCase().includes(search.toLowerCase()) ||
+        user.email.toLowerCase().includes(search.toLowerCase()) ||
+        user.role.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    
+    // Apply filters
+    filterList?.forEach(filter => {
+      if (filter.value) {
+        filteredData = filteredData.filter(user => {
+          const fieldValue = user[filter.field as keyof User];
+          if (filter.field === 'status') {
+            return (fieldValue as TagData).text === filter.value;
+          }
+          return String(fieldValue).toLowerCase().includes(String(filter.value).toLowerCase());
+        });
       }
-      
-      // Apply filters
-      filterList?.forEach(filter => {
-        if (filter.value) {
-          filteredData = filteredData.filter(user => {
-            const fieldValue = user[filter.field as keyof User];
-            if (filter.field === 'status') {
-              return (fieldValue as TagData).text === filter.value;
-            }
-            return String(fieldValue).toLowerCase().includes(String(filter.value).toLowerCase());
-          });
-        }
-      });
-      
-      // Apply pagination
-      const startIndex = ((page || currentPage) - 1) * (size || pageSize);
-      const paginatedData = filteredData.slice(startIndex, startIndex + (size || pageSize));
-      
-      setData(paginatedData);
-      setIsLoading(false);
-      
-      console.log('🚀 Server API Call:', {
-        search,
-        filters: filterList,
-        page: page || currentPage,
-        size: size || pageSize,
-        totalResults: filteredData.length,
-        returnedRecords: paginatedData.length
-      });
-    };
+    });
+    
+    // Apply pagination
+    const startIndex = ((page || currentPage) - 1) * (size || pageSize);
+    const paginatedData = filteredData.slice(startIndex, startIndex + (size || pageSize));
+    
+    setData(paginatedData);
+    setIsLoading(false);
+    
+    console.log('🚀 Server API Call:', {
+      search,
+      filters: filterList,
+      page: page || currentPage,
+      size: size || pageSize,
+      totalResults: filteredData.length,
+      returnedRecords: paginatedData.length
+    });
+  };
 
-    const handleSearchChange = (searchConfig: SearchConfig) => {
-      setSearchQuery(searchConfig.query);
-      setCurrentPage(1);
-      fetchData(searchConfig.query, filters, 1, pageSize);
-    };
+  const handleSearchChange = (searchConfig: SearchConfig) => {
+    setSearchQuery(searchConfig.query);
+    setCurrentPage(1);
+    fetchData(searchConfig.query, filters, 1, pageSize);
+  };
 
-    const handleFilterChange = (newFilters: ColumnFilter[]) => {
-      setFilters(newFilters);
-      setCurrentPage(1);
-      fetchData(searchQuery, newFilters, 1, pageSize);
-    };
+  const handleFilterChange = (newFilters: ColumnFilter[]) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+    fetchData(searchQuery, newFilters, 1, pageSize);
+  };
 
-    const handlePageChange = (page: number) => {
-      setCurrentPage(page);
-      fetchData(searchQuery, filters, page, pageSize);
-    };
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchData(searchQuery, filters, page, pageSize);
+  };
 
-    const handlePageSizeChange = (size: number) => {
-      setPageSize(size);
-      setCurrentPage(1);
-      fetchData(searchQuery, filters, 1, size);
-    };
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+    fetchData(searchQuery, filters, 1, size);
+  };
 
-    return (
-      <div>
-        <div style={{
-          marginBottom: '20px',
-          padding: '16px',
-          backgroundColor: '#f8fafc',
-          borderRadius: '8px',
-          border: '1px solid #e2e8f0'
-        }}>
-          <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>
-            Server-Side Mode Demo
-          </h3>
-          <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
-            🚀 All operations (search, filtering, pagination) are handled server-side.
-            Check the console to see API calls being made.
-            {isLoading && <span style={{ color: '#0369a1', marginLeft: '8px' }}>⏳ Loading...</span>}
-          </p>
-        </div>
-        
-        <DataTable
-          {...args}
-          data={data}
-          isLoading={isLoading}
-          serverSideSearch={true}
-          serverSideFiltering={true}
-          serverSidePagination={true}
-          pagination={{
-            currentPage,
-            pageSize,
-            totalRows: sampleUsers.length, // In real scenario, this comes from server
-            pageSizeOptions: [5, 10, 15, 20],
-          }}
-          onSearchChange={handleSearchChange}
-          onFilterChange={handleFilterChange}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
+  return (
+    <div>
+      <div style={{
+        marginBottom: '20px',
+        padding: '16px',
+        backgroundColor: '#f8fafc',
+        borderRadius: '8px',
+        border: '1px solid #e2e8f0'
+      }}>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>
+          Server-Side Mode Demo
+        </h3>
+        <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+          🚀 All operations (search, filtering, pagination) are handled server-side.
+          Check the console to see API calls being made.
+          {isLoading && <span style={{ color: '#0369a1', marginLeft: '8px' }}>⏳ Loading...</span>}
+        </p>
       </div>
-    );
-  },
+      
+      <DataTable
+        {...args}
+        data={data}
+        isLoading={isLoading}
+        serverSideSearch={true}
+        serverSideFiltering={true}
+        serverSidePagination={true}
+        pagination={{
+          currentPage,
+          pageSize,
+          totalRows: sampleUsers.length, // In real scenario, this comes from server
+          pageSizeOptions: [5, 10, 15, 20],
+        }}
+        onSearchChange={handleSearchChange}
+        onFilterChange={handleFilterChange}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
+    </div>
+  );
+};
+
+export const ServerSideOperations: Story = {
+  render: ServerSideOperationsComponent,
   args: {
     columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
     idField: 'id',
