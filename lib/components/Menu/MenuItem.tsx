@@ -90,14 +90,14 @@ const getColor = (
 };
 
 const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
+  
+  const menuTokens = useComponentToken("MENU") as MenuTokensType;
   if (item.subMenu) {
     return <SubMenu item={item} idx={idx} />;
   }
   if (item.variant === undefined) {
     item.variant = MenuItemV2Variant.DEFAULT;
   }
-
-  const menuTokens = useComponentToken("MENU") as MenuTokensType;
 
   return (
     <RadixMenu.Item
