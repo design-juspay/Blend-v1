@@ -30,9 +30,9 @@ import {
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
 import {
   addSnackbar,
-  ButtonV2,
   MultiSelectVariant,
   Tag,
+  Tooltip,
 } from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
@@ -474,7 +474,7 @@ const MenuDemo = () => {
             required={true}
             name="single-select"
             size={menuSize}
-            variant={containerType}
+            // variant={containerType}
           />
         </div>
         <div style={{ width: "400px" }}>
@@ -505,7 +505,7 @@ const MenuDemo = () => {
           // maxHeight={300}
           minWidth={300}
           side={MenuSide.TOP}
-          trigger={<ButtonV2 text="Open MenuV2" onClick={() => {}} />}
+          trigger={<Tag text="Open MenuV2" onClick={() => {}} />}
         />
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>

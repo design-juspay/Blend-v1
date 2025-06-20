@@ -49,7 +49,7 @@ const StyledSubMenu = styled(RadixMenu.Sub)(() => ({
 const SubTrigger = styled(RadixMenu.SubTrigger)(() => ({
   alignItems: "center",
   padding: "8px 6px",
-  margin: "0px 8px",
+  margin: "0px 6px",
   borderRadius: 4,
   // hover effects
   "&:hover": {

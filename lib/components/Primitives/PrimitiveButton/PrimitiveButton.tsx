@@ -288,20 +288,13 @@ const StyledButton = styled.button.withConfig({
 export type ButtonProps = PrimitiveButtonProps &
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
     children?: React.ReactNode;
-    className?: string;
   };
 
 // Component
 const PrimitiveButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, disabled, cursor, ...rest }, ref) => {
     return (
-      <StyledButton
-        cursor={cursor}
-        ref={ref}
-        className={rest.className}
-        disabled={disabled}
-        {...rest}
-      >
+      <StyledButton cursor={cursor} ref={ref} disabled={disabled} {...rest}>
         {children}
       </StyledButton>
     );

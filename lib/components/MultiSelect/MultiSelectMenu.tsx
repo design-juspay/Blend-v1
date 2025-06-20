@@ -33,20 +33,15 @@ const MultiSelectMenu = ({
   minWidth,
   maxWidth,
   maxHeight,
-
-  // alignment
   alignment = MultiSelectMenuAlignment.CENTER,
   side = MultiSelectMenuSide.BOTTOM,
   sideOffset = 8,
   alignOffset = 0,
-
-  // open
   open,
   onOpenChange,
 }: MultiSelectMenuProps) => {
-  // const [search, setSearch] = useState("");
   return (
-    <RadixMenu.Root modal={false} open={true} onOpenChange={onOpenChange}>
+    <RadixMenu.Root modal={false} open={open} onOpenChange={onOpenChange}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         align={alignment}
@@ -62,22 +57,6 @@ const MultiSelectMenu = ({
           maxHeight,
         }}
       >
-        {/* <Block
-          position="sticky"
-          top={0}
-          left={0}
-          right={0}
-          zIndex={1000}
-          marginBottom={10}
-        >
-          <SearchInput
-            value={search}
-            onChange={(e) => {
-              e.stopPropagation();
-              setSearch(e.target.value);
-            }}
-          />
-        </Block> */}
         {items.map((group, groupId) => (
           <React.Fragment key={groupId}>
             {group.groupLabel && (

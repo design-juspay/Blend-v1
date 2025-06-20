@@ -388,7 +388,6 @@ export type BlockProps = StyledBlockProps &
   Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
     children?: React.ReactNode;
     as?: SemanticTagType;
-    ref?: React.Ref<HTMLElement>;
   };
 
 /**
