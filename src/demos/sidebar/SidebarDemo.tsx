@@ -54,6 +54,7 @@ import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
 import SalesKpiDashboard from "../SalesKpiDashboard/SalesKpiDashboard"; // Import SalesKpiDashboard
+import TransactionAnalyticsDashboard from "../TransactionAnalyticsDashboard"; // Import TransactionAnalyticsDashboard
 import { SingleSelect, ThemeProvider } from "../../../lib/main";
 import {
   SelectMenuAlignment,
@@ -107,6 +108,7 @@ const SidebarDemo = () => {
     | "popover"
     | "theme"
     | "salesKpiDashboard" // Add state for SalesKpiDashboard
+    | "transactionAnalyticsDashboard" // Add state for new dashboard
   >("popover");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
@@ -225,6 +227,8 @@ const SidebarDemo = () => {
         return <PopoverDemo />;
       case "salesKpiDashboard": // Add case for SalesKpiDashboard
         return <SalesKpiDashboard />;
+      case "transactionAnalyticsDashboard":
+        return <TransactionAnalyticsDashboard />;
       default:
         return null;
     }
@@ -466,6 +470,11 @@ const SidebarDemo = () => {
           label: "Sales KPI Dashboard",
           leftSlot: <BarChart2 style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("salesKpiDashboard"),
+        },
+        {
+          label: "Transaction Analytics", // New dashboard link
+          leftSlot: <BarChart2 style={{ width: "16px", height: "16px" }} />, // Placeholder icon
+          onClick: () => setActiveComponent("transactionAnalyticsDashboard"),
         },
       ],
     },
