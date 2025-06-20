@@ -168,6 +168,7 @@ const blockedProps = [
   "backgroundImage",
   "backgroundSize",
   "border",
+  "outline",
   "borderTop",
   "borderBottom",
   "borderLeft",
@@ -318,6 +319,16 @@ const getStyles = (props: StyledBlockProps): CSSObject => {
   if (props.borderLeft !== undefined) styles.borderLeft = props.borderLeft;
   if (props.borderRight !== undefined) styles.borderRight = props.borderRight;
   if (props.boxShadow !== undefined) styles.boxShadow = props.boxShadow;
+
+  if (props.outline !== undefined) styles.outline = props.outline;
+  if (props.outlineColor !== undefined)
+    styles.outlineColor = props.outlineColor;
+  if (props.outlineWidth !== undefined)
+    styles.outlineWidth = props.outlineWidth;
+  if (props.outlineStyle !== undefined)
+    styles.outlineStyle = props.outlineStyle;
+  if (props.outlineOffset !== undefined)
+    styles.outlineOffset = props.outlineOffset;
 
   if (props.overflow !== undefined) styles.overflow = props.overflow;
   if (props.overflowX !== undefined) styles.overflowX = props.overflowX;

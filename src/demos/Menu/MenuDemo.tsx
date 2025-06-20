@@ -92,12 +92,15 @@ export const dummyMenuItems = [
       {
         label: "Sign Out",
         value: "sign-out",
+        disabled: true,
         slot1: <LogOut size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        // disabled: true,
       },
       {
         label: "Delete Account",
         value: "delete-account",
         slot1: <Trash size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        disabled: true,
         subMenu: [
           {
             label: "Confirm Deletion",
