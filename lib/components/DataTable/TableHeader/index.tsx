@@ -18,25 +18,9 @@ import { SearchInput } from '../../Inputs/SearchInput';
 import MultiSelectMenu from '../../MultiSelect/MultiSelectMenu';
 import SingleSelectMenu from '../../SingleSelect/SingleSelectMenu';
 import { SelectMenuGroupType } from '../../Select/types';
+import  { TableTokenType } from '../dataTable.tokens';
 
-const TableHead = styled.thead`
-  ${dataTableTokens.thead.base}
-  background-color: ${FOUNDATION_THEME.colors.gray[25]};
-`;
-
-const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
-  ${dataTableTokens.th.base}
-  ${props => props.$isSortable && dataTableTokens.th.sortable}
-  ${props => props.width && `width: ${props.width};`}
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  box-sizing: border-box;
-`;
-
-const TableRow = styled.tr`
-  ${dataTableTokens.tr.base}
-`;
+import { useComponentToken } from '../../../context/useComponentToken';
 
 const MoreIcon = styled(MoreVertical)`
   cursor: pointer;
@@ -79,6 +63,21 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   const [columnSelectedValues, setColumnSelectedValues] = useState<Record<string, string[]>>({});
   const [selectMenuStates, setSelectMenuStates] = useState<Record<string, boolean>>({});
   const editableRef = useRef<HTMLDivElement>(null);
+  const tableToken = useComponentToken("TABLE") as TableTokenType;
+
+const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
+  padding: ${tableToken.dataTable.table.header.cell.padding};
+  text-align: ${tableToken.dataTable.table.header.cell.textAlign};
+  font-weight: ${tableToken.dataTable.table.header.cell.fontWeight};
+  color: ${tableToken.dataTable.table.header.cell.color};
+  font-size: ${tableToken.dataTable.table.header.cell.fontSize};
+  ${props => props.$isSortable && dataTableTokens.th.sortable}
+  ${props => props.width && `width: ${props.width};`}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+`;
 
   useEffect(() => {
     setLocalColumns(visibleColumns);
@@ -377,8 +376,8 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   };
 
   return (
-    <TableHead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 10 }}>
-      <TableRow>
+    <thead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 10, backgroundColor: tableToken.dataTable.table.header.backgroundColor, borderBottom: tableToken.dataTable.table.header.borderBottom, height: tableToken.dataTable.table.header.height }}>
+      <tr style={{ height: tableToken.dataTable.table.header.height, ...tableToken.dataTable.table.header.row }}>
         {enableRowExpansion && (
           <TableHeaderCell $isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
             <Block display='flex' alignItems='center' justifyContent='center'>
@@ -533,8 +532,8 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
             </Block>
           </TableHeaderCell>
         )}
-      </TableRow>
-    </TableHead>
+      </tr>
+    </thead>
   );
 });
 
