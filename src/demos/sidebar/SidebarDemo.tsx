@@ -19,15 +19,12 @@ import {
   List,
   Grid,
   Box,
-  Search,
-  EyeClosed,
   IndianRupee,
   Table,
   Palette,
   MessageCircle,
   CircleDot as Radio,
 } from "lucide-react";
-import styled from "styled-components";
 import { DirectoryData } from "../../../lib/components/Directory/types";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
@@ -56,19 +53,13 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
-import CombinedLargeMenuDemo from "../Menu/CombinedLargeMenuDemo";
-import DemoThemeProvider from "../DemoThemeProvider";
-
-const SearchContainer = styled(Block)`
-  width: 160px;
-  height: 100%;
-  outline: 1px solid ${FOUNDATION_THEME.colors.gray[200]};
-  border-radius: ${FOUNDATION_THEME.border.radius[4]};
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
+import { SingleSelect, ThemeProvider } from "../../../lib/main";
+import {
+  SelectMenuAlignment,
+  SelectMenuVariant,
+} from "../../../lib/components/Select";
+import styled from "styled-components";
+import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -115,12 +106,22 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
-  >("theme");
+  >("dataTable");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
     "Design System"
   );
+
+  const [theme, setTheme] = useState<"EULER" | "JUSBIZ">("EULER");
+
+  const themeProps =
+    theme === "EULER"
+      ? {}
+      : {
+          foundationTokens: ALT_FOUNDATION_TOKENS,
+          // componentTokens: HDFC_COMPONENT_TOKENS,
+        };
 
   const topbar = (
     <Block
@@ -130,14 +131,6 @@ const SidebarDemo = () => {
       justifyContent="space-between"
       flexGrow={1}
     >
-      <Block>
-        <SearchContainer>
-          <Search style={{ width: "16px", height: "16px" }} />
-          <Text variant="body.sm" fontWeight={400}>
-            Search
-          </Text>
-        </SearchContainer>
-      </Block>
       <Text
         variant="body.sm"
         fontWeight={400}
@@ -152,21 +145,37 @@ const SidebarDemo = () => {
       >
         {activeTenant}
       </Text>
-      <Text
-        variant="body.sm"
-        fontWeight={400}
-        color={FOUNDATION_THEME.colors.gray[600]}
-      >
-        {activeComponent}
-      </Text>
-      <EyeClosed style={{ width: "16px", height: "16px" }} />
+
+      <div>
+        <SingleSelect
+          label="Theme"
+          placeholder="Select Theme"
+          minWidth={200}
+          alignment={SelectMenuAlignment.END}
+          selected={theme}
+          onSelect={(value) => setTheme(value as "EULER" | "JUSBIZ")}
+          variant={SelectMenuVariant.NO_CONTAINER}
+          items={[
+            {
+              items: [
+                {
+                  value: "EULER",
+                  label: "EULER",
+                },
+                {
+                  value: "JUSBIZ",
+                  label: "JUSBIZ",
+                },
+              ],
+            },
+          ]}
+        />
+      </div>
     </Block>
   );
 
   const renderContent = () => {
     switch (activeComponent) {
-      case "theme":
-        return <DemoThemeProvider />;
       case "buttons":
         return <ButtonDemo />;
       case "buttonGroups":
@@ -423,6 +432,11 @@ const SidebarDemo = () => {
           onClick: () => setActiveComponent("radio"),
         },
         {
+          label: "Checkbox",
+          leftSlot: <Square style={{ width: "16px", height: "16px" }} />, // Using Square as a placeholder icon
+          onClick: () => setActiveComponent("checkbox"),
+        },
+        {
           label: "Switch",
           leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("switch"),
@@ -480,19 +494,21 @@ const SidebarDemo = () => {
 
   return (
     <Block height="100vh">
-      <Sidebar
-        tenants={tenants}
-        merchants={merchants}
-        data={sampleData}
-        topbar={topbar}
-        activeTenant={activeTenant}
-        setActiveTenant={setActiveTenant}
-        activeMerchant={activeMerchant}
-        setActiveMerchant={setActiveMerchant}
-        footer={footer}
-      >
-        <ContentWrapper>{renderContent()}</ContentWrapper>
-      </Sidebar>
+      <ThemeProvider {...themeProps}>
+        <Sidebar
+          tenants={tenants}
+          merchants={merchants}
+          data={sampleData}
+          topbar={topbar}
+          activeTenant={activeTenant}
+          setActiveTenant={setActiveTenant}
+          activeMerchant={activeMerchant}
+          setActiveMerchant={setActiveMerchant}
+          footer={footer}
+        >
+          <ContentWrapper>{renderContent()}</ContentWrapper>
+        </Sidebar>
+      </ThemeProvider>
     </Block>
   );
 };

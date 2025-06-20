@@ -3,11 +3,11 @@ import Block from "../../Primitives/Block/Block";
 import { Tag, TagShape, TagSize } from "../../Tags";
 import InputFooter from "../utils/InputFooter/InputFooter";
 import InputLabels from "../utils/InputLabels/InputLabels";
-import textInputTokens from "../TextInput/textInput.tokens";
-import { InputSize } from "../TextInput/types";
+import { TextInputSize } from "../TextInput/types";
 import PrimitiveInput from "../../Primitives/PrimitiveInput/PrimitiveInput";
 import { MultiValueInputProps } from "./types";
-import { FOUNDATION_THEME } from "../../../tokens";
+import { useComponentToken } from "../../../context/useComponentToken";
+import { MultiValueInputTokensType } from "./multiValueInput.tokens";
 
 const MultiValueInput = ({
   label,
@@ -20,8 +20,11 @@ const MultiValueInput = ({
   tags,
   onTagAdd,
   onTagRemove,
-  size = InputSize.MEDIUM,
+  size = TextInputSize.MEDIUM,
 }: MultiValueInputProps) => {
+  const multiValueInputTokens = useComponentToken(
+    "MULTI_VALUE_INPUT"
+  ) as MultiValueInputTokensType;
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -53,8 +56,8 @@ const MultiValueInput = ({
     inputRef.current?.focus();
   };
 
-  const paddingX = textInputTokens.input.padding.x[size];
-  const paddingY = textInputTokens.input.padding.y[size];
+  const paddingX = multiValueInputTokens.input.paddingX[size];
+  const paddingY = multiValueInputTokens.input.paddingY[size];
   return (
     <Block display="flex" flexDirection="column" gap={8}>
       <InputLabels
@@ -72,16 +75,16 @@ const MultiValueInput = ({
         paddingX={paddingX}
         paddingY={paddingY}
         onClick={handleContainerClick}
-        boxShadow={FOUNDATION_THEME.shadows.sm}
+        boxShadow={multiValueInputTokens.input.boxShadow}
         border={
           error
-            ? `1px solid ${textInputTokens.input.border.color.error}`
+            ? multiValueInputTokens.input.border.error
             : isFocused
-            ? `1px solid ${textInputTokens.input.border.color.focus}`
-            : `1px solid ${textInputTokens.input.border.color.default}`
+            ? multiValueInputTokens.input.border.focus
+            : multiValueInputTokens.input.border.default
         }
         _hover={{
-          border: `1px solid ${textInputTokens.input.border.color.hover}`,
+          border: multiValueInputTokens.input.border.hover,
         }}
       >
         {tags?.map((tag) => (
@@ -96,7 +99,7 @@ const MultiValueInput = ({
           ref={inputRef}
           paddingInlineStart={2}
           paddingInlineEnd={paddingX}
-          borderRadius={textInputTokens.input.border.radius}
+          borderRadius={multiValueInputTokens.input.borderRadius}
           outline="none"
           border="none"
           value={inputValue}

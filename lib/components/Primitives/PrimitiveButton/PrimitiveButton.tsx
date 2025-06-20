@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled, { css, CSSObject } from "styled-components";
 
 // State-specific style overrides
@@ -8,6 +8,8 @@ type StateStyles = {
   _active?: PrimitiveButtonProps;
   _disabled?: PrimitiveButtonProps;
   _visited?: PrimitiveButtonProps;
+  _focusVisible?: PrimitiveButtonProps;
+  _focusWithin?: PrimitiveButtonProps;
 };
 
 // Base props type
@@ -51,6 +53,7 @@ type PrimitiveButtonProps = StateStyles & {
 
   // Visual
   backgroundColor?: CSSObject["backgroundColor"];
+  background?: CSSObject["background"];
   color?: CSSObject["color"];
   border?: CSSObject["border"];
   borderTop?: CSSObject["borderTop"];
@@ -75,6 +78,14 @@ type PrimitiveButtonProps = StateStyles & {
 
   // State
   disabled?: boolean;
+
+  // Text
+  fontWeight?: CSSObject["fontWeight"];
+  fontSize?: CSSObject["fontSize"];
+  fontFamily?: CSSObject["fontFamily"];
+  textDecoration?: CSSObject["textDecoration"];
+  textUnderlineOffset?: CSSObject["textUnderlineOffset"];
+  textTransform?: CSSObject["textTransform"];
 };
 
 // Prevent these props from reaching the DOM
@@ -107,6 +118,7 @@ const blockedProps = [
   "left",
   "zIndex",
   "backgroundColor",
+  "background",
   "color",
   "border",
   "borderTop",
@@ -132,6 +144,14 @@ const blockedProps = [
   "_active",
   "_disabled",
   "_visited",
+  "_focusVisible",
+  "_focusWithin",
+  "fontWeight",
+  "fontSize",
+  "fontFamily",
+  "textDecoration",
+  "textUnderlineOffset",
+  "textTransform",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -146,6 +166,7 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
     cursor: props.disabled ? "not-allowed" : props.cursor ?? "pointer",
     opacity: props.disabled ? 0.6 : 1,
   };
+
 
   // Layout
   if (props.contentCentered) {
@@ -209,6 +230,7 @@ const getStyles = (props: PrimitiveButtonProps): CSSObject => {
 
   // Visual
   if (props.backgroundColor) styles.backgroundColor = props.backgroundColor;
+  if (props.background) styles.background = props.background;
   if (props.color) styles.color = props.color;
   if (props.border) styles.border = props.border;
   if (props.borderTop) styles.borderTop = props.borderTop;
@@ -240,6 +262,8 @@ const stateToSelector: Record<keyof StateStyles, string> = {
   _active: "&:active",
   _disabled: "&:disabled",
   _visited: "&:visited",
+  _focusVisible: "&:focus-visible",
+  _focusWithin: "&:focus-within",
 };
 
 // Styled button
@@ -256,6 +280,7 @@ const StyledButton = styled.button.withConfig({
     {} as CSSObject
   );
 
+
   return css({ ...base, ...stateStyles });
 });
 
@@ -267,12 +292,22 @@ export type ButtonProps = PrimitiveButtonProps &
   };
 
 // Component
-const PrimitiveButton: React.FC<ButtonProps> = ({ children, ...rest }) => {
-  return (
-    <StyledButton className={rest.className} {...rest}>
-      {children}
-    </StyledButton>
-  );
-};
+const PrimitiveButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, disabled, cursor, ...rest }, ref) => {
+    return (
+      <StyledButton
+        cursor={cursor}
+        ref={ref}
+        className={rest.className}
+        disabled={disabled}
+        {...rest}
+      >
+        {children}
+      </StyledButton>
+    );
+  }
+);
+
+PrimitiveButton.displayName = "PrimitiveButton";
 
 export default PrimitiveButton;

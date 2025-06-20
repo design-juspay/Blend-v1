@@ -1,4 +1,3 @@
-import styled, { CSSObject } from "styled-components";
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
 import { FOUNDATION_THEME } from "../../tokens";
 import {
@@ -9,80 +8,89 @@ import {
 import { SubMenu } from "./SubMenu";
 import Block from "../Primitives/Block/Block";
 import Text from "../Text/Text";
+import { MenuItemStates, MenuTokensType } from "./menu.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
 
-export const itemBaseStyle: CSSObject = {
-  alignItems: "center",
-  gap: 8,
-  padding: "8px 6px",
-  borderRadius: 4,
-  cursor: "pointer",
-  userSelect: "none",
-  "&:hover": {
-    backgroundColor: FOUNDATION_THEME.colors.gray[50],
-  },
-
-  "&[data-disabled]": {
-    opacity: 0.5,
-    cursor: "not-allowed",
-  },
-
-  "&[data-highlighted]": {
-    border: "none",
-    outline: "none",
-    backgroundColor: FOUNDATION_THEME.colors.gray[50],
-  },
+const MenuSlot = ({ slot }: { slot: React.ReactNode }) => {
+  return (
+    <Block flexShrink={0} height="auto" contentCentered>
+      {slot}
+    </Block>
+  );
 };
 
-const getHoverBgColor = (item: MenuItemV2Type): string => {
-  if (item.variant === MenuItemV2Variant.ACTION) {
-    if (item.actionType === MenuItemV2ActionType.DANGER) {
-      return (
-        FOUNDATION_THEME.colors.red[50] ||
-        FOUNDATION_THEME.colors.gray[50] ||
-        ""
-      );
+const getBgColor = (
+  state: MenuItemStates,
+  menuTokens: MenuTokensType,
+  item: MenuItemV2Type
+) => {
+  const bg = menuTokens.item.backgroundColor;
+
+  // check for variant
+  if (item.variant === MenuItemV2Variant.DEFAULT) {
+    if (!item.disabled) {
+      return bg.default.enabled[state];
+    } else {
+      return bg.default.disabled[state];
     }
-    // PRIMARY or undefined
-    return (
-      FOUNDATION_THEME.colors.primary[50] ||
-      FOUNDATION_THEME.colors.gray[50] ||
-      ""
-    );
+  } else {
+    // check for action type
+    if (item.actionType === undefined) {
+      item.actionType = MenuItemV2ActionType.PRIMARY;
+    }
+    if (item.actionType === MenuItemV2ActionType.PRIMARY) {
+      if (!item.disabled) {
+        return bg.action.primary.enabled[state];
+      } else {
+        return bg.action.primary.disabled[state];
+      }
+    } else {
+      if (!item.disabled) {
+        return bg.action.danger.enabled[state];
+      } else {
+        return bg.action.danger.disabled[state];
+      }
+    }
   }
-  return FOUNDATION_THEME.colors.gray[50] || "";
 };
 
-const StyledItem = styled(RadixMenu.Item)<{ $hoverBg: string }>(
-  ({ $hoverBg }) => ({
-    ...itemBaseStyle,
-    "&:hover": {
-      backgroundColor: $hoverBg,
-    },
-    "&[data-highlighted]": {
-      border: "none",
-      outline: "none",
-      backgroundColor: $hoverBg,
-    },
-  })
-);
+const getColor = (
+  state: MenuItemStates,
+  menuTokens: MenuTokensType,
+  item: MenuItemV2Type
+) => {
+  const bg = menuTokens.item.label.color;
 
-interface ItemProps {
-  item: MenuItemV2Type;
-  idx: number;
-  useVirtualization?: boolean;
-  virtualizationThreshold?: number;
-  itemHeight?: number;
-  maxHeight?: number;
-}
+  // check for variant
+  if (item.variant === MenuItemV2Variant.DEFAULT) {
+    if (!item.disabled) {
+      return bg.default.enabled[state];
+    } else {
+      return bg.default.disabled[state];
+    }
+  } else {
+    // check for action type
+    if (item.actionType === undefined) {
+      item.actionType = MenuItemV2ActionType.PRIMARY;
+    }
+    if (item.actionType === MenuItemV2ActionType.PRIMARY) {
+      if (!item.disabled) {
+        return bg.action.primary.enabled[state];
+      } else {
+        return bg.action.primary.disabled[state];
+      }
+    } else {
+      if (!item.disabled) {
+        return bg.action.danger.enabled[state];
+      } else {
+        return bg.action.danger.disabled[state];
+      }
+    }
+  }
+};
 
-const Item = ({
-  item,
-  idx,
-  useVirtualization = false,
-  virtualizationThreshold = 20,
-  itemHeight = 40,
-  maxHeight = 300,
-}: ItemProps) => {
+const MenuItem = ({ item, idx }: { item: MenuItemV2Type; idx: number }) => {
+  const menuTokens = useComponentToken("MENU") as MenuTokensType;
   if (item.subMenu) {
     return (
       <SubMenu
@@ -95,21 +103,40 @@ const Item = ({
       />
     );
   }
-  const hoverBg = getHoverBgColor(item);
+  if (item.variant === undefined) {
+    item.variant = MenuItemV2Variant.DEFAULT;
+  }
+
   return (
-    <StyledItem
-      onClick={item.onClick}
+    <RadixMenu.Item
       asChild
       disabled={item.disabled}
-      key={idx}
-      $hoverBg={hoverBg}
+      style={{ outline: "none", border: "none" }}
     >
       <Block
-        padding="6px"
+        key={idx}
         display="flex"
+        padding={menuTokens.item.padding}
+        margin={menuTokens.item.margin}
+        borderRadius={menuTokens.item.borderRadius}
+        onClick={item.disabled ? undefined : item.onClick}
+        cursor={item.disabled ? "not-allowed" : "pointer"}
         flexDirection="column"
-        gap={4}
-        width="100%"
+        gap={menuTokens.item.gap}
+        backgroundColor={getBgColor("default", menuTokens, item)}
+        color={getColor("default", menuTokens, item)}
+        _hover={{
+          backgroundColor: getBgColor("hover", menuTokens, item),
+        }}
+        _focus={{
+          backgroundColor: getBgColor("focus", menuTokens, item),
+        }}
+        _active={{
+          backgroundColor: getBgColor("active", menuTokens, item),
+        }}
+        _focusVisible={{
+          backgroundColor: getBgColor("focusVisible", menuTokens, item),
+        }}
       >
         <Block
           display="flex"
@@ -118,11 +145,7 @@ const Item = ({
           width="100%"
           overflow="hidden"
         >
-          {item.slot1 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot1}
-            </Block>
-          )}
+          {item.slot1 && <MenuSlot slot={item.slot1} />}
           <Block
             display="flex"
             flexGrow={1}
@@ -132,35 +155,16 @@ const Item = ({
           >
             <Text
               variant="body.md"
-              color={
-                item.variant === MenuItemV2Variant.ACTION
-                  ? item.actionType === MenuItemV2ActionType.PRIMARY ||
-                    !item.actionType
-                    ? FOUNDATION_THEME.colors.primary[600]
-                    : FOUNDATION_THEME.colors.red[600]
-                  : FOUNDATION_THEME.colors.gray[600]
-              }
+              color={getColor("default", menuTokens, item)}
               fontWeight={500}
               truncate
             >
               {item.label}
             </Text>
           </Block>
-          {item.slot2 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot2}
-            </Block>
-          )}
-          {item.slot3 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot3}
-            </Block>
-          )}
-          {item.slot4 && (
-            <Block flexShrink={0} height="auto" contentCentered>
-              {item.slot4}
-            </Block>
-          )}
+          {item.slot2 && <MenuSlot slot={item.slot2} />}
+          {item.slot3 && <MenuSlot slot={item.slot3} />}
+          {item.slot4 && <MenuSlot slot={item.slot4} />}
         </Block>
         {item.subLabel && (
           <Block display="flex" alignItems="center" width="100%">
@@ -174,8 +178,10 @@ const Item = ({
           </Block>
         )}
       </Block>
-    </StyledItem>
+    </RadixMenu.Item>
   );
 };
 
-export default Item;
+MenuItem.displayName = "MenuItem";
+
+export default MenuItem;

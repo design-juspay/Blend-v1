@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 import Text from "../Text/Text";
 import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "./types";
-import { useComponentToken } from "../../context/useContextToken";
+import { useComponentToken } from "../../context/useComponentToken";
 import { TagTokensType } from "./tag.tokens";
 
 const Tag = forwardRef<HTMLDivElement, TagProps>(

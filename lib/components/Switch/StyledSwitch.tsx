@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { SwitchSize } from './types';
 import { FOUNDATION_THEME } from '../../tokens';
-import { useComponentToken } from '../../context/useContextToken';
+import { useComponentToken } from "../../context/useComponentToken";
 import { SwitchTokensType } from './switch.token';
 
 export const StyledSwitchRoot = styled.button<{

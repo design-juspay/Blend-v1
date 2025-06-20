@@ -1,93 +1,141 @@
 import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
-import { foundationToken } from "../../foundationToken";
+import { FoundationTokenType } from "../../tokens/theme.token";
 
-type ModalToken = {
-  background: {
-    modal: CSSObject["backgroundColor"];
-    backdrop: CSSObject["backgroundColor"];
+export type ModalTokensType = {
+  shadow: CSSObject["boxShadow"];
+  zIndex: CSSObject["zIndex"];
+  borderRadius: CSSObject["borderRadius"];
+  headerContainer: {
+    padding: CSSObject["padding"];
+    borderBottom: CSSObject["borderBottom"];
+    borderTop: CSSObject["borderTop"];
+    borderLeft: CSSObject["borderLeft"];
+    borderRight: CSSObject["borderRight"];
+    borderRadius: CSSObject["borderRadius"];
+    backgroundColor: CSSObject["backgroundColor"];
+    header: {
+      color: CSSObject["color"];
+      fontSize: CSSObject["fontSize"];
+      fontWeight: CSSObject["fontWeight"];
+    };
+    subtitle: {
+      color: CSSObject["color"];
+      fontSize: CSSObject["fontSize"];
+    };
   };
-  border: {
-    radius: CSSObject["borderRadius"];
-    color: CSSObject["borderColor"];
-    divider: CSSObject["borderColor"];
+  bodyContainer: {
+    padding: CSSObject["padding"];
+    borderBottom: CSSObject["borderBottom"];
+    borderTop: CSSObject["borderTop"];
+    borderLeft: CSSObject["borderLeft"];
+    borderRight: CSSObject["borderRight"];
+    borderRadius: CSSObject["borderRadius"];
+    backgroundColor: CSSObject["backgroundColor"];
   };
-  shadow: {
-    box: CSSObject["boxShadow"];
-  };
-  color: {
-    title: CSSObject["color"];
-    subtitle: CSSObject["color"];
-    closeButton: CSSObject["color"];
-    closeButtonHover: CSSObject["color"];
-  };
-  opacity: {
-    backdrop: string;
-  };
-  size: {
-    maxWidth: CSSObject["maxWidth"];
-    maxHeight: CSSObject["maxHeight"];
-  };
-  padding: {
-    header: CSSObject["padding"];
-    body: CSSObject["padding"];
-    footerX: CSSObject["paddingLeft"];
-    footerY: CSSObject["paddingTop"];
-  };
-  gap: {
-    header: CSSObject["gap"];
-    footer: CSSObject["gap"];
-  };
-  z: {
-    index: CSSObject["zIndex"];
-  };
-  interaction: {
-    pointerEvents: CSSObject["pointerEvents"];
+  footerContainer: {
+    padding: CSSObject["padding"];
+    borderBottom: CSSObject["borderBottom"];
+    borderTop: CSSObject["borderTop"];
+    borderLeft: CSSObject["borderLeft"];
+    borderRight: CSSObject["borderRight"];
+    borderRadius: CSSObject["borderRadius"];
+    backgroundColor: CSSObject["backgroundColor"];
+    alignItems: CSSObject["alignItems"];
+    gap: CSSObject["gap"];
   };
 };
 
-const modalTokens: ModalToken = {
-  background: {
-    modal: foundationToken.colors.gray[0],
-    backdrop: foundationToken.colors.gray[700],
+export const modalTokens: ModalTokensType = {
+  shadow: FOUNDATION_THEME.shadows.xs,
+  zIndex: 9999,
+  borderRadius: FOUNDATION_THEME.border.radius[12],
+  headerContainer: {
+    padding: FOUNDATION_THEME.unit[16],
+    borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderLeft: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderRadius: FOUNDATION_THEME.border.radius[12],
+    backgroundColor: FOUNDATION_THEME.colors.gray[0],
+    header: {
+      color: FOUNDATION_THEME.colors.gray[700],
+      fontSize: "14px",
+      fontWeight: "600",
+    },
+    subtitle: {
+      color: FOUNDATION_THEME.colors.gray[600],
+      fontSize: "12px",
+    },
   },
-  border: {
-    radius: FOUNDATION_THEME.border.radius[12],
-    color: foundationToken.colors.gray[200],
-    divider: foundationToken.colors.gray[200],
+  bodyContainer: {
+    padding: FOUNDATION_THEME.unit[16],
+    borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderLeft: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderRadius: FOUNDATION_THEME.border.radius[12],
+    backgroundColor: FOUNDATION_THEME.colors.gray[0],
   },
-  shadow: {
-    box: FOUNDATION_THEME.shadows.xs,
+  footerContainer: {
+    padding: FOUNDATION_THEME.unit[16],
+    borderBottom: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderTop: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderLeft: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    borderRadius: `0 0 ${FOUNDATION_THEME.border.radius[12]} ${FOUNDATION_THEME.border.radius[12]}`,
+    backgroundColor: FOUNDATION_THEME.colors.gray[0],
+    alignItems: "flex-end",
+    gap: FOUNDATION_THEME.unit[12],
   },
-  color: {
-    title: foundationToken.colors.gray[700],
-    subtitle: foundationToken.colors.gray[500],
-    closeButton: foundationToken.colors.gray[500],
-    closeButtonHover: foundationToken.colors.gray[700],
-  },
-  opacity: {
-    backdrop: "0.6",
-  },
-  size: {
-    maxWidth: "calc(100vw - 2rem)",
-    maxHeight: "calc(100vh - 2rem)",
-  },
-  padding: {
-    header: FOUNDATION_THEME.unit[16],
-    body: FOUNDATION_THEME.unit[16],
-    footerX: FOUNDATION_THEME.unit[24],
-    footerY: FOUNDATION_THEME.unit[16],
-  },
-  gap: {
-    header: FOUNDATION_THEME.unit[16],
-    footer: FOUNDATION_THEME.unit[12],
-  },
-  z: {
-    index: "50",
-  },
-  interaction: {
-    pointerEvents: "auto",
-  },
+};
+
+export const getModalComponentTokens = (
+  foundationToken: FoundationTokenType
+): ModalTokensType => {
+  return {
+    shadow: foundationToken.shadows.xs,
+    zIndex: 9999,
+    borderRadius: foundationToken.border.radius[12],
+    headerContainer: {
+      padding: foundationToken.unit[16],
+      borderBottom: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderTop: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderLeft: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderRight: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderRadius: foundationToken.border.radius[12],
+      backgroundColor: foundationToken.colors.gray[0],
+      header: {
+        color: foundationToken.colors.gray[700],
+        fontSize: "14px",
+        fontWeight: "600",
+      },
+      subtitle: {
+        color: foundationToken.colors.gray[600],
+        fontSize: "12px",
+      },
+    },
+    bodyContainer: {
+      padding: foundationToken.unit[16],
+      borderBottom: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderTop: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderLeft: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderRight: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderRadius: foundationToken.border.radius[12],
+      backgroundColor: foundationToken.colors.gray[0],
+    },
+    footerContainer: {
+      padding: foundationToken.unit[16],
+      borderBottom: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderTop: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderLeft: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderRight: `1px solid ${foundationToken.colors.gray[200]}`,
+      borderRadius: `0 0 ${foundationToken.border.radius[12]} ${foundationToken.border.radius[12]}`,
+      backgroundColor: foundationToken.colors.gray[0],
+      alignItems: "flex-end",
+      gap: foundationToken.unit[12],
+    },
+  };
 };
 
 export default modalTokens;

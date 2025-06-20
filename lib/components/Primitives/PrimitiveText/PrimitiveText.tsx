@@ -38,6 +38,7 @@ export type PrimitiveTextProps = {
   userSelect?: CSSObject["userSelect"];
   name?: CSSObject["name"];
   htmlFor?: CSSObject["htmlFor"];
+  textTransform?: CSSObject["textTransform"];
 };
 
 export type TextProps = PrimitiveTextProps &
@@ -66,6 +67,7 @@ const blockedProps = [
   "fontSize",
   "truncate",
   "userSelect",
+  "textTransform",
 ];
 
 const shouldForwardProp = (prop: string) => !blockedProps.includes(prop);
@@ -79,6 +81,7 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
     letterSpacing = "normal",
     opacity = 1,
     fontSize,
+    textTransform,
   } = props;
 
   const styles: CSSObject = {};
@@ -88,9 +91,13 @@ const getStyles = (props: PrimitiveTextProps): CSSObject => {
   if (letterSpacing !== undefined) styles.letterSpacing = letterSpacing;
   if (textAlign !== undefined) styles.textAlign = textAlign;
   if (opacity !== undefined) styles.opacity = opacity;
-  if (fontFamily !== undefined) styles.fontFamily = fontFamily;
+  if (fontFamily !== undefined) {
+    styles.fontFamily = fontFamily;
+  } else {
+    styles.fontFamily = "inherit";
+  }
   if (color !== undefined) styles.color = color;
-
+  if (textTransform !== undefined) styles.textTransform = textTransform;
   // Spacing
   if (props.margin) styles.margin = props.margin;
   if (props.marginX) {
