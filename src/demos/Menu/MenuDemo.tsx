@@ -48,6 +48,9 @@ export const dummyMenuItems = [
         label: "Profile",
         value: "profile",
         slot1: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        // slot2: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        // slot3: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        // slot4: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         subLabel: "Manage your personal information",
       },
       {
