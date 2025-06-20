@@ -8,7 +8,7 @@ import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
 import { ChevronDown, User, X } from "lucide-react";
-import selectTokens from "../Select/select.token";
+// import selectTokens from "../Select/select.token";
 import {
   MultiSelectMenuGroupType,
   MultiSelectMenuItemType,
@@ -17,6 +17,8 @@ import {
   MultiSelectSelectionTagType,
   MultiSelectVariant,
 } from "./types";
+import { MultiSelectTokensType } from "./multiSelect.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
 
 const map = function getValueLabelMap(
   groups: MultiSelectMenuGroupType[]
@@ -51,7 +53,7 @@ const MultiSelect = ({
   required,
   variant = MultiSelectVariant.CONTAINER,
   selectionTagType = MultiSelectSelectionTagType.COUNT,
-  slot = <User size={13} />,
+  slot,
   hintText,
   placeholder,
   size = MultiSelectMenuSize.MEDIUM,
@@ -63,11 +65,22 @@ const MultiSelect = ({
   sideOffset,
   alignOffset,
 }: MultiSelectProps) => {
+  const multiSelectTokens = useComponentToken(
+    "MULTI_SELECT"
+  ) as MultiSelectTokensType;
   const [open, setOpen] = useState(false);
   const valueLabelMap = map(items);
 
   const showCancelButton =
     variant === MultiSelectVariant.CONTAINER && selectedValues.length > 0;
+
+  const borderRadius = multiSelectTokens.trigger.borderRadius[size];
+  const appliedBorderRadius = showCancelButton
+    ? `${borderRadius} 0px 0px ${borderRadius}`
+    : borderRadius;
+  // const cancelButtonBorderRadius = showCancelButton
+  //   ? `0 ${borderRadius}px ${borderRadius}px 0`
+  //   : borderRadius;
 
   return (
     <Block
@@ -95,6 +108,7 @@ const MultiSelect = ({
           }
           display="flex"
           alignItems="center"
+          // className="debug"
         >
           <MultiSelectMenu
             items={items}
@@ -111,38 +125,35 @@ const MultiSelect = ({
             onOpenChange={setOpen}
             trigger={
               <PrimitiveButton
-                display="flex"
                 width={"100%"}
+                display="flex"
                 alignItems="center"
                 overflow="hidden"
-                borderRadius={`8px ${showCancelButton ? 0 : 8}px ${
-                  showCancelButton ? 0 : 8
-                }px 8px`}
-                boxShadow={
-                  variant === MultiSelectVariant.CONTAINER
-                    ? FOUNDATION_THEME.shadows.xs
-                    : undefined
-                }
                 justifyContent="space-between"
-                paddingX={selectTokens.trigger.selectedValue.padding[size].x}
-                paddingY={selectTokens.trigger.selectedValue.padding[size].y}
+                gap={8}
+                borderRadius={appliedBorderRadius}
+                boxShadow={multiSelectTokens.trigger.boxShadow[variant]}
+                padding={multiSelectTokens.trigger.padding[size]}
                 backgroundColor={
-                  open
-                    ? FOUNDATION_THEME.colors.gray[25]
-                    : FOUNDATION_THEME.colors.gray[0]
+                  multiSelectTokens.trigger.backgroundColor.container[
+                    open ? "open" : "closed"
+                  ]
                 }
                 outline={
-                  variant === MultiSelectVariant.CONTAINER
-                    ? `1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`
-                    : undefined
+                  multiSelectTokens.trigger.outline[variant][
+                    open ? "open" : "closed"
+                  ]
                 }
                 _hover={{
-                  backgroundColor: FOUNDATION_THEME.colors.gray[50],
+                  outline: multiSelectTokens.trigger.outline[variant].hover,
+                  backgroundColor:
+                    multiSelectTokens.trigger.backgroundColor.container.hover,
                 }}
                 _focus={{
-                  outline: `1px solid ${FOUNDATION_THEME.colors.gray[400]} !important`,
+                  outline: multiSelectTokens.trigger.outline[variant].focus,
+                  backgroundColor:
+                    multiSelectTokens.trigger.backgroundColor.container.focus,
                 }}
-                gap={8}
               >
                 {slot && (
                   <Block as="span" contentCentered>
@@ -192,25 +203,18 @@ const MultiSelect = ({
                       as="span"
                       variant="body.md"
                       color={
-                        variant === MultiSelectVariant.CONTAINER
-                          ? selectionTagType ===
-                            MultiSelectSelectionTagType.COUNT
-                            ? FOUNDATION_THEME.colors.gray[0]
-                            : FOUNDATION_THEME.colors.gray[700]
-                          : selectionTagType ===
-                            MultiSelectSelectionTagType.COUNT
-                          ? FOUNDATION_THEME.colors.gray[0]
-                          : FOUNDATION_THEME.colors.gray[400]
+                        multiSelectTokens.trigger.selectionTag.container[
+                          selectionTagType
+                        ].color
                       }
                       fontWeight={500}
                       style={{
                         height: "100%",
                         marginLeft: 8,
-                        // border: "1px solid red",
-                        backgroundColor:
-                          selectionTagType === MultiSelectSelectionTagType.COUNT
-                            ? FOUNDATION_THEME.colors.primary[600]
-                            : "transparent",
+                        backgroundColor: 
+                          multiSelectTokens.trigger.selectionTag.container[
+                            selectionTagType
+                          ].backgroundColor,
                         borderRadius: 4,
                         padding:
                           selectionTagType === MultiSelectSelectionTagType.COUNT
@@ -243,13 +247,13 @@ const MultiSelect = ({
           {variant === MultiSelectVariant.CONTAINER &&
             selectedValues.length > 0 && (
               <PrimitiveButton
-                borderRadius={`0 8px 8px 0`}
+                borderRadius={`0 ${borderRadius} ${borderRadius} 0`}
                 backgroundColor={FOUNDATION_THEME.colors.gray[0]}
                 contentCentered
                 height={"100%"}
                 style={{ aspectRatio: 1 }}
                 onClick={() => onChange("")}
-                outline={`1px solid ${FOUNDATION_THEME.colors.gray[200]} !important`}
+                outline={multiSelectTokens.trigger.outline[variant].closed}
                 _hover={{
                   backgroundColor: FOUNDATION_THEME.colors.gray[25],
                 }}

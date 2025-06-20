@@ -41,7 +41,7 @@ const MultiSelectMenu = ({
   onOpenChange,
 }: MultiSelectMenuProps) => {
   return (
-    <RadixMenu.Root modal={false} open={true} onOpenChange={onOpenChange}>
+    <RadixMenu.Root modal={false} open={open} onOpenChange={onOpenChange}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         align={alignment}

@@ -19,6 +19,7 @@ import { ModalTokensType } from "../components/Modal/modal.tokens";
 import { BreadcrumbTokenType } from "../components/Breadcrumb/breadcrumb.tokens";
 import { PopoverTokenType } from "../components/Popover/popover.tokens";
 import { MenuTokensType } from "../components/Menu/menu.tokens";
+import { MultiSelectTokensType } from "../components/MultiSelect/multiSelect.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -45,7 +46,8 @@ export const useComponentToken = (
   | ModalTokensType
   | BreadcrumbTokenType
   | PopoverTokenType
-  | MenuTokensType => {
+  | MenuTokensType
+  | MultiSelectTokensType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -84,6 +86,8 @@ export const useComponentToken = (
       return componentTokens.POPOVER;
     case "MENU":
       return componentTokens.MENU;
+    case "MULTI_SELECT":
+      return componentTokens.MULTI_SELECT;
     default:
       throw new Error(`Unknown component token: ${component}`);
   }

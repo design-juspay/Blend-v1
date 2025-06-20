@@ -20,6 +20,7 @@ import { getModalComponentTokens } from "../components/Modal/modal.tokens";
 import { getBreadcrumbTokens } from "../components/Breadcrumb/breadcrumb.tokens";
 import { getPopoverTokens } from "../components/Popover/popover.tokens";
 import { getMenuTokens } from "../components/Menu/menu.tokens";
+import { getMultiSelectTokens } from "../components/MultiSelect/multiSelect.tokens";
 
 const initTokens = (
   componentTokens: ComponentTokenType,
@@ -55,6 +56,9 @@ const initTokens = (
       componentTokens.BREADCRUMB ?? getBreadcrumbTokens(foundationTokens),
     POPOVER: componentTokens.POPOVER ?? getPopoverTokens(foundationTokens),
     MENU: componentTokens.MENU ?? getMenuTokens(foundationTokens),
+    MULTI_SELECT:
+      componentTokens.MULTI_SELECT ??
+      getMultiSelectTokens(foundationTokens),
   };
 };
 

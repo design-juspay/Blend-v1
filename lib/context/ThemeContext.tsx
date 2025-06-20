@@ -54,6 +54,10 @@ import {
 } from "../components/Breadcrumb/breadcrumb.tokens";
 import { getPopoverTokens, PopoverTokenType } from "../components/Popover/popover.tokens";
 import { getMenuTokens, MenuTokensType } from "../components/Menu/menu.tokens";
+import {
+  getMultiSelectTokens,
+  MultiSelectTokensType,
+} from "../components/MultiSelect/multiSelect.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -76,6 +80,7 @@ export type ComponentTokenType = {
   BREADCRUMB?: BreadcrumbTokenType;
   POPOVER?: PopoverTokenType;
   MENU?: MenuTokensType;
+  MULTI_SELECT?: MultiSelectTokensType;
   // add supprort for other components here
 };
 
@@ -107,6 +112,7 @@ const ThemeContext = createContext<ThemeContextType>({
     BREADCRUMB: getBreadcrumbTokens(FOUNDATION_THEME),
     POPOVER: getPopoverTokens(FOUNDATION_THEME),
     MENU: getMenuTokens(FOUNDATION_THEME),
+    MULTI_SELECT: getMultiSelectTokens(FOUNDATION_THEME),
   },
 });
 
