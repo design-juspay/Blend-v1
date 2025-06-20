@@ -65,20 +65,6 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   const editableRef = useRef<HTMLDivElement>(null);
   const tableToken = useComponentToken("TABLE") as TableTokenType;
 
-const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
-  padding: ${tableToken.dataTable.table.header.cell.padding};
-  text-align: ${tableToken.dataTable.table.header.cell.textAlign};
-  font-weight: ${tableToken.dataTable.table.header.cell.fontWeight};
-  color: ${tableToken.dataTable.table.header.cell.color};
-  font-size: ${tableToken.dataTable.table.header.cell.fontSize};
-  ${props => props.$isSortable && dataTableTokens.th.sortable}
-  ${props => props.width && `width: ${props.width};`}
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  box-sizing: border-box;
-`;
-
   useEffect(() => {
     setLocalColumns(visibleColumns);
   }, [visibleColumns]);
@@ -379,21 +365,39 @@ const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
     <thead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 10, backgroundColor: tableToken.dataTable.table.header.backgroundColor, borderBottom: tableToken.dataTable.table.header.borderBottom, height: tableToken.dataTable.table.header.height }}>
       <tr style={{ height: tableToken.dataTable.table.header.height, ...tableToken.dataTable.table.header.row }}>
         {enableRowExpansion && (
-          <TableHeaderCell $isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
+          <th style={{ 
+            ...tableToken.dataTable.table.header.cell,
+            width: '50px', 
+            minWidth: '50px', 
+            maxWidth: '50px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            boxSizing: 'border-box'
+          }}>
             <Block display='flex' alignItems='center' justifyContent='center'>
             </Block>
-          </TableHeaderCell>
+          </th>
         )}
         
-        <TableHeaderCell $isSortable={false} width="60px" style={{ minWidth: '60px', maxWidth: '60px' }}>
-          <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
-            <Checkbox
-              checked={selectAll}
-              onCheckedChange={onSelectAll}
-              size={CheckboxSize.MEDIUM}
-            />
-          </Block>
-        </TableHeaderCell>
+        <th style={{ 
+          ...tableToken.dataTable.table.header.cell,
+          width: '60px', 
+          minWidth: '60px', 
+          maxWidth: '60px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          boxSizing: 'border-box'
+                   }}>
+            <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
+              <Checkbox
+                checked={selectAll}
+                onCheckedChange={onSelectAll}
+                size={CheckboxSize.MEDIUM}
+              />
+            </Block>
+          </th>
 
         {localColumns.map((column, index) => {
           const columnWidth = getColumnWidth(column, index);
@@ -401,14 +405,18 @@ const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
           const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
           
           return (
-            <TableHeaderCell
+            <th
               key={String(column.field)}
-              $isSortable={!!column.isSortable}
-              width={columnWidth}
               style={{ 
+                ...tableToken.dataTable.table.header.cell,
+                ...(column.isSortable && dataTableTokens.th.sortable),
                 width: columnWidth,
                 minWidth: columnWidth,
-                maxWidth: columnWidth
+                maxWidth: columnWidth,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                boxSizing: 'border-box'
               }}
             >
               <Block
@@ -507,22 +515,38 @@ const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
                   </Block>
                 )}
               </Block>
-            </TableHeaderCell>
+            </th>
           );
         })}
 
         {enableInlineEdit && (
-          <TableHeaderCell $isSortable={false} width="100px" style={{ minWidth: '100px', maxWidth: '100px' }}>
+          <th style={{ 
+            ...tableToken.dataTable.table.header.cell,
+            width: '100px', 
+            minWidth: '100px', 
+            maxWidth: '100px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            boxSizing: 'border-box'
+          }}>
             <Block display='flex' alignItems='center' justifyContent='center'>
               <PrimitiveText as='span' style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
                 Actions
               </PrimitiveText>
             </Block>
-          </TableHeaderCell>
+          </th>
         )}
 
         {enableColumnManager && (
-          <TableHeaderCell $isSortable={false} width="50px" style={{ minWidth: '50px', maxWidth: '50px' }}>
+          <th style={{ 
+            ...tableToken.dataTable.table.header.cell,
+            width: '50px', 
+            minWidth: '50px', 
+            maxWidth: '50px',
+            overflow: 'hidden',
+            boxSizing: 'border-box'
+          }}>
             <Block position='relative'>
               <ColumnManager
                 columns={initialColumns}
@@ -530,7 +554,7 @@ const TableHeaderCell = styled.th<{ $isSortable?: boolean; width?: string }>`
                 onColumnChange={onColumnChange}
               />
             </Block>
-          </TableHeaderCell>
+          </th>
         )}
       </tr>
     </thead>
