@@ -53,6 +53,7 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
+import SalesKpiDashboard from "../SalesKpiDashboard/SalesKpiDashboard"; // Import SalesKpiDashboard
 import { SingleSelect, ThemeProvider } from "../../../lib/main";
 import {
   SelectMenuAlignment,
@@ -105,6 +106,7 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
+    | "salesKpiDashboard" // Add state for SalesKpiDashboard
   >("popover");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
@@ -221,6 +223,8 @@ const SidebarDemo = () => {
         return <DataTableDemo />;
       case "popover":
         return <PopoverDemo />;
+      case "salesKpiDashboard": // Add case for SalesKpiDashboard
+        return <SalesKpiDashboard />;
       default:
         return null;
     }
@@ -452,6 +456,16 @@ const SidebarDemo = () => {
           label: "Color Palette",
           leftSlot: <Palette style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("colorPalette"),
+        },
+      ],
+    },
+    { // Add new group for MCP Demos
+      label: "MCP Demos",
+      items: [
+        {
+          label: "Sales KPI Dashboard",
+          leftSlot: <BarChart2 style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("salesKpiDashboard"),
         },
       ],
     },

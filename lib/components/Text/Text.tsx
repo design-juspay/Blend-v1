@@ -20,13 +20,60 @@ export type SemanticTagType = keyof Pick<
   | "label"
 >;
 
+/**
+ * @description A versatile text component that can render various semantic HTML tags
+ * and apply typographic styles based on predefined variants or direct props.
+ * It extends `PrimitiveTextProps` for low-level styling capabilities.
+ * @feature Renders text with semantic HTML tags (h1-h5, p, span, etc.) via `as` prop or inferred from `variant`.
+ * @feature Predefined typographic variants (body, display, heading, code) with different sizes.
+ * @feature Allows overriding font size, weight, and color.
+ * @feature Supports text truncation.
+ * @example
+ * ```tsx
+ * import Text, { VariantType } from "./components/Text/Text"; // Assuming path
+ *
+ * <Text variant="heading.lg" as="h2" color="blue">
+ *   Large Heading
+ * </Text>
+ *
+ * <Text variant="body.md">
+ *   This is a paragraph of body text.
+ * </Text>
+ *
+ * <Text fontSize="14px" fontWeight="bold" truncate={true} style={{ maxWidth: '100px' }}>
+ *   This is some very long text that will be truncated.
+ * </Text>
+ * ```
+ */
 export type TextProps = PrimitiveTextProps & {
+  /**
+   * @propCategory Required
+   * @description The content to be rendered by the Text component.
+   */
   children: React.ReactNode;
+  /**
+   * @propCategory Appearance
+   * @description Predefined typographic variant to apply (e.g., "body.md", "heading.lg").
+   * This determines default font size, line height, and semantic tag if `as` is not provided.
+   */
   variant?: VariantType;
+  /**
+   * @propCategory Structure
+   * @description The semantic HTML tag to render. If not provided, it's inferred from the `variant`.
+   * Defaults to `p` if no variant or specific inference rule applies.
+   */
   as?: SemanticTagType;
+  /**
+   * @propCategory Styling
+   * @description Optional inline CSS styles to apply to the component.
+   */
   style?: React.CSSProperties;
 };
 
+/**
+ * @description Defines the available typographic variants for the Text component.
+ * Format: `category.size` (e.g., "body.md", "heading.lg").
+ */
 export type VariantType =
   | "body.xs"
   | "body.sm"

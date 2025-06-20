@@ -7,6 +7,38 @@ import { TextInputSize, InputProps } from "./types";
 import { useComponentToken } from "../../../context/useComponentToken";
 import { TextInputTokensType } from "./textInput.tokens";
 
+/**
+ * @description A standard single-line text input field.
+ * Allows users to enter and edit text.
+ * The props for this component are defined in `InputProps` (ideally `TextInputProps`) in `./types.ts`.
+ * @feature Single-line text input.
+ * @feature Supports labels, sublabels, hint text, and error messages.
+ * @feature Optional left and right slots for icons or other adornments.
+ * @feature Customizable size.
+ * @feature Controlled component with `value` and `onChange` props.
+ * @example
+ * ```tsx
+ * import { TextInput, TextInputSize } from "./components/Inputs/TextInput"; // Assuming path
+ * import { User } from "lucide-react"; // Assuming lucide-react for icons
+ * import { useState } from "react";
+ *
+ * function MyForm() {
+ *   const [name, setName] = useState("");
+ *
+ *   return (
+ *     <TextInput
+ *       label="Full Name"
+ *       value={name}
+ *       onChange={(e) => setName(e.target.value)}
+ *       placeholder="Enter your full name"
+ *       size={TextInputSize.MEDIUM}
+ *       leftSlot={<User size={16} />}
+ *       hintText="As it appears on your ID."
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const toPixels = (value: string | number | undefined): number => {
   if (typeof value === "number") {
     return value;

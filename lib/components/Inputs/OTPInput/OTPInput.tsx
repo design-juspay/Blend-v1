@@ -16,6 +16,34 @@ import { OTPProps } from "./types";
 import { useComponentToken } from "../../../context/useComponentToken";
 import { OTPInputTokensType } from "./otpInput.tokens";
 
+/**
+ * @description A component for inputting One-Time Passwords (OTP).
+ * It typically consists of a series of input boxes where each box accepts a single digit.
+ * The props for this component are defined in `OTPProps` in `./types.ts`.
+ * @feature Input field for OTPs, split into 6 individual digit boxes.
+ * @feature Automatic focus progression to the next input box.
+ * @feature Supports pasting OTP values.
+ * @feature Supports labels, sublabels, hint text, and error messages.
+ * @feature Controlled component with `value` and `onChange` props.
+ * @example
+ * ```tsx
+ * import { OTPInput } from "./components/Inputs/OTPInput"; // Assuming path
+ * import { useState } from "react";
+ *
+ * function VerifyOtp() {
+ *   const [otp, setOtp] = useState("");
+ *
+ *   return (
+ *     <OTPInput
+ *       label="Enter Verification Code"
+ *       value={otp}
+ *       onChange={setOtp}
+ *       hintText="A 6-digit code was sent to your email."
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const OTPInput = ({
   label,
   sublabel,

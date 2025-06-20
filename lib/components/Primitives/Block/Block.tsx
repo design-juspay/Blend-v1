@@ -385,15 +385,46 @@ export type BlockProps = StyledBlockProps &
   Omit<React.HTMLAttributes<HTMLElement>, "as" | "color"> & {
     children?: React.ReactNode;
     as?: SemanticTagType;
+    /**
+     * @propCategory Refs
+     * @description Forwarded ref to the underlying HTML element.
+     */
     ref?: React.Ref<HTMLElement>;
   };
 
 /**
- * Block Component
- * @description
- * The Block component is a primitive component that renders a styled div element.
- * It is used to create consistent spacing and layout patterns across the application.
+ * @description A foundational layout component that renders a styled `div` or other semantic HTML element.
+ * It provides extensive styling capabilities through props, corresponding to various CSS properties,
+ * including spacing, flexbox layout, positioning, borders, backgrounds, and more.
+ * This component is a core building block for creating custom layouts and styled containers.
+ * It also supports pseudo-class styling (`_hover`, `_focus`, etc.).
+ * @feature Highly customizable styling via direct CSS property props (padding, margin, flex, position, etc.).
+ * @feature Support for pseudo-class styles (`_hover`, `_focus`, `_active`, `_disabled`, `_visited`).
+ * @feature Can be rendered as various semantic HTML tags (`div`, `section`, `article`, etc.) using the `as` prop.
+ * @feature Shortcut prop `contentCentered` for quick flex centering.
+ * @feature Forwards standard HTML attributes.
+ * @example
+ * ```tsx
+ * import Block from "./components/Primitives/Block/Block"; // Assuming path
  *
+ * <Block
+ *   as="section"
+ *   padding="20px"
+ *   backgroundColor="lightgray"
+ *   borderRadius="8px"
+ *   display="flex"
+ *   flexDirection="column"
+ *   gap="10px"
+ *   _hover={{ backgroundColor: "darkgray" }}
+ * >
+ *   <Block contentCentered width="100px" height="50px" backgroundColor="blue" color="white">
+ *     Item 1
+ *   </Block>
+ *   <Block padding="10px" border="1px solid black">
+ *     Item 2
+ *   </Block>
+ * </Block>
+ * ```
  * @todo
  * - Add support for focus-visible outline
  */

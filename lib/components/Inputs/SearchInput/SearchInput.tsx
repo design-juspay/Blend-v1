@@ -7,6 +7,35 @@ import { SearchInputProps } from "./types";
 import { SearchInputTokensType } from "./searchInput.tokens";
 import { useComponentToken } from "../../../context/useComponentToken";
 
+/**
+ * @description An input field specifically designed for search functionality.
+ * It often includes a search icon and a clear button.
+ * The props for this component are defined in `SearchInputProps` in `./types.ts`.
+ * @feature Text input field optimized for search queries.
+ * @feature Optional left and right slots for icons (e.g., search icon, clear button).
+ * @feature Supports error state and placeholder text.
+ * @feature Controlled component with `value` and `onChange` props.
+ * @example
+ * ```tsx
+ * import { SearchInput } from "./components/Inputs/SearchInput"; // Assuming path
+ * import { Search, X } from "lucide-react"; // Assuming lucide-react for icons
+ * import { useState } from "react";
+ *
+ * function MySearchBar() {
+ *   const [searchTerm, setSearchTerm] = useState("");
+ *
+ *   return (
+ *     <SearchInput
+ *       placeholder="Search items..."
+ *       value={searchTerm}
+ *       onChange={(e) => setSearchTerm(e.target.value)}
+ *       leftSlot={<Search size={16} />}
+ *       rightSlot={searchTerm ? <X size={16} onClick={() => setSearchTerm("")} style={{cursor: 'pointer'}} /> : null}
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const toPixels = (value: string | number | undefined): number => {
   if (typeof value === "number") {
     return value;

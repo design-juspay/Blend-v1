@@ -6,7 +6,7 @@ import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import { BreadcrumbTokenType } from "./breadcrumb.tokens";
 import { useComponentToken } from "../../context/useComponentToken";
-import { BreadcrumbItemType } from "./types";
+import { BreadcrumbItemType, BreadcrumbProps } from "./types";
 
 const MAX_ITEMS = 4;
 
@@ -50,7 +50,7 @@ const BreadcrumbItem = ({
   );
 };
 
-const Breadcrumb = ({ items }: { items: BreadcrumbItemType[] }) => {
+const Breadcrumb = ({ items }: BreadcrumbProps) => {
   const breadcrumbTokens = useComponentToken(
     "BREADCRUMB"
   ) as BreadcrumbTokenType;

@@ -215,13 +215,52 @@ export type PrimitiveLinkProps = StyledLinkProps &
   Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "color" | "as"> & {
     as?: SemanticLinkTag;
     children?: React.ReactNode;
-    ref?: React.Ref<HTMLAnchorElement>;
-  };
+  /**
+   * @propCategory Refs
+   * @description Forwarded ref to the underlying anchor element.
+   */
+  ref?: React.Ref<HTMLAnchorElement>;
+};
 
 /**
- * PrimitiveLink Component
- * @description
- * A highly customizable anchor component styled via props.
+ * @description A foundational link component that provides extensive styling capabilities through props.
+ * It can be rendered as an `<a>`, `<span>`, or `<div>` tag.
+ * This component is a core building block for creating custom link styles and behaviors.
+ * All styling props are optional and correspond to CSS properties.
+ * It also supports pseudo-class styling (`_hover`, `_focus`, etc.).
+ * @feature Highly customizable styling via direct CSS property props.
+ * @feature Support for pseudo-class styles (`_hover`, `_focus`, `_active`, `_disabled`, `_visited`).
+ * @feature Can be rendered as `a`, `span`, or `div` using the `as` prop.
+ * @feature Forwards standard HTML anchor attributes.
+ * @example
+ * ```tsx
+ * import PrimitiveLink from "./components/Primitives/PrimitiveLink"; // Assuming path
+ *
+ * <PrimitiveLink
+ *   href="https://example.com"
+ *   target="_blank"
+ *   color="blue"
+ *   textDecoration="none"
+ *   _hover={{
+ *     color: "darkblue",
+ *     textDecoration: "underline",
+ *   }}
+ *   fontSize="16px"
+ *   padding="8px 12px"
+ * >
+ *   Visit Example.com
+ * </PrimitiveLink>
+ *
+ * <PrimitiveLink
+ *   as="span"
+ *   onClick={() => console.log("Span clicked")}
+ *   color="purple"
+ *   cursor="pointer"
+ *   _hover={{ color: "darkorchid" }}
+ * >
+ *   Clickable Span
+ * </PrimitiveLink>
+ * ```
  */
 const PrimitiveLink = forwardRef<HTMLAnchorElement, PrimitiveLinkProps>(
   ({ children, ...rest }, ref) => {

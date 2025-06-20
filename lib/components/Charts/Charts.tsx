@@ -9,6 +9,7 @@ import { transformNestedData } from "./ChartUtils";
 import Block from "../../components/Primitives/Block/Block";
 import { FOUNDATION_THEME } from "../../tokens";
 
+// Component-level JSDoc (description, features, example) is now in types.tsx associated with ChartProps
 const Charts: React.FC<ChartsProps> = ({
   chartType = ChartType.LINE,
   data,

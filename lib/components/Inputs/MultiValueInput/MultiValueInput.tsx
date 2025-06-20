@@ -9,6 +9,45 @@ import { MultiValueInputProps } from "./types";
 import { useComponentToken } from "../../../context/useComponentToken";
 import { MultiValueInputTokensType } from "./multiValueInput.tokens";
 
+/**
+ * @description A component that allows users to input multiple string values, typically displayed as "tags".
+ * Users can add new tags by typing and pressing Enter, and remove existing tags.
+ * The props for this component are defined in `MultiValueInputProps` in `./types.ts`.
+ * @feature Input field for entering multiple string values (tags).
+ * @feature Displays entered values as dismissible tags.
+ * @feature Supports labels, sublabels, hint text, and error messages.
+ * @feature Customizable input size.
+ * @example
+ * ```tsx
+ * import { MultiValueInput } from "./components/Inputs/MultiValueInput"; // Assuming path
+ * import { useState } from "react";
+ *
+ * function MyTagsInput() {
+ *   const [tags, setTags] = useState<string[]>(["initial-tag"]);
+ *
+ *   const handleAddTag = (tag: string) => {
+ *     if (tag && !tags.includes(tag)) {
+ *       setTags([...tags, tag]);
+ *     }
+ *   };
+ *
+ *   const handleRemoveTag = (tagToRemove: string) => {
+ *     setTags(tags.filter(tag => tag !== tagToRemove));
+ *   };
+ *
+ *   return (
+ *     <MultiValueInput
+ *       label="Keywords"
+ *       tags={tags}
+ *       onTagAdd={handleAddTag}
+ *       onTagRemove={handleRemoveTag}
+ *       hintText="Press Enter to add a keyword."
+ *       size="md"
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const MultiValueInput = ({
   label,
   sublabel,

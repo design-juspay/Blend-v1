@@ -53,6 +53,50 @@ const toPixels = (value: string | number | undefined): number => {
   return 0;
 };
 
+/**
+ * @description A component that combines a text input field with a dropdown selector.
+ * Users can type into the input or select an option from the associated dropdown menu.
+ * This is useful for scenarios like selecting a unit or category alongside a numerical input.
+ * The props for this component are defined in `DropdownInputProps` in `./types.ts`.
+ * @feature Combines text input with a dropdown menu.
+ * @feature Supports labels, sublabels, hint text, and error messages.
+ * @feature Customizable size and placeholder for the text input.
+ * @feature Dropdown items can be grouped.
+ * @example
+ * ```tsx
+ * import { DropdownInput } from "./components/Inputs/DropdownInput"; // Assuming path
+ * import { SelectMenuGroupType } from "./components/Select/types"; // Assuming path
+ * import { useState } from "react";
+ *
+ * const unitItems: SelectMenuGroupType[] = [
+ *   {
+ *     items: [
+ *       { label: "Kilograms", value: "kg" },
+ *       { label: "Grams", value: "g" },
+ *       { label: "Pounds", value: "lb" },
+ *     ]
+ *   }
+ * ];
+ *
+ * function WeightInput() {
+ *   const [textValue, setTextValue] = useState("");
+ *   const [dropdownValue, setDropdownValue] = useState("kg");
+ *
+ *   return (
+ *     <DropdownInput
+ *       label="Weight"
+ *       value={textValue}
+ *       onChange={(e) => setTextValue(e.target.value)}
+ *       placeholder="Enter weight"
+ *       dropDownValue={dropdownValue}
+ *       onDropDownChange={setDropdownValue}
+ *       dropDownItems={unitItems}
+ *       size="md"
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const DropdownInput = ({
   label,
   sublabel,

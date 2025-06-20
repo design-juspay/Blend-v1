@@ -10,6 +10,45 @@ import InputFooter from "../utils/InputFooter/InputFooter";
 import { UnitInputTokensType } from "./unitInput.tokens";
 import { useComponentToken } from "../../../context/useComponentToken";
 
+/**
+ * @description An input component for numerical values that are associated with a specific unit (e.g., kg, px, USD).
+ * It combines a number input with a display of the unit.
+ * The props for this component are defined in `UnitInputProps` in `./types.ts`.
+ * @feature Number input with an associated unit display.
+ * @feature Unit can be positioned to the left or right of the input.
+ * @feature Supports min, max, and step attributes for the number input.
+ * @feature Includes labels, sublabels, hint text, and error messages.
+ * @feature Optional left and right slots for additional adornments.
+ * @example
+ * ```tsx
+ * import { UnitInput, UnitInputSize, UnitPosition } from "./components/Inputs/UnitInput"; // Assuming path
+ * import { useState } from "react";
+ *
+ * function MeasurementInput() {
+ *   const [length, setLength] = useState<number>(10);
+ *
+ *   const handleLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+ *     const newLength = parseFloat(e.target.value);
+ *     if (!isNaN(newLength)) {
+ *       setLength(newLength);
+ *     }
+ *   };
+ *
+ *   return (
+ *     <UnitInput
+ *       label="Length"
+ *       value={length}
+ *       onChange={handleLengthChange}
+ *       unit="cm"
+ *       unitPosition={UnitPosition.RIGHT}
+ *       size={UnitInputSize.MEDIUM}
+ *       min={0}
+ *       step={0.1}
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const UnitInput = ({
   value,
   onChange,

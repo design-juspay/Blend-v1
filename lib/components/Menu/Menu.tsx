@@ -203,7 +203,45 @@ const dummyMenuItems: MenuV2GroupType[] = [
   },
 ];
 
-
+/**
+ * @description The Menu component displays a list of options or actions, often triggered by a button or other element.
+ * It supports grouped items, sub-menus, and various visual customizations.
+ * The props for this component are defined in `MenuV2Props` in `./types.tsx`.
+ * @feature Displays a list of interactive items, potentially grouped and with separators.
+ * @feature Customizable trigger element.
+ * @feature Supports sub-menus for hierarchical navigation.
+ * @feature Control over menu alignment, side, and offsets relative to the trigger.
+ * @feature Optional modal display mode.
+ * @feature Optional search functionality within the menu.
+ * @example
+ * ```tsx
+ * import { Menu, MenuAlignment, MenuSide, MenuV2GroupType } from "./components/Menu"; // Assuming path
+ * import { Button } from "./components/Button"; // Assuming path
+ *
+ * const menuItems: MenuV2GroupType[] = [
+ *   {
+ *     label: "File",
+ *     items: [
+ *       { label: "New", onClick: () => console.log("New clicked") },
+ *       { label: "Open", subMenu: [{ label: "Recent File 1" }] },
+ *     ],
+ *     showSeparator: true,
+ *   },
+ *   {
+ *     items: [
+ *       { label: "Exit", variant: "action", actionType: "danger", onClick: () => console.log("Exit") },
+ *     ],
+ *   },
+ * ];
+ *
+ * <Menu
+ *   trigger={<Button text="Open Menu" />}
+ *   items={menuItems}
+ *   alignment={MenuAlignment.START}
+ *   side={MenuSide.BOTTOM}
+ * />
+ * ```
+ */
 const Menu = ({
   trigger,
   items = dummyMenuItems,

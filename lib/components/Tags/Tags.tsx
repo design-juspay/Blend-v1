@@ -6,6 +6,39 @@ import { TagColor, TagProps, TagShape, TagSize, TagVariant } from "./types";
 import { useComponentToken } from "../../context/useComponentToken";
 import { TagTokensType } from "./tag.tokens";
 
+/**
+ * @description A small, label-like element used for displaying keywords, categories, or status indicators.
+ * Tags can have different visual styles, colors, sizes, and shapes.
+ * The props for this component are defined in `TagProps` in `./types.ts`.
+ * @feature Displays text in a compact, styled badge.
+ * @feature Multiple variants (noFill, attentive, subtle, filled - derived).
+ * @feature Various color schemes (neutral, primary, success, error, etc.).
+ * @feature Different sizes and shapes.
+ * @feature Optional leading and trailing slots for icons.
+ * @feature Clickable with an `onClick` handler.
+ * @example
+ * ```tsx
+ * import { Tag, TagVariant, TagColor, TagSize, TagShape } from "./components/Tags"; // Assuming path
+ * import { CheckCircleIcon, XCircleIcon } from "lucide-react"; // Assuming lucide-react
+ *
+ * <Tag
+ *   text="Active"
+ *   variant={TagVariant.SUBTLE}
+ *   color={TagColor.SUCCESS}
+ *   size={TagSize.MD}
+ *   shape={TagShape.ROUNDED}
+ *   leftSlot={<CheckCircleIcon size={12} />}
+ * />
+ *
+ * <Tag
+ *   text="Urgent"
+ *   variant={TagVariant.ATTENTIVE} // Or use "filled" logic if variant is not NO_FILL
+ *   color={TagColor.ERROR}
+ *   onClick={() => console.log("Urgent tag clicked")}
+ *   rightSlot={<XCircleIcon size={12} />}
+ * />
+ * ```
+ */
 const Tag = forwardRef<HTMLDivElement, TagProps>(
   (
     {
