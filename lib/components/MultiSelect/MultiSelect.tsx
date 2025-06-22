@@ -108,7 +108,6 @@ const MultiSelect = ({
           }
           display="flex"
           alignItems="center"
-          // className="debug"
         >
           <MultiSelectMenu
             items={items}

@@ -192,8 +192,8 @@ export const multiSelectTokens: MultiSelectTokensType = {
     },
     seperator: {
       color: FOUNDATION_THEME.colors.gray[200],
-      height: FOUNDATION_THEME.unit[2],
-      margin: FOUNDATION_THEME.unit[4],
+      height: 1,
+      margin: `${FOUNDATION_THEME.unit[6]} 0`,
     },
   },
 };
@@ -302,8 +302,8 @@ export const getMultiSelectTokens = (foundationToken: FoundationTokenType) => {
       },
       seperator: {
         color: foundationToken.colors.gray[200],
-        height: foundationToken.unit[2],
-        margin: foundationToken.unit[4],
+        height: 1,
+        margin: `${foundationToken.unit[6]} 0`,
       },
     },
   };

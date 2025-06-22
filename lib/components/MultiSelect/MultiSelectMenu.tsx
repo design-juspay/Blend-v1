@@ -11,6 +11,8 @@ import {
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import menuTokens from "../Menu/menu.tokens";
 import MultiSelectMenuItem from "./MultiSelectMenuItem";
+import { MultiSelectTokensType } from "./multiSelect.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
 
 const Content = styled(RadixMenu.Content)(() => ({
   position: "relative",
@@ -40,8 +42,11 @@ const MultiSelectMenu = ({
   open,
   onOpenChange,
 }: MultiSelectMenuProps) => {
+  const multiSelectTokens = useComponentToken(
+    "MULTI_SELECT"
+  ) as MultiSelectTokensType;
   return (
-    <RadixMenu.Root modal={false} open={true} onOpenChange={onOpenChange}>
+    <RadixMenu.Root modal={false} open={open} onOpenChange={onOpenChange}>
       <RadixMenu.Trigger asChild>{trigger}</RadixMenu.Trigger>
       <Content
         align={alignment}
@@ -84,9 +89,9 @@ const MultiSelectMenu = ({
             {groupId !== items.length - 1 && group.showSeparator && (
               <RadixMenu.Separator asChild>
                 <Block
-                  height={menuTokens.seperator.height}
-                  backgroundColor={menuTokens.seperator.color}
-                  margin={menuTokens.seperator.margin}
+                  height={multiSelectTokens.dropdown.seperator.height}
+                  backgroundColor={multiSelectTokens.dropdown.seperator.color}
+                  margin={multiSelectTokens.dropdown.seperator.margin}
                 ></Block>
               </RadixMenu.Separator>
             )}
