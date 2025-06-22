@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { FOUNDATION_THEME } from '../../tokens';
 import Block from '../Primitives/Block/Block';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
@@ -12,6 +12,7 @@ type DataTablePaginationProps = {
   pageSize: number;
   totalRows: number;
   pageSizeOptions: number[];
+  isLoading?: boolean;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 }
@@ -21,6 +22,7 @@ export function DataTablePagination({
   pageSize,
   totalRows,
   pageSizeOptions,
+  isLoading = false,
   onPageChange,
   onPageSizeChange,
 }: DataTablePaginationProps) {
@@ -82,16 +84,13 @@ export function DataTablePagination({
       })),
     },
   ];
-  
+
   return (
     <Block 
       display="flex" 
       justifyContent="space-between" 
       alignItems="center" 
-      height={`${FOUNDATION_THEME.unit[48]}`}
-      padding={`${FOUNDATION_THEME.unit[16]}`}
-      borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}
-      backgroundColor={FOUNDATION_THEME.colors.gray[25]}
+      width="100%"
     >
       <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[8]}>
         <PrimitiveText 
@@ -120,6 +119,7 @@ export function DataTablePagination({
                 backgroundColor: FOUNDATION_THEME.colors.gray[50],
               }}
               color={FOUNDATION_THEME.colors.gray[600]}
+              disabled={isLoading}
               style={{
                 fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
               }}
@@ -128,6 +128,19 @@ export function DataTablePagination({
             </PrimitiveButton>
           }
         />
+
+        {isLoading && (
+          <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[4]}>
+            <Loader2 size={FOUNDATION_THEME.unit[16]} className="animate-spin" />
+            <PrimitiveText 
+              as="span" 
+              fontSize={FOUNDATION_THEME.font.size.body.sm.fontSize}
+              color={FOUNDATION_THEME.colors.gray[500]}
+            >
+              Loading...
+            </PrimitiveText>
+          </Block>
+        )}
       </Block>
       
       <Block display="flex" alignItems="center" gap={FOUNDATION_THEME.unit[4]}>
@@ -137,7 +150,7 @@ export function DataTablePagination({
           backgroundColor="transparent"
           borderRadius={FOUNDATION_THEME.border.radius[2]}
           color={currentPage === 1 ? FOUNDATION_THEME.colors.gray[300] : FOUNDATION_THEME.colors.gray[600]}
-          disabled={currentPage === 1}
+          disabled={currentPage === 1 || isLoading}
           onClick={() => onPageChange(currentPage - 1)}
           aria-label="Previous page"
           _hover={{
@@ -158,6 +171,7 @@ export function DataTablePagination({
                 backgroundColor={currentPage === page ? FOUNDATION_THEME.colors.gray[100] : "transparent"}
                 color={currentPage === page ? FOUNDATION_THEME.colors.gray[700] : FOUNDATION_THEME.colors.gray[600]}
                 borderRadius={FOUNDATION_THEME.border.radius[8]}
+                disabled={isLoading}
                 onClick={() => onPageChange(page)}
                 _hover={{
                   backgroundColor: currentPage === page ? FOUNDATION_THEME.colors.gray[100] : FOUNDATION_THEME.colors.gray[50],
@@ -182,7 +196,7 @@ export function DataTablePagination({
           backgroundColor="transparent"
           borderRadius={FOUNDATION_THEME.border.radius[2]}
           color={currentPage === totalPages ? FOUNDATION_THEME.colors.gray[300] : FOUNDATION_THEME.colors.gray[600]}
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || isLoading}
           onClick={() => onPageChange(currentPage + 1)}
           aria-label="Next page"
           _hover={{
