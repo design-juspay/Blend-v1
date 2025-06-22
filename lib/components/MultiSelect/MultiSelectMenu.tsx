@@ -9,7 +9,6 @@ import {
   MultiSelectMenuSide,
 } from "./types";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import menuTokens from "../Menu/menu.tokens";
 import MultiSelectMenuItem from "./MultiSelectMenuItem";
 import { MultiSelectTokensType } from "./multiSelect.tokens";
 import { useComponentToken } from "../../context/useComponentToken";

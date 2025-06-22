@@ -7,8 +7,7 @@ import MultiSelectMenu from "./MultiSelectMenu";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import { FOUNDATION_THEME } from "../../tokens";
 import Text from "../Text/Text";
-import { ChevronDown, User, X } from "lucide-react";
-// import selectTokens from "../Select/select.token";
+import { ChevronDown, X } from "lucide-react";
 import {
   MultiSelectMenuGroupType,
   MultiSelectMenuItemType,

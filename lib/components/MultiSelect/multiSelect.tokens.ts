@@ -220,6 +220,7 @@ export const getMultiSelectTokens = (foundationToken: FoundationTokenType) => {
           open: foundationToken.colors.gray[25],
           closed: foundationToken.colors.gray[0],
           hover: foundationToken.colors.gray[50],
+          focus: foundationToken.colors.gray[50],
         },
       },
       outline: {
@@ -227,7 +228,7 @@ export const getMultiSelectTokens = (foundationToken: FoundationTokenType) => {
           open: `1px solid ${foundationToken.colors.gray[200]} !important`,
           closed: `1px solid ${foundationToken.colors.gray[200]} !important`,
           hover: `1px solid ${foundationToken.colors.gray[200]} !important`,
-          focus: `1px solid ${foundationToken.colors.gray[400]} !important`,
+          focus: `1px solid ${foundationToken.colors.gray[200]} !important`,
         },
         "no-container": {
           open: undefined,
