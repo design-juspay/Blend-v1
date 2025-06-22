@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import "./App.css";
 import {
   Tag as TagIcon,
@@ -114,6 +114,24 @@ const SidebarDemo = () => {
 
   const [theme, setTheme] = useState<"EULER" | "JUSBIZ">("EULER");
 
+  // Add keyboard event listener for CMD + E to toggle theme
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for CMD + E (metaKey is CMD on Mac, ctrlKey is CTRL on Windows/Linux)
+      if ((event.metaKey || event.ctrlKey) && event.key === "e") {
+        event.preventDefault();
+        setTheme((prevTheme) => (prevTheme === "EULER" ? "JUSBIZ" : "EULER"));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   const themeProps =
     theme === "EULER"
       ? {}
@@ -147,6 +165,18 @@ const SidebarDemo = () => {
 
       <div>
         <SingleSelect
+          slot={
+            <kbd
+              style={{
+                fontSize: 10,
+                backgroundColor: FOUNDATION_THEME.colors.gray[25],
+                padding: "2px 4px",
+                borderRadius: 4,
+              }}
+            >
+              CMD + E
+            </kbd>
+          }
           label="Theme"
           placeholder="Select Theme"
           minWidth={200}
@@ -499,6 +529,5 @@ const SidebarDemo = () => {
     </Block>
   );
 };
-
 
 export default SidebarDemo;

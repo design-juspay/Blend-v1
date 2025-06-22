@@ -1,10 +1,12 @@
 import { ChevronRight } from "lucide-react";
 import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
-import Text from "../Text/Text";
 import { MultiSelectMenuItemType } from "./types";
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
 import MultiSelectMenuItem from "./MultiSelectMenuItem";
+import { MultiSelectTokensType } from "./multiSelect.tokens";
+import { useComponentToken } from "../../context/useComponentToken";
+import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 
 const MenuItemSlot = ({ slot }: { slot: React.ReactNode }) => {
   return (
@@ -23,6 +25,9 @@ const MultiSelectSubMenu = ({
   onSelect: (value: string) => void;
   selected: string[];
 }) => {
+  const multiSelectTokens = useComponentToken(
+    "MULTI_SELECT"
+  ) as MultiSelectTokensType;
   return (
     <RadixMenu.Sub>
       <RadixMenu.SubTrigger asChild>
@@ -33,8 +38,24 @@ const MultiSelectSubMenu = ({
           borderRadius={4}
           outline="none"
           border="none"
+          backgroundColor={
+            multiSelectTokens.dropdown.item.backgroundColor.default
+          }
           _hover={{
-            backgroundColor: FOUNDATION_THEME.colors.gray[50],
+            backgroundColor:
+              multiSelectTokens.dropdown.item.backgroundColor.hover,
+          }}
+          _active={{
+            backgroundColor:
+              multiSelectTokens.dropdown.item.backgroundColor.active,
+          }}
+          _focus={{
+            backgroundColor:
+              multiSelectTokens.dropdown.item.backgroundColor.focus,
+          }}
+          _focusVisible={{
+            backgroundColor:
+              multiSelectTokens.dropdown.item.backgroundColor.focusVisible,
           }}
         >
           <Block
@@ -51,14 +72,22 @@ const MultiSelectSubMenu = ({
               flexGrow={1}
             >
               {item.slot1 && <MenuItemSlot slot={item.slot1} />}
-              <Text
+              {/* <Text
                 variant="body.md"
                 color={FOUNDATION_THEME.colors.gray[600]}
                 fontWeight={500}
                 truncate
               >
                 {item.label}
-              </Text>
+              </Text> */}
+              <PrimitiveText
+                fontSize={multiSelectTokens.dropdown.item.label.fontSize}
+                fontWeight={multiSelectTokens.dropdown.item.label.fontWeight}
+                color={multiSelectTokens.dropdown.item.label.color.default}
+                truncate
+              >
+                {item.label}
+              </PrimitiveText>
             </Block>
             {item.slot1 && <MenuItemSlot slot={item.slot2} />}
             {item.slot2 && <MenuItemSlot slot={item.slot2} />}

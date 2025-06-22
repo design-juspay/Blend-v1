@@ -1,10 +1,11 @@
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
-import { FOUNDATION_THEME } from "../../tokens";
 import Block from "../Primitives/Block/Block";
 import { MultiSelectMenuItemType } from "./types";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import { Checkbox } from "../Checkbox";
 import MultiSelectSubMenu from "./MultiSelectSubMenu";
+import { useComponentToken } from "../../context/useComponentToken";
+import { MultiSelectTokensType } from "./multiSelect.tokens";
 
 const MenuItemSlot = ({ slot }: { slot: React.ReactNode }) => {
   return (
@@ -23,6 +24,9 @@ const MultiSelectMenuItem = ({
   onSelect: (value: string) => void;
   selected: string[];
 }) => {
+  const multiSelectTokens = useComponentToken(
+    "MULTI_SELECT"
+  ) as MultiSelectTokensType;
   if (item.subMenu) {
     return (
       <MultiSelectSubMenu item={item} onSelect={onSelect} selected={selected} />
@@ -48,14 +52,33 @@ const MultiSelectMenuItem = ({
         borderRadius={4}
         outline="none"
         border="none"
+        color={
+          item.disabled
+            ? multiSelectTokens.dropdown.item.label.color.disabled
+            : isSelected
+            ? multiSelectTokens.dropdown.item.label.color.selected
+            : multiSelectTokens.dropdown.item.label.color.default
+        }
         backgroundColor={
-          isSelected ? FOUNDATION_THEME.colors.gray[50] : "transparent"
+          isSelected
+            ? multiSelectTokens.dropdown.item.backgroundColor.selected
+            : multiSelectTokens.dropdown.item.backgroundColor.default
         }
         _hover={{
-          backgroundColor: FOUNDATION_THEME.colors.gray[50],
+          backgroundColor:
+            multiSelectTokens.dropdown.item.backgroundColor.hover,
         }}
         _active={{
-          backgroundColor: FOUNDATION_THEME.colors.gray[100],
+          backgroundColor:
+            multiSelectTokens.dropdown.item.backgroundColor.active,
+        }}
+        _focus={{
+          backgroundColor:
+            multiSelectTokens.dropdown.item.backgroundColor.focus,
+        }}
+        _focusVisible={{
+          backgroundColor:
+            multiSelectTokens.dropdown.item.backgroundColor.focusVisible,
         }}
         cursor={item.disabled ? "not-allowed" : "pointer"}
       >
@@ -71,13 +94,8 @@ const MultiSelectMenuItem = ({
             {item.slot1 && <MenuItemSlot slot={item.slot1} />}
             <Block flexGrow={1} display="flex" overflow="hidden">
               <PrimitiveText
-                fontSize={14}
-                fontWeight={500}
-                color={
-                  isSelected
-                    ? FOUNDATION_THEME.colors.gray[700]
-                    : FOUNDATION_THEME.colors.gray[600]
-                }
+                fontSize={multiSelectTokens.dropdown.item.label.fontSize}
+                fontWeight={multiSelectTokens.dropdown.item.label.fontWeight}
                 truncate
               >
                 {item.label}
@@ -96,8 +114,13 @@ const MultiSelectMenuItem = ({
         {item.subLabel && (
           <Block>
             <PrimitiveText
-              fontSize={12}
-              color={FOUNDATION_THEME.colors.gray[400]}
+              fontSize={multiSelectTokens.dropdown.item.subLabel.fontSize}
+              fontWeight={multiSelectTokens.dropdown.item.subLabel.fontWeight}
+              color={
+                isSelected
+                  ? multiSelectTokens.dropdown.item.subLabel.color.selected
+                  : multiSelectTokens.dropdown.item.subLabel.color.default
+              }
             >
               {item.subLabel}
             </PrimitiveText>

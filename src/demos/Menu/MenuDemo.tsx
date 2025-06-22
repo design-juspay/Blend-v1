@@ -28,12 +28,7 @@ import {
   SelectMenuVariant,
 } from "../../../lib/components/Select/types";
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
-import {
-  addSnackbar,
-  MultiSelectVariant,
-  Tag,
-  Tooltip,
-} from "../../../lib/main";
+import { addSnackbar, MultiSelectVariant, Tag } from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
 import { Settings2 } from "lucide-react";
@@ -96,6 +91,7 @@ export const dummyMenuItems = [
         label: "Sign Out",
         value: "sign-out",
         disabled: true,
+        subLabel: "This action is disabled",
         slot1: <LogOut size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
         // disabled: true,
       },
