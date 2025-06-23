@@ -348,3 +348,403 @@ export const generateCalendarGrid = (year: number, month: number): (number | nul
   
   return weeks;
 };
+
+/**
+ * Checks if a date is the start date of a range
+ * @param date The date to check
+ * @param selectedRange The selected date range
+ * @returns True if the date is the start date
+ */
+export const isStartDate = (date: Date, selectedRange: DateRange): boolean => {
+  if (!selectedRange.startDate) return false;
+  return (
+    date.getDate() === selectedRange.startDate.getDate() &&
+    date.getMonth() === selectedRange.startDate.getMonth() &&
+    date.getFullYear() === selectedRange.startDate.getFullYear()
+  );
+};
+
+/**
+ * Checks if a date is the end date of a range
+ * @param date The date to check
+ * @param selectedRange The selected date range
+ * @returns True if the date is the end date
+ */
+export const isEndDate = (date: Date, selectedRange: DateRange): boolean => {
+  if (!selectedRange.endDate) return false;
+  return (
+    date.getDate() === selectedRange.endDate.getDate() &&
+    date.getMonth() === selectedRange.endDate.getMonth() &&
+    date.getFullYear() === selectedRange.endDate.getFullYear()
+  );
+};
+
+/**
+ * Checks if a date is within a selected range (not including start/end)
+ * @param date The date to check
+ * @param selectedRange The selected date range
+ * @returns True if the date is in the range
+ */
+export const isInSelectedRange = (date: Date, selectedRange: DateRange): boolean => {
+  if (!selectedRange.startDate || !selectedRange.endDate) return false;
+  return date > selectedRange.startDate && date < selectedRange.endDate;
+};
+
+/**
+ * Checks if a date is today
+ * @param date The date to check
+ * @param today Today's date
+ * @returns True if the date is today
+ */
+export const isDateToday = (date: Date, today: Date): boolean => {
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+};
+
+/**
+ * Handles date click logic for calendar
+ * @param clickedDate The date that was clicked
+ * @param selectedRange Current selected range
+ * @param allowSingleDateSelection Whether single date selection is allowed
+ * @param today Today's date for validation
+ * @param disableFutureDates Whether future dates are disabled
+ * @param disablePastDates Whether past dates are disabled
+ * @returns New date range or null if click should be ignored
+ */
+export const handleCalendarDateClick = (
+  clickedDate: Date,
+  selectedRange: DateRange,
+  allowSingleDateSelection: boolean = false,
+  today: Date,
+  disableFutureDates: boolean = false,
+  disablePastDates: boolean = false
+): DateRange | null => {
+  // Don't allow selecting disabled dates
+  if (
+    (disableFutureDates && clickedDate > today) ||
+    (disablePastDates && clickedDate < today)
+  ) {
+    return null;
+  }
+
+  let newRange: DateRange;
+
+  if (!selectedRange.startDate || allowSingleDateSelection) {
+    // If no start date is selected or single date selection is allowed, set both start and end to the clicked date
+    newRange = {
+      startDate: clickedDate,
+      endDate: clickedDate,
+    };
+  } else if (!selectedRange.endDate || clickedDate < selectedRange.startDate) {
+    // If no end date is selected or clicked date is before start date, set clicked date as start date
+    newRange = {
+      startDate: clickedDate,
+      endDate: selectedRange.endDate || clickedDate,
+    };
+  } else {
+    // Otherwise, set clicked date as end date
+    newRange = {
+      startDate: selectedRange.startDate,
+      endDate: clickedDate,
+    };
+  }
+
+  return newRange;
+};
+
+/**
+ * Generates calendar weeks for a specific month with consistent alignment
+ * @param year The year
+ * @param month The month (0-based)
+ * @returns Array of weeks with day numbers or null for empty cells
+ */
+export const generateMonthWeeks = (year: number, month: number): (number | null)[][] => {
+  const lastDayOfMonth = new Date(year, month + 1, 0);
+  const daysInMonth = lastDayOfMonth.getDate();
+
+  // Always start at position 2 (after 2 empty cells) for consistent layout
+  const firstDayOfWeek = 2;
+
+  // Create a 2D array for the calendar grid
+  const weeks = [];
+  let week = Array(7).fill(null);
+  let dayCounter = 1;
+
+  // Start filling from position 2 (after 2 empty cells)
+  for (let i = firstDayOfWeek; i < 7 && dayCounter <= daysInMonth; i++) {
+    week[i] = dayCounter++;
+  }
+  weeks.push(week);
+
+  // Continue filling subsequent weeks
+  while (dayCounter <= daysInMonth) {
+    week = Array(7).fill(null);
+    for (let i = 0; i < 7 && dayCounter <= daysInMonth; i++) {
+      week[i] = dayCounter++;
+    }
+    weeks.push(week);
+  }
+
+  return weeks;
+};
+
+/**
+ * Generates the list of months to display in calendar
+ * @param startYear Starting year
+ * @param startMonth Starting month (0-based)
+ * @param endYear Ending year
+ * @returns Array of month/year objects
+ */
+export const generateCalendarMonths = (
+  startYear: number = 2012,
+  startMonth: number = 0,
+  endYear?: number
+): { month: number; year: number }[] => {
+  const months = [];
+  const currentDate = new Date();
+  const finalEndYear = endYear || currentDate.getFullYear() + 5;
+
+  for (let year = startYear; year <= finalEndYear; year++) {
+    const monthStart = year === startYear ? startMonth : 0;
+    for (let month = monthStart; month <= 11; month++) {
+      months.push({ month, year });
+    }
+  }
+
+  return months;
+};
+
+/**
+ * Gets month name from month index
+ * @param monthIndex Month index (0-based)
+ * @returns Month name
+ */
+export const getMonthName = (monthIndex: number): string => {
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
+  return monthNames[monthIndex];
+};
+
+/**
+ * Gets day names for calendar header
+ * @returns Array of day names
+ */
+export const getDayNames = (): string[] => {
+  return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+};
+
+/**
+ * Calculates the height of a single month in the calendar
+ * @returns Height in pixels
+ */
+export const getMonthHeight = (): number => {
+  // Month header + max 6 weeks * row height
+  // These values should match your token values
+  return 40 + (6 * 40); // Adjust based on your actual token values
+};
+
+/**
+ * Calculates which months should be visible in the viewport
+ * @param scrollTop Current scroll position
+ * @param containerHeight Height of the scrollable container
+ * @param months Array of all months
+ * @param monthHeight Height of each month
+ * @param buffer Number of months to render outside viewport for smooth scrolling
+ * @returns Object with start/end indices and visible months
+ */
+export const getVisibleMonths = (
+  scrollTop: number,
+  containerHeight: number,
+  months: { month: number; year: number }[],
+  monthHeight: number,
+  buffer: number = 12 // Large buffer for seamless scrolling
+): {
+  startIndex: number;
+  endIndex: number;
+  visibleMonths: { month: number; year: number; index: number }[];
+  totalHeight: number;
+} => {
+  const totalHeight = months.length * monthHeight;
+  
+  const startIndex = Math.max(0, Math.floor(scrollTop / monthHeight) - buffer);
+  const endIndex = Math.min(
+    months.length - 1,
+    Math.ceil((scrollTop + containerHeight) / monthHeight) + buffer
+  );
+
+  const visibleMonths = months
+    .slice(startIndex, endIndex + 1)
+    .map((month, i) => ({
+      ...month,
+      index: startIndex + i,
+    }));
+
+  return {
+    startIndex,
+    endIndex,
+    visibleMonths,
+    totalHeight,
+  };
+};
+
+/**
+ * Throttle function to limit how often a function can be called
+ * @param func Function to throttle
+ * @param limit Time limit in milliseconds
+ * @returns Throttled function
+ */
+export const throttle = <T extends (...args: any[]) => any>(
+  func: T,
+  limit: number
+): ((...args: Parameters<T>) => void) => {
+  let inThrottle: boolean;
+  return function (this: any, ...args: Parameters<T>) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
+
+/**
+ * Calculates the top offset for a month at a given index
+ * @param index Month index
+ * @param monthHeight Height of each month
+ * @returns Top offset in pixels
+ */
+export const getMonthOffset = (index: number, monthHeight: number): number => {
+  return index * monthHeight;
+};
+
+/**
+ * Finds the month that contains today's date
+ * @param months Array of months
+ * @param today Today's date
+ * @returns Index of the month containing today
+ */
+export const findCurrentMonthIndex = (
+  months: { month: number; year: number }[],
+  today: Date
+): number => {
+  return months.findIndex(
+    ({ month, year }) =>
+      month === today.getMonth() && year === today.getFullYear()
+  );
+};
+
+/**
+ * Scrolls to a specific month
+ * @param monthIndex Index of the month to scroll to
+ * @param monthHeight Height of each month
+ * @returns Scroll position
+ */
+export const getScrollToMonth = (monthIndex: number, monthHeight: number): number => {
+  return monthIndex * monthHeight;
+};
+
+/**
+ * Gets all the states for a date cell
+ * @param date The date to check
+ * @param selectedRange Current selected range
+ * @param today Today's date
+ * @param disableFutureDates Whether future dates are disabled
+ * @param disablePastDates Whether past dates are disabled
+ * @returns Object with all date states
+ */
+export const getDateCellStates = (
+  date: Date,
+  selectedRange: DateRange,
+  today: Date,
+  disableFutureDates: boolean = false,
+  disablePastDates: boolean = false
+) => {
+  const isStart = isStartDate(date, selectedRange);
+  const isEnd = isEndDate(date, selectedRange);
+  const isRangeDay = isInSelectedRange(date, selectedRange);
+  const isTodayDay = isDateToday(date, today);
+  const isSingleDate = isStart && isEnd;
+  const isDisabled = Boolean(
+    (disableFutureDates && date > today) || (disablePastDates && date < today)
+  );
+
+  return {
+    isStart,
+    isEnd,
+    isRangeDay,
+    isTodayDay,
+    isSingleDate,
+    isDisabled,
+  };
+};
+
+/**
+ * Gets the appropriate styles for a date cell
+ * @param dateStates Object containing all date states
+ * @param tokens Date range picker tokens
+ * @returns Combined styles object
+ */
+export const getDateCellStyles = (
+  dateStates: ReturnType<typeof getDateCellStates>,
+  tokens: any
+) => {
+  const { isStart, isEnd, isRangeDay, isTodayDay, isSingleDate, isDisabled } = dateStates;
+  
+  let cellStyles = { ...tokens.calendar.dayCell };
+
+  if (isSingleDate) {
+    cellStyles = { ...cellStyles, ...tokens.calendar.singleDate };
+  } else if (isStart) {
+    cellStyles = { ...cellStyles, ...tokens.calendar.startDate };
+  } else if (isEnd) {
+    cellStyles = { ...cellStyles, ...tokens.calendar.endDate };
+  } else if (isRangeDay) {
+    cellStyles = { ...cellStyles, ...tokens.calendar.rangeDay };
+  } else if (isTodayDay) {
+    cellStyles = { ...cellStyles, ...tokens.calendar.todayDay };
+  }
+
+  if (isDisabled) {
+    cellStyles = { ...cellStyles, ...tokens.states.disabledDay };
+  }
+
+  return cellStyles;
+};
+
+/**
+ * Gets the appropriate text color for a date cell
+ * @param dateStates Object containing all date states
+ * @param tokens Date range picker tokens
+ * @returns Text color string
+ */
+export const getDateCellTextColor = (
+  dateStates: ReturnType<typeof getDateCellStates>,
+  tokens: any
+): string => {
+  const { isStart, isEnd, isSingleDate, isTodayDay, isRangeDay } = dateStates;
+
+  if (isStart || isEnd || isSingleDate) {
+    return tokens.text.selectedDay.color;
+  }
+  if (isTodayDay && !isRangeDay) {
+    return tokens.text.todayDay.color;
+  }
+  return tokens.text.dayNumber.color;
+};
+
+/**
+ * Determines if a today indicator should be shown
+ * @param dateStates Object containing all date states
+ * @returns Boolean indicating if today indicator should be shown
+ */
+export const shouldShowTodayIndicator = (
+  dateStates: ReturnType<typeof getDateCellStates>
+): boolean => {
+  const { isTodayDay, isStart, isEnd, isRangeDay } = dateStates;
+  return isTodayDay && !isStart && !isEnd && !isRangeDay;
+};

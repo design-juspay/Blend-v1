@@ -90,7 +90,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
     const today = new Date();
 
-    // Update state when value prop changes
     useEffect(() => {
       if (value) {
         setSelectedRange(value);
@@ -101,7 +100,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
     }, [value, dateFormat]);
 
-    // Format the date display for the input
     const formatDateDisplay = () => {
       if (!selectedRange.startDate) {
         return 'Select date range';
@@ -231,9 +229,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       onChange?.(selectedRange);
     };
 
-    // Handle cancel button click
     const handleCancel = useCallback(() => {
-      // Reset to the original value
       if (value) {
         setSelectedRange(value);
         setStartDate(formatDate(value.startDate, dateFormat));
@@ -244,7 +240,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       setIsOpen(false);
     }, [value, dateFormat]);
 
-    // Close both dropdowns when disabled
     useEffect(() => {
       if (isDisabled) {
         setIsOpen(false);
@@ -341,8 +336,9 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                 >
                   <Block>
                     <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`}}>
-                      <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
-                        <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>Start</Block>
+                      <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                        <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
+                        <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
                         <StyledInput
                           type="text"
                           placeholder="DD/MM/YYYY"
@@ -352,13 +348,15 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                         {showTimePickerState && (
                           <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
                         )}
+                        </Block>
                       </Block>
 
                       {(!allowSingleDateSelection || 
                           (allowSingleDateSelection && 
                           selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
-                        <Block display='flex' gap={FOUNDATION_THEME.unit[8]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
-                          <Block as='span' style={{...dateRangePickerTokens.text.label}} width={80}>End</Block>
+                        <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                          <Block as='span' style={{...dateRangePickerTokens.text.label}}>End</Block>
+                          <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
                           <StyledInput
                             type="text"
                             placeholder="DD/MM/YYYY"
@@ -367,18 +365,16 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                           />
                           {showTimePickerState && (
                             <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
-                          )}
+                            )}
+                          </Block>
                         </Block>
                       )}
                     </Block>
 
                     <Block 
                       style={{
-                        marginTop: FOUNDATION_THEME.unit[16], 
-                        maxHeight: '300px', 
-                        overflowY: 'auto',
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none',
+                        height: '300px', 
+                        overflow: 'hidden',
                       }} 
                     >
                       <CalendarGrid
@@ -391,7 +387,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                       />
                     </Block>
 
-                    <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`} marginTop={FOUNDATION_THEME.unit[16]}>
+                    <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}>
                       <Block display='flex' alignItems='center'>
                       <Switch
                           checked={showTimePickerState}

@@ -1,5 +1,6 @@
 import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
+import { FoundationTokenType } from "../../tokens/theme.token";
 
 type DateRangePickerTokens = {
   base: {
@@ -119,8 +120,7 @@ const dateRangePickerTokens: DateRangePickerTokens = {
   },
   calendar: {
     container: {
-      width: "auto",
-      minWidth: '398px',
+      width: "100%",
       backgroundColor: FOUNDATION_THEME.colors.gray[0],
       border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
       borderRadius: FOUNDATION_THEME.border.radius[8],
@@ -130,7 +130,6 @@ const dateRangePickerTokens: DateRangePickerTokens = {
     gridContainer: {
       maxHeight: '400px',
       overflowY: "auto",
-      padding: FOUNDATION_THEME.unit[16],
     },
     monthContainer: {
       marginBottom: FOUNDATION_THEME.unit[24],
@@ -139,30 +138,30 @@ const dateRangePickerTokens: DateRangePickerTokens = {
       fontSize: `${FOUNDATION_THEME.font.size.body.lg.fontSize}px`,
       fontWeight: 600,
       color: FOUNDATION_THEME.colors.gray[700],
-      margin: `${FOUNDATION_THEME.unit[4]} 0`,
+      padding: `${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[12]}`,
     },
     dayNamesContainer: {
       display: "grid",
       gridTemplateColumns: "repeat(7, 1fr)",
       textAlign: "center",
       color: FOUNDATION_THEME.colors.gray[500],
+      padding: `0 ${FOUNDATION_THEME.unit[8]}`,
     },
     dayName: {
-      padding: FOUNDATION_THEME.unit[8],
-      borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[100]}`,
+      padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[8]}`,
     },
     weekRow: {
       display: "grid",
       gridTemplateColumns: "repeat(7, 1fr)",
-      padding: `${FOUNDATION_THEME.unit[4]} 0`,
+      padding: `0 ${FOUNDATION_THEME.unit[12]}`,
     },
     emptyCell: {
-      padding: FOUNDATION_THEME.unit[8],
+      padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[8]}`,
     },
     dayCell: {
       cursor: "pointer",
       textAlign: "center",
-      padding: FOUNDATION_THEME.unit[8],
+      padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[8]}`,
       position: "relative",
       fontWeight: 500,
       boxSizing: "border-box",
@@ -246,6 +245,7 @@ const dateRangePickerTokens: DateRangePickerTokens = {
   text: {
     label: {
       color: FOUNDATION_THEME.colors.gray[400],
+      minWidth: FOUNDATION_THEME.unit[36],
     },
     value: {
       color: FOUNDATION_THEME.colors.gray[600],
@@ -352,5 +352,24 @@ const dateRangePickerTokens: DateRangePickerTokens = {
     },
   },
 };
+
+export type CalendarType = {
+  base: {
+    container: CSSObject;
+  };
+}
+
+export const getCalendarToken = (foundationToken:  FoundationTokenType )  : CalendarType => { 
+  return {
+    base: {
+      container: {
+        position: "relative",
+        display: "inline-flex",
+        width: foundationToken.unit[40],
+      },
+    },
+  }
+}
+
 
 export default dateRangePickerTokens; 
