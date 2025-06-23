@@ -14,32 +14,126 @@ import { Menu, MenuAlignment, MenuV2GroupType } from "../Menu";
  * @feature Includes optional main label, secondary "optional" label, and hint text.
  * @feature Allows for a custom slot (e.g., an icon) within the trigger.
  * @feature Utilizes the `Menu` component for displaying items.
- * @example
+ * @example Basic Usage
  * ```tsx
- * import Dropdown from "./components/Dropdown"; // Assuming path
- * import { MenuV2GroupType, MenuItemType } from "./components/Menu"; // Assuming path
- * import { User } from "lucide-react";
+ * import { Dropdown, MenuV2GroupType } from "blend-v1";
  *
  * const menuItems: MenuV2GroupType[] = [
  *   {
  *     items: [
- *       { label: "Profile", value: "profile", onSelect: () => console.log("Profile selected") },
- *       { label: "Settings", value: "settings", onSelect: () => console.log("Settings selected") },
- *     ]
- *   },
- *   {
- *     label: "Actions",
- *     items: [
- *       { label: "Logout", value: "logout", onSelect: () => console.log("Logout selected"), isDanger: true },
+ *       { label: "Profile", onClick: () => console.log("Profile selected") },
+ *       { label: "Settings", onClick: () => console.log("Settings selected") },
  *     ]
  *   }
  * ];
  *
  * <Dropdown
  *   label="User Options"
- *   optionalLabel="(click to select)"
- *   hintText="Choose an action from the menu."
+ *   items={menuItems}
+ * />
+ * ```
+ * @example Intermediate Usage with Custom Labels and Icon
+ * ```tsx
+ * import { Dropdown, MenuV2GroupType } from "blend-v1";
+ * import { User, Settings, HelpCircle } from "lucide-react";
+ *
+ * const menuItems: MenuV2GroupType[] = [
+ *   {
+ *     items: [
+ *       { 
+ *         label: "My Profile", 
+ *         onClick: () => console.log("Profile selected"),
+ *         slot1: <User size={16} />
+ *       },
+ *       { 
+ *         label: "Account Settings", 
+ *         onClick: () => console.log("Settings selected"),
+ *         slot1: <Settings size={16} />
+ *       },
+ *       { 
+ *         label: "Help & Support", 
+ *         onClick: () => console.log("Help selected"),
+ *         slot1: <HelpCircle size={16} />
+ *       },
+ *     ]
+ *   }
+ * ];
+ *
+ * <Dropdown
+ *   label="Account Actions"
+ *   optionalLabel="(choose an option)"
+ *   hintText="Select an action to perform on your account"
  *   slot={<User size={16} />}
+ *   items={menuItems}
+ * />
+ * ```
+ * @example Advanced Usage with Multiple Groups and Actions
+ * ```tsx
+ * import { 
+ *   Dropdown, 
+ *   MenuV2GroupType, 
+ *   MenuItemV2Variant, 
+ *   MenuItemV2ActionType 
+ * } from "blend-v1";
+ * import { User, Settings, LogOut, Shield, CreditCard } from "lucide-react";
+ *
+ * const menuItems: MenuV2GroupType[] = [
+ *   {
+ *     label: "Account",
+ *     items: [
+ *       { 
+ *         label: "View Profile", 
+ *         onClick: () => console.log("Profile selected"),
+ *         slot1: <User size={16} />,
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *       { 
+ *         label: "Account Settings", 
+ *         onClick: () => console.log("Settings selected"),
+ *         slot1: <Settings size={16} />,
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *       { 
+ *         label: "Billing & Plans", 
+ *         onClick: () => console.log("Billing selected"),
+ *         slot1: <CreditCard size={16} />,
+ *         subLabel: "Manage payments",
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *     ],
+ *     showSeparator: true
+ *   },
+ *   {
+ *     label: "Security",
+ *     items: [
+ *       { 
+ *         label: "Privacy Settings", 
+ *         onClick: () => console.log("Privacy selected"),
+ *         slot1: <Shield size={16} />,
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *     ],
+ *     showSeparator: true
+ *   },
+ *   {
+ *     label: "Actions",
+ *     items: [
+ *       { 
+ *         label: "Sign Out", 
+ *         onClick: () => console.log("Logout selected"), 
+ *         variant: MenuItemV2Variant.ACTION,
+ *         actionType: MenuItemV2ActionType.DANGER,
+ *         slot1: <LogOut size={16} />
+ *       },
+ *     ]
+ *   }
+ * ];
+ *
+ * <Dropdown
+ *   label="User Account"
+ *   optionalLabel="(required action)"
+ *   hintText="Choose an action to manage your account and settings"
+ *   slot={<User size={18} />}
  *   items={menuItems}
  * />
  * ```

@@ -7,30 +7,100 @@ import { ReactNode } from "react";
  * @feature Displays hierarchical navigation structures.
  * @feature Supports collapsible sections.
  * @feature Customizable items with labels, icons (slots), and actions (onClick/href).
- * @example
+ * @example Basic Usage
  * ```tsx
- * import { Directory, DirectoryData, NavbarItem } from "./components/Directory"; // Assuming path
+ * import { Directory, DirectoryData, NavbarItem } from "blend-v1";
  *
  * const directoryItems: DirectoryData[] = [
  *   {
  *     label: "General",
- *     isCollapsible: true,
- *     defaultOpen: true,
  *     items: [
  *       { label: "Dashboard", href: "/dashboard" },
  *       { label: "Profile", href: "/profile" },
  *     ],
  *   },
+ * ];
+ *
+ * <Directory directoryData={directoryItems} />
+ * ```
+ * @example Intermediate Usage with Icons and Actions
+ * ```tsx
+ * import { Directory, DirectoryData, NavbarItem } from "blend-v1";
+ * import { Home, User, Settings, Bell } from "lucide-react";
+ *
+ * const directoryItems: DirectoryData[] = [
  *   {
- *     label: "Settings",
+ *     label: "Navigation",
  *     items: [
- *       { label: "Account", href: "/settings/account" },
- *       { label: "Preferences", onClick: () => console.log("Prefs clicked") },
+ *       { 
+ *         label: "Dashboard", 
+ *         href: "/dashboard",
+ *         leftSlot: <Home size={16} />
+ *       },
+ *       { 
+ *         label: "Profile", 
+ *         onClick: () => console.log("Profile clicked"),
+ *         leftSlot: <User size={16} />,
+ *         rightSlot: <span>Updated</span>
+ *       },
  *     ],
  *   },
  * ];
  *
  * <Directory directoryData={directoryItems} />
+ * ```
+ * @example Advanced Usage with Collapsible Sections and Nested Items
+ * ```tsx
+ * import { Directory, DirectoryData, NavbarItem } from "blend-v1";
+ * import { Home, User, Settings, Bell, ChevronRight } from "lucide-react";
+ *
+ * const directoryItems: DirectoryData[] = [
+ *   {
+ *     label: "Main Navigation",
+ *     isCollapsible: true,
+ *     defaultOpen: true,
+ *     items: [
+ *       { 
+ *         label: "Dashboard", 
+ *         href: "/dashboard",
+ *         leftSlot: <Home size={16} />
+ *       },
+ *       { 
+ *         label: "User Management", 
+ *         leftSlot: <User size={16} />,
+ *         rightSlot: <ChevronRight size={14} />,
+ *         items: [
+ *           { label: "All Users", href: "/users" },
+ *           { label: "Add User", href: "/users/add" },
+ *           { label: "User Roles", href: "/users/roles" },
+ *         ]
+ *       },
+ *     ],
+ *   },
+ *   {
+ *     label: "Settings",
+ *     isCollapsible: true,
+ *     defaultOpen: false,
+ *     items: [
+ *       { 
+ *         label: "General Settings", 
+ *         href: "/settings/general",
+ *         leftSlot: <Settings size={16} />
+ *       },
+ *       { 
+ *         label: "Notifications", 
+ *         onClick: () => console.log("Notifications clicked"),
+ *         leftSlot: <Bell size={16} />,
+ *         rightSlot: <span style={{ color: 'red' }}>3</span>
+ *       },
+ *     ],
+ *   },
+ * ];
+ *
+ * <Directory 
+ *   directoryData={directoryItems} 
+ *   className="custom-directory"
+ * />
  * ```
  */
 export type DirectoryProps = {

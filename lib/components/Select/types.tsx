@@ -81,12 +81,9 @@ export type SelectMenuGroupType = {
  * @feature Items can be grouped and include sub-menus.
  * @feature Customizable trigger, alignment, side, and offsets.
  * @feature Optional search functionality within the menu.
- * @example
+ * @example Basic Single Select Usage
  * ```tsx
- * // This example shows usage with a hypothetical Select component that uses SelectMenuProps.
- * // See MultiSelect for a concrete example of a component using similar types.
- * import { Select, SelectMenuProps, SelectMenuGroupType } from "./components/Select"; // Assuming path
- * import { Button } from "./components/Button"; // Assuming path
+ * import { Select, SelectMenuGroupType, SelectMenuAlignment, SelectMenuSide } from "blend-v1";
  * import { useState } from "react";
  *
  * const selectOptions: SelectMenuGroupType[] = [
@@ -100,18 +97,176 @@ export type SelectMenuGroupType = {
  *   },
  * ];
  *
- * function MySelectComponent() {
+ * function ColorSelector() {
  *   const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
  *
  *   return (
- *     <Select // Hypothetical Select component
- *       trigger={<Button text={selectedValue ? `Selected: ${selectedValue}` : "Select a color"} />}
+ *     <Select
  *       items={selectOptions}
  *       selected={selectedValue}
  *       onSelect={(value) => setSelectedValue(value as string)}
- *       alignment="start"
- *       side="bottom"
+ *       alignment={SelectMenuAlignment.START}
+ *       side={SelectMenuSide.BOTTOM}
  *     />
+ *   );
+ * }
+ * ```
+ * @example Intermediate Multi-Select with Custom Trigger
+ * ```tsx
+ * import { 
+ *   Select, 
+ *   SelectMenuGroupType, 
+ *   SelectMenuAlignment, 
+ *   SelectMenuSide,
+ *   Button,
+ *   ButtonType 
+ * } from "blend-v1";
+ * import { useState } from "react";
+ * import { ChevronDown } from "lucide-react";
+ *
+ * const categoryOptions: SelectMenuGroupType[] = [
+ *   {
+ *     groupLabel: "Development",
+ *     items: [
+ *       { label: "Frontend", value: "frontend" },
+ *       { label: "Backend", value: "backend" },
+ *       { label: "Full Stack", value: "fullstack" },
+ *     ],
+ *   },
+ *   {
+ *     groupLabel: "Design",
+ *     items: [
+ *       { label: "UI/UX Design", value: "uiux" },
+ *       { label: "Graphic Design", value: "graphic" },
+ *       { label: "Product Design", value: "product" },
+ *     ],
+ *   },
+ * ];
+ *
+ * function SkillSelector() {
+ *   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+ *
+ *   return (
+ *     <Select
+ *       trigger={
+ *         <Button
+ *           text={selectedValues.length > 0 ? `${selectedValues.length} skills selected` : "Select skills"}
+ *           buttonType={ButtonType.SECONDARY}
+ *           trailingIcon={ChevronDown}
+ *         />
+ *       }
+ *       items={categoryOptions}
+ *       selected={selectedValues}
+ *       onSelect={(values) => setSelectedValues(values as string[])}
+ *       allowMultiSelect={true}
+ *       enableSearch={true}
+ *       alignment={SelectMenuAlignment.START}
+ *       side={SelectMenuSide.BOTTOM}
+ *       maxHeight={300}
+ *     />
+ *   );
+ * }
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { 
+ *   Select, 
+ *   SelectMenuGroupType, 
+ *   SelectMenuAlignment, 
+ *   SelectMenuSide,
+ *   SelectMenuSize,
+ *   SelectMenuVariant,
+ *   Button,
+ *   ButtonType 
+ * } from "blend-v1";
+ * import { useState, useRef } from "react";
+ * import { User, Building, MapPin, ChevronDown, Check } from "lucide-react";
+ *
+ * const locationOptions: SelectMenuGroupType[] = [
+ *   {
+ *     groupLabel: "United States",
+ *     items: [
+ *       { 
+ *         label: "New York", 
+ *         value: "ny",
+ *         subLabel: "East Coast",
+ *         slot1: <MapPin size={16} />,
+ *         slot4: <span style={{ color: '#10b981' }}>Available</span>
+ *       },
+ *       { 
+ *         label: "San Francisco", 
+ *         value: "sf",
+ *         subLabel: "West Coast",
+ *         slot1: <MapPin size={16} />,
+ *         slot4: <span style={{ color: '#f59e0b' }}>Limited</span>
+ *       },
+ *       { 
+ *         label: "Chicago", 
+ *         value: "chi",
+ *         subLabel: "Midwest",
+ *         slot1: <MapPin size={16} />,
+ *         disabled: true
+ *       },
+ *     ],
+ *     showSeparator: true
+ *   },
+ *   {
+ *     groupLabel: "Europe",
+ *     items: [
+ *       { 
+ *         label: "London", 
+ *         value: "london",
+ *         subLabel: "United Kingdom",
+ *         slot1: <MapPin size={16} />,
+ *         slot4: <span style={{ color: '#10b981' }}>Available</span>
+ *       },
+ *       { 
+ *         label: "Amsterdam", 
+ *         value: "amsterdam",
+ *         subLabel: "Netherlands",
+ *         slot1: <MapPin size={16} />,
+ *         slot4: <span style={{ color: '#10b981' }}>Available</span>
+ *       },
+ *     ],
+ *   },
+ * ];
+ *
+ * function LocationSelector() {
+ *   const [selectedLocations, setSelectedLocations] = useState<string[]>(['ny']);
+ *   const boundaryRef = useRef<HTMLDivElement>(null);
+ *
+ *   const handleSelect = (values: string | string[]) => {
+ *     setSelectedLocations(Array.isArray(values) ? values : [values]);
+ *   };
+ *
+ *   return (
+ *     <div ref={boundaryRef} style={{ padding: '20px', border: '1px solid #ccc' }}>
+ *       <Select
+ *         trigger={
+ *           <Button
+ *             text={
+ *               selectedLocations.length === 0 
+ *                 ? "Choose office locations" 
+ *                 : `${selectedLocations.length} location${selectedLocations.length > 1 ? 's' : ''} selected`
+ *             }
+ *             buttonType={ButtonType.SECONDARY}
+ *             leadingIcon={Building}
+ *             trailingIcon={ChevronDown}
+ *           />
+ *         }
+ *         items={locationOptions}
+ *         selected={selectedLocations}
+ *         onSelect={handleSelect}
+ *         allowMultiSelect={true}
+ *         enableSearch={true}
+ *         alignment={SelectMenuAlignment.CENTER}
+ *         side={SelectMenuSide.BOTTOM}
+ *         sideOffset={8}
+ *         alignOffset={0}
+ *         maxHeight={400}
+ *         collisonBoundaryRef={boundaryRef.current}
+ *       />
+ *     </div>
  *   );
  * }
  * ```

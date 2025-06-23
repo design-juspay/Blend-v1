@@ -16,6 +16,91 @@ import { forwardRef } from "react";
 import { useComponentToken } from "../../context/useComponentToken";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 
+/**
+ * @description A prominent message component that displays important information to users, supporting various visual states and interactive actions.
+ * Alert components are essential for communicating status, warnings, errors, or success messages with clear call-to-action options.
+ * @feature Multiple visual variants (primary, success, warning, error, purple, orange, neutral)
+ * @feature Two visual styles (subtle, no-fill) for different emphasis levels
+ * @feature Primary and secondary action buttons for user interaction
+ * @feature Optional close functionality with customizable placement
+ * @feature Icon support for enhanced visual communication
+ * @feature Flexible action button placement (right or bottom)
+ * @example Basic Success Alert
+ * ```tsx
+ * import { Alert, AlertVariant } from "blend-v1";
+ * import { CheckCircle } from "lucide-react";
+ *
+ * <Alert
+ *   variant={AlertVariant.SUCCESS}
+ *   heading="Profile Updated Successfully"
+ *   description="Your profile information has been saved and is now live."
+ *   icon={<CheckCircle size={16} />}
+ *   onClose={() => console.log("Alert dismissed")}
+ * />
+ * ```
+ * @example Intermediate Warning Alert with Actions
+ * ```tsx
+ * import { Alert, AlertVariant, AlertStyle, AlertActionPlacement } from "blend-v1";
+ * import { AlertTriangle } from "lucide-react";
+ *
+ * <Alert
+ *   variant={AlertVariant.WARNING}
+ *   style={AlertStyle.NO_FILL}
+ *   heading="Storage Almost Full"
+ *   description="You're using 90% of your storage space. Consider upgrading your plan or removing unused files."
+ *   icon={<AlertTriangle size={16} />}
+ *   primaryAction={{
+ *     label: "Upgrade Plan",
+ *     onClick: () => console.log("Navigating to upgrade")
+ *   }}
+ *   secondaryAction={{
+ *     label: "Manage Files",
+ *     onClick: () => console.log("Opening file manager")
+ *   }}
+ *   actionPlacement={AlertActionPlacement.BOTTOM}
+ * />
+ * ```
+ * @example Advanced Error Alert with All Props
+ * ```tsx
+ * import { 
+ *   Alert, 
+ *   AlertVariant, 
+ *   AlertStyle, 
+ *   AlertActionPlacement 
+ * } from "blend-v1";
+ * import { XCircle } from "lucide-react";
+ *
+ * const handleRetry = () => {
+ *   console.log("Retrying operation...");
+ * };
+ *
+ * const handleSupport = () => {
+ *   console.log("Contacting support...");
+ * };
+ *
+ * const handleDismiss = () => {
+ *   console.log("Error dismissed");
+ * };
+ *
+ * <Alert
+ *   variant={AlertVariant.ERROR}
+ *   style={AlertStyle.SUBTLE}
+ *   heading="Payment Processing Failed"
+ *   description="We couldn't process your payment. Please check your payment method and try again, or contact support if the issue persists."
+ *   icon={<XCircle size={16} />}
+ *   primaryAction={{
+ *     label: "Retry Payment",
+ *     onClick: handleRetry
+ *   }}
+ *   secondaryAction={{
+ *     label: "Contact Support",
+ *     onClick: handleSupport
+ *   }}
+ *   onClose={handleDismiss}
+ *   actionPlacement={AlertActionPlacement.RIGHT}
+ * />
+ * ```
+ */
 const Alert = forwardRef<HTMLDivElement, AlertProps>(
   (
     {

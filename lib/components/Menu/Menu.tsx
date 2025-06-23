@@ -204,41 +204,283 @@ const dummyMenuItems: MenuV2GroupType[] = [
 ];
 
 /**
- * @description The Menu component displays a list of options or actions, often triggered by a button or other element.
- * It supports grouped items, sub-menus, and various visual customizations.
- * The props for this component are defined in `MenuV2Props` in `./types.tsx`.
- * @feature Displays a list of interactive items, potentially grouped and with separators.
- * @feature Customizable trigger element.
- * @feature Supports sub-menus for hierarchical navigation.
- * @feature Control over menu alignment, side, and offsets relative to the trigger.
- * @feature Optional modal display mode.
- * @feature Optional search functionality within the menu.
- * @example
+ * @description A versatile dropdown menu component that displays a list of interactive items, supporting grouping, sub-menus, search functionality, and various action types.
+ * Essential for context menus, navigation dropdowns, action menus, and complex hierarchical option lists.
+ * @feature Grouped menu items with optional labels and separators
+ * @feature Hierarchical sub-menus for nested navigation
+ * @feature Search functionality to filter menu items
+ * @feature Multiple item variants (default, action) with different styling
+ * @feature Action types (primary, danger) for different action contexts
+ * @feature Customizable trigger element and positioning
+ * @feature Icon slots for enhanced visual communication
+ * @feature Modal display mode for mobile-friendly interfaces
+ * @example Basic User Menu
  * ```tsx
- * import { Menu, MenuAlignment, MenuSide, MenuV2GroupType } from "./components/Menu"; // Assuming path
- * import { Button } from "./components/Button"; // Assuming path
+ * import { 
+ *   Menu, 
+ *   MenuV2GroupType, 
+ *   MenuItemV2Variant, 
+ *   MenuAlignment 
+ * } from "blend-v1";
+ * import { User, Settings, LogOut } from "lucide-react";
  *
- * const menuItems: MenuV2GroupType[] = [
- *   {
- *     label: "File",
- *     items: [
- *       { label: "New", onClick: () => console.log("New clicked") },
- *       { label: "Open", subMenu: [{ label: "Recent File 1" }] },
- *     ],
- *     showSeparator: true,
- *   },
+ * const userMenuItems: MenuV2GroupType[] = [
  *   {
  *     items: [
- *       { label: "Exit", variant: "action", actionType: "danger", onClick: () => console.log("Exit") },
- *     ],
- *   },
+ *       {
+ *         label: "View Profile",
+ *         onClick: () => console.log("Profile clicked"),
+ *         slot1: <User size={16} />,
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *       {
+ *         label: "Settings",
+ *         onClick: () => console.log("Settings clicked"),
+ *         slot1: <Settings size={16} />,
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *       {
+ *         label: "Sign Out",
+ *         onClick: () => console.log("Sign out clicked"),
+ *         slot1: <LogOut size={16} />,
+ *         variant: MenuItemV2Variant.ACTION,
+ *         actionType: MenuItemV2ActionType.DANGER
+ *       }
+ *     ]
+ *   }
  * ];
  *
  * <Menu
- *   trigger={<Button text="Open Menu" />}
- *   items={menuItems}
+ *   trigger={<button>User Menu</button>}
+ *   items={userMenuItems}
+ *   alignment={MenuAlignment.END}
+ *   enableSearch={false}
+ * />
+ * ```
+ * @example Intermediate Navigation Menu with Groups
+ * ```tsx
+ * import { 
+ *   Menu, 
+ *   MenuV2GroupType, 
+ *   MenuItemV2Variant,
+ *   MenuItemV2ActionType,
+ *   MenuAlignment,
+ *   MenuSide 
+ * } from "blend-v1";
+ * import { 
+ *   FileText, 
+ *   Users, 
+ *   BarChart, 
+ *   Settings, 
+ *   Plus,
+ *   Download 
+ * } from "lucide-react";
+ *
+ * const workspaceMenuItems: MenuV2GroupType[] = [
+ *   {
+ *     label: "Quick Actions",
+ *     showSeparator: true,
+ *     items: [
+ *       {
+ *         label: "New Document",
+ *         onClick: () => console.log("Creating new document"),
+ *         slot1: <Plus size={16} />,
+ *         variant: MenuItemV2Variant.ACTION,
+ *         actionType: MenuItemV2ActionType.PRIMARY
+ *       },
+ *       {
+ *         label: "Export Data",
+ *         onClick: () => console.log("Exporting data"),
+ *         slot1: <Download size={16} />,
+ *         subLabel: "Download as CSV or PDF"
+ *       }
+ *     ]
+ *   },
+ *   {
+ *     label: "Navigation",
+ *     items: [
+ *       {
+ *         label: "Documents",
+ *         onClick: () => console.log("Navigate to documents"),
+ *         slot1: <FileText size={16} />
+ *       },
+ *       {
+ *         label: "Team Members",
+ *         onClick: () => console.log("Navigate to team"),
+ *         slot1: <Users size={16} />,
+ *         slot4: "12 members"
+ *       },
+ *       {
+ *         label: "Analytics",
+ *         onClick: () => console.log("Navigate to analytics"),
+ *         slot1: <BarChart size={16} />
+ *       }
+ *     ]
+ *   }
+ * ];
+ *
+ * <Menu
+ *   trigger={<button>Workspace</button>}
+ *   items={workspaceMenuItems}
  *   alignment={MenuAlignment.START}
  *   side={MenuSide.BOTTOM}
+ *   sideOffset={12}
+ *   enableSearch={true}
+ * />
+ * ```
+ * @example Advanced Menu with Sub-menus and All Features
+ * ```tsx
+ * import { 
+ *   Menu, 
+ *   MenuV2GroupType, 
+ *   MenuItemV2Variant,
+ *   MenuItemV2ActionType,
+ *   MenuAlignment,
+ *   MenuSide 
+ * } from "blend-v1";
+ * import { 
+ *   FolderPlus, 
+ *   Share2, 
+ *   Trash2, 
+ *   Copy,
+ *   Edit,
+ *   Eye,
+ *   Download,
+ *   Lock,
+ *   Unlock,
+ *   Star
+ * } from "lucide-react";
+ *
+ * const advancedMenuItems: MenuV2GroupType[] = [
+ *   {
+ *     label: "File Actions",
+ *     showSeparator: true,
+ *     items: [
+ *       {
+ *         label: "View",
+ *         slot1: <Eye size={16} />,
+ *         subMenu: [
+ *           {
+ *             label: "Preview",
+ *             onClick: () => console.log("Preview file"),
+ *             variant: MenuItemV2Variant.DEFAULT
+ *           },
+ *           {
+ *             label: "Full Screen",
+ *             onClick: () => console.log("Full screen view"),
+ *             variant: MenuItemV2Variant.DEFAULT
+ *           },
+ *           {
+ *             label: "Properties",
+ *             onClick: () => console.log("Show properties"),
+ *             subLabel: "View file details"
+ *           }
+ *         ]
+ *       },
+ *       {
+ *         label: "Edit",
+ *         onClick: () => console.log("Edit file"),
+ *         slot1: <Edit size={16} />,
+ *         variant: MenuItemV2Variant.DEFAULT
+ *       },
+ *       {
+ *         label: "Duplicate",
+ *         onClick: () => console.log("Duplicate file"),
+ *         slot1: <Copy size={16} />,
+ *         subLabel: "Create a copy"
+ *       }
+ *     ]
+ *   },
+ *   {
+ *     label: "Organization",
+ *     showSeparator: true,
+ *     items: [
+ *       {
+ *         label: "Add to Favorites",
+ *         onClick: () => console.log("Added to favorites"),
+ *         slot1: <Star size={16} />,
+ *         variant: MenuItemV2Variant.ACTION,
+ *         actionType: MenuItemV2ActionType.PRIMARY
+ *       },
+ *       {
+ *         label: "Move to Folder",
+ *         slot1: <FolderPlus size={16} />,
+ *         subMenu: [
+ *           {
+ *             label: "Projects",
+ *             onClick: () => console.log("Move to Projects")
+ *           },
+ *           {
+ *             label: "Archive",
+ *             onClick: () => console.log("Move to Archive")
+ *           },
+ *           {
+ *             label: "Personal",
+ *             onClick: () => console.log("Move to Personal")
+ *           }
+ *         ]
+ *       }
+ *     ]
+ *   },
+ *   {
+ *     label: "Sharing & Security",
+ *     showSeparator: true,
+ *     items: [
+ *       {
+ *         label: "Share",
+ *         slot1: <Share2 size={16} />,
+ *         subMenu: [
+ *           {
+ *             label: "Get Link",
+ *             onClick: () => console.log("Get shareable link"),
+ *             variant: MenuItemV2Variant.ACTION,
+ *             actionType: MenuItemV2ActionType.PRIMARY
+ *           },
+ *           {
+ *             label: "Email",
+ *             onClick: () => console.log("Share via email")
+ *           },
+ *           {
+ *             label: "Download",
+ *             onClick: () => console.log("Download file"),
+ *             slot1: <Download size={16} />
+ *           }
+ *         ]
+ *       },
+ *       {
+ *         label: "Lock File",
+ *         onClick: () => console.log("Lock file"),
+ *         slot1: <Lock size={16} />,
+ *         subLabel: "Prevent editing"
+ *       }
+ *     ]
+ *   },
+ *   {
+ *     label: "Danger Zone",
+ *     items: [
+ *       {
+ *         label: "Delete",
+ *         onClick: () => console.log("Delete file"),
+ *         slot1: <Trash2 size={16} />,
+ *         variant: MenuItemV2Variant.ACTION,
+ *         actionType: MenuItemV2ActionType.DANGER,
+ *         subLabel: "Move to trash"
+ *       }
+ *     ]
+ *   }
+ * ];
+ *
+ * <Menu
+ *   trigger={<button>File Options</button>}
+ *   items={advancedMenuItems}
+ *   alignment={MenuAlignment.CENTER}
+ *   side={MenuSide.BOTTOM}
+ *   sideOffset={8}
+ *   alignOffset={0}
+ *   maxHeight={400}
+ *   enableSearch={true}
+ *   asModal={false}
+ *   collisonBoundaryRef={document.querySelector('.container')}
  * />
  * ```
  */

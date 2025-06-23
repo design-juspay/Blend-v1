@@ -52,6 +52,208 @@ const StyledTriggerContent = styled(Block)`
   justify-content: space-between;
 `;
 
+/**
+ * @description A comprehensive date range selection component with time picker support, preset ranges, and flexible customization options.
+ * Perfect for analytics dashboards, booking systems, and any application requiring date range input with advanced features.
+ * @feature Date range selection with intuitive calendar interface
+ * @feature Optional time picker for precise datetime selection
+ * @feature Preset date ranges for quick selection (Today, Last 7 Days, etc.)
+ * @feature Custom date format support
+ * @feature Future/past date restrictions
+ * @feature Single date selection mode
+ * @feature Custom trigger element support
+ * @feature Responsive design with mobile-friendly interface
+ * @example Basic Date Range Picker
+ * ```tsx
+ * import { DateRangePicker, DateRange } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function BasicDatePicker() {
+ *   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+ * 
+ *   return (
+ *     <DateRangePicker
+ *       value={dateRange}
+ *       onChange={setDateRange}
+ *       placeholder="Select date range"
+ *       showPresets={true}
+ *       dateFormat="MM/dd/yyyy"
+ *     />
+ *   );
+ * }
+ * ```
+ * @example Intermediate Analytics Date Picker
+ * ```tsx
+ * import { 
+ *   DateRangePicker, 
+ *   DateRange, 
+ *   DateRangePreset 
+ * } from "blend-v1";
+ * import { useState } from "react";
+ * import { Calendar, BarChart3 } from "lucide-react";
+ * 
+ * function AnalyticsDatePicker() {
+ *   const [dateRange, setDateRange] = useState<DateRange>({
+ *     startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+ *     endDate: new Date()
+ *   });
+ * 
+ *   const handleDateChange = (range: DateRange) => {
+ *     setDateRange(range);
+ *     // Trigger analytics data refresh
+ *     console.log("Fetching analytics for:", range);
+ *   };
+ * 
+ *   return (
+ *     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+ *       <BarChart3 size={20} color="#6b7280" />
+ *       <DateRangePicker
+ *         value={dateRange}
+ *         onChange={handleDateChange}
+ *         showTimePicker={false}
+ *         showPresets={true}
+ *         disableFutureDates={true}
+ *         dateFormat="MMM dd, yyyy"
+ *         ariaLabel="Select analytics date range"
+ *         className="analytics-date-picker"
+ *       />
+ *     </div>
+ *   );
+ * }
+ * ```
+ * @example Advanced Booking System Date Picker
+ * ```tsx
+ * import { 
+ *   DateRangePicker, 
+ *   DateRange,
+ *   DateRangePreset 
+ * } from "blend-v1";
+ * import { useState } from "react";
+ * import { Clock, MapPin, Users } from "lucide-react";
+ * 
+ * function BookingDatePicker() {
+ *   const [checkInOut, setCheckInOut] = useState<DateRange | undefined>();
+ *   const [isDisabled, setIsDisabled] = useState(false);
+ * 
+ *   const tomorrow = new Date();
+ *   tomorrow.setDate(tomorrow.getDate() + 1);
+ * 
+ *   const maxDate = new Date();
+ *   maxDate.setFullYear(maxDate.getFullYear() + 2); // 2 years from now
+ * 
+ *   const customTrigger = (
+ *     <button style={{
+ *       display: 'flex',
+ *       alignItems: 'center',
+ *       gap: '12px',
+ *       padding: '12px 16px',
+ *       border: '2px solid #e5e7eb',
+ *       borderRadius: '8px',
+ *       background: 'white',
+ *       cursor: 'pointer',
+ *       fontSize: '14px',
+ *       fontWeight: '500'
+ *     }}>
+ *       <Clock size={18} color="#6b7280" />
+ *       <div style={{ textAlign: 'left' }}>
+ *         <div style={{ color: '#374151' }}>
+ *           {checkInOut 
+ *             ? `${checkInOut.startDate.toLocaleDateString()} - ${checkInOut.endDate.toLocaleDateString()}`
+ *             : "Check-in → Check-out"
+ *           }
+ *         </div>
+ *         <div style={{ color: '#6b7280', fontSize: '12px' }}>
+ *           Select your stay dates
+ *         </div>
+ *       </div>
+ *     </button>
+ *   );
+ * 
+ *   const handleBookingDateChange = (range: DateRange) => {
+ *     setCheckInOut(range);
+ *     
+ *     // Validate minimum stay (e.g., 1 night)
+ *     const nightsDiff = Math.ceil(
+ *       (range.endDate.getTime() - range.startDate.getTime()) / (1000 * 60 * 60 * 24)
+ *     );
+ *     
+ *     if (nightsDiff < 1) {
+ *       alert("Minimum stay is 1 night");
+ *       return;
+ *     }
+ * 
+ *     console.log(`Booking for ${nightsDiff} nights:`, range);
+ *   };
+ * 
+ *   return (
+ *     <div style={{ maxWidth: '400px', padding: '20px' }}>
+ *       <div style={{ marginBottom: '16px' }}>
+ *         <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '600' }}>
+ *           Hotel Booking
+ *         </h3>
+ *         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '14px', color: '#6b7280' }}>
+ *           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+ *             <MapPin size={14} />
+ *             Downtown Hotel
+ *           </div>
+ *           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+ *             <Users size={14} />
+ *             2 Guests
+ *           </div>
+ *         </div>
+ *       </div>
+ * 
+ *       <div style={{ marginBottom: '12px' }}>
+ *         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+ *           Select Dates
+ *         </label>
+ *         <DateRangePicker
+ *           value={checkInOut}
+ *           onChange={handleBookingDateChange}
+ *           showTimePicker={true}
+ *           showPresets={false}
+ *           minDate={tomorrow}
+ *           maxDate={maxDate}
+ *           disablePastDates={true}
+ *           allowSingleDateSelection={false}
+ *           dateFormat="EEE, MMM dd"
+ *           ariaLabel="Select hotel check-in and check-out dates"
+ *           triggerElement={customTrigger}
+ *           isDisabled={isDisabled}
+ *           className="booking-date-picker"
+ *         />
+ *       </div>
+ * 
+ *       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
+ *         <input 
+ *           type="checkbox" 
+ *           checked={isDisabled} 
+ *           onChange={(e) => setIsDisabled(e.target.checked)}
+ *           id="disable-picker"
+ *         />
+ *         <label htmlFor="disable-picker" style={{ fontSize: '14px', color: '#6b7280' }}>
+ *           Disable date selection
+ *         </label>
+ *       </div>
+ * 
+ *       {checkInOut && (
+ *         <div style={{ 
+ *           marginTop: '16px', 
+ *           padding: '12px', 
+ *           background: '#f3f4f6', 
+ *           borderRadius: '6px',
+ *           fontSize: '14px'
+ *         }}>
+ *           <strong>Selected Dates:</strong><br />
+ *           Check-in: {checkInOut.startDate.toLocaleString()}<br />
+ *           Check-out: {checkInOut.endDate.toLocaleString()}
+ *         </div>
+ *       )}
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (
     {

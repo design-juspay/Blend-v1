@@ -59,6 +59,323 @@ const EmptyStateCell = styled.td`
 `;
 
 
+/**
+ * @description A powerful and flexible data table component that supports sorting, pagination, filtering, column management, and advanced customization.
+ * Essential for displaying large datasets with rich interaction capabilities including multi-select, export functionality, and responsive design.
+ * @feature Client-side and server-side sorting with customizable sort indicators
+ * @feature Pagination with configurable page sizes and navigation controls
+ * @feature Column visibility management with drag-and-drop reordering
+ * @feature Multi-row selection with select-all functionality
+ * @feature CSV export of selected data
+ * @feature Striped rows and hover effects for enhanced readability
+ * @feature Custom cell rendering for complex data display
+ * @feature Responsive design with proper overflow handling
+ * @example Basic User Data Table
+ * ```tsx
+ * import { DataTable, ColumnDefinition, SortDirection } from "blend-v1";
+ * 
+ * interface UserData {
+ *   id: number;
+ *   name: string;
+ *   email: string;
+ *   role: string;
+ *   lastLogin: Date;
+ *   isActive: boolean;
+ * }
+ * 
+ * const userData: UserData[] = [
+ *   {
+ *     id: 1,
+ *     name: "Sarah Johnson",
+ *     email: "sarah.j@company.com",
+ *     role: "Admin",
+ *     lastLogin: new Date("2024-01-15"),
+ *     isActive: true
+ *   },
+ *   {
+ *     id: 2,
+ *     name: "Mike Chen",
+ *     email: "mike.chen@company.com",
+ *     role: "User",
+ *     lastLogin: new Date("2024-01-10"),
+ *     isActive: false
+ *   }
+ * ];
+ * 
+ * const columns: ColumnDefinition<UserData>[] = [
+ *   {
+ *     field: "name",
+ *     header: "Full Name",
+ *     isSortable: true,
+ *     width: "200px"
+ *   },
+ *   {
+ *     field: "email",
+ *     header: "Email Address",
+ *     isSortable: true
+ *   },
+ *   {
+ *     field: "role",
+ *     header: "Role",
+ *     width: "120px"
+ *   }
+ * ];
+ * 
+ * <DataTable<UserData>
+ *   data={userData}
+ *   columns={columns}
+ *   idField="id"
+ *   title="User Management"
+ *   description="Manage team members and their permissions"
+ *   isStriped={true}
+ *   isHoverable={true}
+ * />
+ * ```
+ * @example Intermediate Table with Custom Rendering
+ * ```tsx
+ * import { DataTable, ColumnDefinition, SortDirection } from "blend-v1";
+ * import { Badge, Avatar, Button } from "blend-v1";
+ * import { MoreHorizontal, Edit, Trash } from "lucide-react";
+ * 
+ * interface ProjectData {
+ *   id: string;
+ *   name: string;
+ *   status: "active" | "paused" | "completed";
+ *   owner: { name: string; avatar: string };
+ *   progress: number;
+ *   dueDate: Date;
+ * }
+ * 
+ * const projectData: ProjectData[] = [
+ *   {
+ *     id: "proj-001",
+ *     name: "Website Redesign",
+ *     status: "active",
+ *     owner: { name: "Alice Smith", avatar: "/avatars/alice.jpg" },
+ *     progress: 75,
+ *     dueDate: new Date("2024-02-15")
+ *   },
+ *   {
+ *     id: "proj-002", 
+ *     name: "Mobile App Development",
+ *     status: "paused",
+ *     owner: { name: "Bob Wilson", avatar: "/avatars/bob.jpg" },
+ *     progress: 45,
+ *     dueDate: new Date("2024-03-01")
+ *   }
+ * ];
+ * 
+ * const columns: ColumnDefinition<ProjectData>[] = [
+ *   {
+ *     field: "name",
+ *     header: "Project Name",
+ *     isSortable: true,
+ *     width: "250px"
+ *   },
+ *   {
+ *     field: "status",
+ *     header: "Status",
+ *     width: "120px",
+ *     renderCell: (value) => (
+ *       <Badge 
+ *         variant={value === "active" ? "success" : value === "paused" ? "warning" : "default"}
+ *         text={String(value).charAt(0).toUpperCase() + String(value).slice(1)}
+ *       />
+ *     )
+ *   },
+ *   {
+ *     field: "owner",
+ *     header: "Project Owner",
+ *     width: "200px",
+ *     renderCell: (value, row) => (
+ *       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+ *         <Avatar src={row.owner.avatar} alt={row.owner.name} size="sm" />
+ *         <span>{row.owner.name}</span>
+ *       </div>
+ *     )
+ *   },
+ *   {
+ *     field: "progress",
+ *     header: "Progress",
+ *     width: "150px",
+ *     isSortable: true,
+ *     renderCell: (value) => (
+ *       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+ *         <div style={{ 
+ *           width: '60px', 
+ *           height: '8px', 
+ *           backgroundColor: '#e5e7eb',
+ *           borderRadius: '4px',
+ *           overflow: 'hidden'
+ *         }}>
+ *           <div 
+ *             style={{ 
+ *               width: `${value}%`, 
+ *               height: '100%', 
+ *               backgroundColor: '#10b981' 
+ *             }} 
+ *           />
+ *         </div>
+ *         <span>{value}%</span>
+ *       </div>
+ *     )
+ *   }
+ * ];
+ * 
+ * <DataTable<ProjectData>
+ *   data={projectData}
+ *   columns={columns}
+ *   idField="id"
+ *   title="Project Dashboard"
+ *   description="Track project progress and team assignments"
+ *   isStriped={true}
+ *   isHoverable={true}
+ *   defaultSort={{ field: "dueDate", direction: SortDirection.ASCENDING }}
+ *   enableColumnManager={true}
+ *   showToolbar={true}
+ * />
+ * ```
+ * @example Advanced Table with Full Features
+ * ```tsx
+ * import { DataTable, ColumnDefinition, SortDirection, PaginationConfig } from "blend-v1";
+ * import { useState } from "react";
+ * import { formatDate } from "date-fns";
+ * 
+ * interface TransactionData {
+ *   id: string;
+ *   date: Date;
+ *   amount: number;
+ *   type: "income" | "expense";
+ *   category: string;
+ *   description: string;
+ *   status: "pending" | "completed" | "failed";
+ * }
+ * 
+ * function TransactionTable() {
+ *   const [currentPage, setCurrentPage] = useState(1);
+ *   const [pageSize, setPageSize] = useState(25);
+ *   const [sortConfig, setSortConfig] = useState({ field: "date", direction: SortDirection.DESCENDING });
+ * 
+ *   const transactionData: TransactionData[] = [
+ *     {
+ *       id: "txn-001",
+ *       date: new Date("2024-01-15"),
+ *       amount: 2500.00,
+ *       type: "income",
+ *       category: "Salary",
+ *       description: "Monthly salary payment",
+ *       status: "completed"
+ *     },
+ *     {
+ *       id: "txn-002",
+ *       date: new Date("2024-01-14"),
+ *       amount: -85.99,
+ *       type: "expense",
+ *       category: "Groceries",
+ *       description: "Weekly grocery shopping",
+ *       status: "completed"
+ *     },
+ *     {
+ *       id: "txn-003",
+ *       date: new Date("2024-01-13"),
+ *       amount: -1200.00,
+ *       type: "expense",
+ *       category: "Rent",
+ *       description: "Monthly rent payment",
+ *       status: "pending"
+ *     }
+ *   ];
+ * 
+ *   const columns: ColumnDefinition<TransactionData>[] = [
+ *     {
+ *       field: "date",
+ *       header: "Date",
+ *       isSortable: true,
+ *       width: "120px",
+ *       renderCell: (value) => formatDate(new Date(value as string), "MMM dd, yyyy")
+ *     },
+ *     {
+ *       field: "description",
+ *       header: "Description",
+ *       isSortable: true,
+ *       width: "250px"
+ *     },
+ *     {
+ *       field: "category",
+ *       header: "Category",
+ *       width: "120px"
+ *     },
+ *     {
+ *       field: "amount",
+ *       header: "Amount",
+ *       isSortable: true,
+ *       width: "120px",
+ *       renderCell: (value) => {
+ *         const amount = Number(value);
+ *         const isPositive = amount >= 0;
+ *         return (
+ *           <span style={{ 
+ *             color: isPositive ? '#10b981' : '#ef4444',
+ *             fontWeight: '600'
+ *           }}>
+ *             {isPositive ? '+' : ''}${Math.abs(amount).toFixed(2)}
+ *           </span>
+ *         );
+ *       }
+ *     },
+ *     {
+ *       field: "status",
+ *       header: "Status",
+ *       width: "100px",
+ *       renderCell: (value) => {
+ *         const statusColors = {
+ *           completed: '#10b981',
+ *           pending: '#f59e0b',
+ *           failed: '#ef4444'
+ *         };
+ *         return (
+ *           <span style={{ 
+ *             color: statusColors[value as keyof typeof statusColors],
+ *             fontWeight: '500',
+ *             textTransform: 'capitalize'
+ *           }}>
+ *             {String(value)}
+ *           </span>
+ *         );
+ *       }
+ *     }
+ *   ];
+ * 
+ *   const paginationConfig: PaginationConfig = {
+ *     currentPage,
+ *     pageSize,
+ *     totalRows: transactionData.length,
+ *     pageSizeOptions: [10, 25, 50, 100]
+ *   };
+ * 
+ *   return (
+ *     <DataTable<TransactionData>
+ *       data={transactionData}
+ *       columns={columns}
+ *       idField="id"
+ *       title="Financial Transactions"
+ *       description="Complete transaction history with filtering and export capabilities"
+ *       isStriped={true}
+ *       isHoverable={true}
+ *       defaultSort={sortConfig}
+ *       enableColumnManager={true}
+ *       enableFiltering={true}
+ *       showToolbar={true}
+ *       pagination={paginationConfig}
+ *       onPageChange={setCurrentPage}
+ *       onPageSizeChange={setPageSize}
+ *       onSortChange={setSortConfig}
+ *       className="financial-table"
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const DataTable = forwardRef(<T extends Record<string, unknown>>(
   {
     data,

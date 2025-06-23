@@ -28,11 +28,11 @@ export type SemanticTagType = keyof Pick<
  * @feature Predefined typographic variants (body, display, heading, code) with different sizes.
  * @feature Allows overriding font size, weight, and color.
  * @feature Supports text truncation.
- * @example
+ * @example Basic Usage with Variants
  * ```tsx
- * import Text, { VariantType } from "./components/Text/Text"; // Assuming path
+ * import { Text, VariantType } from "blend-v1";
  *
- * <Text variant="heading.lg" as="h2" color="blue">
+ * <Text variant="heading.lg" as="h2">
  *   Large Heading
  * </Text>
  *
@@ -40,8 +40,105 @@ export type SemanticTagType = keyof Pick<
  *   This is a paragraph of body text.
  * </Text>
  *
- * <Text fontSize="14px" fontWeight="bold" truncate={true} style={{ maxWidth: '100px' }}>
- *   This is some very long text that will be truncated.
+ * <Text variant="code.md">
+ *   const greeting = "Hello, World!";
+ * </Text>
+ * ```
+ * @example Intermediate Usage with Colors and Styling
+ * ```tsx
+ * import { Text, VariantType } from "blend-v1";
+ *
+ * <Text variant="display.xl" color="#1f2937" fontWeight="bold">
+ *   Hero Title
+ * </Text>
+ *
+ * <Text variant="body.lg" color="#6b7280">
+ *   Subtitle with custom color
+ * </Text>
+ *
+ * <Text variant="body.sm" color="#ef4444" fontWeight="medium">
+ *   Error message text
+ * </Text>
+ *
+ * <Text variant="heading.md" as="h3" style={{ textAlign: 'center' }}>
+ *   Centered Heading
+ * </Text>
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { Text, VariantType, SemanticTagType } from "blend-v1";
+ *
+ * // Display hierarchy examples
+ * <Text variant="display.xl" as="h1" color="#111827" fontWeight="extrabold">
+ *   Main Page Title
+ * </Text>
+ *
+ * <Text variant="display.lg" as="h2" color="#374151">
+ *   Section Title
+ * </Text>
+ *
+ * // Heading hierarchy examples
+ * <Text variant="heading.2xl" as="h1" fontWeight="bold">
+ *   Article Title
+ * </Text>
+ *
+ * <Text variant="heading.xl" as="h2" color="#1f2937">
+ *   Article Subtitle
+ * </Text>
+ *
+ * <Text variant="heading.lg" as="h3" fontWeight="semibold">
+ *   Section Header
+ * </Text>
+ *
+ * // Body text examples
+ * <Text variant="body.lg" color="#374151">
+ *   Large body text for important content or lead paragraphs.
+ * </Text>
+ *
+ * <Text variant="body.md">
+ *   Standard body text for most content and readable paragraphs.
+ * </Text>
+ *
+ * <Text variant="body.sm" color="#6b7280">
+ *   Small body text for captions, footnotes, or secondary information.
+ * </Text>
+ *
+ * <Text variant="body.xs" color="#9ca3af">
+ *   Extra small text for labels, metadata, or fine print.
+ * </Text>
+ *
+ * // Code examples
+ * <Text variant="code.lg" as="code" style={{ backgroundColor: '#f3f4f6', padding: '8px' }}>
+ *   npm install blend-v1
+ * </Text>
+ *
+ * <Text variant="code.md" as="code">
+ *   const Component = () => &lt;div&gt;Hello&lt;/div&gt;;
+ * </Text>
+ *
+ * // Truncation example
+ * <Text 
+ *   variant="body.md" 
+ *   truncate={true} 
+ *   style={{ maxWidth: '200px', display: 'block' }}
+ * >
+ *   This is a very long piece of text that will be truncated with ellipsis when it exceeds the maximum width.
+ * </Text>
+ *
+ * // Custom styling without variant
+ * <Text 
+ *   as="span" 
+ *   fontSize={18} 
+ *   fontWeight="bold" 
+ *   color="#059669"
+ *   style={{ textDecoration: 'underline' }}
+ * >
+ *   Custom styled text without predefined variant
+ * </Text>
+ *
+ * // Label example
+ * <Text variant="body.sm" as="label" fontWeight="medium" color="#374151">
+ *   Form Field Label
  * </Text>
  * ```
  */

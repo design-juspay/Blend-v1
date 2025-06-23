@@ -141,6 +141,208 @@ const ModalFooter = ({
   );
 };
 
+/**
+ * @description A flexible modal dialog component that overlays content on the page to focus user attention.
+ * Provides a complete modal solution with customizable header, footer, and action buttons.
+ * @feature Displays content in a layer above the main page with backdrop overlay
+ * @feature Controllable open/close state with multiple close options
+ * @feature Customizable header with title, subtitle, and optional close button
+ * @feature Flexible footer with primary and secondary action buttons
+ * @feature Keyboard and backdrop interaction support
+ * @feature Automatic scroll locking when modal is open
+ * @feature Accessible dialog implementation with proper ARIA attributes
+ * @example Basic Usage
+ * ```tsx
+ * import { Modal } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function BasicModalExample() {
+ *   const [isOpen, setIsOpen] = useState(false);
+ * 
+ *   return (
+ *     <>
+ *       <button onClick={() => setIsOpen(true)}>Open Modal</button>
+ *       <Modal
+ *         isOpen={isOpen}
+ *         onClose={() => setIsOpen(false)}
+ *         title="Basic Modal"
+ *       >
+ *         <p>This is a simple modal with just a title and content.</p>
+ *       </Modal>
+ *     </>
+ *   );
+ * }
+ * ```
+ * @example Modal with Actions
+ * ```tsx
+ * import { Modal, ButtonTypeV2 } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function ModalWithActions() {
+ *   const [isOpen, setIsOpen] = useState(false);
+ *   const [loading, setLoading] = useState(false);
+ * 
+ *   const handleSave = async () => {
+ *     setLoading(true);
+ *     // Simulate API call
+ *     await new Promise(resolve => setTimeout(resolve, 2000));
+ *     setLoading(false);
+ *     setIsOpen(false);
+ *   };
+ * 
+ *   return (
+ *     <>
+ *       <button onClick={() => setIsOpen(true)}>Edit Profile</button>
+ *       <Modal
+ *         isOpen={isOpen}
+ *         onClose={() => setIsOpen(false)}
+ *         title="Edit Profile"
+ *         subtitle="Update your personal information"
+ *         primaryAction={{
+ *           text: "Save Changes",
+ *           buttonType: ButtonTypeV2.PRIMARY,
+ *           onClick: handleSave,
+ *           loading: loading
+ *         }}
+ *         secondaryAction={{
+ *           text: "Cancel",
+ *           buttonType: ButtonTypeV2.SECONDARY,
+ *           onClick: () => setIsOpen(false)
+ *         }}
+ *       >
+ *         <div className="space-y-4">
+ *           <div>
+ *             <label>Full Name</label>
+ *             <input type="text" defaultValue="John Doe" />
+ *           </div>
+ *           <div>
+ *             <label>Email</label>
+ *             <input type="email" defaultValue="john@example.com" />
+ *           </div>
+ *         </div>
+ *       </Modal>
+ *     </>
+ *   );
+ * }
+ * ```
+ * @example Advanced Modal with All Props
+ * ```tsx
+ * import { 
+ *   Modal, 
+ *   ButtonTypeV2, 
+ *   ButtonSubTypeV2,
+ *   ButtonSizeV2
+ * } from "blend-v1";
+ * import { useState } from "react";
+ * import { Trash2, AlertTriangle } from "lucide-react";
+ * 
+ * function AdvancedModalExample() {
+ *   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+ *   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+ *   const [deleting, setDeleting] = useState(false);
+ * 
+ *   const handleDelete = async () => {
+ *     setDeleting(true);
+ *     // Simulate API call
+ *     await new Promise(resolve => setTimeout(resolve, 1500));
+ *     setDeleting(false);
+ *     setIsDeleteModalOpen(false);
+ *     setIsConfirmModalOpen(true);
+ *   };
+ * 
+ *   const headerRightSlot = (
+ *     <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">
+ *       Destructive Action
+ *     </span>
+ *   );
+ * 
+ *   return (
+ *     <>
+ *       <button onClick={() => setIsDeleteModalOpen(true)}>
+ *         Delete Account
+ *       </button>
+ * 
+ *       <Modal
+ *         isOpen={isDeleteModalOpen}
+ *         onClose={() => setIsDeleteModalOpen(false)}
+ *         title="Delete Account"
+ *         subtitle="This action cannot be undone. All your data will be permanently removed."
+ *         className="modal-destructive"
+ *         showCloseButton={true}
+ *         closeOnBackdropClick={false}
+ *         headerRightSlot={headerRightSlot}
+ *         showDivider={true}
+ *         primaryAction={{
+ *           text: "Delete Account",
+ *           buttonType: ButtonTypeV2.DESTRUCTIVE,
+ *           subType: ButtonSubTypeV2.FILLED,
+ *           size: ButtonSizeV2.MEDIUM,
+ *           leadingIcon: <Trash2 size={16} />,
+ *           onClick: handleDelete,
+ *           loading: deleting,
+ *           isDisabled: deleting
+ *         }}
+ *         secondaryAction={{
+ *           text: "Keep Account",
+ *           buttonType: ButtonTypeV2.SECONDARY,
+ *           subType: ButtonSubTypeV2.OUTLINED,
+ *           size: ButtonSizeV2.MEDIUM,
+ *           onClick: () => setIsDeleteModalOpen(false),
+ *           isDisabled: deleting
+ *         }}
+ *       >
+ *         <div className="space-y-4">
+ *           <div className="flex items-center gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded">
+ *             <AlertTriangle className="text-yellow-600" size={20} />
+ *             <div>
+ *               <p className="text-sm font-medium text-yellow-800">
+ *                 Warning: This action is irreversible
+ *               </p>
+ *               <p className="text-xs text-yellow-700">
+ *                 Please type "DELETE" to confirm this action
+ *               </p>
+ *             </div>
+ *           </div>
+ *           <input 
+ *             type="text" 
+ *             placeholder="Type DELETE to confirm"
+ *             className="w-full p-2 border rounded"
+ *           />
+ *           <div className="text-sm text-gray-600">
+ *             <p><strong>What will be deleted:</strong></p>
+ *             <ul className="list-disc list-inside mt-2 space-y-1">
+ *               <li>Your profile and personal information</li>
+ *               <li>All projects and associated data</li>
+ *               <li>Team memberships and collaborations</li>
+ *               <li>Billing history and subscriptions</li>
+ *             </ul>
+ *           </div>
+ *         </div>
+ *       </Modal>
+ * 
+ *       <Modal
+ *         isOpen={isConfirmModalOpen}
+ *         onClose={() => setIsConfirmModalOpen(false)}
+ *         title="Account Deleted"
+ *         subtitle="Your account has been successfully deleted."
+ *         showCloseButton={false}
+ *         closeOnBackdropClick={false}
+ *         primaryAction={{
+ *           text: "Go to Homepage",
+ *           buttonType: ButtonTypeV2.PRIMARY,
+ *           onClick: () => {
+ *             setIsConfirmModalOpen(false);
+ *             // Redirect to homepage
+ *           }
+ *         }}
+ *       >
+ *         <p>Thank you for using our service. If you have any feedback, please don't hesitate to contact us.</p>
+ *       </Modal>
+ *     </>
+ *   );
+ * }
+ * ```
+ */
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (
     {

@@ -69,6 +69,86 @@ const Menu = ({ items, hasSearch, searchPlaceholder, searchTerm, onSearchTermCha
   </div>
 );
 
+/**
+ * @description A component that displays multiple avatars in a compact, overlapping group layout.
+ * Shows a limited number of avatars with an overflow counter for remaining items, and supports selection functionality.
+ * @feature Displays multiple avatars in an overlapping, space-efficient layout
+ * @feature Configurable maximum count with overflow indicator (+N more)
+ * @feature Interactive overflow menu showing remaining avatars with search functionality
+ * @feature Avatar selection with controlled and uncontrolled modes
+ * @feature Consistent sizing and shape across all avatars in the group
+ * @feature Keyboard navigation and accessibility support
+ * @feature Responsive positioning for overflow menu
+ * @feature Smooth hover and selection states
+ * @example Basic Usage
+ * ```tsx
+ * import { AvatarGroup, AvatarSize, AvatarShape } from "blend-v1";
+ * 
+ * const teamMembers = [
+ *   { id: 1, src: "/avatars/alice.jpg", alt: "Alice Johnson" },
+ *   { id: 2, src: "/avatars/bob.jpg", alt: "Bob Smith" },
+ *   { id: 3, fallback: "DW", alt: "David Wilson" }
+ * ];
+ * 
+ * <AvatarGroup 
+ *   avatars={teamMembers} 
+ *   maxCount={3}
+ *   size={AvatarSize.MD}
+ *   shape={AvatarShape.CIRCULAR}
+ * />
+ * ```
+ * @example Different Sizes and Shapes
+ * ```tsx
+ * import { AvatarGroup, AvatarSize, AvatarShape } from "blend-v1";
+ * 
+ * const users = [
+ *   { id: 1, src: "/avatars/user1.jpg", alt: "User 1" },
+ *   { id: 2, fallback: "JD", alt: "John Doe" },
+ *   { id: 3, fallback: "JS", alt: "Jane Smith" }
+ * ];
+ * 
+ * // Small circular avatars
+ * <AvatarGroup 
+ *   avatars={users} 
+ *   maxCount={4}
+ *   size={AvatarSize.SM}
+ *   shape={AvatarShape.CIRCULAR}
+ * />
+ * 
+ * // Medium square avatars  
+ * <AvatarGroup 
+ *   avatars={users} 
+ *   maxCount={3}
+ *   size={AvatarSize.MD}
+ *   shape={AvatarShape.SQUARE}
+ * />
+ * ```
+ * @example Avatar Selection with Controlled State
+ * ```tsx
+ * import { AvatarGroup, AvatarSize } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function SelectableExample() {
+ *   const [selectedIds, setSelectedIds] = useState([1, 3]);
+ *   
+ *   const members = [
+ *     { id: 1, src: "/avatars/alex.jpg", alt: "Alex" },
+ *     { id: 2, fallback: "SC", alt: "Sarah" },
+ *     { id: 3, fallback: "MJ", alt: "Mike" }
+ *   ];
+ * 
+ *   return (
+ *     <AvatarGroup 
+ *       avatars={members}
+ *       maxCount={3}
+ *       size={AvatarSize.MD}
+ *       selectedAvatarIds={selectedIds}
+ *       onSelectionChange={setSelectedIds}
+ *     />
+ *   );
+ * }
+ * ```
+ */
 const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
     {
