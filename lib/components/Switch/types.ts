@@ -12,29 +12,112 @@ export enum SwitchSize {
 }
 
 /**
- * @description A two-state toggle switch that allows users to turn an option on or off.
- * @feature Represents an on/off state toggle.
- * @feature Customizable size (small, medium).
- * @feature Optional label and subtext.
- * @feature Disabled and error states.
- * @feature Controlled and uncontrolled behavior.
- * @example
+ * @description A two-state toggle control that allows users to turn an option on or off with smooth visual transitions. Perfect for settings, preferences, and feature toggles.
+ * @feature Binary on/off state with visual feedback
+ * @feature Two size variants: small and medium
+ * @feature Optional labels, subtext, and custom slot content
+ * @feature Disabled and error states with proper styling
+ * @feature Controlled and uncontrolled behavior support
+ * @feature Touch-friendly and keyboard accessible
+ * @example Basic Usage
  * ```tsx
- * import { Switch, SwitchSize } from "./components/Switch"; // Assuming path
+ * import { Switch, SwitchSize } from "blend-v1";
+ * 
+ * <Switch
+ *   id="dark-mode"
+ *   label="Dark Mode"
+ *   size={SwitchSize.MEDIUM}
+ *   defaultChecked={false}
+ * />
+ * ```
+ * @example Intermediate Usage with State Management
+ * ```tsx
+ * import { Switch, SwitchSize } from "blend-v1";
  * import { useState } from "react";
- *
- * function MySettings() {
- *   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
- *
+ * import { Bell } from "lucide-react";
+ * 
+ * function NotificationSettings() {
+ *   const [emailNotifications, setEmailNotifications] = useState(true);
+ *   const [pushNotifications, setPushNotifications] = useState(false);
+ * 
  *   return (
- *     <Switch
- *       id="notifications"
- *       checked={notificationsEnabled}
- *       onChange={setNotificationsEnabled}
- *       label="Enable Notifications"
- *       subtext="Receive updates about your account."
- *       size={SwitchSize.MEDIUM}
- *     />
+ *     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+ *       <Switch
+ *         id="email-notifications"
+ *         checked={emailNotifications}
+ *         onChange={setEmailNotifications}
+ *         label="Email Notifications"
+ *         subtext="Receive updates via email"
+ *         size={SwitchSize.MEDIUM}
+ *       />
+ *       
+ *       <Switch
+ *         id="push-notifications"
+ *         checked={pushNotifications}
+ *         onChange={setPushNotifications}
+ *         label="Push Notifications"
+ *         subtext="Get instant alerts on your device"
+ *         size={SwitchSize.SMALL}
+ *         slot={<Bell size={16} />}
+ *       />
+ *     </div>
+ *   );
+ * }
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { Switch, SwitchSize } from "blend-v1";
+ * import { useState } from "react";
+ * import { Shield, AlertTriangle } from "lucide-react";
+ * 
+ * function PrivacySettings() {
+ *   const [publicProfile, setPublicProfile] = useState(false);
+ *   const [analyticsTracking, setAnalyticsTracking] = useState(true);
+ *   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
+ * 
+ *   const handleAnalyticsChange = (checked: boolean) => {
+ *     setAnalyticsTracking(checked);
+ *     console.log('Analytics tracking:', checked ? 'enabled' : 'disabled');
+ *   };
+ * 
+ *   return (
+ *     <div style={{ padding: '20px' }}>
+ *       <Switch
+ *         id="public-profile"
+ *         checked={publicProfile}
+ *         onChange={setPublicProfile}
+ *         label="Public Profile"
+ *         subtext="Make your profile visible to everyone"
+ *         size={SwitchSize.MEDIUM}
+ *         slot={<Shield size={18} />}
+ *         name="profileVisibility"
+ *         value="public"
+ *         required={false}
+ *       />
+ * 
+ *       <Switch
+ *         id="analytics-tracking"
+ *         checked={analyticsTracking}
+ *         onChange={handleAnalyticsChange}
+ *         label="Analytics Tracking"
+ *         subtext="Help us improve by sharing usage data"
+ *         size={SwitchSize.SMALL}
+ *         disabled={false}
+ *         error={false}
+ *       />
+ * 
+ *       <Switch
+ *         id="maintenance-mode"
+ *         checked={isMaintenanceMode}
+ *         onChange={setIsMaintenanceMode}
+ *         label="Maintenance Mode"
+ *         subtext="Temporarily disable public access"
+ *         size={SwitchSize.MEDIUM}
+ *         slot={<AlertTriangle size={18} color="#EF4444" />}
+ *         error={isMaintenanceMode}
+ *         disabled={!publicProfile}
+ *       />
+ *     </div>
  *   );
  * }
  * ```
@@ -113,25 +196,133 @@ export type SwitchProps = {
 };
 
 /**
- * @description A component that groups multiple `Switch` components, often under a common label.
- * While switches are typically independent, a group might be used for layout or to manage a set of related toggles.
- * Note: Unlike RadioGroup, SwitchGroup usually allows multiple switches to be on. If single selection is needed, RadioGroup is more appropriate.
- * @feature Groups multiple `Switch` components.
- * @feature Can apply a common label or disabled state to all switches in the group.
- * @example
+ * @description A container component that groups multiple Switch components under a common label or theme. Perfect for organizing related settings and feature toggles.
+ * @feature Groups multiple Switch components for better organization
+ * @feature Supports common labels and disabled state propagation
+ * @feature Multiple independent switches can be toggled simultaneously
+ * @feature Managed state tracking for all grouped switches
+ * @feature Layout and accessibility improvements for switch collections
+ * @feature Controlled and uncontrolled group behavior
+ * @example Basic Usage
  * ```tsx
- * import { SwitchGroup, Switch } from "./components/Switch"; // Assuming path
+ * import { SwitchGroup, Switch, SwitchSize } from "blend-v1";
+ * 
+ * <SwitchGroup label="Privacy Settings">
+ *   <Switch 
+ *     id="public-profile" 
+ *     label="Public Profile" 
+ *     size={SwitchSize.MEDIUM}
+ *   />
+ *   <Switch 
+ *     id="show-email" 
+ *     label="Show Email Address" 
+ *   />
+ * </SwitchGroup>
+ * ```
+ * @example Intermediate Usage with Group State
+ * ```tsx
+ * import { SwitchGroup, Switch, SwitchSize } from "blend-v1";
  * import { useState } from "react";
- *
- * function FeatureToggles() {
- *   const [featureA, setFeatureA] = useState(true);
- *   const [featureB, setFeatureB] = useState(false);
- *
+ * import { Bell, Mail } from "lucide-react";
+ * 
+ * function NotificationPreferences() {
+ *   const [groupValues, setGroupValues] = useState(['email']);
+ * 
  *   return (
- *     <SwitchGroup label="Feature Settings">
- *       <Switch checked={featureA} onChange={setFeatureA} label="Enable Feature A" />
- *       <Switch checked={featureB} onChange={setFeatureB} label="Enable Feature B" />
+ *     <SwitchGroup 
+ *       label="Notification Preferences"
+ *       name="notifications"
+ *       value={groupValues}
+ *       onChange={setGroupValues}
+ *     >
+ *       <Switch 
+ *         id="email-notifications"
+ *         label="Email Notifications" 
+ *         value="email"
+ *         slot={<Mail size={16} />}
+ *         subtext="Receive updates via email"
+ *         size={SwitchSize.MEDIUM}
+ *       />
+ *       <Switch 
+ *         id="push-notifications"
+ *         label="Push Notifications" 
+ *         value="push"
+ *         slot={<Bell size={16} />}
+ *         subtext="Get instant mobile alerts"
+ *       />
  *     </SwitchGroup>
+ *   );
+ * }
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { SwitchGroup, Switch, SwitchSize } from "blend-v1";
+ * import { useState } from "react";
+ * import { Settings, Shield, Zap, Users } from "lucide-react";
+ * 
+ * function FeatureManager() {
+ *   const [enabledFeatures, setEnabledFeatures] = useState(['analytics', 'security']);
+ *   const [isGroupDisabled, setIsGroupDisabled] = useState(false);
+ * 
+ *   const handleFeatureChange = (features: string[]) => {
+ *     setEnabledFeatures(features);
+ *     console.log('Enabled features:', features);
+ *   };
+ * 
+ *   return (
+ *     <div>
+ *       <button 
+ *         onClick={() => setIsGroupDisabled(!isGroupDisabled)}
+ *         style={{ marginBottom: '16px' }}
+ *       >
+ *         {isGroupDisabled ? 'Enable' : 'Disable'} All Features
+ *       </button>
+ *       
+ *       <SwitchGroup 
+ *         id="feature-toggles"
+ *         label="Advanced Features"
+ *         name="features"
+ *         value={enabledFeatures}
+ *         defaultValue={['analytics']}
+ *         onChange={handleFeatureChange}
+ *         disabled={isGroupDisabled}
+ *       >
+ *         <Switch 
+ *           id="analytics-feature"
+ *           label="Analytics Tracking" 
+ *           value="analytics"
+ *           slot={<Zap size={18} />}
+ *           subtext="Track user interactions and performance"
+ *           size={SwitchSize.MEDIUM}
+ *         />
+ *         
+ *         <Switch 
+ *           id="security-feature"
+ *           label="Enhanced Security" 
+ *           value="security"
+ *           slot={<Shield size={18} />}
+ *           subtext="Enable advanced security features"
+ *           size={SwitchSize.MEDIUM}
+ *         />
+ *         
+ *         <Switch 
+ *           id="collaboration-feature"
+ *           label="Team Collaboration" 
+ *           value="collaboration"
+ *           slot={<Users size={18} />}
+ *           subtext="Share and collaborate with team members"
+ *           size={SwitchSize.SMALL}
+ *         />
+ *         
+ *         <Switch 
+ *           id="automation-feature"
+ *           label="Workflow Automation" 
+ *           value="automation"
+ *           slot={<Settings size={18} />}
+ *           subtext="Automate repetitive tasks and workflows"
+ *         />
+ *       </SwitchGroup>
+ *     </div>
  *   );
  * }
  * ```

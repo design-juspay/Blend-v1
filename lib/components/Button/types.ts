@@ -44,38 +44,94 @@ export enum ButtonSubType {
 }
 
 /**
- * @description A clickable element used to trigger an action or event.
- * Buttons can contain text, icons, or both, and come in various styles and sizes.
- * @feature Multiple visual types (primary, secondary, danger, success).
- * @feature Different sizes (small, medium, large).
- * @feature Sub-types for specific use cases (icon-only, link, plain-icon).
- * @feature Support for leading and trailing icons.
- * @feature Loading and disabled states.
- * @feature Comprehensive ARIA attribute support for accessibility.
- * @example
+ * @description A versatile clickable component for triggering actions or events. Supports multiple styles, sizes, icons, and accessibility features.
+ * @feature Multiple visual types: primary, secondary, danger, and success
+ * @feature Three sizes: small, medium, and large
+ * @feature Specialized sub-types: default, icon-only, link, and plain-icon
+ * @feature Leading and trailing icon support
+ * @feature Loading and disabled states with proper accessibility
+ * @feature Comprehensive ARIA attributes for accessibility compliance
+ * @example Basic Usage
  * ```tsx
- * import { Button, ButtonType, ButtonSize } from "./components/Button";
- * import { Zap } from "lucide-react"; // Assuming lucide-react for icons
- *
+ * import { Button, ButtonType, ButtonSize } from "blend-v1";
+ * 
  * <Button
- *   text="Primary Action"
+ *   text="Save Changes"
  *   buttonType={ButtonType.PRIMARY}
  *   size={ButtonSize.MEDIUM}
- *   onClick={() => console.log("Primary button clicked")}
+ *   onClick={() => console.log('Button clicked')}
  * />
- *
+ * ```
+ * @example Intermediate Usage with Icons
+ * ```tsx
+ * import { Button, ButtonType, ButtonSize, ButtonSubType } from "blend-v1";
+ * import { Download, ArrowRight } from "lucide-react";
+ * 
  * <Button
+ *   text="Download Report"
  *   buttonType={ButtonType.SECONDARY}
- *   size={ButtonSize.SMALL}
- *   leadingIcon={Zap}
- *   text="With Icon"
+ *   size={ButtonSize.LARGE}
+ *   leadingIcon={Download}
+ *   trailingIcon={ArrowRight}
+ *   onClick={() => console.log('Download started')}
+ *   ariaLabel="Download the monthly report"
  * />
- *
- * <Button
- *   subType={ButtonSubType.ICON_ONLY}
- *   leadingIcon={Zap}
- *   ariaLabel="Perform action"
- * />
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { 
+ *   Button, 
+ *   ButtonType, 
+ *   ButtonSize, 
+ *   ButtonSubType 
+ * } from "blend-v1";
+ * import { Trash2, Settings, Plus } from "lucide-react";
+ * import { useState } from "react";
+ * 
+ * function ActionButtons() {
+ *   const [isLoading, setIsLoading] = useState(false);
+ *   const [isExpanded, setIsExpanded] = useState(false);
+ * 
+ *   const handleAsyncAction = async () => {
+ *     setIsLoading(true);
+ *     await new Promise(resolve => setTimeout(resolve, 2000));
+ *     setIsLoading(false);
+ *   };
+ * 
+ *   return (
+ *     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+ *       <Button
+ *         text="Delete Item"
+ *         buttonType={ButtonType.DANGER}
+ *         size={ButtonSize.SMALL}
+ *         leadingIcon={Trash2}
+ *         isLoading={isLoading}
+ *         onClick={handleAsyncAction}
+ *         ariaLabel="Delete the selected item permanently"
+ *       />
+ *       
+ *       <Button
+ *         subType={ButtonSubType.ICON_ONLY}
+ *         leadingIcon={Settings}
+ *         buttonType={ButtonType.SECONDARY}
+ *         size={ButtonSize.MEDIUM}
+ *         ariaLabel="Open settings menu"
+ *         ariaHasPopup="menu"
+ *         ariaExpanded={isExpanded}
+ *         ariaControls="settings-menu"
+ *         onClick={() => setIsExpanded(!isExpanded)}
+ *       />
+ *       
+ *       <Button
+ *         text="Add New"
+ *         subType={ButtonSubType.LINK}
+ *         buttonType={ButtonType.SUCCESS}
+ *         trailingIcon={Plus}
+ *         onClick={() => console.log('Adding new item')}
+ *       />
+ *     </div>
+ *   );
+ * }
  * ```
  */
 export type ButtonProps = ComponentPropsWithoutRef<"button"> & {

@@ -9,45 +9,6 @@ import { NumberInputSize } from "./types";
 import { useComponentToken } from "../../../context/useComponentToken";
 import { NumberInputTokensType } from "./numberInput.tokens";
 
-/**
- * @description A component specifically designed for number input.
- * It typically includes features like min/max values, step controls, and number-specific validation.
- * The props for this component are defined in `NumberInputProps` in `./types.ts`.
- * @feature Input field restricted to numerical values.
- * @feature Optional min, max, and step attributes.
- * @feature Built-in increment/decrement buttons.
- * @feature Supports labels, sublabels, hint text, and error messages.
- * @feature Customizable size.
- * @example
- * ```tsx
- * import { NumberInput, NumberInputSize } from "./components/Inputs/NumberInput"; // Assuming path
- * import { useState } from "react";
- *
- * function MyNumericForm() {
- *   const [age, setAge] = useState<number>(30);
- *
- *   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
- *     const newAge = parseInt(e.target.value, 10);
- *     if (!isNaN(newAge)) {
- *       setAge(newAge);
- *     }
- *   };
- *
- *   return (
- *     <NumberInput
- *       label="Age"
- *       value={age}
- *       onChange={handleAgeChange}
- *       min={0}
- *       max={120}
- *       step={1}
- *       size={NumberInputSize.MEDIUM}
- *       hintText="Please enter your age."
- *     />
- *   );
- * }
- * ```
- */
 const NumberInput = ({
   value,
   onChange,

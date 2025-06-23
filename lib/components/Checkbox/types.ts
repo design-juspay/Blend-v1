@@ -27,41 +27,133 @@ export type CheckboxCheckedState = 'checked' | 'unchecked' | 'indeterminate';
 export type CheckboxInteractionState = 'default' | 'hover' | 'disabled' | 'error';
 
 /**
- * @description A control that allows the user to select one or more options from a set.
- * Checkboxes can be in a checked, unchecked, or indeterminate state.
- * @feature Supports checked, unchecked, and indeterminate states.
- * @feature Customizable size (small, medium).
- * @feature Optional label and subtext.
- * @feature Disabled and error states.
- * @feature Controlled and uncontrolled behavior.
- * @example
+ * @description A form control that allows users to select one or more options from a set. Supports checked, unchecked, and indeterminate states for complex selection scenarios.
+ * @feature Three distinct states: checked, unchecked, and indeterminate
+ * @feature Two size variants: small and medium
+ * @feature Controlled and uncontrolled behavior support
+ * @feature Optional labels, subtext, and custom slot content
+ * @feature Error and disabled states with proper visual feedback
+ * @feature Full accessibility support with ARIA attributes
+ * @example Basic Usage
  * ```tsx
- * import { Checkbox, CheckboxSize } from "./components/Checkbox";
+ * import { Checkbox, CheckboxSize } from "blend-v1";
+ * 
+ * <Checkbox 
+ *   id="terms"
+ *   size={CheckboxSize.MEDIUM}
+ *   defaultChecked={false}
+ * >
+ *   I agree to the terms and conditions
+ * </Checkbox>
+ * ```
+ * @example Intermediate Usage with State Management
+ * ```tsx
+ * import { Checkbox, CheckboxSize } from "blend-v1";
  * import { useState } from "react";
- *
- * function MyForm() {
- *   const [isChecked, setIsChecked] = useState<boolean | 'indeterminate'>(false);
- *
+ * import { Info } from "lucide-react";
+ * 
+ * function PreferencesForm() {
+ *   const [emailNotifications, setEmailNotifications] = useState(true);
+ *   const [pushNotifications, setPushNotifications] = useState(false);
+ * 
  *   return (
- *     <>
+ *     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
  *       <Checkbox
- *         id="option1"
- *         checked={isChecked}
- *         onCheckedChange={setIsChecked}
+ *         id="email-notifications"
+ *         checked={emailNotifications}
+ *         onCheckedChange={setEmailNotifications}
  *         size={CheckboxSize.MEDIUM}
+ *         subtext="Receive updates about your account via email"
  *       >
- *         Option 1
+ *         Email Notifications
  *       </Checkbox>
- *       <Checkbox id="option2" defaultChecked={true} subtext="This is a default checked checkbox.">
- *         Option 2 with Subtext
+ * 
+ *       <Checkbox
+ *         id="push-notifications"
+ *         checked={pushNotifications}
+ *         onCheckedChange={setPushNotifications}
+ *         size={CheckboxSize.SMALL}
+ *         slot={<Info size={16} />}
+ *       >
+ *         Push Notifications
  *       </Checkbox>
- *       <Checkbox id="option3" disabled={true}>
- *         Disabled Option
+ *     </div>
+ *   );
+ * }
+ * ```
+ * @example Advanced Usage with Indeterminate State
+ * ```tsx
+ * import { Checkbox, CheckboxSize } from "blend-v1";
+ * import { useState } from "react";
+ * import { Shield, AlertTriangle } from "lucide-react";
+ * 
+ * function PermissionsManager() {
+ *   const [parentChecked, setParentChecked] = useState<boolean | 'indeterminate'>('indeterminate');
+ *   const [childOptions, setChildOptions] = useState({
+ *     read: true,
+ *     write: false,
+ *     delete: false
+ *   });
+ * 
+ *   const updateParentState = (newChildOptions: typeof childOptions) => {
+ *     const checkedCount = Object.values(newChildOptions).filter(Boolean).length;
+ *     
+ *     if (checkedCount === 0) {
+ *       setParentChecked(false);
+ *     } else if (checkedCount === Object.keys(newChildOptions).length) {
+ *       setParentChecked(true);
+ *     } else {
+ *       setParentChecked('indeterminate');
+ *     }
+ *   };
+ * 
+ *   const handleChildChange = (permission: keyof typeof childOptions) => {
+ *     return (checked: boolean | 'indeterminate') => {
+ *       const newOptions = { ...childOptions, [permission]: checked };
+ *       setChildOptions(newOptions);
+ *       updateParentState(newOptions);
+ *     };
+ *   };
+ * 
+ *   return (
+ *     <div style={{ padding: '20px' }}>
+ *       <Checkbox
+ *         id="all-permissions"
+ *         checked={parentChecked}
+ *         onCheckedChange={setParentChecked}
+ *         size={CheckboxSize.MEDIUM}
+ *         slot={<Shield size={18} />}
+ *         subtext="Grant or revoke all permissions for this user"
+ *         required={true}
+ *       >
+ *         All Permissions
  *       </Checkbox>
- *       <Checkbox id="option4" checked="indeterminate">
- *         Indeterminate Option
- *       </Checkbox>
- *     </>
+ * 
+ *       <div style={{ marginLeft: '32px', marginTop: '16px' }}>
+ *         <Checkbox
+ *           id="read-permission"
+ *           checked={childOptions.read}
+ *           onCheckedChange={handleChildChange('read')}
+ *           size={CheckboxSize.SMALL}
+ *           disabled={false}
+ *           error={false}
+ *         >
+ *           Read Permission
+ *         </Checkbox>
+ * 
+ *         <Checkbox
+ *           id="delete-permission"
+ *           checked={childOptions.delete}
+ *           onCheckedChange={handleChildChange('delete')}
+ *           size={CheckboxSize.SMALL}
+ *           slot={<AlertTriangle size={14} color="#EF4444" />}
+ *           subtext="Dangerous: Allows permanent deletion"
+ *           error={childOptions.delete && !childOptions.write}
+ *         >
+ *           Delete Permission
+ *         </Checkbox>
+ *       </div>
+ *     </div>
  *   );
  * }
  * ```

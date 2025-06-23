@@ -12,20 +12,60 @@ export enum RadioSize {
 }
 
 /**
- * @description Props for an individual Radio button component.
- * Radio buttons are typically used in a `RadioGroup` to allow users to select one option from a set.
- * @feature Represents a single selectable option in a radio group.
- * @feature Customizable size (small, medium).
- * @feature Optional label and subtext.
- * @feature Disabled and error states.
- * @feature Controlled and uncontrolled behavior for its checked state.
- * @example
+ * @description A single radio button control that allows users to select one option from a mutually exclusive set. Typically used within RadioGroup for selection scenarios.
+ * @feature Single selection behavior within radio groups
+ * @feature Two size variants: small and medium
+ * @feature Optional labels, subtext, and custom slot content
+ * @feature Disabled and error states with proper visual feedback
+ * @feature Controlled and uncontrolled behavior support
+ * @feature Accessibility compliance with ARIA attributes
+ * @example Basic Usage
  * ```tsx
- * // Usually used within a RadioGroup, see RadioGroup example.
- * import { Radio, RadioSize } from "./components/Radio";
- *
- * <Radio value="option1" size={RadioSize.MEDIUM}>
- *   Option 1
+ * import { Radio, RadioSize } from "blend-v1";
+ * 
+ * <Radio
+ *   value="credit-card"
+ *   size={RadioSize.MEDIUM}
+ *   name="paymentMethod"
+ * >
+ *   Credit Card
+ * </Radio>
+ * ```
+ * @example Intermediate Usage with Slots
+ * ```tsx
+ * import { Radio, RadioSize } from "blend-v1";
+ * import { CreditCard } from "lucide-react";
+ * 
+ * <Radio
+ *   id="credit-card"
+ *   value="credit-card"
+ *   name="paymentMethod"
+ *   size={RadioSize.MEDIUM}
+ *   defaultChecked={true}
+ *   slot={<CreditCard size={18} />}
+ *   subtext="Visa, Mastercard, American Express"
+ * >
+ *   Credit Card
+ * </Radio>
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { Radio, RadioSize } from "blend-v1";
+ * import { CreditCard, AlertCircle } from "lucide-react";
+ * 
+ * <Radio
+ *   id="premium-plan"
+ *   value="premium"
+ *   name="subscriptionPlan"
+ *   size={RadioSize.MEDIUM}
+ *   slot={<CreditCard size={20} />}
+ *   subtext="$29.99/month - All features included"
+ *   disabled={false}
+ *   error={false}
+ *   required={true}
+ *   onChange={(checked) => console.log('Radio checked:', checked)}
+ * >
+ *   Premium Plan
  * </Radio>
  * ```
  */
@@ -107,31 +147,112 @@ export type RadioProps = {
 };
 
 /**
- * @description A component that groups multiple `Radio` buttons, allowing only one to be selected at a time.
- * It manages the selection state for its child `Radio` components.
- * @feature Groups `Radio` components to ensure single selection.
- * @feature Manages the `name` attribute for child radio buttons for accessibility and functionality.
- * @feature Supports a group label.
- * @feature Controlled and uncontrolled behavior for the selected value.
- * @example
+ * @description A wrapper component that groups multiple Radio buttons, ensuring only one can be selected at a time. Manages state and accessibility for mutually exclusive selections.
+ * @feature Groups Radio components for single selection behavior
+ * @feature Automatic name attribute management for accessibility
+ * @feature Optional group labels for better organization
+ * @feature Controlled and uncontrolled state management
+ * @feature Keyboard navigation and screen reader support
+ * @feature Disabled state propagation to all child radios
+ * @example Basic Usage
  * ```tsx
- * import { RadioGroup, Radio, RadioSize } from "./components/Radio"; // Assuming path
+ * import { RadioGroup, Radio, RadioSize } from "blend-v1";
+ * 
+ * <RadioGroup 
+ *   name="paymentMethod"
+ *   defaultValue="credit-card"
+ * >
+ *   <Radio value="credit-card" size={RadioSize.MEDIUM}>
+ *     Credit Card
+ *   </Radio>
+ *   <Radio value="paypal">
+ *     PayPal
+ *   </Radio>
+ * </RadioGroup>
+ * ```
+ * @example Intermediate Usage with Labels
+ * ```tsx
+ * import { RadioGroup, Radio, RadioSize } from "blend-v1";
+ * import { CreditCard, Smartphone } from "lucide-react";
+ * 
+ * <RadioGroup 
+ *   label="Preferred Payment Method"
+ *   name="paymentPreference"
+ *   defaultValue="card"
+ * >
+ *   <Radio 
+ *     value="card" 
+ *     size={RadioSize.MEDIUM}
+ *     slot={<CreditCard size={18} />}
+ *     subtext="Visa, Mastercard, American Express"
+ *   >
+ *     Credit/Debit Card
+ *   </Radio>
+ *   <Radio 
+ *     value="mobile" 
+ *     slot={<Smartphone size={18} />}
+ *     subtext="Apple Pay, Google Pay, Samsung Pay"
+ *   >
+ *     Mobile Payment
+ *   </Radio>
+ * </RadioGroup>
+ * ```
+ * @example Advanced Usage with Controlled State
+ * ```tsx
+ * import { RadioGroup, Radio, RadioSize } from "blend-v1";
  * import { useState } from "react";
- *
- * function MyPreferenceForm() {
- *   const [selectedValue, setSelectedValue] = useState("email");
- *
+ * import { Crown, Star, Zap } from "lucide-react";
+ * 
+ * function SubscriptionSelector() {
+ *   const [selectedPlan, setSelectedPlan] = useState("basic");
+ *   const [isDisabled, setIsDisabled] = useState(false);
+ * 
+ *   const handlePlanChange = (value: string) => {
+ *     setSelectedPlan(value);
+ *     console.log('Plan selected:', value);
+ *   };
+ * 
  *   return (
- *     <RadioGroup
- *       label="Notification Preference"
- *       name="notificationType"
- *       value={selectedValue}
- *       onChange={setSelectedValue}
- *     >
- *       <Radio value="email" size={RadioSize.MEDIUM}>Email</Radio>
- *       <Radio value="sms" subtext="Standard rates apply">SMS</Radio>
- *       <Radio value="none" disabled>None</Radio>
- *     </RadioGroup>
+ *     <div>
+ *       <RadioGroup 
+ *         id="subscription-plans"
+ *         label="Choose Your Plan"
+ *         name="subscriptionTier"
+ *         value={selectedPlan}
+ *         onChange={handlePlanChange}
+ *         disabled={isDisabled}
+ *       >
+ *         <Radio 
+ *           value="basic" 
+ *           size={RadioSize.MEDIUM}
+ *           slot={<Star size={18} />}
+ *           subtext="$9.99/month - Essential features"
+ *         >
+ *           Basic Plan
+ *         </Radio>
+ *         <Radio 
+ *           value="pro" 
+ *           slot={<Zap size={18} />}
+ *           subtext="$19.99/month - Advanced features"
+ *         >
+ *           Pro Plan
+ *         </Radio>
+ *         <Radio 
+ *           value="enterprise" 
+ *           slot={<Crown size={18} />}
+ *           subtext="$49.99/month - All features + support"
+ *         >
+ *           Enterprise Plan
+ *         </Radio>
+ *       </RadioGroup>
+ *       
+ *       <button 
+ *         onClick={() => setIsDisabled(!isDisabled)}
+ *         style={{ marginTop: '16px' }}
+ *       >
+ *         {isDisabled ? 'Enable' : 'Disable'} Selection
+ *       </button>
+ *     </div>
  *   );
  * }
  * ```

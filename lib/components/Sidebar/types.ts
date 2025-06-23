@@ -125,58 +125,173 @@ type MerchantInfo = {
 };
 
 /**
- * @description Props for the Sidebar component.
- * The Sidebar provides primary navigation for an application, often including tenant/merchant selection,
- * a main navigation tree (using `DirectoryData`), and custom top bar and footer sections.
- * @feature Multi-level navigation with tenant and merchant switching.
- * @feature Main navigation area using `Directory` component structure.
- * @feature Customizable top bar and footer sections.
- * @feature Controlled active tenant and merchant states.
- * @example
+ * @description A comprehensive sidebar navigation component for complex applications with multi-tenant architecture and hierarchical navigation.
+ * Essential for admin dashboards, SaaS platforms, and enterprise applications requiring tenant/merchant switching with organized navigation structure.
+ * @feature Multi-tenant and multi-merchant support with switching capabilities
+ * @feature Hierarchical navigation using Directory component structure
+ * @feature Collapsible sidebar with smooth animations and responsive design
+ * @feature Customizable top bar for branding and application controls
+ * @feature Footer section for additional links and information
+ * @feature Active state management for tenants and merchants
+ * @feature Integrated merchant/tenant selector with icons and labels
+ * @feature Seamless integration with Directory component for navigation
+ * @example Basic Sidebar with Navigation
  * ```tsx
- * import { Sidebar, DirectoryData, TenantInfo, MerchantInfo } from "./components/Sidebar"; // Assuming path
- * import { HomeIcon, SettingsIcon, UsersIcon, BuildingIcon } from "lucide-react"; // Assuming lucide-react
- * import { useState } from "react";
- *
- * const tenantsData: TenantInfo[] = [
- *   { id: "tenant1", label: "Tenant Alpha", icon: <BuildingIcon /> },
- * ];
- * const merchantsData: MerchantInfo[] = [
- *   { id: "merchantA", label: "Merchant A", icon: <UsersIcon /> },
- * ];
- * const navData: DirectoryData[] = [
+ * import { Sidebar, DirectoryData } from "blend-v1";
+ * import { Home, Settings, Users, Building } from "lucide-react";
+ * 
+ * const navigationData: DirectoryData[] = [
  *   {
- *     label: "Main Menu",
+ *     label: "Main",
  *     items: [
- *       { label: "Dashboard", href: "/dashboard", leftSlot: <HomeIcon /> },
- *       { label: "Settings", href: "/settings", leftSlot: <SettingsIcon /> },
- *     ],
- *   },
+ *       { label: "Dashboard", href: "/dashboard", leftSlot: <Home size={16} /> },
+ *       { label: "Users", href: "/users", leftSlot: <Users size={16} /> },
+ *       { label: "Settings", href: "/settings", leftSlot: <Settings size={16} /> }
+ *     ]
+ *   }
  * ];
- *
- * function AppLayout({ children }) {
- *   const [activeTenant, setActiveTenant] = useState("tenant1");
- *   const [activeMerchant, setActiveMerchant] = useState("merchantA");
- *
+ * 
+ * const tenants = [
+ *   { label: "Main Tenant", icon: <Building size={16} /> }
+ * ];
+ * 
+ * const merchants = [
+ *   { label: "Default Store", icon: <Users size={16} /> }
+ * ];
+ * 
+ * <Sidebar
+ *   tenants={tenants}
+ *   merchants={merchants}
+ *   data={navigationData}
+ *   topbar={<div>My App</div>}
+ *   activeTenant="Main Tenant"
+ *   activeMerchant="Default Store"
+ * >
+ *   <div>Main content area</div>
+ * </Sidebar>
+ * ```
+ * @example Intermediate Multi-Tenant Sidebar
+ * ```tsx
+ * import { Sidebar, DirectoryData } from "blend-v1";
+ * import { useState } from "react";
+ * import { Home, BarChart, Users, Store, Building, ShoppingBag } from "lucide-react";
+ * 
+ * function AppLayout() {
+ *   const [activeTenant, setActiveTenant] = useState("company-a");
+ *   const [activeMerchant, setActiveMerchant] = useState("store-1");
+ * 
+ *   const tenants = [
+ *     { label: "Company A", icon: <Building size={16} /> },
+ *     { label: "Company B", icon: <Store size={16} /> }
+ *   ];
+ * 
+ *   const merchants = [
+ *     { label: "Store 1", icon: <ShoppingBag size={16} /> },
+ *     { label: "Store 2", icon: <ShoppingBag size={16} /> }
+ *   ];
+ * 
+ *   const navData: DirectoryData[] = [
+ *     {
+ *       label: "Analytics",
+ *       items: [
+ *         { label: "Dashboard", href: "/dashboard", leftSlot: <Home size={16} /> },
+ *         { label: "Reports", href: "/reports", leftSlot: <BarChart size={16} /> }
+ *       ]
+ *     },
+ *     {
+ *       label: "Management",
+ *       items: [
+ *         { label: "Users", href: "/users", leftSlot: <Users size={16} /> }
+ *       ]
+ *     }
+ *   ];
+ * 
  *   return (
- *     <div style={{ display: 'flex' }}>
- *       <Sidebar
- *         tenants={tenantsData}
- *         merchants={merchantsData}
- *         data={navData}
- *         topbar={<div>My App Logo</div>}
- *         activeTenant={activeTenant}
- *         setActiveTenant={setActiveTenant}
- *         activeMerchant={activeMerchant}
- *         setActiveMerchant={setActiveMerchant}
- *         footer={<div>© 2024 My App</div>}
- *       >
- *         {children} // Main content area
- *       </Sidebar>
- *       <main style={{ flexGrow: 1, padding: '20px' }}>
- *         {children}
+ *     <Sidebar
+ *       tenants={tenants}
+ *       merchants={merchants}
+ *       data={navData}
+ *       topbar={<h2>Admin Panel</h2>}
+ *       activeTenant={activeTenant}
+ *       setActiveTenant={setActiveTenant}
+ *       activeMerchant={activeMerchant}
+ *       setActiveMerchant={setActiveMerchant}
+ *       footer={<p>© 2024 My Company</p>}
+ *     >
+ *       <main>Content goes here</main>
+ *     </Sidebar>
+ *   );
+ * }
+ * ```
+ * @example Advanced Enterprise Sidebar
+ * ```tsx
+ * import { Sidebar, DirectoryData } from "blend-v1";
+ * import { useState } from "react";
+ * import { 
+ *   Home, BarChart, Users, Settings, Shield, 
+ *   Building, Store, ShoppingBag, CreditCard 
+ * } from "lucide-react";
+ * 
+ * function EnterpriseDashboard() {
+ *   const [activeTenant, setActiveTenant] = useState("enterprise-corp");
+ *   const [activeMerchant, setActiveMerchant] = useState("main-store");
+ * 
+ *   const tenants = [
+ *     { label: "Enterprise Corp", icon: <Building size={16} /> },
+ *     { label: "Subsidiary LLC", icon: <Store size={16} /> }
+ *   ];
+ * 
+ *   const merchants = [
+ *     { label: "Main Store", icon: <ShoppingBag size={16} /> },
+ *     { label: "Online Shop", icon: <CreditCard size={16} /> },
+ *     { label: "Mobile App", icon: <Store size={16} /> }
+ *   ];
+ * 
+ *   const enterpriseNavData: DirectoryData[] = [
+ *     {
+ *       label: "Overview",
+ *       items: [
+ *         { label: "Dashboard", href: "/dashboard", leftSlot: <Home size={16} /> },
+ *         { label: "Analytics", href: "/analytics", leftSlot: <BarChart size={16} /> }
+ *       ]
+ *     },
+ *     {
+ *       label: "Operations",
+ *       items: [
+ *         { label: "User Management", href: "/users", leftSlot: <Users size={16} /> },
+ *         { label: "Security", href: "/security", leftSlot: <Shield size={16} /> },
+ *         { label: "System Config", href: "/config", leftSlot: <Settings size={16} /> }
+ *       ]
+ *     }
+ *   ];
+ * 
+ *   return (
+ *     <Sidebar
+ *       tenants={tenants}
+ *       merchants={merchants}
+ *       data={enterpriseNavData}
+ *       topbar={
+ *         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+ *           <Building size={24} />
+ *           <span style={{ fontWeight: '600' }}>Enterprise Portal</span>
+ *         </div>
+ *       }
+ *       activeTenant={activeTenant}
+ *       setActiveTenant={setActiveTenant}
+ *       activeMerchant={activeMerchant}
+ *       setActiveMerchant={setActiveMerchant}
+ *       footer={
+ *         <div style={{ textAlign: 'center', padding: '8px' }}>
+ *           <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+ *             v2.1.0 | Support
+ *           </p>
+ *         </div>
+ *       }
+ *     >
+ *       <main style={{ padding: '24px' }}>
+ *         Enterprise dashboard content
  *       </main>
- *     </div>
+ *     </Sidebar>
  *   );
  * }
  * ```

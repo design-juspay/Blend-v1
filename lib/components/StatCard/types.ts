@@ -64,39 +64,90 @@ export type StatCardChange = {
 };
 
 /**
- * @description A card component designed to display key statistics or metrics.
- * It can show a primary value, title, subtitle, change indicator, and a mini chart or progress bar.
- * @feature Displays a key statistic prominently.
- * @feature Shows trend/change information (increase/decrease).
- * @feature Multiple visual variants (line chart, progress bar, bar chart, number only).
- * @feature Optional icons for title and actions.
- * @feature Help icon with tooltip support.
- * @example
+ * @description A versatile statistics card component that displays key metrics with optional charts and trend indicators. Perfect for dashboards, analytics, and KPI displays.
+ * @feature Displays key metrics with prominent values and trends
+ * @feature Multiple visual variants: line chart, bar chart, progress bar, or number-only
+ * @feature Built-in change indicators with increase/decrease arrows
+ * @feature Optional help tooltips and action icons
+ * @feature Responsive chart integration with hover tooltips
+ * @example Basic Usage
  * ```tsx
- * import { StatCard, StatCardVariant, ChangeType } from "./components/StatCard"; // Assuming path
- * import { TrendingUp, Info } from "lucide-react"; // Assuming lucide-react
- *
- * const salesData: ChartDataPoint[] = [
- *   { label: "Mon", value: 100 }, { label: "Tue", value: 150 }, { label: "Wed", value: 120 }
- * ];
- *
+ * import { StatCard, StatCardVariant, ChangeType } from "blend-v1";
+ * 
  * <StatCard
  *   title="Total Revenue"
- *   value="$12,345"
+ *   value="$45,231"
+ *   variant={StatCardVariant.NUMBER}
+ *   change={{
+ *     value: 12.5,
+ *     type: ChangeType.INCREASE
+ *   }}
+ *   subtitle="This month"
+ * />
+ * ```
+ * @example Intermediate Usage with Chart
+ * ```tsx
+ * import { StatCard, StatCardVariant, ChangeType, ChartDataPoint } from "blend-v1";
+ * import { TrendingUp } from "lucide-react";
+ * 
+ * const salesData: ChartDataPoint[] = [
+ *   { label: "Jan", value: 4000 },
+ *   { label: "Feb", value: 3000 },
+ *   { label: "Mar", value: 5000 },
+ *   { label: "Apr", value: 4500 },
+ *   { label: "May", value: 6000 },
+ *   { label: "Jun", value: 5500 },
+ *   { label: "Jul", value: 7000 }
+ * ];
+ * 
+ * <StatCard
+ *   title="Monthly Sales"
+ *   value="$67,500"
  *   variant={StatCardVariant.LINE}
  *   chartData={salesData}
- *   change={{ value: 5.2, type: ChangeType.INCREASE }}
- *   subtitle="Last 30 days"
+ *   change={{
+ *     value: 23.1,
+ *     type: ChangeType.INCREASE
+ *   }}
+ *   subtitle="Last 7 months"
  *   titleIcon={<TrendingUp size={18} />}
- *   helpIconText="This is the total revenue generated."
  * />
- *
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { 
+ *   StatCard, 
+ *   StatCardVariant, 
+ *   ChangeType, 
+ *   ChartDataPoint 
+ * } from "blend-v1";
+ * import { Users, MoreVertical } from "lucide-react";
+ * 
+ * const userGrowthData: ChartDataPoint[] = [
+ *   { label: "Week 1", value: 1200, date: "2024-01-01" },
+ *   { label: "Week 2", value: 1350, date: "2024-01-08" },
+ *   { label: "Week 3", value: 1180, date: "2024-01-15" },
+ *   { label: "Week 4", value: 1420, date: "2024-01-22" },
+ *   { label: "Week 5", value: 1650, date: "2024-01-29" }
+ * ];
+ * 
  * <StatCard
- *   title="Task Completion"
- *   value="75%"
- *   variant={StatCardVariant.PROGRESS_BAR}
- *   progressValue={75}
- *   subtitle="Project Alpha"
+ *   title="Active Users"
+ *   value="12,847"
+ *   variant={StatCardVariant.BAR}
+ *   chartData={userGrowthData}
+ *   change={{
+ *     value: 8.2,
+ *     type: ChangeType.INCREASE
+ *   }}
+ *   subtitle="Last 5 weeks"
+ *   titleIcon={<Users size={18} />}
+ *   actionIcon={
+ *     <button onClick={() => console.log('More options')}>
+ *       <MoreVertical size={16} />
+ *     </button>
+ *   }
+ *   helpIconText="Total number of users who have been active in the past 30 days"
  * />
  * ```
  */

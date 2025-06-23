@@ -6,35 +6,6 @@ import { TextAreaProps } from "./types";
 import { useComponentToken } from "../../../context/useComponentToken";
 import { TextAreaTokensType } from "./textarea.token";
 
-/**
- * @description A multi-line text input field, allowing users to enter and edit larger blocks of text.
- * The props for this component are defined in `TextAreaProps` in `./types.ts`.
- * @feature Multi-line text input.
- * @feature Customizable rows and columns (though styling might override).
- * @feature Control over resizing behavior (none, both, horizontal, vertical).
- * @feature Supports labels, sublabels, hint text, and error messages.
- * @feature Standard input events like `onChange`, `onFocus`, `onBlur`.
- * @example
- * ```tsx
- * import { TextArea } from "./components/Inputs/TextArea"; // Assuming path
- * import { useState } from "react";
- *
- * function MyCommentForm() {
- *   const [comment, setComment] = useState("");
- *
- *   return (
- *     <TextArea
- *       label="Your Comment"
- *       value={comment}
- *       onChange={(e) => setComment(e.target.value)}
- *       placeholder="Enter your comment here..."
- *       rows={4}
- *       hintText="Max 500 characters."
- *     />
- *   );
- * }
- * ```
- */
 const TextArea = ({
   value,
   placeholder,

@@ -1,6 +1,88 @@
 import { CSSObject } from "styled-components";
 
-// Component-level JSDoc (description, features, example) is now in TextArea.tsx
+/**
+ * @description A comprehensive multi-line text input component perfect for collecting longer text content such as comments, descriptions, feedback, and detailed user input.
+ * Essential for forms requiring extended text entry with professional styling, validation, and user experience enhancements.
+ * @feature Multi-line text input with customizable dimensions and appearance
+ * @feature Intelligent resizing controls (none, horizontal, vertical, both) for user flexibility
+ * @feature Comprehensive label system with primary labels, sublabels, and help tooltips
+ * @feature Advanced validation with error states and descriptive error messaging
+ * @feature Accessibility support with proper ARIA attributes and keyboard navigation
+ * @feature Auto-focus capability for improved user workflow and experience
+ * @feature Configurable row and column sizing for optimal layout integration
+ * @feature Professional styling with hover, focus, and disabled state management
+ * @example Basic Comment Input
+ * ```tsx
+ * import { TextArea } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function CommentForm() {
+ *   const [comment, setComment] = useState("");
+ * 
+ *   return (
+ *     <TextArea
+ *       label="Your Comment"
+ *       value={comment}
+ *       onChange={(e) => setComment(e.target.value)}
+ *       placeholder="Share your thoughts..."
+ *       rows={4}
+ *     />
+ *   );
+ * }
+ * ```
+ * @example Intermediate Usage with Error State
+ * ```tsx
+ * import { TextArea } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function FeedbackForm() {
+ *   const [feedback, setFeedback] = useState("");
+ * 
+ *   return (
+ *     <TextArea
+ *       label="Product Feedback"
+ *       sublabel="Help us improve our products"
+ *       value={feedback}
+ *       onChange={(e) => setFeedback(e.target.value)}
+ *       placeholder="Please describe your experience..."
+ *       rows={6}
+ *       error={feedback.length > 500}
+ *       errorMessage="Feedback must be 500 characters or less"
+ *       hintText="Share your honest thoughts"
+ *       required={true}
+ *       resize="vertical"
+ *     />
+ *   );
+ * }
+ * ```
+ * @example Advanced Usage with All Props
+ * ```tsx
+ * import { TextArea } from "blend-v1";
+ * import { useState } from "react";
+ * 
+ * function MessageForm() {
+ *   const [message, setMessage] = useState("");
+ * 
+ *   return (
+ *     <TextArea
+ *       label="Message Content"
+ *       sublabel="Compose your message"
+ *       value={message}
+ *       onChange={(e) => setMessage(e.target.value)}
+ *       placeholder="Type your message here..."
+ *       rows={8}
+ *       cols={50}
+ *       autoFocus={true}
+ *       hintText="This message will be sent to team members"
+ *       helpIconHintText="Click for formatting guidelines"
+ *       required={true}
+ *       resize="both"
+ *       wrap="soft"
+ *     />
+ *   );
+ * }
+ * ```
+ */
 export type TextAreaProps = {
   /**
    * @propCategory Required

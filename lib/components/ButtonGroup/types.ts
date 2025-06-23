@@ -31,27 +31,81 @@ export enum ButtonGroupMode {
 }
 
 /**
- * @description A component to group multiple buttons together, either horizontally or vertically.
- * It can control the size and styling mode of the enclosed buttons.
- * @feature Groups multiple buttons.
- * @feature Supports horizontal (default) and vertical (stacked) layouts.
- * @feature Different modes for button styling within the group (e.g., single primary, all secondary).
- * @feature Consistent sizing for all buttons in the group.
- * @example
+ * @description A versatile button grouping component that organizes multiple buttons with consistent styling and layout controls.
+ * Perfect for toolbars, action bars, form controls, and navigation elements where multiple related actions need to be presented together.
+ * @feature Flexible horizontal and vertical layout options for different UI patterns
+ * @feature Multiple styling modes including single primary, all secondary, and no transform
+ * @feature Consistent sizing across all grouped buttons for visual harmony
+ * @feature Support for any button content including icons, text, and complex elements
+ * @feature Seamless integration with existing Button components
+ * @feature Responsive design patterns for mobile and desktop layouts
+ * @feature Accessible keyboard navigation and screen reader support
+ * @feature Customizable spacing and alignment for different design systems
+ * @example Basic Button Group
  * ```tsx
- * import { ButtonGroup, ButtonGroupMode } from "./components/ButtonGroup";
- * import { Button, ButtonSize } from "./components/Button"; // Assuming Button component is used as children
- *
- * <ButtonGroup mode={ButtonGroupMode.SINGLE_PRIMARY} size={ButtonSize.MEDIUM}>
+ * import { ButtonGroup, Button, ButtonGroupMode } from "blend-v1";
+ * 
+ * <ButtonGroup mode={ButtonGroupMode.SINGLE_PRIMARY}>
  *   <Button text="Save" />
  *   <Button text="Cancel" />
- *   <Button text="Help" />
+ *   <Button text="Delete" />
  * </ButtonGroup>
- *
- * <ButtonGroup isStacked={true} size={ButtonSize.SMALL}>
- *   <Button text="Option A" />
- *   <Button text="Option B" />
+ * ```
+ * @example Vertical Button Group with Icons
+ * ```tsx
+ * import { ButtonGroup, Button, ButtonSize } from "blend-v1";
+ * import { Save, Edit, Trash, Share } from "lucide-react";
+ * 
+ * <ButtonGroup 
+ *   isStacked={true} 
+ *   size={ButtonSize.MEDIUM}
+ *   mode={ButtonGroupMode.ALL_SECONDARY}
+ * >
+ *   <Button text="Save Document" leftSlot={<Save size={16} />} />
+ *   <Button text="Edit Document" leftSlot={<Edit size={16} />} />
+ *   <Button text="Share Document" leftSlot={<Share size={16} />} />
+ *   <Button text="Delete Document" leftSlot={<Trash size={16} />} />
  * </ButtonGroup>
+ * ```
+ * @example Advanced Action Toolbar
+ * ```tsx
+ * import { ButtonGroup, Button, ButtonSize, ButtonGroupMode } from "blend-v1";
+ * import { 
+ *   Bold, Italic, Underline, AlignLeft, 
+ *   AlignCenter, AlignRight, List, ListOrdered 
+ * } from "lucide-react";
+ * 
+ * function TextEditorToolbar() {
+ *   return (
+ *     <div style={{ display: 'flex', gap: '16px', padding: '8px' }}>
+ *       <ButtonGroup 
+ *         size={ButtonSize.SMALL} 
+ *         mode={ButtonGroupMode.NO_TRANSFORM}
+ *       >
+ *         <Button leftSlot={<Bold size={14} />} />
+ *         <Button leftSlot={<Italic size={14} />} />
+ *         <Button leftSlot={<Underline size={14} />} />
+ *       </ButtonGroup>
+ *       
+ *       <ButtonGroup 
+ *         size={ButtonSize.SMALL}
+ *         mode={ButtonGroupMode.ALL_SECONDARY}
+ *       >
+ *         <Button leftSlot={<AlignLeft size={14} />} />
+ *         <Button leftSlot={<AlignCenter size={14} />} />
+ *         <Button leftSlot={<AlignRight size={14} />} />
+ *       </ButtonGroup>
+ *       
+ *       <ButtonGroup 
+ *         size={ButtonSize.SMALL}
+ *         mode={ButtonGroupMode.SINGLE_PRIMARY}
+ *       >
+ *         <Button leftSlot={<List size={14} />} />
+ *         <Button leftSlot={<ListOrdered size={14} />} />
+ *       </ButtonGroup>
+ *     </div>
+ *   );
+ * }
  * ```
  */
 export interface ButtonGroupProps {

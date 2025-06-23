@@ -31,38 +31,87 @@ export type TagConfig = {
 };
 
 /**
- * @description A component that displays two tags joined together, often to represent a key-value pair or a status with a sub-status.
- * It can also include leading and trailing slots for icons or other elements.
- * @feature Displays two connected tags (primary and optional secondary).
- * @feature Customizable size and shape for the combined tag.
- * @feature Optional leading and trailing slots for icons or adornments.
- * @feature Individual tag parts can have their own text, variant, style, and onClick handlers (via `TagProps`).
- * @example
+ * @description A component that displays two connected tags, perfect for showing key-value pairs, status combinations, or related information. The primary tag typically contains a label or category, while the secondary tag shows the value or status.
+ * @feature Two connected tags that appear as a single unit
+ * @feature Customizable size and shape for consistent styling
+ * @feature Optional leading and trailing slots for icons or adornments
+ * @feature Individual click handlers for each tag section
+ * @feature Automatic styling with primary tag using NO_FILL variant and secondary tag using ATTENTIVE variant
+ * @example Basic Usage
  * ```tsx
- * import { SplitTag, TagSize, TagShape, TagColor, TagVariant } from "./components/SplitTag"; // Assuming path
- * import { CheckCircle, AlertTriangle } from "lucide-react"; // Assuming lucide-react
- *
+ * import { SplitTag, TagColor } from "blend-v1";
+ * 
  * <SplitTag
  *   primaryTag={{
  *     text: "Status",
- *     variant: TagVariant.FILLED,
- *     style: TagColor.NEUTRAL,
+ *     color: TagColor.NEUTRAL
  *   }}
  *   secondaryTag={{
  *     text: "Active",
- *     variant: TagVariant.FILLED,
- *     style: TagColor.SUCCESS,
- *     onClick: () => console.log("Active part clicked"),
+ *     color: TagColor.SUCCESS
  *   }}
- *   leadingSlot={<CheckCircle size={14} />}
- *   size={TagSize.MEDIUM}
+ * />
+ * ```
+ * @example Intermediate Usage with Click Handlers
+ * ```tsx
+ * import { SplitTag, TagColor, TagSize, TagShape } from "blend-v1";
+ * import { User, Settings } from "lucide-react";
+ * 
+ * <SplitTag
+ *   primaryTag={{
+ *     text: "User Role",
+ *     color: TagColor.PRIMARY,
+ *     leftSlot: <User size={14} />,
+ *     onClick: () => console.log('Role clicked')
+ *   }}
+ *   secondaryTag={{
+ *     text: "Admin",
+ *     color: TagColor.WARNING,
+ *     rightSlot: <Settings size={14} />,
+ *     onClick: () => console.log('Admin level clicked')
+ *   }}
+ *   size={TagSize.LG}
  *   shape={TagShape.ROUNDED}
  * />
- *
+ * ```
+ * @example Advanced Usage with All Props
+ * ```tsx
+ * import { 
+ *   SplitTag, 
+ *   TagColor, 
+ *   TagSize, 
+ *   TagShape 
+ * } from "blend-v1";
+ * import { 
+ *   TrendingUp, 
+ *   DollarSign, 
+ *   AlertCircle, 
+ *   ExternalLink 
+ * } from "lucide-react";
+ * 
+ * const portfolioData = {
+ *   category: "Portfolio",
+ *   value: "+12.5%",
+ *   isPositive: true
+ * };
+ * 
  * <SplitTag
- *   primaryTag={{ text: "Priority", style: TagColor.NEUTRAL }}
- *   secondaryTag={{ text: "High", style: TagColor.ERROR }}
- *   trailingSlot={<AlertTriangle size={14} />}
+ *   leadingSlot={<TrendingUp size={16} className="text-green-600" />}
+ *   primaryTag={{
+ *     text: portfolioData.category,
+ *     color: TagColor.NEUTRAL,
+ *     leftSlot: <DollarSign size={14} />,
+ *     onClick: () => console.log('Portfolio category clicked')
+ *   }}
+ *   secondaryTag={{
+ *     text: portfolioData.value,
+ *     color: portfolioData.isPositive ? TagColor.SUCCESS : TagColor.ERROR,
+ *     rightSlot: <AlertCircle size={14} />,
+ *     onClick: () => console.log('Performance value clicked')
+ *   }}
+ *   trailingSlot={<ExternalLink size={16} className="text-blue-600" />}
+ *   size={TagSize.MD}
+ *   shape={TagShape.SQUARICAL}
  * />
  * ```
  */

@@ -23,18 +23,64 @@ export enum AccordionChevronPosition {
 }
 
 /**
- * @description Represents a single item within an Accordion component.
- * It defines the content and behavior of an individual collapsible section.
- * @feature Expandable content sections.
- * @feature Customizable title and subtext.
- * @feature Optional slots for additional content (left, right, subtext).
- * @feature Controllable disabled state.
- * @example
+ * @description Represents a single item within an Accordion component. Defines the content and behavior of an individual collapsible section.
+ * @feature Expandable content sections with smooth animations
+ * @feature Customizable title and subtext display
+ * @feature Optional slots for additional content (left, right, subtext)
+ * @feature Controllable disabled state and chevron positioning
+ * @example Basic Usage
  * ```tsx
- * import { Accordion, AccordionItem } from "./components/Accordion";
+ * import { AccordionItem } from "blend-v1";
  *
  * <AccordionItem value="item-1" title="Section 1 Title">
  *   <p>This is the content of section 1.</p>
+ * </AccordionItem>
+ * ```
+ * @example Intermediate Usage with Slots
+ * ```tsx
+ * import { AccordionItem, AccordionChevronPosition } from "blend-v1";
+ * import { Settings } from "lucide-react";
+ *
+ * <AccordionItem 
+ *   value="settings" 
+ *   title="Account Settings"
+ *   subtext="Manage your account preferences"
+ *   leftSlot={<Settings size={18} />}
+ *   chevronPosition={AccordionChevronPosition.RIGHT}
+ * >
+ *   <div>
+ *     <h4>Notification Preferences</h4>
+ *     <p>Choose how you want to receive updates.</p>
+ *   </div>
+ * </AccordionItem>
+ * ```
+ * @example Advanced Usage with All Features
+ * ```tsx
+ * import { AccordionItem, AccordionChevronPosition } from "blend-v1";
+ * import { Info, CheckCircle } from "lucide-react";
+ *
+ * <AccordionItem 
+ *   value="billing" 
+ *   title="Billing & Payments"
+ *   subtext="Manage your subscription and payment methods"
+ *   leftSlot={<Info size={18} />}
+ *   rightSlot={<span style={{ color: '#10B981' }}>Active</span>}
+ *   chevronPosition={AccordionChevronPosition.LEFT}
+ *   isDisabled={false}
+ *   className="custom-accordion-item"
+ *   subtextSlot={
+ *     <span style={{ color: '#6B7280', fontSize: '14px' }}>
+ *       Help us improve our platform
+ *     </span>
+ *   }
+ * >
+ *   <div style={{ padding: '16px 0' }}>
+ *     <h4>Payment Methods</h4>
+ *     <p>Add, remove, or update your payment methods.</p>
+ *     <button onClick={() => console.log('Manage payments')}>
+ *       Manage Payment Methods
+ *     </button>
+ *   </div>
  * </AccordionItem>
  * ```
  */
@@ -94,24 +140,128 @@ export type AccordionItemProps = {
 }
 
 /**
- * @description A vertically stacked set of interactive headings that each reveal a section of content.
- * The Accordion component allows users to toggle the display of sections of content.
- * It can be configured to allow single or multiple items to be open at once.
- * @feature Supports single and multiple open sections.
- * @feature Customizable appearance (bordered or no border).
- * @feature Controllable state through `value` and `onValueChange`.
- * @example
+ * @description A collapsible content component that displays a list of items where only one or multiple can be expanded at a time. Perfect for FAQs, settings panels, and content organization.
+ * @feature Single or multiple item expansion support
+ * @feature Customizable visual styles with border and no-border variants
+ * @feature Smooth expand/collapse animations
+ * @feature Keyboard navigation and accessibility support
+ * @feature Controlled and uncontrolled state management
+ * @feature Flexible content structure with AccordionItem children
+ * @example Basic Usage
  * ```tsx
- * import { Accordion, AccordionItem } from "./components/Accordion";
- *
- * <Accordion defaultValue="item-1" isMultiple={false}>
- *   <AccordionItem value="item-1" title="Section 1 Title">
- *     <p>Content for section 1.</p>
+ * import { Accordion, AccordionItem, AccordionType } from "blend-v1";
+ * 
+ * <Accordion 
+ *   accordionType={AccordionType.NO_BORDER}
+ *   defaultValue="item-1"
+ * >
+ *   <AccordionItem value="item-1" title="Getting Started">
+ *     <p>Learn the basics of using our platform.</p>
  *   </AccordionItem>
- *   <AccordionItem value="item-2" title="Section 2 Title">
- *     <p>Content for section 2.</p>
+ *   <AccordionItem value="item-2" title="Advanced Features">
+ *     <p>Discover powerful features for your workflow.</p>
  *   </AccordionItem>
  * </Accordion>
+ * ```
+ * @example Intermediate Usage with Multiple Selection
+ * ```tsx
+ * import { 
+ *   Accordion, 
+ *   AccordionItem, 
+ *   AccordionType,
+ *   AccordionChevronPosition 
+ * } from "blend-v1";
+ * import { Settings, User } from "lucide-react";
+ * 
+ * <Accordion 
+ *   accordionType={AccordionType.BORDER}
+ *   isMultiple={true}
+ *   defaultValue={["settings", "profile"]}
+ * >
+ *   <AccordionItem 
+ *     value="settings" 
+ *     title="Account Settings"
+ *     subtext="Manage your account preferences"
+ *     leftSlot={<Settings size={18} />}
+ *     chevronPosition={AccordionChevronPosition.RIGHT}
+ *   >
+ *     <div>
+ *       <h4>Notification Preferences</h4>
+ *       <p>Choose how you want to receive updates.</p>
+ *     </div>
+ *   </AccordionItem>
+ *   <AccordionItem 
+ *     value="profile" 
+ *     title="Profile Information"
+ *     leftSlot={<User size={18} />}
+ *   >
+ *     <div>
+ *       <h4>Personal Details</h4>
+ *       <p>Update your name, email, and other information.</p>
+ *     </div>
+ *   </AccordionItem>
+ * </Accordion>
+ * ```
+ * @example Advanced Usage with Controlled State
+ * ```tsx
+ * import { 
+ *   Accordion, 
+ *   AccordionItem, 
+ *   AccordionType,
+ *   AccordionChevronPosition 
+ * } from "blend-v1";
+ * import { Info, AlertCircle, CheckCircle } from "lucide-react";
+ * import { useState } from "react";
+ * 
+ * function HelpCenter() {
+ *   const [openSections, setOpenSections] = useState<string[]>(['billing']);
+ * 
+ *   const handleValueChange = (value: string | string[]) => {
+ *     setOpenSections(value as string[]);
+ *     console.log('Open sections:', value);
+ *   };
+ * 
+ *   return (
+ *     <Accordion 
+ *       accordionType={AccordionType.BORDER}
+ *       isMultiple={true}
+ *       value={openSections}
+ *       onValueChange={handleValueChange}
+ *       className="help-center-accordion"
+ *     >
+ *       <AccordionItem 
+ *         value="billing" 
+ *         title="Billing & Payments"
+ *         subtext="Manage your subscription and payment methods"
+ *         leftSlot={<Info size={18} />}
+ *         rightSlot={<span style={{ color: '#10B981' }}>Active</span>}
+ *         chevronPosition={AccordionChevronPosition.LEFT}
+ *       >
+ *         <div style={{ padding: '16px 0' }}>
+ *           <h4>Payment Methods</h4>
+ *           <p>Add, remove, or update your payment methods.</p>
+ *           <button onClick={() => console.log('Manage payments')}>
+ *             Manage Payment Methods
+ *           </button>
+ *         </div>
+ *       </AccordionItem>
+ * 
+ *       <AccordionItem 
+ *         value="support" 
+ *         title="Technical Support"
+ *         subtext="Get help with technical issues"
+ *         leftSlot={<AlertCircle size={18} />}
+ *         isDisabled={false}
+ *       >
+ *         <div style={{ padding: '16px 0' }}>
+ *           <h4>Contact Support</h4>
+ *           <p>Our support team is available 24/7.</p>
+ *           <p>Response time: Usually within 2 hours</p>
+ *         </div>
+ *       </AccordionItem>
+ *     </Accordion>
+ *   );
+ * }
  * ```
  */
 export type AccordionProps = {
