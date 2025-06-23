@@ -1,13 +1,14 @@
 import { forwardRef } from 'react';
 import { styled } from 'styled-components';
 import { TableCellProps } from './types';
-import dataTableTokens from '../dataTable.tokens';
+import { TableTokenType } from '../dataTable.tokens';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveInput from '../../Primitives/PrimitiveInput/PrimitiveInput';
 import { FOUNDATION_THEME } from '../../../tokens';
+import { useComponentToken } from '../../../context/useComponentToken';
 
-const StyledTableCell = styled.td<{ width?: string; $hasCustomContent?: boolean }>`
-  ${dataTableTokens.td.base}
+const StyledTableCell = styled.td<{ width?: string; $hasCustomContent?: boolean; $tableToken?: TableTokenType }>`
+  ${props => props.$tableToken ? props.$tableToken.dataTable.table.body.cell : ''}
   ${props => props.width && `width: ${props.width};`}
   overflow: hidden;
   box-sizing: border-box;
@@ -22,6 +23,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
   width,
   onFieldChange,
 }, ref) => {
+  const tableToken = useComponentToken("TABLE") as TableTokenType;
   const renderContent = () => {
     if (isEditing && column.isEditable) {
       if (column.renderEditCell) {
@@ -99,6 +101,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
     <StyledTableCell 
       ref={ref}
       width={width}
+      $tableToken={tableToken}
       $hasCustomContent={!!column.renderCell || (isEditing && column.isEditable)}
       style={{ 
         width: width,
