@@ -3,7 +3,6 @@ import { MoreVertical, Edit2, ArrowUp, ArrowDown } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableHeaderProps } from './types';
 import { FilterType, ColumnDefinition } from '../types';
-import dataTableTokens from '../dataTable.tokens';
 import { Checkbox } from '../../../main';
 import { CheckboxSize } from '../../Checkbox/types';
 import { ColumnManager } from '../ColumnManager';
@@ -409,7 +408,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
               key={String(column.field)}
               style={{ 
                 ...tableToken.dataTable.table.header.cell,
-                ...(column.isSortable && dataTableTokens.th.sortable),
+                ...(column.isSortable && tableToken.dataTable.table.header.sortable),
                 width: columnWidth,
                 minWidth: columnWidth,
                 maxWidth: columnWidth,
