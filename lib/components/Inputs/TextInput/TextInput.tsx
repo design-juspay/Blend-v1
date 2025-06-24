@@ -72,14 +72,14 @@ const TextInput = ({
     : paddingX;
   return (
     <Block display="flex" flexDirection="column" gap={8} width={"100%"}>
-     {label && <InputLabels
+     <InputLabels
         label={label}
         sublabel={sublabel}
         helpIconHintText={helpIconHintText}
         disabled={disabled}
         name={name}
         required={required}
-      />}
+      />
       <Block position="relative" width={"100%"}>
         {leftSlot && (
           <Block
@@ -139,12 +139,12 @@ const TextInput = ({
           </Block>
         )}
       </Block>
-        {errorMessage && <InputFooter
-          error={error}
-          errorMessage={errorMessage}
-          hintText={hintText}
-          disabled={disabled}
-        />}
+      <InputFooter
+        error={error}
+        errorMessage={errorMessage}
+        hintText={hintText}
+        disabled={disabled}
+      />
     </Block>
   );
 };

@@ -244,7 +244,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             >
               <StyledCalendarContainer>
                 <Block>
-                  <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column', gap: FOUNDATION_THEME.unit[12]}}>
+                  <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column'}}>
                     <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
                       <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
                       <Block display='flex' alignItems='start' gap={FOUNDATION_THEME.unit[8]}> 
