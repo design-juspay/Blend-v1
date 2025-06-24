@@ -681,12 +681,12 @@ export const getVisibleMonths = (
  * @param limit Time limit in milliseconds
  * @returns Throttled function
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
   let inThrottle: boolean;
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     if (!inThrottle) {
       func.apply(this, args);
       inThrottle = true;
@@ -774,7 +774,7 @@ export const getDateCellStates = (
  */
 export const getDateCellStyles = (
   dateStates: ReturnType<typeof getDateCellStates>,
-  tokens: any
+  tokens: DateRangePickerTokens
 ) => {
   const { isStart, isEnd, isRangeDay, isTodayDay, isSingleDate, isDisabled } = dateStates;
   
@@ -807,17 +807,17 @@ export const getDateCellStyles = (
  */
 export const getDateCellTextColor = (
   dateStates: ReturnType<typeof getDateCellStates>,
-  tokens: any
+  tokens: DateRangePickerTokens
 ): string => {
   const { isStart, isEnd, isSingleDate, isTodayDay, isRangeDay } = dateStates;
 
   if (isStart || isEnd || isSingleDate) {
-    return tokens.text.selectedDay.color;
+    return (tokens.text.selectedDay.color as string) || '#000000';
   }
   if (isTodayDay && !isRangeDay) {
-    return tokens.text.todayDay.color;
+    return (tokens.text.todayDay.color as string) || '#000000';
   }
-  return tokens.text.dayNumber.color;
+  return (tokens.text.dayNumber.color as string) || '#000000';
 };
 
 /**
@@ -835,10 +835,38 @@ export const shouldShowTodayIndicator = (
 /**
  * Validation result for date input
  */
-export interface DateValidationResult {
+export type DateValidationResult = {
   isValid: boolean;
   error: 'none' | 'format' | 'invalid-date' | 'out-of-range';
   message?: string;
+}
+
+/**
+ * Interface for date range picker tokens used in styling functions
+ */
+export type DateRangePickerTokens = {
+  calendar: {
+    dayCell: Record<string, unknown>;
+    singleDate: Record<string, unknown>;
+    startDate: Record<string, unknown>;
+    endDate: Record<string, unknown>;
+    rangeDay: Record<string, unknown>;
+    todayDay: Record<string, unknown>;
+  };
+  states: {
+    disabledDay: Record<string, unknown>;
+  };
+  text: {
+    selectedDay: {
+      color?: string | unknown;
+    };
+    todayDay: {
+      color?: string | unknown;
+    };
+    dayNumber: {
+      color?: string | unknown;
+    };
+  };
 }
 
 /**
