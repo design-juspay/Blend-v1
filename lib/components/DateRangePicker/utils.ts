@@ -831,3 +831,320 @@ export const shouldShowTodayIndicator = (
   const { isTodayDay, isStart, isEnd, isRangeDay } = dateStates;
   return isTodayDay && !isStart && !isEnd && !isRangeDay;
 };
+
+/**
+ * Validation result for date input
+ */
+export interface DateValidationResult {
+  isValid: boolean;
+  error: 'none' | 'format' | 'invalid-date' | 'out-of-range';
+  message?: string;
+}
+
+/**
+ * Validates date format and date values
+ * @param value The input value to validate
+ * @param format The expected format (e.g., 'dd/MM/yyyy')
+ * @returns Validation result with specific error type
+ */
+export const validateDateInput = (value: string, format: string): DateValidationResult => {
+  if (!value || value.length === 0) {
+    return { isValid: true, error: 'none' };
+  }
+
+  if (format === 'dd/MM/yyyy') {
+    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    const match = value.match(dateRegex);
+    
+    if (!match) {
+      return { 
+        isValid: false, 
+        error: 'format', 
+        message: 'Invalid date' 
+      };
+    }
+    
+    const day = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    const year = parseInt(match[3], 10);
+    
+    if (year < 2001 || year > 2100) {
+      return { 
+        isValid: false, 
+        error: 'out-of-range', 
+        message: 'Date not in range' 
+      };
+    }
+    
+    if (month < 1 || month > 12) {
+      return { 
+        isValid: false, 
+        error: 'invalid-date', 
+        message: 'Invalid date' 
+      };
+    }
+    
+    if (day < 1 || day > 31) {
+      return { 
+        isValid: false, 
+        error: 'invalid-date', 
+        message: 'Invalid date' 
+      };
+    }
+    
+    const date = new Date(year, month - 1, day);
+    const isValidCalendarDate = date.getFullYear() === year && 
+                                date.getMonth() === month - 1 && 
+                                date.getDate() === day;
+    
+    if (!isValidCalendarDate) {
+      return { 
+        isValid: false, 
+        error: 'invalid-date', 
+        message: 'Invalid date' 
+      };
+    }
+    
+    return { isValid: true, error: 'none' };
+  }
+  
+  return { isValid: true, error: 'none' };
+};
+
+/**
+ * Formats date input as user types, adding slashes automatically
+ * @param value The input value to format
+ * @param format The target format (e.g., 'dd/MM/yyyy')
+ * @returns Formatted input value
+ */
+export const formatDateInput = (value: string, format: string): string => {
+  if (format === 'dd/MM/yyyy') {
+    const cleaned = value.replace(/\D/g, '');
+    
+    if (cleaned.length === 0) return '';
+    if (cleaned.length <= 2) return cleaned;
+    if (cleaned.length <= 4) return cleaned.slice(0, 2) + '/' + cleaned.slice(2);
+    if (cleaned.length <= 8) {
+      return cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4) + '/' + cleaned.slice(4, 8);
+    }
+    
+    return cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4) + '/' + cleaned.slice(4, 8);
+  }
+  
+  return value;
+};
+
+/**
+ * Checks if date input is complete (full format length)
+ * @param value The input value to check
+ * @param format The expected format
+ * @returns True if input is complete
+ */
+export const isDateInputComplete = (value: string, format: string): boolean => {
+  if (format === 'dd/MM/yyyy') {
+    return value.length === 10; 
+  }
+  return true; 
+};
+
+/**
+ * Formats date display for the trigger button
+ * @param selectedRange Current selected date range
+ * @param allowSingleDateSelection Whether single date selection is allowed
+ * @returns Formatted display string
+ */
+export const formatDateDisplay = (
+  selectedRange: DateRange,
+  allowSingleDateSelection: boolean = false
+): string => {
+  if (!selectedRange.startDate) {
+    return 'Select date range';
+  }
+
+  const formatOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  };
+
+  const timeFormatOptions: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  };
+
+  const startDateStr = selectedRange.startDate.toLocaleDateString('en-US', formatOptions);
+  const startTimeStr = selectedRange.startDate.toLocaleTimeString('en-US', timeFormatOptions);
+
+  if (
+    !selectedRange.endDate ||
+    (allowSingleDateSelection &&
+      selectedRange.startDate.getTime() === selectedRange.endDate.getTime())
+  ) {
+    return `${startDateStr}, ${startTimeStr}`;
+  }
+
+  const endDateStr = selectedRange.endDate.toLocaleDateString('en-US', formatOptions);
+  const endTimeStr = selectedRange.endDate.toLocaleTimeString('en-US', timeFormatOptions);
+
+  return `${startDateStr}, ${startTimeStr} - ${endDateStr}, ${endTimeStr}`;
+};
+
+/**
+ * Handles date input change with formatting and validation
+ * @param value Input value
+ * @param dateFormat Date format string
+ * @param currentRange Current selected range
+ * @param timeValue Current time value (HH:mm)
+ * @returns Object with formatted value, validation result, and updated range
+ */
+export const handleDateInputChange = (
+  value: string,
+  dateFormat: string,
+  currentRange: DateRange,
+  timeValue: string,
+  isStartDate: boolean = true
+): {
+  formattedValue: string;
+  validation: DateValidationResult;
+  updatedRange?: DateRange;
+} => {
+  const formattedValue = formatDateInput(value, dateFormat);
+  const validation = validateDateInput(formattedValue, dateFormat);
+  
+  let updatedRange: DateRange | undefined;
+
+  if (validation.isValid && isDateInputComplete(formattedValue, dateFormat)) {
+    const parsedDate = parseDate(formattedValue, dateFormat);
+    if (parsedDate !== null && isValidDate(parsedDate)) {
+      const [hours, minutes] = timeValue.split(':').map(Number);
+      parsedDate.setHours(hours, minutes);
+
+      updatedRange = isStartDate 
+        ? { ...currentRange, startDate: parsedDate }
+        : { ...currentRange, endDate: parsedDate };
+    }
+  }
+
+  return {
+    formattedValue,
+    validation,
+    updatedRange
+  };
+};
+
+/**
+ * Handles time change for date range
+ * @param time New time value (HH:mm)
+ * @param currentRange Current selected range
+ * @param isStartTime Whether this is start time or end time
+ * @returns Updated date range
+ */
+export const handleTimeChange = (
+  time: string,
+  currentRange: DateRange,
+  isStartTime: boolean = true
+): DateRange => {
+  const targetDate = isStartTime ? currentRange.startDate : currentRange.endDate;
+  
+  if (targetDate) {
+    const [hours, minutes] = time.split(':').map(Number);
+    const newDate = new Date(targetDate);
+    newDate.setHours(hours, minutes);
+    
+    return isStartTime
+      ? { ...currentRange, startDate: newDate }
+      : { ...currentRange, endDate: newDate };
+  }
+  
+  return currentRange;
+};
+
+/**
+ * Handles date selection from calendar
+ * @param range Selected date range from calendar
+ * @param startTime Current start time
+ * @param endTime Current end time
+ * @param dateFormat Date format string
+ * @returns Object with updated range and formatted date strings
+ */
+export const handleCalendarDateSelect = (
+  range: DateRange,
+  startTime: string,
+  endTime: string,
+  dateFormat: string
+): {
+  updatedRange: DateRange;
+  formattedStartDate: string;
+  formattedEndDate: string;
+} => {
+  if (range.startDate) {
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    range.startDate.setHours(startHour, startMinute);
+  }
+
+  if (range.endDate) {
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+    range.endDate.setHours(endHour, endMinute);
+  }
+
+  return {
+    updatedRange: range,
+    formattedStartDate: formatDate(range.startDate, dateFormat),
+    formattedEndDate: formatDate(range.endDate, dateFormat)
+  };
+};
+
+/**
+ * Handles preset selection
+ * @param preset Selected preset
+ * @param dateFormat Date format string
+ * @returns Object with updated range, formatted dates, and times
+ */
+export const handlePresetSelection = (
+  preset: DateRangePreset,
+  dateFormat: string
+): {
+  updatedRange: DateRange;
+  formattedStartDate: string;
+  formattedEndDate: string;
+  formattedStartTime: string;
+  formattedEndTime: string;
+} => {
+  const range = getPresetDateRange(preset);
+  
+  return {
+    updatedRange: range,
+    formattedStartDate: formatDate(range.startDate, dateFormat),
+    formattedEndDate: formatDate(range.endDate, dateFormat),
+    formattedStartTime: formatDate(range.startDate, 'HH:mm'),
+    formattedEndTime: formatDate(range.endDate, 'HH:mm')
+  };
+};
+
+/**
+ * Handles cancel action - resets to original values
+ * @param originalValue Original date range value
+ * @param dateFormat Date format string
+ * @returns Object with reset values
+ */
+export const handleCancelAction = (
+  originalValue: DateRange | undefined,
+  dateFormat: string
+): {
+  resetRange: DateRange;
+  formattedStartDate: string;
+  formattedEndDate: string;
+  formattedStartTime: string;
+  formattedEndTime: string;
+} | null => {
+  if (!originalValue) return null;
+
+  return {
+    resetRange: originalValue,
+    formattedStartDate: formatDate(originalValue.startDate, dateFormat),
+    formattedEndDate: formatDate(originalValue.endDate, dateFormat),
+    formattedStartTime: formatDate(originalValue.startDate, 'HH:mm'),
+    formattedEndTime: formatDate(originalValue.endDate, 'HH:mm')
+  };
+};

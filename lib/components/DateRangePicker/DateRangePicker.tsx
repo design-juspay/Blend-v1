@@ -5,8 +5,13 @@ import { DateRangePickerProps, DateRangePreset, DateRange } from './types';
 import {
   formatDate,
   getPresetDateRange,
-  isValidDate,
-  parseDate,
+  DateValidationResult,
+  formatDateDisplay,
+  handleDateInputChange,
+  handleTimeChange,
+  handleCalendarDateSelect,
+  handlePresetSelection,
+  handleCancelAction,
 } from './utils';
 import Button from '../Button/Button';
 import { ButtonType, ButtonSize } from '../Button/types';
@@ -19,6 +24,7 @@ import { Switch } from '../Switch/Switch';
 import { FOUNDATION_THEME } from '../../tokens';
 import Block from '../Primitives/Block/Block';
 import { Popover } from '../Popover';
+import { TextInput } from '../Inputs/TextInput';
 
 const StyledTrigger = styled.button<{ $isDisabled: boolean; $showPresets: boolean }>`
   ${dateRangePickerTokens.base.input}
@@ -31,18 +37,6 @@ const StyledCalendarContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.container}
 `;
 
-const StyledInput = styled.input`
-  ${dateRangePickerTokens.timePicker.input}
-`;
-
-const StyledTriggerContent = styled(Block)`
-  ${dateRangePickerTokens.text.value}
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (
     {
@@ -51,7 +45,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       showTimePicker = false,
       showPresets = true,
       isDisabled = false,
-      className,
       dateFormat = 'dd/MM/yyyy',
       ariaLabel = 'Date range picker',
       allowSingleDateSelection = false,
@@ -59,7 +52,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       disablePastDates = false,
       triggerElement = null,
     },
-    ref
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isQuickRangeOpen, setIsQuickRangeOpen] = useState(false);
@@ -76,6 +68,9 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
     const [startDate, setStartDate] = useState(formatDate(selectedRange.startDate, dateFormat));
     const [endDate, setEndDate] = useState(formatDate(selectedRange.endDate, dateFormat));
+    
+    const [startDateValidation, setStartDateValidation] = useState<DateValidationResult>({ isValid: true, error: 'none' });
+    const [endDateValidation, setEndDateValidation] = useState<DateValidationResult>({ isValid: true, error: 'none' });
 
     const quickRangeRef = useRef<HTMLDivElement>(null);
 
@@ -91,120 +86,65 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
     }, [value, dateFormat]);
 
-    const formatDateDisplay = () => {
-      if (!selectedRange.startDate) {
-        return 'Select date range';
-      }
 
-      const formatOptions: Intl.DateTimeFormatOptions = {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      };
-
-      const timeFormatOptions: Intl.DateTimeFormatOptions = {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      };
-
-      const startDateStr = selectedRange.startDate.toLocaleDateString('en-US', formatOptions);
-      const startTimeStr = selectedRange.startDate.toLocaleTimeString('en-US', timeFormatOptions);
-
-      if (
-        !selectedRange.endDate ||
-        (allowSingleDateSelection &&
-          selectedRange.startDate.getTime() === selectedRange.endDate.getTime())
-      ) {
-        return `${startDateStr}, ${startTimeStr}`;
-      }
-
-      const endDateStr = selectedRange.endDate.toLocaleDateString('en-US', formatOptions);
-      const endTimeStr = selectedRange.endDate.toLocaleTimeString('en-US', timeFormatOptions);
-
-      return `${startDateStr}, ${startTimeStr} - ${endDateStr}, ${endTimeStr}`;
-    };
     
     const handleDateSelect = useCallback((range: DateRange) => {
-      if (range.startDate) {
-        const [startHour, startMinute] = startTime.split(':').map(Number);
-        range.startDate.setHours(startHour, startMinute);
-      }
-
-      if (range.endDate) {
-        const [endHour, endMinute] = endTime.split(':').map(Number);
-        range.endDate.setHours(endHour, endMinute);
-      }
-
-      setSelectedRange(range);
-      setStartDate(formatDate(range.startDate, dateFormat));
-      setEndDate(formatDate(range.endDate, dateFormat));
+      const result = handleCalendarDateSelect(range, startTime, endTime, dateFormat);
+      setSelectedRange(result.updatedRange);
+      setStartDate(result.formattedStartDate);
+      setEndDate(result.formattedEndDate);
       setActivePreset(DateRangePreset.CUSTOM);
     }, [startTime, endTime, dateFormat]);
 
     const handlePresetSelect = useCallback((preset: DateRangePreset) => {
-      const range = getPresetDateRange(preset);
-      setSelectedRange(range);
+      const result = handlePresetSelection(preset, dateFormat);
+      setSelectedRange(result.updatedRange);
       setActivePreset(preset);
-      setStartDate(formatDate(range.startDate, dateFormat));
-      setEndDate(formatDate(range.endDate, dateFormat));
-      setStartTime(formatDate(range.startDate, 'HH:mm'));
-      setEndTime(formatDate(range.endDate, 'HH:mm'));
+      setStartDate(result.formattedStartDate);
+      setEndDate(result.formattedEndDate);
+      setStartTime(result.formattedStartTime);
+      setEndTime(result.formattedEndTime);
       
       if (preset !== DateRangePreset.CUSTOM) {
-        onChange?.(range);
+        onChange?.(result.updatedRange);
       }
     }, [dateFormat, onChange]);
 
     const handleStartDateChange = useCallback((value: string) => {
-      setStartDate(value);
+      const result = handleDateInputChange(value, dateFormat, selectedRange, startTime, true);
+      setStartDate(result.formattedValue);
+      setStartDateValidation(result.validation);
 
-      const parsedDate = parseDate(value, dateFormat);
-      if (parsedDate !== null && isValidDate(parsedDate)) {
-        const [hours, minutes] = startTime.split(':').map(Number);
-        parsedDate.setHours(hours, minutes);
-
-        const newRange = { ...selectedRange, startDate: parsedDate };
-        setSelectedRange(newRange);
+      if (result.updatedRange) {
+        setSelectedRange(result.updatedRange);
         setActivePreset(DateRangePreset.CUSTOM);
       }
     }, [selectedRange, startTime, dateFormat]);
 
     const handleEndDateChange = useCallback((value: string) => {
-      setEndDate(value);
+      const result = handleDateInputChange(value, dateFormat, selectedRange, endTime, false);
+      setEndDate(result.formattedValue);
+      setEndDateValidation(result.validation);
 
-      const parsedDate = parseDate(value, dateFormat);
-      if (parsedDate !== null && isValidDate(parsedDate)) {
-        const [hours, minutes] = endTime.split(':').map(Number);
-        parsedDate.setHours(hours, minutes);
-
-        const newRange = { ...selectedRange, endDate: parsedDate };
-        setSelectedRange(newRange);
+      if (result.updatedRange) {
+        setSelectedRange(result.updatedRange);
         setActivePreset(DateRangePreset.CUSTOM);
       }
     }, [selectedRange, endTime, dateFormat]);
 
     const handleStartTimeChange = useCallback((time: string) => {
       setStartTime(time);
-      if (selectedRange.startDate) {
-        const [hours, minutes] = time.split(':').map(Number);
-        const newStartDate = new Date(selectedRange.startDate);
-        newStartDate.setHours(hours, minutes);
-        setSelectedRange(prev => ({ ...prev, startDate: newStartDate }));
-        setActivePreset(DateRangePreset.CUSTOM);
-      }
-    }, [selectedRange.startDate]);
+      const updatedRange = handleTimeChange(time, selectedRange, true);
+      setSelectedRange(updatedRange);
+      setActivePreset(DateRangePreset.CUSTOM);
+    }, [selectedRange]);
 
     const handleEndTimeChange = useCallback((time: string) => {
       setEndTime(time);
-      if (selectedRange.endDate) {
-        const [hours, minutes] = time.split(':').map(Number);
-        const newEndDate = new Date(selectedRange.endDate);
-        newEndDate.setHours(hours, minutes);
-        setSelectedRange(prev => ({ ...prev, endDate: newEndDate }));
-        setActivePreset(DateRangePreset.CUSTOM);
-      }
-    }, [selectedRange.endDate]);
+      const updatedRange = handleTimeChange(time, selectedRange, false);
+      setSelectedRange(updatedRange);
+      setActivePreset(DateRangePreset.CUSTOM);
+    }, [selectedRange]);
 
     const handleApply = () => {
       setIsOpen(false);
@@ -212,12 +152,13 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     };
 
     const handleCancel = useCallback(() => {
-      if (value) {
-        setSelectedRange(value);
-        setStartDate(formatDate(value.startDate, dateFormat));
-        setEndDate(formatDate(value.endDate, dateFormat));
-        setStartTime(formatDate(value.startDate, 'HH:mm'));
-        setEndTime(formatDate(value.endDate, 'HH:mm'));
+      const resetData = handleCancelAction(value, dateFormat);
+      if (resetData) {
+        setSelectedRange(resetData.resetRange);
+        setStartDate(resetData.formattedStartDate);
+        setEndDate(resetData.formattedEndDate);
+        setStartTime(resetData.formattedStartTime);
+        setEndTime(resetData.formattedEndTime);
       }
       setIsOpen(false);
     }, [value, dateFormat]);
@@ -262,17 +203,17 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           aria-disabled={isDisabled}
           disabled={isDisabled}
         >
-          <StyledTriggerContent>
+          <Block flexGrow={1} display='flex' alignItems='center' justifyContent='space-between' style={{...dateRangePickerTokens.text.value}}>
             <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
               <Calendar size={14} />
-              <span>{formatDateDisplay()}</span>
+              <span>{formatDateDisplay(selectedRange, allowSingleDateSelection)}</span>
             </Block>
             {isOpen ? (
               <ChevronUp size={14} style={{ marginLeft: '8px' }} />
             ) : (
               <ChevronDown size={14} style={{ marginLeft: '8px' }} />
             )}
-          </StyledTriggerContent>
+          </Block>
         </StyledTrigger>
       );
     };
@@ -306,12 +247,14 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                   <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column', gap: FOUNDATION_THEME.unit[12]}}>
                     <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
                       <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
-                      <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
-                      <StyledInput
-                        type="text"
+                      <Block display='flex' alignItems='start' gap={FOUNDATION_THEME.unit[8]}> 
+                      <TextInput
+                        label=""
                         placeholder="DD/MM/YYYY"
                         value={startDate}
                         onChange={handleStartDateChangeCallback}
+                        error={!startDateValidation.isValid}
+                        errorMessage={startDateValidation.message}
                       />
                       {showTimePickerState && (
                         <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
@@ -324,12 +267,14 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                         selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
                       <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
                         <Block as='span' style={{...dateRangePickerTokens.text.label}}>End</Block>
-                        <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
-                        <StyledInput
-                          type="text"
+                        <Block display='flex' alignItems='start' gap={FOUNDATION_THEME.unit[8]}> 
+                        <TextInput
+                          label=""
                           placeholder="DD/MM/YYYY"
                           value={endDate}
                           onChange={handleEndDateChangeCallback}
+                          error={!endDateValidation.isValid}
+                          errorMessage={endDateValidation.message}
                         />
                         {showTimePickerState && (
                           <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
