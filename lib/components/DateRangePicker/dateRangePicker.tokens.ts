@@ -21,7 +21,6 @@ type DateRangePickerTokens = {
   calendar: {
     container: CSSObject;
     gridContainer: CSSObject;
-    // monthContainer: CSSObject;
     monthHeader: CSSObject;
     dayNamesContainer: CSSObject;
     dayName: CSSObject;
@@ -131,9 +130,6 @@ const dateRangePickerTokens: DateRangePickerTokens = {
       maxHeight: '400px',
       overflowY: "auto",
     },
-    // monthContainer: {
-    //   marginBottom: FOUNDATION_THEME.unit[24],
-    // },
     monthHeader: {
       fontSize: `${FOUNDATION_THEME.font.size.body.lg.fontSize}px`,
       fontWeight: 600,

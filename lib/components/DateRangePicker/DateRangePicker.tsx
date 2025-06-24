@@ -1,7 +1,6 @@
 import React, { forwardRef, useState, useEffect, useRef, useCallback } from 'react';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { styled } from 'styled-components';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { DateRangePickerProps, DateRangePreset, DateRange } from './types';
 import {
   formatDate,
@@ -19,24 +18,16 @@ import { SwitchSize } from '../Switch/types';
 import { Switch } from '../Switch/Switch';
 import { FOUNDATION_THEME } from '../../tokens';
 import Block from '../Primitives/Block/Block';
-
-const StyledContainer = styled(Block)<{ $isDisabled: boolean }>`
-  ${dateRangePickerTokens.base.container}
-  ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
-`;
+import { Popover } from '../Popover';
 
 const StyledTrigger = styled.button<{ $isDisabled: boolean; $showPresets: boolean }>`
   ${dateRangePickerTokens.base.input}
   ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
   height: 40px;
-  border-radius: ${props => props.$showPresets ? '0 6px 6px 0' : '6px'};
-  
-  @media (max-width: 639px) {
-    border-radius: 6px;
-  }
+  border-radius: ${props => props.$showPresets ? '0 8px 8px 0' : '8px'};
 `;
 
-const StyledCalendarContainer = styled(DropdownMenu.Content)`
+const StyledCalendarContainer = styled(Block)`
   ${dateRangePickerTokens.calendar.container}
 `;
 
@@ -251,51 +242,42 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const renderTrigger = () => {
       if (triggerElement) {
         return (
-          <DropdownMenu.Trigger asChild>
-            <Block
-              style={{ 
-                opacity: isDisabled ? 0.5 : 1, 
-                cursor: isDisabled ? 'not-allowed' : 'pointer' 
-              }}
-            >
-              {triggerElement}
-            </Block>
-          </DropdownMenu.Trigger>
+          <Block
+            style={{ 
+              opacity: isDisabled ? 0.5 : 1, 
+              cursor: isDisabled ? 'not-allowed' : 'pointer' 
+            }}
+          >
+            {triggerElement}
+          </Block>
         );
       }
 
       return (
-        <DropdownMenu.Trigger asChild>
-          <StyledTrigger
-            $isDisabled={isDisabled}
-            $showPresets={showPresets}
-            aria-label={ariaLabel}
-            aria-expanded={isOpen}
-            aria-disabled={isDisabled}
-            disabled={isDisabled}
-          >
-            <StyledTriggerContent>
-              <Block display='flex' alignItems='center'>
-                <Calendar size={14} style={{ marginRight: '6px' }} />
-                <span>{formatDateDisplay()}</span>
-              </Block>
-              {isOpen ? (
-                <ChevronUp size={14} style={{ marginLeft: '8px' }} />
-              ) : (
-                <ChevronDown size={14} style={{ marginLeft: '8px' }} />
-              )}
-            </StyledTriggerContent>
-          </StyledTrigger>
-        </DropdownMenu.Trigger>
+        <StyledTrigger
+          $isDisabled={isDisabled}
+          $showPresets={showPresets}
+          aria-label={ariaLabel}
+          aria-expanded={isOpen}
+          aria-disabled={isDisabled}
+          disabled={isDisabled}
+        >
+          <StyledTriggerContent>
+            <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
+              <Calendar size={14} />
+              <span>{formatDateDisplay()}</span>
+            </Block>
+            {isOpen ? (
+              <ChevronUp size={14} style={{ marginLeft: '8px' }} />
+            ) : (
+              <ChevronDown size={14} style={{ marginLeft: '8px' }} />
+            )}
+          </StyledTriggerContent>
+        </StyledTrigger>
       );
     };
 
     return (
-      <StyledContainer 
-        ref={ref} 
-        $isDisabled={isDisabled}
-        className={className}
-      >
         <Block display='flex'>
           {showPresets && (
             <Block width={136} ref={quickRangeRef}>
@@ -311,98 +293,92 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             </Block>
           )}
 
-            <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-              {renderTrigger()}
+            <Popover
+              open={isOpen}
+              onOpenChange={setIsOpen}
+              trigger={renderTrigger()}
+              side="bottom"
+              align="start"
+              sideOffset={4}
+            >
+              <StyledCalendarContainer>
+                <Block>
+                  <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column', gap: FOUNDATION_THEME.unit[12]}}>
+                    <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
+                      <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
+                      <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
+                      <StyledInput
+                        type="text"
+                        placeholder="DD/MM/YYYY"
+                        value={startDate}
+                        onChange={handleStartDateChangeCallback}
+                      />
+                      {showTimePickerState && (
+                        <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
+                      )}
+                      </Block>
+                    </Block>
 
-              <DropdownMenu.Portal>
-                <StyledCalendarContainer 
-                  align="start" 
-                  sideOffset={4}
-                  onInteractOutside={(e) => {
-                    if (quickRangeRef.current?.contains(e.target as Node)) {
-                      e.preventDefault();
-                    }
-                  }}
-                >
-                  <Block>
-                    <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column', gap: FOUNDATION_THEME.unit[12]}}>
+                    {(!allowSingleDateSelection || 
+                        (allowSingleDateSelection && 
+                        selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
                       <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
-                        <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
+                        <Block as='span' style={{...dateRangePickerTokens.text.label}}>End</Block>
                         <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
                         <StyledInput
                           type="text"
                           placeholder="DD/MM/YYYY"
-                          value={startDate}
-                          onChange={handleStartDateChangeCallback}
+                          value={endDate}
+                          onChange={handleEndDateChangeCallback}
                         />
                         {showTimePickerState && (
-                          <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
-                        )}
+                          <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
+                          )}
                         </Block>
                       </Block>
+                    )}
+                  </Block>
 
-                      {(!allowSingleDateSelection || 
-                          (allowSingleDateSelection && 
-                          selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
-                        <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
-                          <Block as='span' style={{...dateRangePickerTokens.text.label}}>End</Block>
-                          <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
-                          <StyledInput
-                            type="text"
-                            placeholder="DD/MM/YYYY"
-                            value={endDate}
-                            onChange={handleEndDateChangeCallback}
-                          />
-                          {showTimePickerState && (
-                            <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
-                            )}
-                          </Block>
-                        </Block>
-                      )}
+                  <Block>
+                    <CalendarGrid
+                      selectedRange={selectedRange}
+                      onDateSelect={handleDateSelectCallback}
+                      today={today}
+                      allowSingleDateSelection={allowSingleDateSelection}
+                      disableFutureDates={disableFutureDates}
+                      disablePastDates={disablePastDates}
+                    />
+                  </Block>
+
+                  <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}>
+                    <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
+                    <Switch
+                      checked={showTimePickerState}
+                      onChange={setShowTimePickerState}
+                      size={SwitchSize.MEDIUM}
+                    />
+                    <Block as='span' style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
                     </Block>
 
-                    <Block>
-                      <CalendarGrid
-                        selectedRange={selectedRange}
-                        onDateSelect={handleDateSelectCallback}
-                        today={today}
-                        allowSingleDateSelection={allowSingleDateSelection}
-                        disableFutureDates={disableFutureDates}
-                        disablePastDates={disablePastDates}
+                    <Block display='flex' gap={FOUNDATION_THEME.unit[12]}>
+                      <Button
+                        buttonType={ButtonType.SECONDARY}
+                        size={ButtonSize.SMALL}
+                        onClick={handleCancel}
+                        text="Cancel"
+                      />    
+                      <Button
+                        buttonType={ButtonType.PRIMARY}
+                        size={ButtonSize.SMALL}
+                        onClick={handleApply}
+                        text="Apply"
                       />
-                    </Block>
-
-                    <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}>
-                      <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
-                      <Switch
-                        checked={showTimePickerState}
-                        onChange={setShowTimePickerState}
-                        size={SwitchSize.MEDIUM}
-                      />
-                      <Block as='span' style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
-                      </Block>
-
-                      <Block display='flex' gap={FOUNDATION_THEME.unit[12]}>
-                        <Button
-                          buttonType={ButtonType.SECONDARY}
-                          size={ButtonSize.SMALL}
-                          onClick={handleCancel}
-                          text="Cancel"
-                        />    
-                        <Button
-                          buttonType={ButtonType.PRIMARY}
-                          size={ButtonSize.SMALL}
-                          onClick={handleApply}
-                          text="Apply"
-                        />
-                      </Block>
                     </Block>
                   </Block>
-                </StyledCalendarContainer>
-              </DropdownMenu.Portal>
-            </DropdownMenu.Root>
+                </Block>
+              </StyledCalendarContainer>
+            </Popover>
         </Block>
-      </StyledContainer>
     );
   }
 );
