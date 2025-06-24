@@ -18,6 +18,7 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
       rightSlot,
       onClick,
       splitTagPosition,
+      ...rest
     },
     ref
   ) => {
@@ -35,6 +36,7 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
 
     return (
       <Block
+        {...rest}
         ref={ref}
         display="flex"
         alignItems="center"

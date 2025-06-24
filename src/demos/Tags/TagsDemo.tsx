@@ -6,7 +6,13 @@ import {
   TagSize,
   TagShape,
 } from "../../../lib/components/Tags";
-import { addSnackbar, SnackbarVariant, Tag } from "../../../lib/main";
+import {
+  addSnackbar,
+  SnackbarVariant,
+  Tag,
+  Tooltip,
+  TooltipSize,
+} from "../../../lib/main";
 import Block from "../../../lib/components/Primitives/Block/Block";
 import PrimitiveText from "../../../lib/components/Primitives/PrimitiveText/PrimitiveText";
 
@@ -18,11 +24,13 @@ const TagsDemo: React.FC = () => {
           <h2 className="showcase-title">Tag Variants</h2>
           <div className="showcase-container">
             <div className="showcase-item">
-              <Tag
-                text="No Fill"
-                variant={TagVariant.NO_FILL}
-                leftSlot={<Hash size={12} />}
-              />
+              <Tooltip content="Jai Shree Ram" size={TooltipSize.SMALL}>
+                <Tag
+                  text="No Fill"
+                  variant={TagVariant.NO_FILL}
+                  leftSlot={<Hash size={12} />}
+                />
+              </Tooltip>
               <span className="showcase-label">No Fill</span>
             </div>
             <div className="showcase-item">
