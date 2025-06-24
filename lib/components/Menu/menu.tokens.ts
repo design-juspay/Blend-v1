@@ -22,7 +22,6 @@ export type MenuTokensType = {
   item: {
     padding: CSSObject["padding"];
     margin: CSSObject["margin"];
-
     borderRadius: CSSObject["borderRadius"];
     backgroundColor: {
       [MenuItemV2Variant.DEFAULT]: {

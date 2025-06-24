@@ -19,6 +19,7 @@ import { ModalTokensType } from "../components/Modal/modal.tokens";
 import { BreadcrumbTokenType } from "../components/Breadcrumb/breadcrumb.tokens";
 import { PopoverTokenType } from "../components/Popover/popover.tokens";
 import { MenuTokensType } from "../components/Menu/menu.tokens";
+import { MultiSelectTokensType } from "../components/MultiSelect/multiSelect.tokens";
 import { TableTokenType } from "../components/DataTable/dataTable.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
@@ -47,6 +48,7 @@ export const useComponentToken = (
   | BreadcrumbTokenType
   | PopoverTokenType
   | MenuTokensType
+  | MultiSelectTokensType
   | TableTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
@@ -86,6 +88,8 @@ export const useComponentToken = (
       return componentTokens.POPOVER;
     case "MENU":
       return componentTokens.MENU;
+    case "MULTI_SELECT":
+      return componentTokens.MULTI_SELECT;
     case "TABLE": 
       return componentTokens.TABLE;
     default:

@@ -23,16 +23,21 @@ import {
   MenuV2GroupType,
 } from "../../../lib/components/Menu/types";
 import {
-  SelectMenuAlignment,
   SelectMenuSize,
   SelectMenuVariant,
 } from "../../../lib/components/Select/types";
 import MultiSelect from "../../../lib/components/MultiSelect/MultiSelect";
-import { addSnackbar, ButtonV2, Tag } from "../../../lib/main";
+import { addSnackbar, Tag } from "../../../lib/main";
 import { FOUNDATION_THEME } from "../../../lib/tokens";
 import SingleSelect from "../../../lib/components/SingleSelect/SingleSelect";
 import { Settings2 } from "lucide-react";
 import { TagColor, TagShape, TagSize } from "../../../lib/components/Tags";
+import {
+  MultiSelectVariant,
+  MultiSelectMenuSize,
+  MultiSelectSelectionTagType,
+  MultiSelectMenuAlignment,
+} from "../../../lib/components/MultiSelect/types";
 
 export const dummyMenuItems = [
   {
@@ -43,6 +48,7 @@ export const dummyMenuItems = [
         label: "Profile",
         value: "profile",
         slot1: <User size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+
         subLabel: "Manage your personal information",
       },
       {
@@ -87,12 +93,16 @@ export const dummyMenuItems = [
       {
         label: "Sign Out",
         value: "sign-out",
+        disabled: true,
+        subLabel: "This action is disabled",
         slot1: <LogOut size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        // disabled: true,
       },
       {
         label: "Delete Account",
         value: "delete-account",
         slot1: <Trash size={16} color={FOUNDATION_THEME.colors.gray[500]} />,
+        disabled: true,
         subMenu: [
           {
             label: "Confirm Deletion",
@@ -354,15 +364,23 @@ const MenuDemo = () => {
   const [mv, setMv] = useState<string[]>(["profile"]);
 
   // Controls for container type, size, and selectionTagType
-  const [containerType, setContainerType] = useState<SelectMenuVariant>(
-    SelectMenuVariant.CONTAINER
-  );
+  const [selectContainerType, setSelectContainerType] =
+    useState<SelectMenuVariant>(SelectMenuVariant.CONTAINER);
   const [menuSize, setMenuSize] = useState<SelectMenuSize>(
     SelectMenuSize.SMALL
   );
   const [tagType, setTagType] = useState<SelectionTagType>(
     SelectionTagType.COUNT
   );
+
+  // Separate state for MultiSelect controls
+  const [multiSelectContainerType, setMultiSelectContainerType] =
+    useState<MultiSelectVariant>(MultiSelectVariant.CONTAINER);
+  const [multiSelectSize, setMultiSelectSize] = useState<MultiSelectMenuSize>(
+    MultiSelectMenuSize.SMALL
+  );
+  const [multiSelectTagType, setMultiSelectTagType] =
+    useState<MultiSelectSelectionTagType>(MultiSelectSelectionTagType.COUNT);
 
   const handleChange = (value: string) => {
     if (value === "") {
@@ -399,6 +417,19 @@ const MenuDemo = () => {
       { label: "Count", value: SelectionTagType.COUNT },
       { label: "Text", value: SelectionTagType.TEXT },
     ],
+    multiSelectContainerType: [
+      { label: "Container", value: MultiSelectVariant.CONTAINER },
+      { label: "No Container", value: MultiSelectVariant.NO_CONTAINER },
+    ],
+    multiSelectSize: [
+      { label: "Small", value: MultiSelectMenuSize.SMALL },
+      { label: "Medium", value: MultiSelectMenuSize.MEDIUM },
+      { label: "Large", value: MultiSelectMenuSize.LARGE },
+    ],
+    multiSelectTagType: [
+      { label: "Count", value: MultiSelectSelectionTagType.COUNT },
+      { label: "Text", value: MultiSelectSelectionTagType.TEXT },
+    ],
   };
 
   return (
@@ -412,9 +443,10 @@ const MenuDemo = () => {
               { groupLabel: undefined, items: controlOptions.containerType },
             ]}
             label="Container Type"
-            selected={containerType}
+            selected={selectContainerType}
             onSelectChange={(v) =>
-              typeof v === "string" && setContainerType(v as SelectMenuVariant)
+              typeof v === "string" &&
+              setSelectContainerType(v as SelectMenuVariant)
             }
             enableSearch={false}
             placeholder="Container Type"
@@ -445,6 +477,62 @@ const MenuDemo = () => {
           />
         </div>
       </Block>
+
+      {/* MultiSelect Controls */}
+      <Block display="flex" gap={24} style={{ marginBottom: 32 }}>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[
+              {
+                groupLabel: undefined,
+                items: controlOptions.multiSelectContainerType,
+              },
+            ]}
+            label="MultiSelect Container Type"
+            selected={multiSelectContainerType}
+            onSelectChange={(v) =>
+              typeof v === "string" &&
+              setMultiSelectContainerType(v as MultiSelectVariant)
+            }
+            enableSearch={false}
+            placeholder="Container Type"
+          />
+        </div>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[
+              { groupLabel: undefined, items: controlOptions.multiSelectSize },
+            ]}
+            label="MultiSelect Size"
+            selected={multiSelectSize}
+            onSelectChange={(v) =>
+              typeof v === "string" &&
+              setMultiSelectSize(v as MultiSelectMenuSize)
+            }
+            enableSearch={false}
+            placeholder="Size"
+          />
+        </div>
+        <div style={{ width: 180 }}>
+          <Select
+            items={[
+              {
+                groupLabel: undefined,
+                items: controlOptions.multiSelectTagType,
+              },
+            ]}
+            label="MultiSelect Tag Type"
+            selected={multiSelectTagType}
+            onSelectChange={(v) =>
+              typeof v === "string" &&
+              setMultiSelectTagType(v as MultiSelectSelectionTagType)
+            }
+            enableSearch={false}
+            placeholder="Selection Tag Type"
+          />
+        </div>
+      </Block>
+
       <Block
         contentCentered
         display="flex"
@@ -469,16 +557,16 @@ const MenuDemo = () => {
             required={true}
             name="single-select"
             size={menuSize}
-            variant={containerType}
+            // variant={containerType}
           />
         </div>
         <div style={{ width: "400px" }}>
           <MultiSelect
             selectedValues={mv}
             onChange={handleChange}
-            variant={containerType}
-            selectionTagType={tagType}
-            size={menuSize}
+            variant={multiSelectContainerType}
+            selectionTagType={multiSelectTagType}
+            size={multiSelectSize}
             items={dummyMenuItems}
             label="Gateway"
             sublabel="Select an option"
@@ -488,7 +576,7 @@ const MenuDemo = () => {
             required={true}
             placeholder="Select an option"
             hintText="Hint text"
-            alignment={SelectMenuAlignment.START}
+            alignment={MultiSelectMenuAlignment.START}
             minWidth={300}
             maxWidth={500}
           />
@@ -500,7 +588,7 @@ const MenuDemo = () => {
           // maxHeight={300}
           minWidth={300}
           side={MenuSide.TOP}
-          trigger={<ButtonV2 text="Open MenuV2" onClick={() => {}} />}
+          trigger={<Tag text="Open MenuV2" onClick={() => {}} />}
         />
         <p style={{ color: "black" }}>{selectedOption}</p>
         <div style={{ width: "300px" }}>
@@ -509,7 +597,7 @@ const MenuDemo = () => {
             slot={<User size={16} />}
             enableSearch={true}
             placeholder="Gateway"
-            variant={containerType}
+            variant={selectContainerType}
             size={menuSize}
             label="Select an option"
             selected={selectedOption}
@@ -532,7 +620,7 @@ const MenuDemo = () => {
             onSelectChange={(value) =>
               Array.isArray(value) && setMultiSelected(value)
             }
-            variant={containerType}
+            variant={selectContainerType}
             size={menuSize}
             selectionTagType={tagType}
           />
