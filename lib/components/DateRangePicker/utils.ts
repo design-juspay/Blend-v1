@@ -321,23 +321,19 @@ export const generateCalendarGrid = (year: number, month: number): (number | nul
   const weeks: (number | null)[][] = [];
   let currentWeek: (number | null)[] = [];
   
-  // Fill empty cells for days before the first day of the month
   for (let i = 0; i < firstDay; i++) {
     currentWeek.push(null);
   }
   
-  // Fill in the days of the month
   for (let day = 1; day <= daysInMonth; day++) {
     currentWeek.push(day);
     
-    // If we've filled a week (7 days), start a new week
     if (currentWeek.length === 7) {
       weeks.push(currentWeek);
       currentWeek = [];
     }
   }
   
-  // Fill remaining empty cells in the last week
   while (currentWeek.length > 0 && currentWeek.length < 7) {
     currentWeek.push(null);
   }
@@ -518,6 +514,93 @@ export const generateCalendarMonths = (
 };
 
 /**
+ * Generates initial months around current date (4-5 months)
+ * @param today Current date
+ * @returns Array of initial months to display
+ */
+export const generateInitialMonths = (today: Date): { month: number; year: number }[] => {
+  const months = [];
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+
+  for (let i = -2; i <= 2; i++) {
+    const date = new Date(currentYear, currentMonth + i, 1);
+    months.push({
+      month: date.getMonth(),
+      year: date.getFullYear(),
+    });
+  }
+
+  return months;
+};
+
+/**
+ * Generates a chunk of months for progressive loading
+ * @param startYear Starting year
+ * @param startMonth Starting month (0-based)
+ * @param endYear Ending year for this chunk
+ * @param endMonth Ending month for this chunk (0-based)
+ * @returns Array of months for the chunk
+ */
+export const generateMonthChunk = (
+  startYear: number,
+  startMonth: number,
+  endYear: number,
+  endMonth: number = 11
+): { month: number; year: number }[] => {
+  const months = [];
+
+  for (let year = startYear; year <= endYear; year++) {
+    const monthStart = year === startYear ? startMonth : 0;
+    const monthEnd = year === endYear ? endMonth : 11;
+    
+    for (let month = monthStart; month <= monthEnd; month++) {
+      months.push({ month, year });
+    }
+  }
+
+  return months;
+};
+
+/**
+ * Calculates the next chunk to load based on current data
+ * @param currentMonths Currently loaded months
+ * @param direction Direction to load ('past' or 'future')
+ * @returns Next chunk parameters or null if reached bounds
+ */
+export const getNextChunkParams = (
+  currentMonths: { month: number; year: number }[],
+  direction: 'past' | 'future'
+): { startYear: number; startMonth: number } | null => {
+  const MIN_YEAR = 2012;
+  const MAX_YEAR = new Date().getFullYear() + 10;
+
+  if (direction === 'past') {
+    const firstMonth = currentMonths[0];
+    
+    if (firstMonth.year <= MIN_YEAR && firstMonth.month === 0) {
+      return null;
+    }
+    
+    const targetYear = Math.max(MIN_YEAR, firstMonth.year - 3);
+    return { 
+      startYear: targetYear, 
+      startMonth: targetYear === MIN_YEAR ? 0 : 0 
+    };
+  } else {
+    const lastMonth = currentMonths[currentMonths.length - 1];
+    
+    if (lastMonth.year >= MAX_YEAR) {
+      return null;
+    }
+    
+    const nextMonth = lastMonth.month === 11 ? 0 : lastMonth.month + 1;
+    const nextYear = lastMonth.month === 11 ? lastMonth.year + 1 : lastMonth.year;
+    return { startYear: nextYear, startMonth: nextMonth };
+  }
+};
+
+/**
  * Gets month name from month index
  * @param monthIndex Month index (0-based)
  * @returns Month name
@@ -562,7 +645,7 @@ export const getVisibleMonths = (
   containerHeight: number,
   months: { month: number; year: number }[],
   monthHeight: number,
-  buffer: number = 12 // Large buffer for seamless scrolling
+  buffer: number = 12
 ): {
   startIndex: number;
   endIndex: number;

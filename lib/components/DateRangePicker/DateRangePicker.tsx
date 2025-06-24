@@ -134,9 +134,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       return `${startDateStr}, ${startTimeStr} - ${endDateStr}, ${endTimeStr}`;
     };
     
-    // Handle date selection from calendar
     const handleDateSelect = useCallback((range: DateRange) => {
-      // Preserve time when selecting dates
       if (range.startDate) {
         const [startHour, startMinute] = startTime.split(':').map(Number);
         range.startDate.setHours(startHour, startMinute);
@@ -153,7 +151,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       setActivePreset(DateRangePreset.CUSTOM);
     }, [startTime, endTime, dateFormat]);
 
-    // Handle preset selection
     const handlePresetSelect = useCallback((preset: DateRangePreset) => {
       const range = getPresetDateRange(preset);
       setSelectedRange(range);
@@ -168,13 +165,11 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
     }, [dateFormat, onChange]);
 
-    // Handle start date input change
     const handleStartDateChange = useCallback((value: string) => {
       setStartDate(value);
 
       const parsedDate = parseDate(value, dateFormat);
       if (parsedDate !== null && isValidDate(parsedDate)) {
-        // Preserve time
         const [hours, minutes] = startTime.split(':').map(Number);
         parsedDate.setHours(hours, minutes);
 
@@ -184,13 +179,11 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
     }, [selectedRange, startTime, dateFormat]);
 
-    // Handle end date input change
     const handleEndDateChange = useCallback((value: string) => {
       setEndDate(value);
 
       const parsedDate = parseDate(value, dateFormat);
       if (parsedDate !== null && isValidDate(parsedDate)) {
-        // Preserve time
         const [hours, minutes] = endTime.split(':').map(Number);
         parsedDate.setHours(hours, minutes);
 
@@ -200,7 +193,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
     }, [selectedRange, endTime, dateFormat]);
 
-    // Handle start time change
     const handleStartTimeChange = useCallback((time: string) => {
       setStartTime(time);
       if (selectedRange.startDate) {
@@ -223,7 +215,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
     }, [selectedRange.endDate]);
 
-    // Handle apply button click
     const handleApply = () => {
       setIsOpen(false);
       onChange?.(selectedRange);
@@ -307,7 +298,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       >
         <Block display='flex'>
           {showPresets && (
-            <Block width={132} ref={quickRangeRef}>
+            <Block width={136} ref={quickRangeRef}>
               <QuickRangeSelector
                 isOpen={isQuickRangeOpen}
                 onToggle={() => !isDisabled && setIsQuickRangeOpen(!isQuickRangeOpen)}
@@ -320,7 +311,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             </Block>
           )}
 
-          <Block minWidth={384}>
             <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
               {renderTrigger()}
 
@@ -335,8 +325,8 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                   }}
                 >
                   <Block>
-                    <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`}}>
-                      <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                    <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column', gap: FOUNDATION_THEME.unit[12]}}>
+                      <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
                         <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
                         <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
                         <StyledInput
@@ -354,7 +344,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                       {(!allowSingleDateSelection || 
                           (allowSingleDateSelection && 
                           selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
-                        <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center' marginBottom={FOUNDATION_THEME.unit[8]}>
+                        <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
                           <Block as='span' style={{...dateRangePickerTokens.text.label}}>End</Block>
                           <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}> 
                           <StyledInput
@@ -371,12 +361,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                       )}
                     </Block>
 
-                    <Block 
-                      style={{
-                        height: '300px', 
-                        overflow: 'hidden',
-                      }} 
-                    >
+                    <Block>
                       <CalendarGrid
                         selectedRange={selectedRange}
                         onDateSelect={handleDateSelectCallback}
@@ -388,16 +373,16 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                     </Block>
 
                     <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}>
-                      <Block display='flex' alignItems='center'>
+                      <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
                       <Switch
-                          checked={showTimePickerState}
-                          onChange={setShowTimePickerState}
-                          size={SwitchSize.MEDIUM}
-                        />
-                        <Block as='span' marginLeft={FOUNDATION_THEME.unit[4]} style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
+                        checked={showTimePickerState}
+                        onChange={setShowTimePickerState}
+                        size={SwitchSize.MEDIUM}
+                      />
+                      <Block as='span' style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
                       </Block>
 
-                      <Block display='flex' gap={FOUNDATION_THEME.unit[8]}>
+                      <Block display='flex' gap={FOUNDATION_THEME.unit[12]}>
                         <Button
                           buttonType={ButtonType.SECONDARY}
                           size={ButtonSize.SMALL}
@@ -416,7 +401,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                 </StyledCalendarContainer>
               </DropdownMenu.Portal>
             </DropdownMenu.Root>
-          </Block>
         </Block>
       </StyledContainer>
     );
