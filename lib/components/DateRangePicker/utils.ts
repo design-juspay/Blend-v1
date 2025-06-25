@@ -408,6 +408,7 @@ export const isDateToday = (date: Date, today: Date): boolean => {
  * @param today Today's date for validation
  * @param disableFutureDates Whether future dates are disabled
  * @param disablePastDates Whether past dates are disabled
+ * @param isDoubleClick Whether this is a double-click event
  * @returns New date range or null if click should be ignored
  */
 export const handleCalendarDateClick = (
@@ -416,9 +417,9 @@ export const handleCalendarDateClick = (
   allowSingleDateSelection: boolean = false,
   today: Date,
   disableFutureDates: boolean = false,
-  disablePastDates: boolean = false
+  disablePastDates: boolean = false,
+  isDoubleClick: boolean = false
 ): DateRange | null => {
-  // Don't allow selecting disabled dates
   if (
     (disableFutureDates && clickedDate > today) ||
     (disablePastDates && clickedDate < today)
@@ -428,24 +429,76 @@ export const handleCalendarDateClick = (
 
   let newRange: DateRange;
 
+  if (isDoubleClick) {
+    if (allowSingleDateSelection) {
+      newRange = {
+        startDate: clickedDate,
+        endDate: clickedDate,
+      };
+    } else {
+      newRange = {
+        startDate: clickedDate,
+        endDate: clickedDate,
+      };
+    }
+    return newRange;
+  }
+
   if (!selectedRange.startDate || allowSingleDateSelection) {
-    // If no start date is selected or single date selection is allowed, set both start and end to the clicked date
     newRange = {
       startDate: clickedDate,
       endDate: clickedDate,
     };
-  } else if (!selectedRange.endDate || clickedDate < selectedRange.startDate) {
-    // If no end date is selected or clicked date is before start date, set clicked date as start date
-    newRange = {
-      startDate: clickedDate,
-      endDate: selectedRange.endDate || clickedDate,
-    };
+      } else if (!selectedRange.endDate) {
+      if (clickedDate < selectedRange.startDate) {
+        newRange = {
+          startDate: clickedDate,
+          endDate: clickedDate,
+        };
+      } else if (clickedDate.getTime() === selectedRange.startDate.getTime()) {
+      newRange = {
+        startDate: clickedDate,
+        endDate: clickedDate,
+      };
+    } else {
+      newRange = {
+        startDate: selectedRange.startDate,
+        endDate: clickedDate,
+      };
+    }
   } else {
-    // Otherwise, set clicked date as end date
-    newRange = {
-      startDate: selectedRange.startDate,
-      endDate: clickedDate,
-    };
+    const startTime = selectedRange.startDate.getTime();
+    const endTime = selectedRange.endDate.getTime();
+    const clickedTime = clickedDate.getTime();
+    
+    const distanceToStart = Math.abs(clickedTime - startTime);
+    const distanceToEnd = Math.abs(clickedTime - endTime);
+    
+    if (distanceToStart <= distanceToEnd) {
+      if (clickedDate <= selectedRange.endDate) {
+        newRange = {
+          startDate: clickedDate,
+          endDate: selectedRange.endDate,
+        };
+      } else {
+        newRange = {
+          startDate: selectedRange.endDate,
+          endDate: clickedDate,
+        };
+      }
+    } else {
+      if (clickedDate >= selectedRange.startDate) {
+        newRange = {
+          startDate: selectedRange.startDate,
+          endDate: clickedDate,
+        };
+      } else {
+        newRange = {
+          startDate: clickedDate,
+          endDate: selectedRange.startDate,
+        };
+      }
+    }
   }
 
   return newRange;
@@ -461,21 +514,16 @@ export const generateMonthWeeks = (year: number, month: number): (number | null)
   const lastDayOfMonth = new Date(year, month + 1, 0);
   const daysInMonth = lastDayOfMonth.getDate();
 
-  // Always start at position 2 (after 2 empty cells) for consistent layout
   const firstDayOfWeek = 2;
-
-  // Create a 2D array for the calendar grid
   const weeks = [];
   let week = Array(7).fill(null);
   let dayCounter = 1;
 
-  // Start filling from position 2 (after 2 empty cells)
   for (let i = firstDayOfWeek; i < 7 && dayCounter <= daysInMonth; i++) {
     week[i] = dayCounter++;
   }
   weeks.push(week);
 
-  // Continue filling subsequent weeks
   while (dayCounter <= daysInMonth) {
     week = Array(7).fill(null);
     for (let i = 0; i < 7 && dayCounter <= daysInMonth; i++) {
@@ -626,9 +674,7 @@ export const getDayNames = (): string[] => {
  * @returns Height in pixels
  */
 export const getMonthHeight = (): number => {
-  // Month header + max 6 weeks * row height
-  // These values should match your token values
-  return 40 + (6 * 40); // Adjust based on your actual token values
+  return 40 + (6 * 40);
 };
 
 /**
@@ -764,60 +810,6 @@ export const getDateCellStates = (
     isSingleDate,
     isDisabled,
   };
-};
-
-/**
- * Gets the appropriate styles for a date cell
- * @param dateStates Object containing all date states
- * @param tokens Date range picker tokens
- * @returns Combined styles object
- */
-export const getDateCellStyles = (
-  dateStates: ReturnType<typeof getDateCellStates>,
-  tokens: DateRangePickerTokens
-) => {
-  const { isStart, isEnd, isRangeDay, isTodayDay, isSingleDate, isDisabled } = dateStates;
-  
-  let cellStyles = { ...tokens.calendar.dayCell };
-
-  if (isSingleDate) {
-    cellStyles = { ...cellStyles, ...tokens.calendar.singleDate };
-  } else if (isStart) {
-    cellStyles = { ...cellStyles, ...tokens.calendar.startDate };
-  } else if (isEnd) {
-    cellStyles = { ...cellStyles, ...tokens.calendar.endDate };
-  } else if (isRangeDay) {
-    cellStyles = { ...cellStyles, ...tokens.calendar.rangeDay };
-  } else if (isTodayDay) {
-    cellStyles = { ...cellStyles, ...tokens.calendar.todayDay };
-  }
-
-  if (isDisabled) {
-    cellStyles = { ...cellStyles, ...tokens.states.disabledDay };
-  }
-
-  return cellStyles;
-};
-
-/**
- * Gets the appropriate text color for a date cell
- * @param dateStates Object containing all date states
- * @param tokens Date range picker tokens
- * @returns Text color string
- */
-export const getDateCellTextColor = (
-  dateStates: ReturnType<typeof getDateCellStates>,
-  tokens: DateRangePickerTokens
-): string => {
-  const { isStart, isEnd, isSingleDate, isTodayDay, isRangeDay } = dateStates;
-
-  if (isStart || isEnd || isSingleDate) {
-    return (tokens.text.selectedDay.color as string) || '#000000';
-  }
-  if (isTodayDay && !isRangeDay) {
-    return (tokens.text.todayDay.color as string) || '#000000';
-  }
-  return (tokens.text.dayNumber.color as string) || '#000000';
 };
 
 /**
@@ -1174,5 +1166,166 @@ export const handleCancelAction = (
     formattedEndDate: formatDate(originalValue.endDate, dateFormat),
     formattedStartTime: formatDate(originalValue.startDate, 'HH:mm'),
     formattedEndTime: formatDate(originalValue.endDate, 'HH:mm')
+  };
+};
+
+/**
+ * Handles loading more months in calendar
+ * @param months Current months array
+ * @param direction Direction to load ('past' or 'future')
+ * @param isLoadingPast Current loading state for past
+ * @param isLoadingFuture Current loading state for future
+ * @returns Promise that resolves when loading is complete
+ */
+export const handleLoadMoreMonths = async (
+  months: { month: number; year: number }[],
+  direction: 'past' | 'future',
+  isLoadingPast: boolean,
+  isLoadingFuture: boolean
+): Promise<{ month: number; year: number }[] | null> => {
+  if ((direction === 'past' && isLoadingPast) || (direction === 'future' && isLoadingFuture)) {
+    return null;
+  }
+
+  const chunkParams = getNextChunkParams(months, direction);
+  if (!chunkParams) {
+    return null;
+  }
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  const { startYear, startMonth } = chunkParams;
+  let newChunk: { month: number; year: number }[];
+
+  if (direction === 'past') {
+    const firstMonth = months[0];
+    const endMonth = firstMonth.month === 0 ? 11 : firstMonth.month - 1;
+    const adjustedEndYear = firstMonth.month === 0 ? firstMonth.year - 1 : firstMonth.year;
+    
+    newChunk = generateMonthChunk(startYear, startMonth, adjustedEndYear, endMonth);
+  } else {
+    const endYear = startYear + 2;
+    newChunk = generateMonthChunk(startYear, startMonth, endYear);
+  }
+
+  return newChunk;
+};
+
+/**
+ * Handles scroll position updates for calendar
+ * @param scrollTop Current scroll position
+ * @param scrollHeight Total scroll height
+ * @param clientHeight Client height
+ * @param loadThreshold Threshold for triggering loads
+ * @returns Object indicating what should be loaded
+ */
+export const handleCalendarScroll = (
+  scrollTop: number,
+  scrollHeight: number,
+  clientHeight: number,
+  loadThreshold: number = 100
+): {
+  shouldLoadPast: boolean;
+  shouldLoadFuture: boolean;
+} => {
+  const shouldLoadPast = scrollTop < loadThreshold;
+  const shouldLoadFuture = scrollTop + clientHeight > scrollHeight - loadThreshold;
+
+  return {
+    shouldLoadPast,
+    shouldLoadFuture
+  };
+};
+
+/**
+ * Creates calendar month data structure for rendering
+ * @param year Year of the month
+ * @param month Month (0-based)
+ * @param monthIndex Index in the months array
+ * @param monthHeight Height of each month
+ * @returns Month data for rendering
+ */
+export const createCalendarMonthData = (
+  year: number,
+  month: number,
+  monthIndex: number,
+  monthHeight: number
+) => {
+  const weeks = generateMonthWeeks(year, month);
+  const topOffset = getMonthOffset(monthIndex, monthHeight);
+
+  return {
+    key: `month-${year}-${month}`,
+    year,
+    month,
+    weeks,
+    topOffset,
+    monthHeight,
+    monthName: getMonthName(month)
+  };
+};
+
+/**
+ * Calculates day cell props for rendering
+ * @param date Date object
+ * @param selectedRange Current selected range
+ * @param today Today's date
+ * @param disableFutureDates Whether future dates are disabled
+ * @param disablePastDates Whether past dates are disabled
+ * @param calendarToken Calendar token for styling
+ * @returns Day cell props
+ */
+export const calculateDayCellProps = (
+  date: Date,
+  selectedRange: DateRange,
+  today: Date,
+  disableFutureDates: boolean,
+  disablePastDates: boolean,
+  calendarToken: any
+) => {
+  const dateStates = getDateCellStates(
+    date,
+    selectedRange,
+    today,
+    disableFutureDates,
+    disablePastDates
+  );
+
+  const getCellStyles = () => {
+    let styles = { ...calendarToken.calendar.calendarGrid.day.cell };
+    
+    if (dateStates.isSingleDate) {
+      styles = { ...styles, ...calendarToken.calendar.calendarGrid.day.states.singleDate };
+    } else if (dateStates.isStart) {
+      styles = { ...styles, ...calendarToken.calendar.calendarGrid.day.states.startDate };
+    } else if (dateStates.isEnd) {
+      styles = { ...styles, ...calendarToken.calendar.calendarGrid.day.states.endDate };
+    } else if (dateStates.isRangeDay) {
+      styles = { ...styles, ...calendarToken.calendar.calendarGrid.day.states.rangeDay };
+    }
+    
+    if (dateStates.isDisabled) {
+      styles = { ...styles, ...calendarToken.calendar.calendarGrid.day.states.disabledDay };
+    }
+    
+    return styles;
+  };
+
+  const getTextColor = () => {
+    if (dateStates.isStart || dateStates.isEnd || dateStates.isSingleDate) {
+      return calendarToken.calendar.calendarGrid.day.text.selectedDay.color;
+    } else if (dateStates.isTodayDay) {
+      return calendarToken.calendar.calendarGrid.day.text.todayDay.color;
+    } else if (dateStates.isRangeDay) {
+      return calendarToken.calendar.calendarGrid.day.text.rangeDay.color;
+    }
+    return calendarToken.calendar.calendarGrid.day.text.dayNumber.color;
+  };
+
+  return {
+    dateStates,
+    styles: getCellStyles(),
+    textColor: getTextColor(),
+    showTodayIndicator: shouldShowTodayIndicator(dateStates)
   };
 };

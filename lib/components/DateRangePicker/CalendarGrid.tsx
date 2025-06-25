@@ -1,26 +1,23 @@
 import { forwardRef, useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import styled from 'styled-components';
 import { DateRange } from './types';
-import dateRangePickerTokens from './dateRangePicker.tokens';
+import { CalendarTokenType } from './dateRangePicker.tokens';
 import Block from '../Primitives/Block/Block';
 import {
   handleCalendarDateClick,
-  generateMonthWeeks,
-  getMonthName,
   getDayNames,
   getMonthHeight,
   getVisibleMonths,
-  getMonthOffset,
   findCurrentMonthIndex,
   getScrollToMonth,
-  getDateCellStates,
-  getDateCellStyles,
-  getDateCellTextColor,
-  shouldShowTodayIndicator,
   generateInitialMonths,
-  generateMonthChunk,
-  getNextChunkParams,
+  handleLoadMoreMonths,
+  handleCalendarScroll,
+  createCalendarMonthData,
+  calculateDayCellProps,
 } from './utils';
-import FOUNDATION_THEME from '../../tokens/theme.token';
+import { useComponentToken } from '../../context/useComponentToken';
+import { FOUNDATION_THEME } from '../../tokens';
 
 type CalendarGridProps = {
   selectedRange: DateRange;
@@ -33,7 +30,26 @@ type CalendarGridProps = {
 
 const CONTAINER_HEIGHT = 300;
 const MONTH_HEIGHT = getMonthHeight();
-const LOAD_THRESHOLD = 100; // Start loading when 100px from edge
+const LOAD_THRESHOLD = 100;
+
+const StyledDayCell = styled(Block)<{ 
+  $cellStyles: any; 
+  $textColor: string; 
+  $isDisabled: boolean; 
+  $isSelected: boolean;
+  $calendarToken: CalendarTokenType;
+}>`
+  ${props => props.$cellStyles}
+  color: ${props => props.$textColor};
+  cursor: ${props => props.$isDisabled ? 'not-allowed' : 'pointer'};
+  
+  ${props => !props.$isDisabled && !props.$isSelected && `
+    &:hover {
+      border: ${props.$calendarToken.calendar.calendarGrid.day.hover.border};
+      border-radius: ${props.$calendarToken.calendar.calendarGrid.day.hover.borderRadius};
+    }
+  `}
+`;
 
 const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
   (
@@ -54,7 +70,9 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
     const [isLoadingPast, setIsLoadingPast] = useState(false);
     const [isLoadingFuture, setIsLoadingFuture] = useState(false);
     const [months, setMonths] = useState<{ month: number; year: number }[]>([]);
-    
+    const calendarToken = useComponentToken("CALENDAR") as CalendarTokenType;
+
+    // Initialize months
     useEffect(() => {
       const initialMonths = generateInitialMonths(today);
       setMonths(initialMonths);
@@ -70,61 +88,35 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
       2
     );
 
+    // Handle loading more months
     const loadMoreMonths = useCallback(async (direction: 'past' | 'future') => {
-      if ((direction === 'past' && isLoadingPast) || (direction === 'future' && isLoadingFuture)) {
-        return;
-      }
-
-      const chunkParams = getNextChunkParams(months, direction);
-      if (!chunkParams) {
-        return;
-      }
-
-      if (direction === 'past') {
-        setIsLoadingPast(true);
-      } else {
-        setIsLoadingFuture(true);
-      }
+      if (direction === 'past') setIsLoadingPast(true);
+      else setIsLoadingFuture(true);
 
       const currentScrollTop = scrollContainerRef.current?.scrollTop || 0;
 
-      await new Promise(resolve => setTimeout(resolve, 500));
-
       try {
-        const { startYear, startMonth } = chunkParams;
-        let newChunk: { month: number; year: number }[];
-
-        if (direction === 'past') {
-          const firstMonth = months[0];
-          const endMonth = firstMonth.month === 0 ? 11 : firstMonth.month - 1;
-          const adjustedEndYear = firstMonth.month === 0 ? firstMonth.year - 1 : firstMonth.year;
-          
-          newChunk = generateMonthChunk(startYear, startMonth, adjustedEndYear, endMonth);
-        } else {
-          const endYear = startYear + 2;
-          newChunk = generateMonthChunk(startYear, startMonth, endYear);
-        }
-
-        setMonths(prevMonths => {
-          const newMonths = direction === 'past' 
-            ? [...newChunk, ...prevMonths]
-            : [...prevMonths, ...newChunk];
-          
-          requestAnimationFrame(() => {
-            if (scrollContainerRef.current && direction === 'past') {
-              const addedHeight = newChunk.length * MONTH_HEIGHT;
-              scrollContainerRef.current.scrollTop = currentScrollTop + addedHeight;
-            }
+        const newChunk = await handleLoadMoreMonths(months, direction, isLoadingPast, isLoadingFuture);
+        
+        if (newChunk) {
+          setMonths(prevMonths => {
+            const newMonths = direction === 'past' 
+              ? [...newChunk, ...prevMonths]
+              : [...prevMonths, ...newChunk];
+            
+            requestAnimationFrame(() => {
+              if (scrollContainerRef.current && direction === 'past') {
+                const addedHeight = newChunk.length * MONTH_HEIGHT;
+                scrollContainerRef.current.scrollTop = currentScrollTop + addedHeight;
+              }
+            });
+            
+            return newMonths;
           });
-          
-          return newMonths;
-        });
-      } finally {
-        if (direction === 'past') {
-          setIsLoadingPast(false);
-        } else {
-          setIsLoadingFuture(false);
         }
+      } finally {
+        if (direction === 'past') setIsLoadingPast(false);
+        else setIsLoadingFuture(false);
       }
     }, [months, isLoadingPast, isLoadingFuture]);
 
@@ -141,15 +133,23 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
         setScrollTop(newScrollTop);
       });
 
-      if (newScrollTop < LOAD_THRESHOLD && !isLoadingPast) {
+      const { shouldLoadPast, shouldLoadFuture } = handleCalendarScroll(
+        newScrollTop,
+        scrollHeight,
+        clientHeight,
+        LOAD_THRESHOLD
+      );
+
+      if (shouldLoadPast && !isLoadingPast) {
         loadMoreMonths('past');
       }
       
-      if (newScrollTop + clientHeight > scrollHeight - LOAD_THRESHOLD && !isLoadingFuture) {
+      if (shouldLoadFuture && !isLoadingFuture) {
         loadMoreMonths('future');
       }
     }, [loadMoreMonths, isLoadingPast, isLoadingFuture]);
 
+    // Initialize scroll position
     useEffect(() => {
       if (!isInitialized.current && scrollContainerRef.current && months.length > 0) {
         const currentMonthIndex = findCurrentMonthIndex(months, today);
@@ -175,7 +175,7 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
       };
     }, []);
 
-    const handleDateClick = useCallback((year: number, month: number, day: number) => {
+    const handleDateClick = useCallback((year: number, month: number, day: number, isDoubleClick: boolean = false) => {
       const clickedDate = new Date(year, month, day);
       const newRange = handleCalendarDateClick(
         clickedDate,
@@ -183,7 +183,8 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
         allowSingleDateSelection,
         today,
         disableFutureDates,
-        disablePastDates
+        disablePastDates,
+        isDoubleClick
       );
 
       if (newRange) {
@@ -192,68 +193,65 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
     }, [selectedRange, allowSingleDateSelection, today, disableFutureDates, disablePastDates, onDateSelect]);
 
     const renderMonthCalendar = useCallback((year: number, month: number, monthIndex: number) => {
-      const weeks = generateMonthWeeks(year, month);
-      const topOffset = getMonthOffset(monthIndex, MONTH_HEIGHT);
+      const monthData = createCalendarMonthData(year, month, monthIndex, MONTH_HEIGHT);
 
       return (
         <Block 
-          key={`month-${year}-${month}`}
+          key={monthData.key}
           style={{
-            ...dateRangePickerTokens.calendar.gridContainer,
-            position: 'absolute',
-            top: topOffset,
+            ...calendarToken.calendar.calendarGrid.month.container,
+            top: monthData.topOffset,
             left: 0,
             right: 0,
-            height: MONTH_HEIGHT,
+            height: monthData.monthHeight,
           }}
         >
-          <Block style={{...dateRangePickerTokens.calendar.monthHeader}}>
-            {getMonthName(month)} {year}
+          <Block style={{...calendarToken.calendar.calendarGrid.month.header}}>
+            {monthData.monthName} {year}
           </Block>
 
-          {weeks.map((week, weekIndex) => (
-            <Block style={{...dateRangePickerTokens.calendar.weekRow}} key={weekIndex}>
-              {week.map((day, dayIndex) => {
+          {monthData.weeks.map((week: (number | null)[], weekIndex: number) => (
+            <Block style={{...calendarToken.calendar.calendarGrid.week.row}} key={weekIndex}>
+              {week.map((day: number | null, dayIndex: number) => {
                 if (day === null) {
-                  return <Block style={{...dateRangePickerTokens.calendar.emptyCell}} key={dayIndex} />;
+                  return <Block style={{...calendarToken.calendar.calendarGrid.day.empty}} key={dayIndex} />;
                 }
 
                 const date = new Date(year, month, day);
-                
-                const dateStates = getDateCellStates(
-                  date, 
-                  selectedRange, 
-                  today, 
-                  disableFutureDates, 
-                  disablePastDates
+                const cellProps = calculateDayCellProps(
+                  date,
+                  selectedRange,
+                  today,
+                  disableFutureDates,
+                  disablePastDates,
+                  calendarToken
                 );
 
-                const cellStyles = getDateCellStyles(dateStates, dateRangePickerTokens);
-                const textColor = getDateCellTextColor(dateStates, dateRangePickerTokens);
+                const isSelected = cellProps.dateStates.isStart || cellProps.dateStates.isEnd || cellProps.dateStates.isSingleDate;
 
                 return (
-                  <Block
+                  <StyledDayCell
                     key={`${year}-${month}-${day}`}
-                    style={{
-                      ...cellStyles,
-                      color: textColor,
-                      cursor: dateStates.isDisabled ? 'not-allowed' : 'pointer',
-                      position: 'relative',
-                    }}
-                    onClick={() => handleDateClick(year, month, day)}
+                    $cellStyles={cellProps.styles}
+                    $textColor={cellProps.textColor}
+                    $isDisabled={cellProps.dateStates.isDisabled}
+                    $isSelected={isSelected}
+                    $calendarToken={calendarToken}
+                    onClick={() => handleDateClick(year, month, day, false)}
+                    onDoubleClick={() => handleDateClick(year, month, day, true)}
                   >
                     {day}
-                    {shouldShowTodayIndicator(dateStates) && (
-                      <Block style={{...dateRangePickerTokens.calendar.todayIndicator}} />
+                    {cellProps.showTodayIndicator && (
+                      <Block style={{...calendarToken.calendar.calendarGrid.day.todayIndicator}} />
                     )}
-                  </Block>
+                  </StyledDayCell>
                 );
               })}
             </Block>
           ))}
         </Block>
       );
-    }, [selectedRange, today, disableFutureDates, disablePastDates, handleDateClick]);
+    }, [selectedRange, today, disableFutureDates, disablePastDates, handleDateClick, calendarToken]);
 
     const renderLoader = (position: 'top' | 'bottom') => (
       <Block
@@ -264,13 +262,14 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
           position: position === 'top' ? 'sticky' : 'relative',
           top: position === 'top' ? 0 : 'auto',
           zIndex: 5,
+          padding: '16px',
         }}
       >
         <Block
           style={{
-            width: '20px',
-            height: '20px',
-            border: `2px solid ${FOUNDATION_THEME.colors.gray[300]}`,
+            width: FOUNDATION_THEME.unit[20],
+            height: FOUNDATION_THEME.unit[20],
+            border: `2px solid ${FOUNDATION_THEME.colors.gray[200]}`,
             borderTop: `2px solid ${FOUNDATION_THEME.colors.primary[500]}`,
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
@@ -289,37 +288,18 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
     );
 
     return (
-      <Block style={{...dateRangePickerTokens.calendar.gridContainer}} ref={ref}>
-        {/* Sticky day names header */}
-        <Block style={{
-          ...dateRangePickerTokens.calendar.dayNamesContainer,
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-          backgroundColor: 'white'
-        }}>
+      <Block style={{...calendarToken.calendar.calendarGrid.container}} ref={ref}>
+        <Block style={{...calendarToken.calendar.calendarGrid.week.header}}>
           {dayNames.map((day, index) => (
-            <Block style={{...dateRangePickerTokens.calendar.dayName}} key={index}>
+            <Block style={{...calendarToken.calendar.calendarGrid.week.dayName}} key={index}>
               {day}
             </Block>
           ))}
         </Block>
         
-        <Block style={{
-          height: '1px',
-          backgroundColor: FOUNDATION_THEME.colors.gray[100],
-          margin: '0',
-          position: 'sticky',
-          zIndex: 9
-        }} />
-        
         <Block 
           ref={scrollContainerRef}
-          style={{ 
-            height: CONTAINER_HEIGHT,
-            overflow: 'auto',
-            position: 'relative',
-          }}
+          style={{...calendarToken.calendar.calendarGrid.container}}
           onScroll={handleScroll}
         >
           {isLoadingPast && renderLoader('top')}

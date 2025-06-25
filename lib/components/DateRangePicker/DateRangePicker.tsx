@@ -1,6 +1,5 @@
-import React, { forwardRef, useState, useEffect, useRef, useCallback } from 'react';
+import React, { forwardRef, useState, useEffect, useCallback } from 'react';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
-import { styled } from 'styled-components';
 import { DateRangePickerProps, DateRangePreset, DateRange } from './types';
 import {
   formatDate,
@@ -18,24 +17,178 @@ import { ButtonType, ButtonSize } from '../Button/types';
 import CalendarGrid from './CalendarGrid';
 import QuickRangeSelector from './QuickRangeSelector';
 import TimeSelector from './TimeSelector';
-import dateRangePickerTokens from './dateRangePicker.tokens';
+import dateRangePickerTokens, { CalendarTokenType } from './dateRangePicker.tokens';
 import { SwitchSize } from '../Switch/types';
 import { Switch } from '../Switch/Switch';
 import { FOUNDATION_THEME } from '../../tokens';
 import Block from '../Primitives/Block/Block';
 import { Popover } from '../Popover';
 import { TextInput } from '../Inputs/TextInput';
+import { useComponentToken } from '../../context/useComponentToken';
+import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
+import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
 
-const StyledTrigger = styled.button<{ $isDisabled: boolean; $showPresets: boolean }>`
-  ${dateRangePickerTokens.base.input}
-  ${props => props.$isDisabled && dateRangePickerTokens.states.disabled}
-  height: 40px;
-  border-radius: ${props => props.$showPresets ? '0 8px 8px 0' : '8px'};
-`;
+type DateInputsSectionProps = {
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  showTimePicker: boolean;
+  allowSingleDateSelection: boolean;
+  selectedRange: DateRange;
+  startDateValidation: DateValidationResult;
+  endDateValidation: DateValidationResult;
+  onStartDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEndDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onStartTimeChange: (time: string) => void;
+  onEndTimeChange: (time: string) => void;
+  calendarToken: CalendarTokenType;
+}
 
-const StyledCalendarContainer = styled(Block)`
-  ${dateRangePickerTokens.calendar.container}
-`;
+const DateInputsSection: React.FC<DateInputsSectionProps> = ({
+  startDate,
+  endDate,
+  startTime,
+  endTime,
+  showTimePicker,
+  allowSingleDateSelection,
+  selectedRange,
+  startDateValidation,
+  endDateValidation,
+  onStartDateChange,
+  onEndDateChange,
+  onStartTimeChange,
+  onEndTimeChange,
+  calendarToken,
+}) => (
+  <Block padding={calendarToken.calendar.inputs.padding}>
+    <Block display="flex" flexDirection="column">
+      <Block display="flex" gap={calendarToken.calendar.inputs.dateInput.gap} alignItems="center">
+        <PrimitiveText as="span" color={calendarToken.calendar.inputs.dateInput.label.color} style={{ minWidth: calendarToken.calendar.inputs.dateInput.label.minWidth }}>
+          Start
+        </PrimitiveText>
+        <Block display="flex" alignItems="start" gap={FOUNDATION_THEME.unit[8]}>
+          <TextInput
+            label=""
+            placeholder="DD/MM/YYYY"
+            value={startDate}
+            onChange={onStartDateChange}
+            error={!startDateValidation.isValid}
+            errorMessage={startDateValidation.message}
+          />
+          {showTimePicker && (
+            <TimeSelector value={startTime} onChange={onStartTimeChange} />
+          )}
+        </Block>
+      </Block>
+
+      {(!allowSingleDateSelection || 
+          (allowSingleDateSelection && 
+          selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
+        <Block display="flex" gap={calendarToken.calendar.inputs.dateInput.gap} alignItems="center">
+          <PrimitiveText as="span" color={calendarToken.calendar.inputs.dateInput.label.color} style={{ minWidth: calendarToken.calendar.inputs.dateInput.label.minWidth }}>
+            End
+          </PrimitiveText>
+          <Block display="flex" alignItems="start" gap={FOUNDATION_THEME.unit[8]}>
+            <TextInput
+              label=""
+              placeholder="DD/MM/YYYY"
+              value={endDate}
+              onChange={onEndDateChange}
+              error={!endDateValidation.isValid}
+              errorMessage={endDateValidation.message}
+            />
+            {showTimePicker && (
+              <TimeSelector value={endTime} onChange={onEndTimeChange} />
+            )}
+          </Block>
+        </Block>
+      )}
+    </Block>
+  </Block>
+);
+
+type CalendarSectionProps = {
+  selectedRange: DateRange;
+  today: Date;
+  allowSingleDateSelection: boolean;
+  disableFutureDates: boolean;
+  disablePastDates: boolean;
+  onDateSelect: (range: DateRange) => void;
+}
+
+const CalendarSection: React.FC<CalendarSectionProps> = ({
+  selectedRange,
+  today,
+  allowSingleDateSelection,
+  disableFutureDates,
+  disablePastDates,
+  onDateSelect,
+}) => (
+  <Block>
+    <CalendarGrid
+      selectedRange={selectedRange}
+      onDateSelect={onDateSelect}
+      today={today}
+      allowSingleDateSelection={allowSingleDateSelection}
+      disableFutureDates={disableFutureDates}
+      disablePastDates={disablePastDates}
+    />
+  </Block>
+);
+
+type FooterControlsProps = {
+  showTimePicker: boolean;
+  onTimePickerToggle: (checked: boolean) => void;
+  onCancel: () => void;
+  onApply: () => void;
+  calendarToken: CalendarTokenType;
+}
+
+const FooterControls: React.FC<FooterControlsProps> = ({
+  showTimePicker,
+  onTimePickerToggle,
+  onCancel,
+  onApply,
+  calendarToken,
+}) => (
+  <Block 
+    display="flex" 
+    alignItems="center" 
+    justifyContent="space-between" 
+    padding={calendarToken.calendar.footer.padding}
+    borderTop={calendarToken.calendar.footer.borderTop}
+  >
+    <Block display="flex" alignItems="center" gap={calendarToken.calendar.footer.timerange.gap}>
+      <Switch
+        checked={showTimePicker}
+        onChange={onTimePickerToggle}
+        size={SwitchSize.MEDIUM}
+      />
+      <Block as="span" color={calendarToken.calendar.footer.timerange.color} fontWeight={calendarToken.calendar.footer.timerange.fontWeight} fontSize={calendarToken.calendar.footer.timerange.fontSize}>
+        Time Ranges
+      </Block>
+    </Block>
+
+    <Block display="flex" gap={calendarToken.calendar.footer.button.gap}>
+      <Button 
+        buttonType={ButtonType.SECONDARY}
+        size={ButtonSize.SMALL}
+        onClick={onCancel}
+        text="Cancel"
+      />    
+      <Button
+        buttonType={ButtonType.PRIMARY}
+        size={ButtonSize.SMALL}
+        onClick={onApply}
+        text="Apply"
+      />
+    </Block>
+  </Block>
+);
+
+
+
 
 const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
   (
@@ -56,6 +209,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const [isOpen, setIsOpen] = useState(false);
     const [isQuickRangeOpen, setIsQuickRangeOpen] = useState(false);
     const [showTimePickerState, setShowTimePickerState] = useState(showTimePicker);
+    const calendarToken = useComponentToken("CALENDAR") as CalendarTokenType;
 
     const [selectedRange, setSelectedRange] = useState<DateRange>(
       value || getPresetDateRange(DateRangePreset.TODAY)
@@ -71,8 +225,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     
     const [startDateValidation, setStartDateValidation] = useState<DateValidationResult>({ isValid: true, error: 'none' });
     const [endDateValidation, setEndDateValidation] = useState<DateValidationResult>({ isValid: true, error: 'none' });
-
-    const quickRangeRef = useRef<HTMLDivElement>(null);
 
     const today = new Date();
 
@@ -195,9 +347,9 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
 
       return (
-        <StyledTrigger
-          $isDisabled={isDisabled}
-          $showPresets={showPresets}
+        <PrimitiveButton
+          {...calendarToken.trigger}
+          borderRadius={showPresets ? calendarToken.trigger.borderRadiusWithPresets : calendarToken.trigger.borderRadiusWithoutPresets}
           aria-label={ariaLabel}
           aria-expanded={isOpen}
           aria-disabled={isDisabled}
@@ -214,116 +366,69 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
               <ChevronDown size={14} style={{ marginLeft: '8px' }} />
             )}
           </Block>
-        </StyledTrigger>
+        </PrimitiveButton>
       );
     };
 
     return (
-        <Block display='flex'>
-          {showPresets && (
-            <Block width={136} ref={quickRangeRef}>
-              <QuickRangeSelector
-                isOpen={isQuickRangeOpen}
-                onToggle={() => !isDisabled && setIsQuickRangeOpen(!isQuickRangeOpen)}
-                activePreset={activePreset}
-                onPresetSelect={handlePresetSelect}
-                excludeCustom={true}
-                disableFutureDates={disableFutureDates}
-                disablePastDates={disablePastDates}
-              />
-            </Block>
-          )}
+      <Block display="flex">
+        {showPresets && (
+          <QuickRangeSelector
+            isOpen={isQuickRangeOpen}
+            onToggle={() => !isDisabled && setIsQuickRangeOpen(!isQuickRangeOpen)}
+            activePreset={activePreset}
+            onPresetSelect={handlePresetSelect}
+            excludeCustom={true}
+            disableFutureDates={disableFutureDates}
+            disablePastDates={disablePastDates}
+          />
+        )}
 
-            <Popover
-              open={isOpen}
-              onOpenChange={setIsOpen}
-              trigger={renderTrigger()}
-              side="bottom"
-              align="start"
-              sideOffset={4}
-            >
-              <StyledCalendarContainer>
-                <Block>
-                  <Block style={{padding: `${FOUNDATION_THEME.unit[16]}`, display: 'flex', flexDirection: 'column'}}>
-                    <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
-                      <Block as='span' style={{...dateRangePickerTokens.text.label}}>Start</Block>
-                      <Block display='flex' alignItems='start' gap={FOUNDATION_THEME.unit[8]}> 
-                      <TextInput
-                        label=""
-                        placeholder="DD/MM/YYYY"
-                        value={startDate}
-                        onChange={handleStartDateChangeCallback}
-                        error={!startDateValidation.isValid}
-                        errorMessage={startDateValidation.message}
-                      />
-                      {showTimePickerState && (
-                        <TimeSelector value={startTime} onChange={handleStartTimeChangeCallback} />
-                      )}
-                      </Block>
-                    </Block>
+        <Popover
+          open={isOpen}
+          onOpenChange={setIsOpen}
+          trigger={renderTrigger()}
+          side="bottom"
+          align="start"
+          sideOffset={4}
+        >
+          <Block style={{ ...calendarToken.calendar }}>
+            <DateInputsSection
+              startDate={startDate}
+              endDate={endDate}
+              startTime={startTime}
+              endTime={endTime}
+              showTimePicker={showTimePickerState}
+              allowSingleDateSelection={allowSingleDateSelection}
+              selectedRange={selectedRange}
+              startDateValidation={startDateValidation}
+              endDateValidation={endDateValidation}
+              onStartDateChange={handleStartDateChangeCallback}
+              onEndDateChange={handleEndDateChangeCallback}
+              onStartTimeChange={handleStartTimeChangeCallback}
+              onEndTimeChange={handleEndTimeChangeCallback}
+              calendarToken={calendarToken}
+            />
 
-                    {(!allowSingleDateSelection || 
-                        (allowSingleDateSelection && 
-                        selectedRange.startDate.getTime() !== selectedRange.endDate.getTime())) && (
-                      <Block display='flex' gap={FOUNDATION_THEME.unit[16]} alignItems='center'>
-                        <Block as='span' style={{...dateRangePickerTokens.text.label}}>End</Block>
-                        <Block display='flex' alignItems='start' gap={FOUNDATION_THEME.unit[8]}> 
-                        <TextInput
-                          label=""
-                          placeholder="DD/MM/YYYY"
-                          value={endDate}
-                          onChange={handleEndDateChangeCallback}
-                          error={!endDateValidation.isValid}
-                          errorMessage={endDateValidation.message}
-                        />
-                        {showTimePickerState && (
-                          <TimeSelector value={endTime} onChange={handleEndTimeChangeCallback} />
-                          )}
-                        </Block>
-                      </Block>
-                    )}
-                  </Block>
+            <CalendarSection
+              selectedRange={selectedRange}
+              today={today}
+              allowSingleDateSelection={allowSingleDateSelection}
+              disableFutureDates={disableFutureDates}
+              disablePastDates={disablePastDates}
+              onDateSelect={handleDateSelectCallback}
+            />
 
-                  <Block>
-                    <CalendarGrid
-                      selectedRange={selectedRange}
-                      onDateSelect={handleDateSelectCallback}
-                      today={today}
-                      allowSingleDateSelection={allowSingleDateSelection}
-                      disableFutureDates={disableFutureDates}
-                      disablePastDates={disablePastDates}
-                    />
-                  </Block>
-
-                  <Block display='flex' alignItems='center' justifyContent='space-between' padding={FOUNDATION_THEME.unit[12]} borderTop={`1px solid ${FOUNDATION_THEME.colors.gray[200]}`}>
-                    <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
-                    <Switch
-                      checked={showTimePickerState}
-                      onChange={setShowTimePickerState}
-                      size={SwitchSize.MEDIUM}
-                    />
-                    <Block as='span' style={{...dateRangePickerTokens.text.value}}>Time Ranges</Block>
-                    </Block>
-
-                    <Block display='flex' gap={FOUNDATION_THEME.unit[12]}>
-                      <Button
-                        buttonType={ButtonType.SECONDARY}
-                        size={ButtonSize.SMALL}
-                        onClick={handleCancel}
-                        text="Cancel"
-                      />    
-                      <Button
-                        buttonType={ButtonType.PRIMARY}
-                        size={ButtonSize.SMALL}
-                        onClick={handleApply}
-                        text="Apply"
-                      />
-                    </Block>
-                  </Block>
-                </Block>
-              </StyledCalendarContainer>
-            </Popover>
-        </Block>
+            <FooterControls
+              showTimePicker={showTimePickerState}
+              onTimePickerToggle={setShowTimePickerState}
+              onCancel={handleCancel}
+              onApply={handleApply}
+              calendarToken={calendarToken}
+            />
+          </Block>
+        </Popover>
+      </Block>
     );
   }
 );

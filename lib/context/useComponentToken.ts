@@ -21,6 +21,7 @@ import { PopoverTokenType } from "../components/Popover/popover.tokens";
 import { MenuTokensType } from "../components/Menu/menu.tokens";
 import { MultiSelectTokensType } from "../components/MultiSelect/multiSelect.tokens";
 import { TableTokenType } from "../components/DataTable/dataTable.tokens";
+import { CalendarTokenType } from "../components/DateRangePicker/dateRangePicker.tokens";
 
 // DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
 // TYPES FOR RETURNS
@@ -49,7 +50,8 @@ export const useComponentToken = (
   | PopoverTokenType
   | MenuTokensType
   | MultiSelectTokensType
-  | TableTokenType => {
+  | TableTokenType
+  | CalendarTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
@@ -92,7 +94,9 @@ export const useComponentToken = (
       return componentTokens.MULTI_SELECT;
     case "TABLE": 
       return componentTokens.TABLE;
-    default:
+    case "CALENDAR":
+      return componentTokens.CALENDAR;
+      default:
       throw new Error(`Unknown component token: ${component}`);
   }
 };
