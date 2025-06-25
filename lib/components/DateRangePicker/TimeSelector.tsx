@@ -49,7 +49,7 @@ const TimeSelector = forwardRef<HTMLDivElement, TimeSelectorProps>(
     };
 
     return (
-      < Block ref={ref} style={{ minWidth: '118px', }}>
+      < Block ref={ref} style={{ width: '118px', flexShrink: 0 }}>
         <SingleSelect
           items={timeSelectItems}
           selected={selectedValue}

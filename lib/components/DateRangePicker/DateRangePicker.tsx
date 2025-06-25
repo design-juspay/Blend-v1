@@ -67,15 +67,17 @@ const DateInputsSection: React.FC<DateInputsSectionProps> = ({
         <PrimitiveText as="span" color={calendarToken.calendar.inputs.dateInput.label.color} style={{ minWidth: calendarToken.calendar.inputs.dateInput.label.minWidth }}>
           Start
         </PrimitiveText>
-        <Block display="flex" alignItems="start" gap={FOUNDATION_THEME.unit[8]}>
-          <TextInput
-            label=""
-            placeholder="DD/MM/YYYY"
-            value={startDate}
-            onChange={onStartDateChange}
-            error={!startDateValidation.isValid}
-            errorMessage={startDateValidation.message}
-          />
+        <Block display="flex" alignItems="start" gap={FOUNDATION_THEME.unit[8]} width="100%">
+          <Block flexGrow={1}>
+            <TextInput
+              label=""
+              placeholder="DD/MM/YYYY"
+              value={startDate}
+              onChange={onStartDateChange}
+              error={!startDateValidation.isValid}
+              errorMessage={startDateValidation.message}
+            />
+          </Block>
           {showTimePicker && (
             <TimeSelector value={startTime} onChange={onStartTimeChange} />
           )}
@@ -89,15 +91,17 @@ const DateInputsSection: React.FC<DateInputsSectionProps> = ({
           <PrimitiveText as="span" color={calendarToken.calendar.inputs.dateInput.label.color} style={{ minWidth: calendarToken.calendar.inputs.dateInput.label.minWidth }}>
             End
           </PrimitiveText>
-          <Block display="flex" alignItems="start" gap={FOUNDATION_THEME.unit[8]}>
-            <TextInput
-              label=""
-              placeholder="DD/MM/YYYY"
-              value={endDate}
-              onChange={onEndDateChange}
-              error={!endDateValidation.isValid}
-              errorMessage={endDateValidation.message}
-            />
+          <Block display="flex" alignItems="start" gap={FOUNDATION_THEME.unit[8]} width="100%">
+            <Block flexGrow={1}>
+              <TextInput
+                label=""
+                placeholder="DD/MM/YYYY"
+                value={endDate}
+                onChange={onEndDateChange}
+                error={!endDateValidation.isValid}
+                errorMessage={endDateValidation.message}
+              />
+            </Block>
             {showTimePicker && (
               <TimeSelector value={endTime} onChange={onEndTimeChange} />
             )}

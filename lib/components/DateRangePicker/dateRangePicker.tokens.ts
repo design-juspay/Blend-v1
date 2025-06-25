@@ -418,6 +418,7 @@ export type CalendarTokenType = {
   };
   calendar: {
     minWidth: CSSObject["minWidth"];
+    width: CSSObject["width"];
     backgroundColor: CSSObject["backgroundColor"];
     border: CSSObject["border"];
     borderRadius: CSSObject["borderRadius"];
@@ -624,6 +625,7 @@ export const getCalendarToken = (foundationToken:  FoundationTokenType )  : Cale
      },
      calendar: {
       minWidth: '364px',
+      width: '364px',
       backgroundColor: foundationToken.colors.gray[0],
       border: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
       borderRadius: foundationToken.border.radius[8],
