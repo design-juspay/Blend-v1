@@ -59,6 +59,7 @@ import {
   MultiSelectTokensType,
 } from "../components/MultiSelect/multiSelect.tokens";
 import { getTableToken, TableTokenType } from "../components/DataTable/dataTable.tokens";
+import { CalendarTokenType, getCalendarToken } from "../components/DateRangePicker/dateRangePicker.tokens";
 
 export type ComponentTokenType = {
   TAGS?: TagTokensType;
@@ -83,6 +84,7 @@ export type ComponentTokenType = {
   MENU?: MenuTokensType;
   MULTI_SELECT?: MultiSelectTokensType;
   TABLE?: TableTokenType
+  CALENDAR?: CalendarTokenType;
   // add supprort for other components here
 };
 
@@ -115,7 +117,8 @@ const ThemeContext = createContext<ThemeContextType>({
     POPOVER: getPopoverTokens(FOUNDATION_THEME),
     MENU: getMenuTokens(FOUNDATION_THEME),
     MULTI_SELECT: getMultiSelectTokens(FOUNDATION_THEME),
-    TABLE: getTableToken(FOUNDATION_THEME)
+    TABLE: getTableToken(FOUNDATION_THEME),
+    CALENDAR: getCalendarToken(FOUNDATION_THEME),
   },
 });
 
