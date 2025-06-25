@@ -10,7 +10,6 @@ import {
   handleTimeChange,
   handleCalendarDateSelect,
   handlePresetSelection,
-  handleCancelAction,
 } from './utils';
 import Button from '../Button/Button';
 import { ButtonType, ButtonSize } from '../Button/types';
@@ -184,7 +183,11 @@ const FooterControls: React.FC<FooterControlsProps> = ({
       <Button
         buttonType={ButtonType.PRIMARY}
         size={ButtonSize.SMALL}
-        onClick={onApply}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onApply();
+        }}
         text="Apply"
       />
     </Block>
@@ -210,6 +213,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     },
   ) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [popoverKey, setPopoverKey] = useState(0);
     const [isQuickRangeOpen, setIsQuickRangeOpen] = useState(false);
     const [showTimePickerState, setShowTimePickerState] = useState(showTimePicker);
     const calendarToken = useComponentToken("CALENDAR") as CalendarTokenType;
@@ -249,6 +253,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       setStartDate(result.formattedStartDate);
       setEndDate(result.formattedEndDate);
       setActivePreset(DateRangePreset.CUSTOM);
+      console.log('Date selected from calendar:', result.updatedRange);
     }, [startTime, endTime, dateFormat]);
 
     const handlePresetSelect = useCallback((preset: DateRangePreset) => {
@@ -301,22 +306,25 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       setActivePreset(DateRangePreset.CUSTOM);
     }, [selectedRange]);
 
-    const handleApply = () => {
-      setIsOpen(false);
+    const handleApply = useCallback(() => {
       onChange?.(selectedRange);
-    };
+      setIsOpen(false);
+      setPopoverKey(prev => prev + 1);
+      }, [selectedRange, onChange]);
 
     const handleCancel = useCallback(() => {
-      const resetData = handleCancelAction(value, dateFormat);
-      if (resetData) {
-        setSelectedRange(resetData.resetRange);
-        setStartDate(resetData.formattedStartDate);
-        setEndDate(resetData.formattedEndDate);
-        setStartTime(resetData.formattedStartTime);
-        setEndTime(resetData.formattedEndTime);
-      }
-      setIsOpen(false);
-    }, [value, dateFormat]);
+      const defaultRange = getPresetDateRange(DateRangePreset.TODAY);
+      setSelectedRange(defaultRange);
+      setActivePreset(DateRangePreset.TODAY);
+      setStartDate(formatDate(defaultRange.startDate, dateFormat));
+      setEndDate(formatDate(defaultRange.endDate, dateFormat));
+      setStartTime(formatDate(defaultRange.startDate, 'HH:mm'));
+      setEndTime(formatDate(defaultRange.endDate, 'HH:mm'));
+      
+      setStartDateValidation({ isValid: true, error: 'none' });
+      setEndDateValidation({ isValid: true, error: 'none' });
+
+    }, [dateFormat]);
 
     useEffect(() => {
       if (isDisabled) {
@@ -386,8 +394,11 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         )}
 
         <Popover
+          key={popoverKey}
           open={isOpen}
-          onOpenChange={setIsOpen}
+          onOpenChange={(open) => {
+            setIsOpen(open);
+          }}
           trigger={renderTrigger()}
           side="bottom"
           align="start"

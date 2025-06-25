@@ -8,6 +8,11 @@ const DateRangePickerDemo = () => {
     endDate: new Date(),
   });
 
+  const handleBasicRangeChange = (newRange: DateRange) => {
+    console.log('✅ Demo: Basic range updated!', newRange);
+    setBasicRange(newRange);
+  };
+
   const [timeRange, setTimeRange] = useState<DateRange>({
     startDate: new Date(),
     endDate: new Date(),
@@ -50,7 +55,7 @@ const DateRangePickerDemo = () => {
           </p>
           <DateRangePicker
             value={basicRange}
-            onChange={setBasicRange}
+            onChange={handleBasicRangeChange}
             showPresets={true}
           />
           <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
