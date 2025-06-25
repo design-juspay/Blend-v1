@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { CSSObject } from 'styled-components';
 import { DateRange } from './types';
 import { CalendarTokenType } from './dateRangePicker.tokens';
 import Block from '../Primitives/Block/Block';
@@ -33,7 +33,7 @@ const MONTH_HEIGHT = getMonthHeight();
 const LOAD_THRESHOLD = 100;
 
 const StyledDayCell = styled(Block)<{ 
-  $cellStyles: any; 
+  $cellStyles: CSSObject; 
   $textColor: string; 
   $isDisabled: boolean; 
   $isSelected: boolean;
@@ -233,7 +233,7 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
                   <StyledDayCell
                     key={`${year}-${month}-${day}`}
                     $cellStyles={cellProps.styles}
-                    $textColor={cellProps.textColor}
+                    $textColor={cellProps.textColor || ''}
                     $isDisabled={cellProps.dateStates.isDisabled}
                     $isSelected={isSelected}
                     $calendarToken={calendarToken}

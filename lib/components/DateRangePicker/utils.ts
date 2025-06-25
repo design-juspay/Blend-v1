@@ -1,4 +1,5 @@
 import { DateRange, DateRangePreset } from './types';
+import { CalendarTokenType } from './dateRangePicker.tokens';
 
 /**
  * Formats a date according to the specified format
@@ -1281,7 +1282,7 @@ export const calculateDayCellProps = (
   today: Date,
   disableFutureDates: boolean,
   disablePastDates: boolean,
-  calendarToken: any
+  calendarToken: CalendarTokenType
 ) => {
   const dateStates = getDateCellStates(
     date,

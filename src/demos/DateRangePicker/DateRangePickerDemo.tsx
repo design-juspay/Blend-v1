@@ -23,6 +23,16 @@ const DateRangePickerDemo = () => {
     endDate: new Date(),
   });
 
+  const [customTriggerRange, setCustomTriggerRange] = useState<DateRange>({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
+  const [noPresetsRange, setNoPresetsRange] = useState<DateRange>({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
   return (
     <div style={{ padding: '2rem', maxWidth: '1200px' }}>
       <h1 style={{ marginBottom: '2rem', fontSize: '2rem', fontWeight: 'bold' }}>
@@ -42,7 +52,6 @@ const DateRangePickerDemo = () => {
             value={basicRange}
             onChange={setBasicRange}
             showPresets={true}
-            ariaLabel="Select date range"
           />
           <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
             <strong>Selected Range:</strong><br />
@@ -65,7 +74,6 @@ const DateRangePickerDemo = () => {
             showTimePicker={true}
             showPresets={true}
             dateFormat="dd/MM/yyyy HH:mm"
-            ariaLabel="Select date and time range"
           />
           <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
             <strong>Selected Range with Time:</strong><br />
@@ -87,7 +95,6 @@ const DateRangePickerDemo = () => {
             onChange={setSingleDateRange}
             allowSingleDateSelection={true}
             showPresets={true}
-            ariaLabel="Select single date"
           />
           <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
             <strong>Selected Date:</strong><br />
@@ -111,12 +118,68 @@ const DateRangePickerDemo = () => {
             onChange={setPastOnlyRange}
             disableFutureDates={true}
             showPresets={true}
-            ariaLabel="Select past date range"
           />
           <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
             <strong>Selected Past Range:</strong><br />
             Start: {pastOnlyRange.startDate.toLocaleDateString()}<br />
             End: {pastOnlyRange.endDate.toLocaleDateString()}
+          </div>
+        </section>
+
+        {/* Custom Trigger Element */}
+        <section>
+          <h2 style={{ marginBottom: '1rem', fontSize: '1.5rem', fontWeight: '600' }}>
+            Custom Trigger Element
+          </h2>
+          <p style={{ marginBottom: '1rem', color: '#666' }}>
+            DateRangePicker with a custom trigger element instead of the default button.
+          </p>
+          <DateRangePicker
+            value={customTriggerRange}
+            onChange={setCustomTriggerRange}
+            showPresets={false}
+            triggerElement={
+              <div style={{
+                padding: '12px 16px',
+                border: '2px solid #3b82f6',
+                borderRadius: '8px',
+                backgroundColor: '#eff6ff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                color: '#1e40af',
+                fontWeight: '500',
+                minWidth: '300px'
+              }}>
+                📅 Custom Trigger: {customTriggerRange.startDate.toLocaleDateString()} - {customTriggerRange.endDate.toLocaleDateString()}
+              </div>
+            }
+          />
+          <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+            <strong>Selected Range (Custom Trigger):</strong><br />
+            Start: {customTriggerRange.startDate.toLocaleDateString()}<br />
+            End: {customTriggerRange.endDate.toLocaleDateString()}
+          </div>
+        </section>
+
+        {/* No Quick Selector (Presets) */}
+        <section>
+          <h2 style={{ marginBottom: '1rem', fontSize: '1.5rem', fontWeight: '600' }}>
+            Without Quick Selector
+          </h2>
+          <p style={{ marginBottom: '1rem', color: '#666' }}>
+            DateRangePicker without the quick selector presets panel.
+          </p>
+          <DateRangePicker
+            value={noPresetsRange}
+            onChange={setNoPresetsRange}
+            showPresets={false}
+          />
+          <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+            <strong>Selected Range (No Presets):</strong><br />
+            Start: {noPresetsRange.startDate.toLocaleDateString()}<br />
+            End: {noPresetsRange.endDate.toLocaleDateString()}
           </div>
         </section>
 
@@ -132,7 +195,6 @@ const DateRangePickerDemo = () => {
             value={basicRange}
             onChange={setBasicRange}
             isDisabled={true}
-            ariaLabel="Disabled date picker"
           />
         </section>
 
@@ -149,7 +211,6 @@ const DateRangePickerDemo = () => {
             onChange={setBasicRange}
             dateFormat="yyyy-MM-dd"
             showPresets={true}
-            ariaLabel="Custom format date picker"
           />
           <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
             <strong>Custom Format Display:</strong><br />

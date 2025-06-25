@@ -42,6 +42,10 @@ const StyledItem = styled(DropdownMenu.Item)<{ $isActive: boolean; $calendarToke
   ${props => props.$isActive && props.$calendarToken.quickRange.item.active}
 `;
 
+const StyledContent = styled(DropdownMenu.Content)<{ $calendarToken: CalendarTokenType }>`
+  ${props => props.$calendarToken.quickRange.content}
+`;
+
 const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
   (
     {
@@ -103,10 +107,6 @@ const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
       onPresetSelect(preset);
   };
 
-  const StyledContent = styled(DropdownMenu.Content)`
-  ${calendarToken.quickRange.content}
-  `;
-
     return (
       <Block position='relative' width={calendarToken.quickRange.width} ref={ref} className={className}>
         <DropdownMenu.Root open={isOpen} onOpenChange={onToggle}>
@@ -120,7 +120,7 @@ const QuickRangeSelector = forwardRef<HTMLDivElement, QuickRangeSelectorProps>(
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
-            <StyledContent align="start" sideOffset={4}>
+            <StyledContent align="start" sideOffset={4} $calendarToken={calendarToken}>
               {filteredPresets.map((preset) => (
                 <StyledItem
                   key={preset}

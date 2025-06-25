@@ -203,7 +203,6 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       showPresets = true,
       isDisabled = false,
       dateFormat = 'dd/MM/yyyy',
-      ariaLabel = 'Date range picker',
       allowSingleDateSelection = false,
       disableFutureDates = false,
       disablePastDates = false,
@@ -353,9 +352,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       return (
         <PrimitiveButton
           {...calendarToken.trigger}
-          borderRadius={showPresets ? calendarToken.trigger.borderRadiusWithPresets : calendarToken.trigger.borderRadiusWithoutPresets}
-          aria-label={ariaLabel}
-          aria-expanded={isOpen}
+          borderRadius={showPresets ? calendarToken.trigger.borderRadiusWithPresets : calendarToken.trigger.borderRadiusWithoutPresets}          aria-expanded={isOpen}
           aria-disabled={isDisabled}
           disabled={isDisabled}
         >
