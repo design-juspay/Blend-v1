@@ -16,7 +16,7 @@ import { ButtonType, ButtonSize } from '../Button/types';
 import CalendarGrid from './CalendarGrid';
 import QuickRangeSelector from './QuickRangeSelector';
 import TimeSelector from './TimeSelector';
-import dateRangePickerTokens, { CalendarTokenType } from './dateRangePicker.tokens';
+import { CalendarTokenType } from './dateRangePicker.tokens';
 import { SwitchSize } from '../Switch/types';
 import { Switch } from '../Switch/Switch';
 import { FOUNDATION_THEME } from '../../tokens';
@@ -26,6 +26,7 @@ import { TextInput } from '../Inputs/TextInput';
 import { useComponentToken } from '../../context/useComponentToken';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
+import fontTokens from '../../tokens/font.tokens';
 
 type DateInputsSectionProps = {
   startDate: string;
@@ -364,7 +365,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           aria-disabled={isDisabled}
           disabled={isDisabled}
         >
-          <Block flexGrow={1} display='flex' alignItems='center' justifyContent='space-between' style={{...dateRangePickerTokens.text.value}}>
+          <Block flexGrow={1} display='flex' alignItems='center' justifyContent='space-between' style={{color: FOUNDATION_THEME.colors.gray[600], fontWeight: FOUNDATION_THEME.font.weight[500], fontSize:`${FOUNDATION_THEME.font.size.body.md.fontSize}px`}} >
             <Block display='flex' alignItems='center' gap={FOUNDATION_THEME.unit[8]}>
               <Calendar size={14} />
               <span>{formatDateDisplay(selectedRange, allowSingleDateSelection)}</span>

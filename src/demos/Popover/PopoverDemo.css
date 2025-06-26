@@ -83,10 +83,6 @@ label {
   margin-bottom: 8px;
 }
 
-input[type="checkbox"], input[type="radio"] {
-  margin-right: 8px;
-}
-
 .radio-group {
   display: flex;
   flex-direction: column;
