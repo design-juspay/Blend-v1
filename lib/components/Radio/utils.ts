@@ -64,7 +64,7 @@ export const createRadioChangeHandler = (
 
 export const isRadioElement = (
   child: React.ReactElement,
-  RadioComponent: React.ComponentType<any>
+  RadioComponent: React.ComponentType<RadioProps>
 ): child is React.ReactElement<RadioProps> => {
   return child.type === RadioComponent;
 };
@@ -93,7 +93,7 @@ export const createGroupChangeHandler = (
 };
 
 
-export const isValidRadioValue = (value: any): value is string => {
+export const isValidRadioValue = (value: unknown): value is string => {
   return typeof value === 'string';
 };
 
@@ -122,14 +122,18 @@ export const getRadioTextProps = (
   isDisabled: boolean,
   error: boolean,
   isSubtext: boolean = false
-) => {
+): {
+  fontSize: string;
+  fontWeight: string;
+  color: string;
+} => {
   const fontConfig = isSubtext 
     ? radioTokens.content.sublabel.font[size]
     : radioTokens.content.label.font[size];
     
   return {
-    fontSize: fontConfig.fontSize,
-    fontWeight: fontConfig.fontWeight,
+    fontSize: String(fontConfig?.fontSize || ''),
+    fontWeight: String(fontConfig?.fontWeight || ''),
     color: getRadioTextColor(radioTokens, isDisabled, error, isSubtext)
   };
 };
@@ -140,12 +144,20 @@ export const getRadioTextProps = (
 export const getRadioLabelStyles = (
   radioTokens: RadioTokensType,
   isDisabled: boolean
-) => ({
+): {
+  display: 'inline-flex';
+  alignItems: 'center';
+  padding: number;
+  margin: number;
+  minHeight: string;
+  cursor: 'not-allowed' | 'pointer';
+  lineHeight: number;
+} => ({
   display: 'inline-flex' as const,
   alignItems: 'center' as const,
   padding: 0,
   margin: 0,
-  minHeight: radioTokens.height.md,
+  minHeight: String(radioTokens.height.md || ''),
   cursor: isDisabled ? 'not-allowed' as const : 'pointer' as const,
   lineHeight: 1
 });

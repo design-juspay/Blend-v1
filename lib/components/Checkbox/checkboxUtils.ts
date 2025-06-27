@@ -1,5 +1,4 @@
-import React from 'react';
-import { CheckboxSize, CheckboxProps, CheckboxCheckedState } from './types';
+import { CheckboxSize } from './types';
 import { CheckboxTokensType } from './checkbox.token';
 
 export const getCheckboxDataState = (checked: boolean | 'indeterminate'): string => {
@@ -107,9 +106,13 @@ export const getCheckboxTextProps = (
   size: CheckboxSize,
   disabled: boolean,
   error: boolean
-) => ({
-  fontSize: tokens.content.label.font[size].fontSize,
-  fontWeight: tokens.content.label.font[size].fontWeight,
+): {
+  fontSize: string;
+  fontWeight: string;
+  color: string;
+} => ({
+  fontSize: String(tokens.content.label.font[size]?.fontSize || ''),
+  fontWeight: String(tokens.content.label.font[size]?.fontWeight || ''),
   color: getCheckboxTextColor(tokens, disabled, error)
 });
 
@@ -121,8 +124,11 @@ export const getCheckboxSubtextProps = (
   size: CheckboxSize,
   disabled: boolean,
   error: boolean
-) => ({
-  fontSize: tokens.content.subtext.font[size].fontSize,
+): {
+  fontSize: string;
+  color: string;
+} => ({
+  fontSize: String(tokens.content.subtext.font[size]?.fontSize || ''),
   color: getCheckboxSubtextColor(tokens, disabled, error)
 });
 

@@ -94,9 +94,13 @@ export const getSwitchTextProps = (
   size: SwitchSize,
   disabled: boolean,
   error: boolean
-) => ({
-  fontSize: tokens.content.label.font[size].fontSize,
-  fontWeight: tokens.content.label.font[size].fontWeight,
+): {
+  fontSize: string;
+  fontWeight: string;
+  color: string;
+} => ({
+  fontSize: String(tokens.content.label.font[size]?.fontSize || ''),
+  fontWeight: String(tokens.content.label.font[size]?.fontWeight || ''),
   color: getSwitchTextColor(tokens, disabled, error)
 });
 
@@ -108,8 +112,11 @@ export const getSwitchSubtextProps = (
   size: SwitchSize,
   disabled: boolean,
   error: boolean
-) => ({
-  fontSize: tokens.content.sublabel.font[size].fontSize,
+): {
+  fontSize: string;
+  color: string;
+} => ({
+  fontSize: String(tokens.content.sublabel.font[size]?.fontSize || ''),
   color: getSwitchSubtextColor(tokens, disabled, error)
 });
 
@@ -131,7 +138,7 @@ export const getSwitchLabelStyles = (
  */
 export const isSwitchElement = (
   child: React.ReactElement,
-  SwitchComponent: React.ComponentType<any>
+  SwitchComponent: React.ComponentType<SwitchProps>
 ): child is React.ReactElement<SwitchProps> => {
   return child.type === SwitchComponent;
 };

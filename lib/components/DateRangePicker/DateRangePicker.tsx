@@ -26,8 +26,6 @@ import { TextInput } from '../Inputs/TextInput';
 import { useComponentToken } from '../../context/useComponentToken';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
-import fontTokens from '../../tokens/font.tokens';
-
 type DateInputsSectionProps = {
   startDate: string;
   endDate: string;
