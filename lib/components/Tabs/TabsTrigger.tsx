@@ -29,9 +29,9 @@ const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
         className={className}
         {...props}
       >
-        {leftSlot && <IconContainer style={{ marginRight: tokens.trigger.iconSpacing?.gap }}>{leftSlot}</IconContainer>}
+        {leftSlot && <IconContainer style={{ marginRight: tokens.list.trigger.iconSpacing?.gap }}>{leftSlot}</IconContainer>}
         {children}
-        {rightSlot && <IconContainer style={{ marginLeft: tokens.trigger.iconSpacing?.gap }}>{rightSlot}</IconContainer>}
+        {rightSlot && <IconContainer style={{ marginLeft: tokens.list.trigger.iconSpacing?.gap }}>{rightSlot}</IconContainer>}
       </StyledTabsTrigger>
     );
   }

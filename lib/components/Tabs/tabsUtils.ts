@@ -3,7 +3,7 @@ import { TabsVariant, TabsSize } from "./types";
 import { TabsTokensType, TabsInteractionState } from "./tabs.token"; 
 
 export const getBaseTabsStyles = (tokens: TabsTokensType): CSSObject => ({
-  width: tokens.rootLayout?.width || "100%",
+  width: tokens.width || "100%",
 });
 
 export const getBaseTabsContentStyles = (tokens: TabsTokensType): CSSObject => ({
@@ -17,17 +17,17 @@ export const getBaseTabsContentStyles = (tokens: TabsTokensType): CSSObject => (
 });
 
 export const getBaseTabsListStyles = (tokens: TabsTokensType, variant: TabsVariant): CSSObject => ({
-  display: tokens.list.layout[variant]?.display || "flex",
-  width: tokens.list.layout[variant]?.width || "100%",
-  alignItems: tokens.list.layout[variant]?.alignItems || "center",
-  gap: tokens.list.layout[variant]?.gap,
+  display: tokens.list.variant[variant]?.display || "flex",
+  width: tokens.list.variant[variant]?.width || "100%",
+  alignItems: tokens.list.variant[variant]?.alignItems || "center",
+  gap: tokens.list.variant[variant]?.gap,
   border: "none", 
   position: "relative",
-  padding: tokens.list.layout[variant]?.padding,
-  backgroundColor: tokens.list.layout[variant]?.backgroundColor,
-  borderRadius: tokens.list.layout[variant]?.borderRadius,
-  borderBottomWidth: tokens.list.layout[variant]?.borderBottomWidth,
-  borderBottomColor: tokens.list.layout[variant]?.borderBottomColor,
+  padding: tokens.list.variant[variant]?.padding,
+  backgroundColor: tokens.list.variant[variant]?.backgroundColor,
+  borderRadius: tokens.list.variant[variant]?.borderRadius,
+  borderBottomWidth: tokens.list.variant[variant]?.borderBottomWidth,
+  borderBottomColor: tokens.list.variant[variant]?.borderBottomColor,
 });
 
 
@@ -44,17 +44,17 @@ export const getBaseTabsTriggerStyles = (tokens: TabsTokensType, variant: TabsVa
   const bgState: Extract<TabsInteractionState, 'default' | 'hover' | 'active'> =
     state === 'focus' || state === 'disabled' ? 'default' : state;
 
-  const currentVariantColor = tokens.trigger.color[variant];
-  const currentFontVariant = tokens.trigger.font[variant];
-  const currentBgVariant = tokens.trigger.background[variant];
+  const currentVariantColor = tokens.list.trigger.color[variant];
+  const currentFontVariant = tokens.list.trigger.font[variant];
+  const currentBgVariant = tokens.list.trigger.background[variant];
 
   return {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     whiteSpace: "nowrap",
-    padding: `0 ${tokens.trigger.size[size]?.paddingX || '0px'}`,
-    fontSize: tokens.trigger.size[size]?.fontSize,
+    padding: `0 ${tokens.list.trigger.size[size]?.paddingX || '0px'}`,
+    fontSize: tokens.list.trigger.size[size]?.fontSize,
     fontWeight: currentFontVariant?.[state === 'active' ? 'active' : 'default']?.fontWeight,
     color: currentVariantColor?.[colorState],
     backgroundColor: currentBgVariant?.[bgState],
@@ -62,15 +62,15 @@ export const getBaseTabsTriggerStyles = (tokens: TabsTokensType, variant: TabsVa
     outline: "none",
     position: "relative",
     border: "none", 
-    borderRadius: tokens.trigger.border[variant]?.radius,
+    borderRadius: tokens.list.trigger.border[variant]?.radius,
     cursor: state === 'disabled' ? 'not-allowed' : 'pointer',
-    opacity: state === 'disabled' ? tokens.trigger.disabledOpacity : 1,    
+    opacity: state === 'disabled' ? tokens.list.trigger.disabledOpacity : 1,    
   };
 };
 
 export const getTabsTriggerFocusStyles = (tokens: TabsTokensType): CSSObject => ({
     outline: 'none', // Important to reset default outline
-    boxShadow: `0 0 0 ${tokens.trigger.focus?.ringWidth || '2px'} ${tokens.trigger.focus?.ringColor}`,
+    boxShadow: `0 0 0 ${tokens.list.trigger.focus?.ringWidth || '2px'} ${tokens.list.trigger.focus?.ringColor}`,
 });
 
 
@@ -78,5 +78,5 @@ export const getIconContainerStyles = (tokens: TabsTokensType): CSSObject => ({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: tokens.trigger.iconSpacing?.gap, 
+  gap: tokens.list.trigger.iconSpacing?.gap, 
 });

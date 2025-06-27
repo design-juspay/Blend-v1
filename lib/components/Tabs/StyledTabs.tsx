@@ -8,7 +8,7 @@ export const StyledTabs = styled(TabsPrimitive.Root)`
   ${() => { 
     const tokens = useComponentToken("TABS") as TabsTokensType;
     return css`
-      width: ${tokens.rootLayout?.width || "100%"};
+      width: ${tokens.width || "100%"};
     `;
   }}
 `;
@@ -36,7 +36,7 @@ export const StyledTabsList = styled(TabsPrimitive.List)<{
 }>`
   ${({ $variant, $size, $expanded, $fitContent }) => {
     const tokens = useComponentToken("TABS") as TabsTokensType;
-    const listLayout = tokens.list.layout[$variant];
+    const listLayout = tokens.list.variant[$variant];
     return css`
       display: ${listLayout?.display || "flex"};
       width: ${$fitContent ? "fit-content" : (listLayout?.width || "100%")};
@@ -68,19 +68,19 @@ export const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<{
 }>`
   ${({ $variant, $size }) => { // Removed theme
     const tokens = useComponentToken("TABS") as TabsTokensType;
-    const sizeStyles = tokens.trigger.size[$size];
-    const fontDefault = tokens.trigger.font[$variant]?.default;
-    const fontActive = tokens.trigger.font[$variant]?.active;
-    const colorDefault = tokens.trigger.color[$variant]?.default;
-    const colorHover = tokens.trigger.color[$variant]?.hover;
-    const colorActive = tokens.trigger.color[$variant]?.active;
-    const colorDisabled = tokens.trigger.color[$variant]?.disabled;
-    const bgDefault = tokens.trigger.background[$variant]?.default;
-    const bgHover = tokens.trigger.background[$variant]?.hover;
-    const bgActive = tokens.trigger.background[$variant]?.active;
-    const borderStyles = tokens.trigger.border[$variant];
-    const shadowActive = ($variant === TabsVariant.BOXED) ? tokens.trigger.shadow?.boxed?.active : undefined;
-    const focusStyles = tokens.trigger.focus;
+    const sizeStyles = tokens.list.trigger.size[$size];
+    const fontDefault = tokens.list.trigger.font[$variant]?.default;
+    const fontActive = tokens.list.trigger.font[$variant]?.active;
+    const colorDefault = tokens.list.trigger.color[$variant]?.default;
+    const colorHover = tokens.list.trigger.color[$variant]?.hover;
+    const colorActive = tokens.list.trigger.color[$variant]?.active;
+    const colorDisabled = tokens.list.trigger.color[$variant]?.disabled;
+    const bgDefault = tokens.list.trigger.background[$variant]?.default;
+    const bgHover = tokens.list.trigger.background[$variant]?.hover;
+    const bgActive = tokens.list.trigger.background[$variant]?.active;
+    const borderStyles = tokens.list.trigger.border[$variant];
+    const shadowActive = ($variant === TabsVariant.BOXED) ? tokens.list.trigger.shadow?.boxed?.active : undefined;
+    const focusStyles = tokens.list.trigger.focus;
 
     return css`
       display: inline-flex;
@@ -136,7 +136,7 @@ export const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<{
 
       &:disabled {
         color: ${colorDisabled};
-        opacity: ${tokens.trigger.disabledOpacity};
+        opacity: ${tokens.list.trigger.disabledOpacity};
         pointer-events: none;
         cursor: not-allowed;
       }
