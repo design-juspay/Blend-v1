@@ -232,8 +232,8 @@ const CalendarGrid = forwardRef<HTMLDivElement, CalendarGridProps>(
                 return (
                   <StyledDayCell
                     key={`${year}-${month}-${day}`}
-                    $cellStyles={cellProps.styles}
-                    $textColor={cellProps.textColor || ''}
+                    $cellStyles={cellProps.styles as CSSObject  }
+                    $textColor={String(cellProps.textColor || '')}
                     $isDisabled={cellProps.dateStates.isDisabled}
                     $isSelected={isSelected}
                     $calendarToken={calendarToken}

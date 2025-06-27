@@ -1283,7 +1283,12 @@ export const calculateDayCellProps = (
   disableFutureDates: boolean,
   disablePastDates: boolean,
   calendarToken: CalendarTokenType
-) => {
+): {
+  dateStates: ReturnType<typeof getDateCellStates>;
+  styles: Record<string, unknown>;
+  textColor: string | unknown;
+  showTodayIndicator: boolean;
+} => {
   const dateStates = getDateCellStates(
     date,
     selectedRange,
