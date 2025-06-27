@@ -18,7 +18,7 @@ const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
     },
     ref
   ) => {
-    const tokens = useComponentToken("TABS") as TabsTokensType; // Use hook
+    const tokens = useComponentToken("TABS") as TabsTokensType;
 
     return (
       <StyledTabsTrigger

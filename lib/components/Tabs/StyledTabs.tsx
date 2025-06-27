@@ -2,12 +2,10 @@ import styled, { css } from "styled-components";
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { TabsVariant, TabsSize } from "./types";
 import { useComponentToken } from "../../context/useComponentToken";
-import { TabsTokensType } from "./tabs.token"; // Removed TabsInteractionState as it's not used here
-// tabsUtils are mostly replaced by direct token access, but keep for now if any complex logic is needed.
-// import { getIconContainerStyles } from "./tabsUtils"; 
+import { TabsTokensType } from "./tabs.token"; 
 
 export const StyledTabs = styled(TabsPrimitive.Root)`
-  ${() => { // Removed theme
+  ${() => { 
     const tokens = useComponentToken("TABS") as TabsTokensType;
     return css`
       width: ${tokens.rootLayout?.width || "100%"};
@@ -16,7 +14,7 @@ export const StyledTabs = styled(TabsPrimitive.Root)`
 `;
 
 export const StyledTabsContent = styled(TabsPrimitive.Content)`
-  ${() => { // Removed theme
+  ${() => { 
     const tokens = useComponentToken("TABS") as TabsTokensType;
     return css`
       width: 100%;
@@ -32,15 +30,16 @@ export const StyledTabsContent = styled(TabsPrimitive.Content)`
 
 export const StyledTabsList = styled(TabsPrimitive.List)<{
   $variant: TabsVariant;
-  $size: TabsSize; // Keep $size if list styling depends on it, e.g. height
+  $size: TabsSize; 
   $expanded: boolean;
+  $fitContent: boolean;
 }>`
-  ${({ $variant, $size, $expanded }) => { // Removed theme
+  ${({ $variant, $size, $expanded, $fitContent }) => {
     const tokens = useComponentToken("TABS") as TabsTokensType;
     const listLayout = tokens.list.layout[$variant];
     return css`
       display: ${listLayout?.display || "flex"};
-      width: ${listLayout?.width || "100%"};
+      width: ${$fitContent ? "fit-content" : (listLayout?.width || "100%")};
       align-items: ${listLayout?.alignItems || "center"};
       gap: ${listLayout?.gap};
       border: none;
@@ -52,7 +51,7 @@ export const StyledTabsList = styled(TabsPrimitive.List)<{
       border-bottom-color: ${listLayout?.borderBottomColor};
       height: ${tokens.list.size?.[$size]?.height};
 
-      ${$expanded && css`
+      ${$expanded && !$fitContent && css`
         justify-content: ${tokens.list.expandedLayout?.justifyContent || "space-between"};
         & > * {
           flex: 1;
@@ -80,7 +79,6 @@ export const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<{
     const bgHover = tokens.trigger.background[$variant]?.hover;
     const bgActive = tokens.trigger.background[$variant]?.active;
     const borderStyles = tokens.trigger.border[$variant];
-    // Correctly access shadow only for 'boxed' variant
     const shadowActive = ($variant === TabsVariant.BOXED) ? tokens.trigger.shadow?.boxed?.active : undefined;
     const focusStyles = tokens.trigger.focus;
 
@@ -147,13 +145,11 @@ export const StyledTabsTrigger = styled(TabsPrimitive.Trigger)<{
 `;
 
 export const IconContainer = styled.span`
-  ${() => { // Removed theme, and tokens as it's unused
-    // const tokens = useComponentToken("TABS") as TabsTokensType; // tokens not used here
+    ${() => { 
     return css`
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      // Gap is applied by TabsTrigger.tsx using tokens.trigger.iconSpacing.gap for margin
     `;
   }}
 `;

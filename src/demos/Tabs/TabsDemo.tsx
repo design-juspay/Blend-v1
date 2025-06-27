@@ -17,7 +17,7 @@ const TabsDemo = () => {
       <section>
         <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '8px', color: headerColor }}>Default Theme</h2>
         {/* UNDERLINE Variant (MD size) */}
-        <div>
+        {/* <div> */}
         <h2 style={{ marginBottom: '16px', fontSize: '18px', fontWeight: 600, color: subHeaderColor }}>Underline Tabs (Medium)</h2>
         <Tabs defaultValue="tab1" style={{ width: '400px' }}>
           <TabsList variant={TabsVariant.UNDERLINE} size={TabsSize.MD}>
@@ -65,10 +65,10 @@ const TabsDemo = () => {
             </div>
           </TabsContent>
         </Tabs>
-      </div>
+      {/* </div> */}
 
       {/* BOXED Variant (MD size) */}
-      <div>
+      {/* <div> */}
         <h2 style={{ marginBottom: '16px', fontSize: '18px', fontWeight: 600, color: subHeaderColor }}>Boxed Tabs (Medium)</h2>
         <Tabs defaultValue="box1" style={{ width: '400px' }}>
           <TabsList variant={TabsVariant.BOXED} size={TabsSize.LG}>
@@ -116,7 +116,7 @@ const TabsDemo = () => {
             </div>
           </TabsContent>
         </Tabs>
-      </div>
+      {/* </div> */}
 
       {/* FLOATING Variant (MD size) */}
       <div>
@@ -218,6 +218,134 @@ const TabsDemo = () => {
             </div>
           </TabsContent>
         </Tabs>
+      </div>
+
+      {/* FIT CONTENT Examples */}
+      <div>
+        <h2 style={{ marginBottom: '16px', fontSize: '18px', fontWeight: 600, color: subHeaderColor }}>Fit Content Tabs (Auto Width)</h2>
+        
+        {/* Fit Content Underline */}
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 500, color: subHeaderColor }}>Fit Content Underline</h3>
+          <Tabs defaultValue="fit1">
+            <TabsList variant={TabsVariant.UNDERLINE} size={TabsSize.MD} fitContent={true}>
+              <TabsTrigger 
+                value="fit1" 
+                variant={TabsVariant.UNDERLINE}
+                leftSlot={<User size={16} />}
+              >
+                Short
+              </TabsTrigger>
+              <TabsTrigger 
+                value="fit2" 
+                variant={TabsVariant.UNDERLINE}
+                leftSlot={<Settings size={16} />}
+              >
+                Medium Length
+              </TabsTrigger>
+              <TabsTrigger 
+                value="fit3" 
+                variant={TabsVariant.UNDERLINE}
+                leftSlot={<Lock size={16} />}
+              >
+                Very Long Tab Name
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="fit1">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Short Tab</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Content for the short tab.</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="fit2">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Medium Length Tab</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Content for the medium length tab.</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="fit3">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Very Long Tab Name</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Content for the very long tab name.</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Fit Content Boxed */}
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 500, color: subHeaderColor }}>Fit Content Boxed</h3>
+          <Tabs defaultValue="fitbox1">
+            <TabsList variant={TabsVariant.BOXED} size={TabsSize.MD} fitContent={true}>
+              <TabsTrigger 
+                value="fitbox1" 
+                variant={TabsVariant.BOXED}
+                leftSlot={<Home size={16} />}
+              >
+                Home
+              </TabsTrigger>
+              <TabsTrigger 
+                value="fitbox2" 
+                variant={TabsVariant.BOXED}
+                leftSlot={<Bell size={16} />}
+              >
+                Notifications
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="fitbox1">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Home</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Your main dashboard - only takes the width it needs.</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="fitbox2">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Notifications</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Recent notifications - width adjusts to content.</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Fit Content Floating */}
+        <div>
+          <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 500, color: subHeaderColor }}>Fit Content Floating</h3>
+          <Tabs defaultValue="fitfloat1">
+            <TabsList variant={TabsVariant.FLOATING} size={TabsSize.MD} fitContent={true}>
+              <TabsTrigger 
+                value="fitfloat1" 
+                variant={TabsVariant.FLOATING}
+              >
+                Tab 1
+              </TabsTrigger>
+              <TabsTrigger 
+                value="fitfloat2" 
+                variant={TabsVariant.FLOATING}
+              >
+                Tab 2
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="fitfloat1">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Tab 1 Content</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Floating tabs that fit their content width.</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="fitfloat2">
+              <div style={{ padding: '16px', borderRadius: '6px', border: '1px solid #E1E4EA', marginTop: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: FOUNDATION_THEME.colors.gray[800] }}>Tab 2 Content</h3>
+                <p style={{ color: '#717784', marginTop: '8px' }}>Content automatically adjusts to tab content.</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
 
       {/* EXPANDED Examples */}
