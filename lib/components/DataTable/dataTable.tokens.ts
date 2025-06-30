@@ -231,6 +231,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
             height: foundationToken.unit[56],
             "&:hover": {
               backgroundColor: foundationToken.colors.gray[50],
+              cursor: "pointer",
             },
             backgroundColor: foundationToken.colors.gray[25],
           },  

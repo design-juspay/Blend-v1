@@ -54,6 +54,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onRowSave,
     onRowCancel,
     onRowExpansionChange,
+    onRowClick,
     headerSlot1,
     headerSlot2,
     headerSlot3,
@@ -417,6 +418,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               onRowExpand={handleRowExpand}
               onFieldChange={handleFieldChange}
               getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => string}
+              onRowClick={onRowClick as ((row: Record<string, unknown>, index: number) => void) | undefined}
             />
           </table>
         </Block>

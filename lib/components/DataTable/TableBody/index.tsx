@@ -32,6 +32,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
   onCancelEdit,
   onRowExpand,
   onFieldChange,
+  onRowClick,
   getColumnWidth,
 }, ref) => {
   const getColSpan = () => {
@@ -44,9 +45,8 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
 
   const tableToken = useComponentToken("TABLE") as TableTokenType;
 
-const TableRow = styled.tr`
-  ${tableToken.dataTable.table.body.row}
-`;
+const TableRow = styled.tr<{ isClickable?: boolean }>`
+  ${tableToken.dataTable.table.body.row}`;
 
 const StyledTableCell = styled.td<{ width?: string }>`
   ${tableToken.dataTable.table.body.cell}
@@ -80,7 +80,10 @@ const ExpandButton = styled.button`
           
           return (
             <React.Fragment key={rowId}>
-              <TableRow>
+              <TableRow 
+                isClickable={!!onRowClick}
+                onClick={() => onRowClick && onRowClick(row, index)}
+              >
                 {enableRowExpansion && (
                   <StyledTableCell width="50px" style={{ minWidth: `${FOUNDATION_THEME.unit[52]}`, maxWidth: `${FOUNDATION_THEME.unit[52]}` }}>
                     <Block display='flex' alignItems='center' justifyContent='center'>
@@ -170,7 +173,7 @@ const ExpandButton = styled.button`
               </TableRow>
 
               {enableRowExpansion && isExpanded && renderExpandedRow && canExpand && (
-                <TableRow key={`${rowId}-expanded`}>
+                <TableRow key={`${rowId}-expanded`} isClickable={false}>
                   <ExpandedCell colSpan={getColSpan()}>
                     {renderExpandedRow({
                       row,
@@ -185,7 +188,7 @@ const ExpandButton = styled.button`
             );
           })
       ) : (
-        <TableRow>
+        <TableRow isClickable={false}>
           <EmptyStateCell colSpan={getColSpan()}>
             No data available
           </EmptyStateCell>
