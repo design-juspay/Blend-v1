@@ -3,15 +3,13 @@ import { Edit, Save, X, ChevronRight, ChevronDown } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableBodyProps } from './types';
 import TableCell from '../TableCell';
-import { ButtonSize, ButtonType, Checkbox } from '../../../main';
-import { CheckboxSize } from '../../Checkbox/types';
 import Block from '../../Primitives/Block/Block';
 import { FOUNDATION_THEME } from '../../../tokens';
 import  { TableTokenType } from '../dataTable.tokens';
 
 import { useComponentToken } from '../../../context/useComponentToken';
 
-import { Button } from '../../../main';
+import { ButtonV2, ButtonTypeV2, ButtonSizeV2, Checkbox, CheckboxSize } from '../../../main';
 
 const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<string, unknown>>>(({
   currentData,
@@ -135,29 +133,28 @@ const ExpandButton = styled.button`
                     <Block display='flex' alignItems='center' justifyContent='center' gap={FOUNDATION_THEME.unit[4]}>
                       {isEditing ? (
                         <>
-                          <Button
+                          <ButtonV2
                             onClick={() => onSaveRow(row[idField])}
                             title="Save"
-                            buttonType={ButtonType.SECONDARY}
-                            leadingIcon={Save}
-                            size={ButtonSize.SMALL}
+                            buttonType={ButtonTypeV2.SECONDARY}
+                            leadingIcon={<Save />}
+                            size={ButtonSizeV2.SMALL}
                           />
-                          <Button
+                          <ButtonV2
                             onClick={() => onCancelEdit(row[idField])}
                             title="Cancel"
-                            buttonType={ButtonType.SECONDARY}
-                            leadingIcon={X}
-                            size={ButtonSize.SMALL}
+                            buttonType={ButtonTypeV2.SECONDARY}
+                            leadingIcon={<X />}
+                            size={ButtonSizeV2.SMALL}
                           />
                         </>
                       ) : (
-                        <Button
+                        <ButtonV2
                           onClick={() => onEditRow(row[idField])}
                           title="Edit"
-                          buttonType={ButtonType.SECONDARY}
-                          leadingIcon={Edit}
-                          size={ButtonSize.SMALL}
-                        
+                          buttonType={ButtonTypeV2.SECONDARY}
+                          leadingIcon={<Edit />}
+                          size={ButtonSizeV2.SMALL}
                         />
                       )}
                     </Block>
