@@ -1,227 +1,272 @@
-import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
 import { AccordionType } from "./types";
+import { FoundationTokenType } from "../../tokens/theme.token";
 
-type AccordionTokens = {
-  base: {
-    container: CSSObject;
-    item: CSSObject;
-    trigger: CSSObject;
-    content: CSSObject;
-    title: CSSObject;
-    titleEnabled: CSSObject;
-    titleDisabled: CSSObject;
-    subtext: CSSObject;
-    subtextEnabled: CSSObject;
-    subtextDisabled: CSSObject;
-    contentWrapper: CSSObject;
+
+export type AccordionState = "default" | "hover" | "active" | "disabled" | "open";
+
+export type AccordionTokenType = {
+  width: CSSObject["width"];
+  display: CSSObject["display"];
+  flexDirection: CSSObject["flexDirection"];
+  gap: {
+    [key in AccordionType]: CSSObject["gap"];
   };
-  type: {
-    [K in AccordionType]: {
-      container: CSSObject;
-      item: CSSObject;
-      trigger: CSSObject;
-      content: CSSObject;
-      contentWrapper: CSSObject;
+  containerBorderRadius: {
+    [key in AccordionType]: CSSObject["borderRadius"];
+  };
+  
+  itemBorder: {
+    [key in AccordionType]: CSSObject["border"];
+  };
+  itemBorderBottom: {
+    [key in AccordionType]: CSSObject["borderBottom"];
+  };
+  itemBorderBottomState: {
+    [key in AccordionType]: {
+      closed: CSSObject["borderBottom"];
+      open: CSSObject["borderBottom"];
     };
   };
-  layout: {
-    leftSlot: CSSObject;
-    rightSlot: CSSObject;
-    headerRow: CSSObject;
-    chevronRight: CSSObject;
-    chevronLeft: CSSObject;
-    chevronIcon: {
-      default: CSSObject;
-      enabled: CSSObject;
-      disabled: CSSObject;
+  itemBorderRadius: {
+    [key in AccordionType]: CSSObject["borderRadius"];
+  };
+  itemOverflow: {
+    [key in AccordionType]: CSSObject["overflow"];
+  };
+  triggerDisplay: CSSObject["display"];
+  triggerWidth: CSSObject["width"];
+  triggerTextAlign: CSSObject["textAlign"];
+  triggerTransition: CSSObject["transition"];
+  triggerCursor: CSSObject["cursor"];
+  triggerBorder: CSSObject["border"];
+  triggerOutline: CSSObject["outline"];
+  triggerPadding: {
+    [key in AccordionType]: CSSObject["padding"];
+  };
+  triggerBackgroundColor: {
+    [key in AccordionType]: {
+      [key in AccordionState]: CSSObject["backgroundColor"];
     };
   };
-  states: {
-    disabled: CSSObject;
-    open: CSSObject;
+  triggerBorderBottomState: {
+    [key in AccordionType]: {
+      closed: CSSObject["borderBottom"];
+      open: CSSObject["borderBottom"];
+    };
+  };
+  triggerFocusOutline: CSSObject["outline"];
+  triggerFocusOutlineOffset: CSSObject["outlineOffset"];
+  
+  contentOverflow: CSSObject["overflow"];
+  contentTransition: CSSObject["transition"];
+  contentPadding: {
+    [key in AccordionType]: CSSObject["padding"];
+  };
+  
+  contentWrapperPadding: {
+    [key in AccordionType]: CSSObject["padding"];
+  };
+  contentWrapperBorderTop: {
+    [key in AccordionType]: CSSObject["borderTop"];
+  };
+  
+  titleFontSize: CSSObject["fontSize"];
+  titleFontWeight: CSSObject["fontWeight"];
+  titleColor: {
+    enabled: CSSObject["color"];
+    disabled: CSSObject["color"];
+  };
+  
+  subtextFontSize: CSSObject["fontSize"];
+  subtextMarginTop: CSSObject["marginTop"];
+  subtextPaddingLeft: CSSObject["paddingLeft"];
+  subtextColor: {
+    enabled: CSSObject["color"];
+    disabled: CSSObject["color"];
+  };
+  
+  leftSlotFlexShrink: CSSObject["flexShrink"];
+  leftSlotDisplay: CSSObject["display"];
+  leftSlotAlignItems: CSSObject["alignItems"];
+  leftSlotJustifyContent: CSSObject["justifyContent"];
+  
+  rightSlotFlexShrink: CSSObject["flexShrink"];
+  rightSlotDisplay: CSSObject["display"];
+  rightSlotAlignItems: CSSObject["alignItems"];
+  rightSlotJustifyContent: CSSObject["justifyContent"];
+  
+  headerRowDisplay: CSSObject["display"];
+  headerRowAlignItems: CSSObject["alignItems"];
+  headerRowWidth: CSSObject["width"];
+  headerRowPosition: CSSObject["position"];
+  headerSlotGap: CSSObject["gap"];
+  
+  chevronRightPosition: CSSObject["position"];
+  chevronRightRight: CSSObject["right"];
+  chevronRightTop: CSSObject["top"];
+  chevronRightDisplay: CSSObject["display"];
+  chevronRightAlignItems: CSSObject["alignItems"];
+  chevronRightJustifyContent: CSSObject["justifyContent"];
+  chevronRightHeight: CSSObject["height"];
+  
+  chevronLeftDisplay: CSSObject["display"];
+  chevronLeftAlignItems: CSSObject["alignItems"];
+  chevronLeftJustifyContent: CSSObject["justifyContent"];
+  chevronLeftFlexShrink: CSSObject["flexShrink"];
+  
+  chevronIconWidth: CSSObject["width"];
+  chevronIconHeight: CSSObject["height"];
+  chevronIconColor: {
+    enabled: CSSObject["color"];
+    disabled: CSSObject["color"];
   };
 };
 
-const accordionTokens: AccordionTokens = {
-  base: {
-    container: {
-      width: "100%",
+export const getAccordionToken = (foundationToken: FoundationTokenType): AccordionTokenType => {
+  return {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: {
+      [AccordionType.BORDER]: foundationToken.unit[24],
+      [AccordionType.NO_BORDER]: foundationToken.unit[0],
     },
-    item: {
-      borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
+    containerBorderRadius: {
+      [AccordionType.BORDER]: foundationToken.border.radius[8],
+      [AccordionType.NO_BORDER]: foundationToken.unit[0],
     },
-    trigger: {
-      display: "flex",
-      width: "100%",
-      padding: `${FOUNDATION_THEME.unit[16]} ${FOUNDATION_THEME.unit[12]}`,
-      textAlign: "left",
-      transition: "all 0.2s ease",
-      cursor: "pointer",
-      backgroundColor: "transparent",
-      border: "none",
-      outline: "none",
-      
-      "&:focusVisible": {
-        outline: `${FOUNDATION_THEME.border.width[2]} solid ${FOUNDATION_THEME.colors.primary[500]}`,
-        outlineOffset: FOUNDATION_THEME.unit[2],
+    
+    itemBorder: {
+      [AccordionType.BORDER]: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+      [AccordionType.NO_BORDER]: "none",
+    },
+    itemBorderBottom: {
+      [AccordionType.BORDER]: "none",
+      [AccordionType.NO_BORDER]: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+    },
+    itemBorderBottomState: {
+      [AccordionType.BORDER]: {
+        closed: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+        open: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
       },
-      
-      "&:disabled": {
-        cursor: "not-allowed",
-      },
-      
-      "&:hover:not(:disabled)": {
-        backgroundColor: FOUNDATION_THEME.colors.gray[50],
-      },
-    },
-    content: {
-      overflow: "hidden",
-      transition: "all 0.2s ease",
-    },
-    title: {
-      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
-      fontWeight: FOUNDATION_THEME.font.weight[600],
-    },
-    titleEnabled: {
-      color: FOUNDATION_THEME.colors.gray[800],
-    },
-    titleDisabled: {
-      color: FOUNDATION_THEME.colors.gray[500],
-    },
-    subtext: {
-      fontSize: FOUNDATION_THEME.font.size.body.md.fontSize,
-      marginTop: FOUNDATION_THEME.unit[4],
-      paddingLeft: FOUNDATION_THEME.unit[20],
-    },
-    subtextEnabled: {
-      color: FOUNDATION_THEME.colors.gray[600],
-    },
-    subtextDisabled: {
-      color: FOUNDATION_THEME.colors.gray[300],
-    },
-    contentWrapper: {
-      padding: `${FOUNDATION_THEME.unit[20]} ${FOUNDATION_THEME.unit[12]}`,
-    },
-  },
-  type: {
-    [AccordionType.BORDER]: {
-      container: {
-        display: "flex",
-        flexDirection: "column",
-        gap: FOUNDATION_THEME.unit[24],
-        borderRadius: FOUNDATION_THEME.border.radius[8],
-      },
-      item: {
-        border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
-        borderRadius: FOUNDATION_THEME.border.radius[8],
-        overflow: "hidden",
-        borderBottom: "none",
-      },
-      trigger: {
-        padding: `${FOUNDATION_THEME.unit[16]} ${FOUNDATION_THEME.unit[16]}`,
-        
-        "&:hover:not(:disabled)": {
-          backgroundColor: FOUNDATION_THEME.colors.gray[50],
-        },
-        
-        "&[dataState=open]": {
-          backgroundColor: FOUNDATION_THEME.colors.gray[50],
-        },
-      },
-      content: {
-        padding: `${FOUNDATION_THEME.unit[2]} 0`,
-      },
-      contentWrapper: {
-        padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[12]}`,
+      [AccordionType.NO_BORDER]: {
+        closed: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+        open: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
       },
     },
-    [AccordionType.NO_BORDER]: {
-      container: {
-        display: "flex",
-        flexDirection: "column",
-      },
-      item: {
-        borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
-        
-        "&:lastChild": {
-          borderBottom: "none",
-        },
-      },
-      trigger: {
-        padding: `${FOUNDATION_THEME.unit[16]} ${FOUNDATION_THEME.unit[12]}`,
-        
-        "&:hover:not(:disabled)": {
-          backgroundColor: FOUNDATION_THEME.colors.gray[50],
-        },
-      },
-      content: {
-        padding: "0",
-      },
-      contentWrapper: {
-        borderTop: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
-        padding: `${FOUNDATION_THEME.unit[12]} ${FOUNDATION_THEME.unit[12]}`,
-      },
+    itemBorderRadius: {
+      [AccordionType.BORDER]: foundationToken.border.radius[8],
+      [AccordionType.NO_BORDER]: foundationToken.unit[0],
     },
-  },
-  layout: {
-    leftSlot: {
-      marginRight: FOUNDATION_THEME.unit[8],
-      flexShrink: 0,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+    itemOverflow: {
+      [AccordionType.BORDER]: "hidden",
+      [AccordionType.NO_BORDER]: "visible",
     },
-    rightSlot: {
-      marginLeft: FOUNDATION_THEME.unit[8],
-      flexShrink: 0,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+    
+    triggerDisplay: "flex",
+    triggerWidth: "100%",
+    triggerTextAlign: "left",
+    triggerTransition: "all 0.2s ease",
+    triggerCursor: "pointer",
+    triggerBorder: "none",
+    triggerOutline: "none",
+    triggerPadding: {
+      [AccordionType.BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[16]}`,
+      [AccordionType.NO_BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[12]}`,
     },
-    headerRow: {
-      display: "flex",
-      alignItems: "center",
-      width: "100%",
-      position: "relative",
-    },
-    chevronRight: {
-      position: "absolute",
-      right: 0,
-      top: 0,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100%",
-    },
-    chevronLeft: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      marginRight: FOUNDATION_THEME.unit[6],
-      flexShrink: 0,
-    },
-    chevronIcon: {
-      default: {
-        width: FOUNDATION_THEME.unit[16],
-        height: FOUNDATION_THEME.unit[16],
+    triggerBackgroundColor: {
+      [AccordionType.BORDER]: {
+        default: "transparent",
+        hover: foundationToken.colors.gray[50],
+        active: foundationToken.colors.gray[50],
+        disabled: foundationToken.colors.gray[50],
+        open: foundationToken.colors.gray[50],
       },
-      enabled: {
-        color: FOUNDATION_THEME.colors.gray[500],
-      },
-      disabled: {
-        color: FOUNDATION_THEME.colors.gray[300],
+      [AccordionType.NO_BORDER]: {
+        default: "transparent",
+        hover: foundationToken.colors.gray[50],
+        active: foundationToken.colors.gray[50],
+        disabled: foundationToken.colors.gray[50],
+        open: "transparent",
       },
     },
-  },
-  states: {
-    disabled: {
-      backgroundColor: FOUNDATION_THEME.colors.gray[50],
+    triggerBorderBottomState: {
+      [AccordionType.BORDER]: {
+        closed: "none",
+        open: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+      },
+      [AccordionType.NO_BORDER]: {
+        closed: "none",
+        open: "none",
+      },
     },
-    open: {
-        borderBottom: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
-      }
-  },
+    triggerFocusOutline: `${foundationToken.border.width[2]} solid ${foundationToken.colors.primary[500]}`,
+    triggerFocusOutlineOffset: foundationToken.unit[2],
+    
+    contentOverflow: "hidden",
+    contentTransition: "all 0.2s ease",
+    contentPadding: {
+      [AccordionType.BORDER]: `${foundationToken.unit[2]} 0`,
+      [AccordionType.NO_BORDER]: foundationToken.unit[0],
+    },
+    
+    contentWrapperPadding: {
+      [AccordionType.BORDER]: `${foundationToken.unit[12]} ${foundationToken.unit[12]}`,
+      [AccordionType.NO_BORDER]: `${foundationToken.unit[12]} ${foundationToken.unit[12]}`,
+    },
+    contentWrapperBorderTop: {
+      [AccordionType.BORDER]: "none",
+      [AccordionType.NO_BORDER]: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+    },
+    
+    titleFontSize: foundationToken.font.size.body.md.fontSize,
+    titleFontWeight: foundationToken.font.weight[600],
+    titleColor: {
+      enabled: foundationToken.colors.gray[800],
+      disabled: foundationToken.colors.gray[500],
+    },
+    
+    subtextFontSize: foundationToken.font.size.body.md.fontSize,
+    subtextMarginTop: foundationToken.unit[4],
+    subtextPaddingLeft: foundationToken.unit[20],
+    subtextColor: {
+      enabled: foundationToken.colors.gray[600],
+      disabled: foundationToken.colors.gray[300],
+    },
+    
+    leftSlotFlexShrink: 0,
+    leftSlotDisplay: "flex",
+    leftSlotAlignItems: "center",
+    leftSlotJustifyContent: "center",
+    
+    rightSlotFlexShrink: 0,
+    rightSlotDisplay: "flex",
+    rightSlotAlignItems: "center",
+    rightSlotJustifyContent: "center",
+    
+    headerRowDisplay: "flex",
+    headerRowAlignItems: "flex-start",
+    headerRowWidth: "100%",
+    headerRowPosition: "relative",
+    headerSlotGap: foundationToken.unit[8],
+    chevronRightPosition: "absolute",
+    chevronRightRight: 0,
+    chevronRightTop: 0,
+    chevronRightDisplay: "flex",
+    chevronRightAlignItems: "center",
+    chevronRightJustifyContent: "center",
+    chevronRightHeight: "100%",
+    
+    chevronLeftDisplay: "flex",
+    chevronLeftAlignItems: "center",
+    chevronLeftJustifyContent: "center",
+    chevronLeftFlexShrink: 0,
+    chevronIconWidth: foundationToken.unit[16],
+    chevronIconHeight: foundationToken.unit[16],
+    chevronIconColor: {
+      enabled: foundationToken.colors.gray[500],
+      disabled: foundationToken.colors.gray[300],
+    },
+  };
 };
-
-export default accordionTokens; 
