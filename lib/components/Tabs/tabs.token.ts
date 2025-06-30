@@ -26,9 +26,6 @@ export type TabsTokensType = Readonly<{
         borderRadius?: CSSObject["borderRadius"];
       };
     };
-    expandedLayout?: {
-      justifyContent?: CSSObject["justifyContent"];
-    };
     size?: {
       [key in TabsSize]?: {
         height?: CSSObject["height"];
@@ -143,9 +140,6 @@ export const getTabsTokens = (foundationToken: ThemeType): TabsTokensType => {
           alignItems: "center",
           gap: foundationToken.unit[8],
         },
-      },
-      expandedLayout: {
-        justifyContent: "space-between",
       },
       size: {
         lg: { height: foundationToken.unit[48] },

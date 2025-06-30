@@ -52,7 +52,7 @@ export const StyledTabsList = styled(TabsPrimitive.List)<{
       height: ${tokens.list.size?.[$size]?.height};
 
       ${$expanded && !$fitContent && css`
-        justify-content: ${tokens.list.expandedLayout?.justifyContent || "space-between"};
+        justify-content: "space-between"};
         & > * {
           flex: 1;
           text-align: center;

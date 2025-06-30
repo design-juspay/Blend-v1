@@ -34,7 +34,7 @@ export const getBaseTabsListStyles = (tokens: TabsTokensType, variant: TabsVaria
 export const getTabsListExpandedStyles = (tokens: TabsTokensType, expanded: boolean): CSSObject => {
   if (!expanded) return {};
   return {
-    justifyContent: tokens.list.expandedLayout?.justifyContent || "space-between",
+    justifyContent: "space-between",
   };
 };
 
