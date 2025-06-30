@@ -638,6 +638,24 @@ const DataTableDemo = () => {
       console.log('Adding new user...');
     };
 
+    // Handle row click
+    const handleRowClick = (row: Record<string, unknown>, index: number) => {
+      const userData = row as UserRow;
+      const userName = (userData.name as AvatarData).label;
+      console.log(`🖱️ Row clicked:`, { 
+        user: userName, 
+        email: userData.email, 
+        role: userData.role,
+        index 
+      });
+      
+      // Example: Show an alert or navigate to user profile
+      alert(`Clicked on user: ${userName}\nEmail: ${userData.email}\nRole: ${userData.role}\n\nYou can implement navigation or other actions here.`);
+      
+      // Example: You could navigate to a user profile page
+      // navigate(`/users/${userData.id}`);
+    };
+
     return (
       <div>
         {/* Mode Toggle and Controls */}
@@ -720,7 +738,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, and expandable rows. Try the column header filters and advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Try clicking on any row, using column header filters, and advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}
@@ -752,6 +770,7 @@ const DataTableDemo = () => {
           onRowSave={handleRowSave}
           onRowCancel={handleRowCancel}
           onRowExpansionChange={handleRowExpansionChange}
+          onRowClick={handleRowClick}
           headerSlot1={
             <Button
               buttonType={ButtonType.SECONDARY}
