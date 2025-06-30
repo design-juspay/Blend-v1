@@ -210,6 +210,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       disablePastDates = false,
       triggerElement = null,
     },
+    ref
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [popoverKey, setPopoverKey] = useState(0);
@@ -356,10 +357,13 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         );
       }
 
+      const { borderRadiusWithPresets, borderRadiusWithoutPresets, ...triggerProps } = calendarToken.trigger;
+
       return (
         <PrimitiveButton
-          {...calendarToken.trigger}
-          borderRadius={showPresets ? calendarToken.trigger.borderRadiusWithPresets : calendarToken.trigger.borderRadiusWithoutPresets}          aria-expanded={isOpen}
+          {...triggerProps}
+          borderRadius={showPresets ? borderRadiusWithPresets : borderRadiusWithoutPresets}
+          aria-expanded={isOpen}
           aria-disabled={isDisabled}
           disabled={isDisabled}
         >
@@ -379,7 +383,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     };
 
     return (
-      <Block display="flex">
+      <Block ref={ref} display="flex">
         {showPresets && (
           <QuickRangeSelector
             isOpen={isQuickRangeOpen}
