@@ -31,7 +31,7 @@ export const getBaseTabsListStyles = (tokens: TabsTokensType, variant: TabsVaria
 });
 
 
-export const getTabsListExpandedStyles = (tokens: TabsTokensType, expanded: boolean): CSSObject => {
+export const getTabsListExpandedStyles = (expanded: boolean): CSSObject => {
   if (!expanded) return {};
   return {
     justifyContent: "space-between",
