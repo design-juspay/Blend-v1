@@ -14,11 +14,11 @@ const StyledAccordionItem = styled(RadixAccordion.Item)<{
   $isDisabled: boolean;
   $accordionToken: AccordionTokenType;
 }>((props) => ({
-  border: props.$accordionToken.border[props.$accordionType].default.default,
+  border: props.$accordionToken.item.trigger.border[props.$accordionType].default,
   borderRadius: props.$accordionToken.borderRadius[props.$accordionType],
   overflow: props.$accordionType === AccordionType.BORDER ? "hidden" : "visible",
   ...(props.$isDisabled && props.$accordionType === AccordionType.BORDER && {
-    backgroundColor: props.$accordionToken.backgroundColor[props.$accordionType].default.disabled,
+    backgroundColor: props.$accordionToken.item.trigger.backgroundColor[props.$accordionType].disabled,
   }),
 }));
 
@@ -38,22 +38,22 @@ const StyledAccordionTrigger = styled(RadixAccordion.Trigger)<{
   cursor: "pointer",
   border: "none",
   outline: "none",
-  padding: props.$accordionToken.padding[props.$accordionType],
+  padding: props.$accordionToken.item.trigger.padding[props.$accordionType],
   borderRadius: props.$accordionToken.borderRadius[props.$accordionType],
-  backgroundColor: props.$accordionToken.backgroundColor[props.$accordionType].default.default,
+  backgroundColor: props.$accordionToken.item.trigger.backgroundColor[props.$accordionType].default,
   ...(props.$isDisabled && {
-    backgroundColor: props.$accordionToken.backgroundColor[props.$accordionType].default.disabled,
+    backgroundColor: props.$accordionToken.item.trigger.backgroundColor[props.$accordionType].disabled,
     cursor: "not-allowed",
   }),
   '&[data-state="open"]': {
-    backgroundColor: props.$accordionToken.backgroundColor[props.$accordionType].default.open,
+    backgroundColor: props.$accordionToken.item.trigger.backgroundColor[props.$accordionType].open,
   },
   '&:hover:not(:disabled)': {
-    backgroundColor: props.$accordionToken.backgroundColor[props.$accordionType].default.hover,
+    backgroundColor: props.$accordionToken.item.trigger.backgroundColor[props.$accordionType].hover,
   },
   '&:focus-visible': {
-    outline: props.$accordionToken.focusOutline,
-    outlineOffset: props.$accordionToken.focusOutlineOffset,
+    outline: `2px solid ${foundationToken.colors.primary[500]}`,
+    outlineOffset: foundationToken.spacing[2],
   },
 }));
 
@@ -71,8 +71,8 @@ const StyledSeparator = styled.hr<{
 }>((props) => ({
   margin: 0,
   border: "none",
-  height: props.$accordionToken.separatorHeight,
-  backgroundColor: props.$accordionToken.separatorColor[props.$accordionType],
+  height: foundationToken.borderWidth[1],
+  backgroundColor: props.$accordionToken.item.separator.color[props.$accordionType],
 }));
 
 const ChevronIcon = styled(Block)<{
@@ -121,11 +121,11 @@ const AccordionItem = forwardRef<
     
     const getChevronIcon = () => {
       const iconStyles = {
-        width: accordionToken.chevronIconWidth,
-        height: accordionToken.chevronIconHeight,
+        width: foundationToken.spacing[16],
+        height: foundationToken.spacing[16],
         color: isDisabled 
-          ? accordionToken.chevronIconColor.default.disabled 
-          : accordionToken.chevronIconColor.default.enabled,
+          ? foundationToken.colors.gray[300]
+          : foundationToken.colors.gray[500],
       };
 
       return (
@@ -205,11 +205,11 @@ const AccordionItem = forwardRef<
                     gap={foundationToken.spacing[8]}
                   >
                     <PrimitiveText
-                      fontSize={accordionToken.fontSize}
-                      fontWeight={accordionToken.fontWeight}
+                      fontSize={accordionToken.item.trigger.title.fontSize}
+                      fontWeight={accordionToken.item.trigger.title.fontWeight}
                       color={isDisabled 
-                        ? accordionToken.color.default.disabled 
-                        : accordionToken.color.default.enabled
+                        ? accordionToken.item.trigger.title.color.disabled 
+                        : accordionToken.item.trigger.title.color.default
                       }
                     >
                       {title}
@@ -231,14 +231,14 @@ const AccordionItem = forwardRef<
                     <Block 
                       display="flex" 
                       alignItems="center"
-                      gap={accordionToken.subtextGap}
+                      gap={accordionToken.item.trigger.subtext.gap}
                     >
                       {subtext && (
                         <PrimitiveText
-                          fontSize={accordionToken.subtextFontSize}
+                          fontSize={accordionToken.item.trigger.subtext.fontSize}
                           color={isDisabled 
-                            ? accordionToken.subtextColor.default.disabled 
-                            : accordionToken.subtextColor.default.enabled
+                            ? accordionToken.item.trigger.subtext.color.disabled 
+                            : accordionToken.item.trigger.subtext.color.default
                           }
                         >
                           {subtext}
@@ -276,7 +276,7 @@ const AccordionItem = forwardRef<
           {accordionType === AccordionType.BORDER && (
             <StyledSeparator $accordionType={accordionType} $accordionToken={accordionToken} />
           )}
-          <Block padding={accordionToken.contentPadding[accordionType]}>
+          <Block padding={accordionToken.item.content.padding[accordionType]}>
             {children}
           </Block>
         </StyledAccordionContent>

@@ -12,62 +12,47 @@ export type AccordionTokenType = {
     [key in AccordionType]: CSSObject["borderRadius"];
   };
   
-  border: {
-    [key in AccordionType]: {
-      default: {
-        [key in AccordionState]?: CSSObject["border"];
+  item: {
+    trigger: {
+      border: {
+        [key in AccordionType]: {
+          [key in AccordionState]?: CSSObject["border"];
+        };
+      };
+      padding: {
+        [key in AccordionType]: CSSObject["padding"];
+      };
+      backgroundColor: {
+        [key in AccordionType]: {
+          [key in AccordionState]?: CSSObject["backgroundColor"];
+        };
+      };
+      title: {
+        fontSize: CSSObject["fontSize"];
+        fontWeight: CSSObject["fontWeight"];
+        color: {
+          [key in AccordionState]?: CSSObject["color"];
+        };
+      };
+      subtext: {
+        fontSize: CSSObject["fontSize"];
+        gap: CSSObject["gap"];
+        color: {
+          [key in AccordionState]?: CSSObject["color"];
+        };
+      };
+    };
+    content: {
+      padding: {
+        [key in AccordionType]: CSSObject["padding"];
+      };
+    };
+    separator: {
+      color: {
+        [key in AccordionType]: CSSObject["color"];
       };
     };
   };
-  
-  padding: {
-    [key in AccordionType]: CSSObject["padding"];
-  };
-  backgroundColor: {
-    [key in AccordionType]: {
-      default: {
-        [key in AccordionState]?: CSSObject["backgroundColor"];
-      };
-    };
-  };
-  
-  focusOutline: CSSObject["outline"];
-  focusOutlineOffset: CSSObject["outlineOffset"];
-  
-  contentPadding: {
-    [key in AccordionType]: CSSObject["padding"];
-  };
-  
-  fontSize: CSSObject["fontSize"];
-  fontWeight: CSSObject["fontWeight"];
-  color: {
-    default: {
-      enabled: CSSObject["color"];
-      disabled: CSSObject["color"];
-    };
-  };
-  subtextFontSize: CSSObject["fontSize"];
-  subtextGap: CSSObject["gap"];
-  subtextColor: {
-    default: {
-      enabled: CSSObject["color"];
-      disabled: CSSObject["color"];
-    };
-  };
-  
-  chevronIconWidth: CSSObject["width"];
-  chevronIconHeight: CSSObject["height"];
-  chevronIconColor: {
-    default: {
-      enabled: CSSObject["color"];
-      disabled: CSSObject["color"];
-    };
-  };
-  
-  separatorColor: {
-    [key in AccordionType]: CSSObject["color"];
-  };
-  separatorHeight: CSSObject["height"];
 };
 
 export const getAccordionToken = (foundationToken: FoundationTokenType): AccordionTokenType => {
@@ -81,82 +66,65 @@ export const getAccordionToken = (foundationToken: FoundationTokenType): Accordi
       [AccordionType.NO_BORDER]: foundationToken.border.radius[8],
     },
     
-    border: {
-      [AccordionType.BORDER]: {
-        default: {
-          default: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+    item: {
+      trigger: {
+        border: {
+          [AccordionType.BORDER]: {
+            default: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
+          },
+          [AccordionType.NO_BORDER]: {
+            default: "none",
+          },
+        },
+        padding: {
+          [AccordionType.BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[16]}`,
+          [AccordionType.NO_BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[12]}`,
+        },
+        backgroundColor: {
+          [AccordionType.BORDER]: {
+            default: "transparent",
+            hover: foundationToken.colors.gray[50],
+            active: foundationToken.colors.gray[50],
+            disabled: foundationToken.colors.gray[50],
+            open: foundationToken.colors.gray[50],
+          },
+          [AccordionType.NO_BORDER]: {
+            default: "transparent",
+            hover: foundationToken.colors.gray[50],
+            active: foundationToken.colors.gray[50],
+            disabled: foundationToken.colors.gray[50],
+            open: "transparent",
+          },
+        },
+        title: {
+          fontSize: foundationToken.font.size.body.md.fontSize,
+          fontWeight: foundationToken.font.weight[600],
+          color: {
+            default: foundationToken.colors.gray[800],
+            disabled: foundationToken.colors.gray[500],
+          },
+        },
+        subtext: {
+          fontSize: foundationToken.font.size.body.md.fontSize,
+          gap: foundationToken.unit[4],
+          color: {
+            default: foundationToken.colors.gray[600],
+            disabled: foundationToken.colors.gray[300],
+          },
         },
       },
-      [AccordionType.NO_BORDER]: {
-        default: {
-          default: "none",
+      content: {
+        padding: {
+          [AccordionType.BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[16]}`,
+          [AccordionType.NO_BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[12]}`,
+        },
+      },
+      separator: {
+        color: {
+          [AccordionType.BORDER]: foundationToken.colors.gray[200],
+          [AccordionType.NO_BORDER]: foundationToken.colors.gray[200],
         },
       },
     },
-    
-    padding: {
-      [AccordionType.BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[16]}`,
-      [AccordionType.NO_BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[12]}`,
-    },
-    backgroundColor: {
-      [AccordionType.BORDER]: {
-        default: {
-          default: "transparent",
-          hover: foundationToken.colors.gray[50],
-          active: foundationToken.colors.gray[50],
-          disabled: foundationToken.colors.gray[50],
-          open: foundationToken.colors.gray[50],
-        },
-      },
-      [AccordionType.NO_BORDER]: {
-        default: {
-          default: "transparent",
-          hover: foundationToken.colors.gray[50],
-          active: foundationToken.colors.gray[50],
-          disabled: foundationToken.colors.gray[50],
-          open: "transparent",
-        },
-      },
-    },
-    
-    focusOutline: `${foundationToken.border.width[2]} solid ${foundationToken.colors.primary[500]}`,
-    focusOutlineOffset: foundationToken.unit[2],
-    
-    contentPadding: {
-      [AccordionType.BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[16]}`,
-      [AccordionType.NO_BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[12]}`,
-    },
-    
-    fontSize: foundationToken.font.size.body.md.fontSize,
-    fontWeight: foundationToken.font.weight[600],
-    color: {
-      default: {
-        enabled: foundationToken.colors.gray[800],
-        disabled: foundationToken.colors.gray[500],
-      },
-    },
-    subtextFontSize: foundationToken.font.size.body.md.fontSize,
-    subtextGap: foundationToken.unit[4],
-    subtextColor: {
-      default: {
-        enabled: foundationToken.colors.gray[600],
-        disabled: foundationToken.colors.gray[300],
-      },
-    },
-    
-    chevronIconWidth: foundationToken.unit[16],
-    chevronIconHeight: foundationToken.unit[16],
-    chevronIconColor: {
-      default: {
-        enabled: foundationToken.colors.gray[500],
-        disabled: foundationToken.colors.gray[300],
-      },
-    },
-    
-    separatorColor: {
-      [AccordionType.BORDER]: foundationToken.colors.gray[200],
-      [AccordionType.NO_BORDER]: foundationToken.colors.gray[200],
-    },
-    separatorHeight: foundationToken.border.width[1],
   };
 };
