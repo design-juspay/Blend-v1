@@ -120,7 +120,8 @@ const DataTableDemo = () => {
         isSortable: true,
         isFilterable: true,
         filterType: FilterType.TEXT,
-        width: '250px'
+        minWidth: '220px',
+        maxWidth: '320px'
       },
       { 
         field: 'email',
@@ -130,7 +131,8 @@ const DataTableDemo = () => {
         isEditable: true,
         isFilterable: true,
         filterType: FilterType.TEXT,
-        width: '200px'
+        minWidth: '180px',
+        maxWidth: '250px'
       },
       { 
         field: 'role',
@@ -147,7 +149,9 @@ const DataTableDemo = () => {
           { id: 'editor', label: 'Editor', value: 'Editor' },
           { id: 'viewer', label: 'Viewer', value: 'Viewer' },
           { id: 'moderator', label: 'Moderator', value: 'Moderator' },
-        ]
+        ],
+        minWidth: '120px',
+        maxWidth: '160px'
       },
       { 
         field: 'department',
@@ -164,7 +168,9 @@ const DataTableDemo = () => {
           { id: 'hr', label: 'HR', value: 'HR' },
           { id: 'finance', label: 'Finance', value: 'Finance' },
           { id: 'operations', label: 'Operations', value: 'Operations' },
-        ]
+        ],
+        minWidth: '130px',
+        maxWidth: '180px'
       },
       { 
         field: 'gateway',
@@ -180,7 +186,9 @@ const DataTableDemo = () => {
           { id: 'gateway-c', label: 'Gateway C', value: 'Gateway C' },
           { id: 'gateway-d', label: 'Gateway D', value: 'Gateway D' },
           { id: 'gateway-e', label: 'Gateway E', value: 'Gateway E' },
-        ]
+        ],
+        minWidth: '120px',
+        maxWidth: '160px'
       },
       {
         field: 'status',
@@ -220,7 +228,9 @@ const DataTableDemo = () => {
           { id: 'inactive', label: 'Inactive', value: 'Inactive' },
           { id: 'pending', label: 'Pending', value: 'Pending' },
           { id: 'suspended', label: 'Suspended', value: 'Suspended' },
-        ]
+        ],
+        minWidth: '100px',
+        maxWidth: '140px'
       },
     ];
     
@@ -738,7 +748,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Try clicking on any row, using column header filters, and advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features flexible column widths with min/max constraints and automatic text truncation. Try clicking on any row, using column header filters, and advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}

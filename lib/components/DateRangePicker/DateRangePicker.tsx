@@ -11,8 +11,6 @@ import {
   handleCalendarDateSelect,
   handlePresetSelection,
 } from './utils';
-import Button from '../Button/Button';
-import { ButtonType, ButtonSize } from '../Button/types';
 import CalendarGrid from './CalendarGrid';
 import QuickRangeSelector from './QuickRangeSelector';
 import TimeSelector from './TimeSelector';
@@ -26,6 +24,8 @@ import { TextInput } from '../Inputs/TextInput';
 import { useComponentToken } from '../../context/useComponentToken';
 import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
 import PrimitiveButton from '../Primitives/PrimitiveButton/PrimitiveButton';
+import { ButtonTypeV2, ButtonSizeV2, ButtonV2 } from '../../main';
+
 type DateInputsSectionProps = {
   startDate: string;
   endDate: string;
@@ -173,22 +173,18 @@ const FooterControls: React.FC<FooterControlsProps> = ({
     </Block>
 
     <Block display="flex" gap={calendarToken.calendar.footer.button.gap}>
-      <Button 
-        buttonType={ButtonType.SECONDARY}
-        size={ButtonSize.SMALL}
+      <ButtonV2
+        buttonType={ButtonTypeV2.SECONDARY}
+        size={ButtonSizeV2.SMALL}
         onClick={onCancel}
         text="Cancel"
       />    
-      <Button
-        buttonType={ButtonType.PRIMARY}
-        size={ButtonSize.SMALL}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onApply();
-        }}
-        text="Apply"
-      />
+              <ButtonV2
+          buttonType={ButtonTypeV2.PRIMARY}
+          size={ButtonSizeV2.SMALL}
+          onClick={onApply}
+          text="Apply"
+        />
     </Block>
   </Block>
 );
@@ -210,6 +206,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       disablePastDates = false,
       triggerElement = null,
     },
+    ref
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [popoverKey, setPopoverKey] = useState(0);
@@ -356,10 +353,13 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         );
       }
 
+      const { borderRadiusWithPresets, borderRadiusWithoutPresets, ...triggerProps } = calendarToken.trigger;
+
       return (
         <PrimitiveButton
-          {...calendarToken.trigger}
-          borderRadius={showPresets ? calendarToken.trigger.borderRadiusWithPresets : calendarToken.trigger.borderRadiusWithoutPresets}          aria-expanded={isOpen}
+          {...triggerProps}
+          borderRadius={showPresets ? borderRadiusWithPresets : borderRadiusWithoutPresets}
+          aria-expanded={isOpen}
           aria-disabled={isDisabled}
           disabled={isDisabled}
         >
@@ -379,7 +379,7 @@ const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     };
 
     return (
-      <Block display="flex">
+      <Block ref={ref} display="flex">
         {showPresets && (
           <QuickRangeSelector
             isOpen={isQuickRangeOpen}

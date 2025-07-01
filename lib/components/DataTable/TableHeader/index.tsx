@@ -399,7 +399,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
           </th>
 
         {localColumns.map((column, index) => {
-          const columnWidth = getColumnWidth(column, index);
+          const columnStyles = getColumnWidth(column, index);
           const isEditing = editingField === String(column.field);
           const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
           
@@ -409,13 +409,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
               style={{ 
                 ...tableToken.dataTable.table.header.cell,
                 ...(column.isSortable && tableToken.dataTable.table.header.sortable),
-                width: columnWidth,
-                minWidth: columnWidth,
-                maxWidth: columnWidth,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                boxSizing: 'border-box'
+                ...columnStyles
               }}
             >
               <Block
@@ -468,7 +462,9 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                           minWidth: 0,
-                          flex: 1
+                          flex: 1,
+                          display: 'block',
+                          cursor: 'default'
                         }}
                       >
                         {column.header}
@@ -484,10 +480,13 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                           transition='opacity 0.2s'
                           zIndex={2}
                           flexShrink={0}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleHeaderEdit(String(column.field));
+                          }}
                         >
                           <EditIcon 
                             size={14} 
-                            onClick={() => handleHeaderEdit(String(column.field))}
                           />
                         </Block>
                       )}
@@ -503,6 +502,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                     flexShrink={0}
                     width='16px'
                     height='16px'
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <Popover
                       trigger={<MoreIcon size={16} />}
@@ -521,9 +521,6 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         {enableInlineEdit && (
           <th style={{ 
             ...tableToken.dataTable.table.header.cell,
-            width: '100px', 
-            minWidth: '100px', 
-            maxWidth: '100px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -540,9 +537,6 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         {enableColumnManager && (
           <th style={{ 
             ...tableToken.dataTable.table.header.cell,
-            width: '50px', 
-            minWidth: '50px', 
-            maxWidth: '50px',
             overflow: 'hidden',
             boxSizing: 'border-box'
           }}>
