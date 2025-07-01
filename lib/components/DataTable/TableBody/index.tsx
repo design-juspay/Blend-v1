@@ -115,7 +115,7 @@ const ExpandButton = styled.button`
                 </StyledTableCell>
 
                 {visibleColumns.map((column, index) => {
-                  const columnWidth = getColumnWidth(column, index);
+                  const columnStyles = getColumnWidth(column, index);
                   const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
                   
                   return (
@@ -125,14 +125,14 @@ const ExpandButton = styled.button`
                       row={isEditing ? editValues[rowId] : row}
                       isEditing={isEditing}
                       currentValue={currentValue}
-                      width={columnWidth}
+                      width={columnStyles}
                       onFieldChange={(value) => onFieldChange(row[idField], column.field, value)}
                     />
                   );
                 })}
 
                 {enableInlineEdit && (
-                  <StyledTableCell width="100px" style={{ minWidth: '100px', maxWidth: '100px' }}>
+                  <StyledTableCell style={{ minWidth: '100px', maxWidth: '100px' }}>
                     <Block display='flex' alignItems='center' justifyContent='center' gap={FOUNDATION_THEME.unit[4]}>
                       {isEditing ? (
                         <>

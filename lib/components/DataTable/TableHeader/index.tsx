@@ -399,7 +399,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
           </th>
 
         {localColumns.map((column, index) => {
-          const columnWidth = getColumnWidth(column, index);
+          const columnStyles = getColumnWidth(column, index);
           const isEditing = editingField === String(column.field);
           const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
           
@@ -409,13 +409,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
               style={{ 
                 ...tableToken.dataTable.table.header.cell,
                 ...(column.isSortable && tableToken.dataTable.table.header.sortable),
-                width: columnWidth,
-                minWidth: columnWidth,
-                maxWidth: columnWidth,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                boxSizing: 'border-box'
+                ...columnStyles
               }}
             >
               <Block
@@ -468,7 +462,9 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                           minWidth: 0,
-                          flex: 1
+                          flex: 1,
+                          display: 'block',
+                          cursor: 'default'
                         }}
                       >
                         {column.header}

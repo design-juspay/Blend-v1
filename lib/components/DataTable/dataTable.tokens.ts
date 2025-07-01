@@ -26,6 +26,7 @@ export type TableTokenType = {
     borderRadius: CSSObject["borderRadius"];
     border: CSSObject["border"];
     maxHeight: CSSObject["maxHeight"];
+    minHeight: CSSObject["minHeight"];
     bulkActions: {
       top: CSSObject["top"];
       left: CSSObject["left"];
@@ -174,6 +175,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
         borderRadius: foundationToken.border.radius[8],
         border: `1px solid ${foundationToken.colors.gray[200]}`,
         maxHeight: "calc(100vh - 250px)",
+        minHeight: "380px",
       bulkActions: {
           top: '80%',
           left: '50%',

@@ -297,7 +297,8 @@ const userColumns: ColumnDefinition<User>[] = [
     isSortable: true,
     isFilterable: true,
     filterType: FilterType.TEXT,
-    width: '250px',
+    minWidth: '220px',
+    maxWidth: '300px',
   },
   {
     field: 'email',
@@ -307,7 +308,8 @@ const userColumns: ColumnDefinition<User>[] = [
     isEditable: true,
     isFilterable: true,
     filterType: FilterType.TEXT,
-    width: '200px',
+    minWidth: '180px',
+    maxWidth: '250px',
   },
   {
     field: 'role',
@@ -324,7 +326,8 @@ const userColumns: ColumnDefinition<User>[] = [
       { id: 'designer', label: 'Designer', value: 'Designer' },
       { id: 'analyst', label: 'Analyst', value: 'Analyst' },
     ],
-    width: '140px',
+    minWidth: '120px',
+    maxWidth: '160px',
   },
   {
     field: 'department',
@@ -342,7 +345,8 @@ const userColumns: ColumnDefinition<User>[] = [
       { id: 'sales', label: 'Sales', value: 'Sales' },
       { id: 'support', label: 'Customer Service', value: 'Customer Service' },
     ],
-    width: '150px',
+    minWidth: '130px',
+    maxWidth: '180px',
   },
   {
     field: 'status',
@@ -378,7 +382,8 @@ const userColumns: ColumnDefinition<User>[] = [
       { id: 'pending', label: 'Pending', value: 'Pending' },
       { id: 'suspended', label: 'Suspended', value: 'Suspended' },
     ],
-    width: '120px',
+    minWidth: '100px',
+    maxWidth: '140px',
   },
   {
     field: 'salary',
@@ -394,7 +399,8 @@ const userColumns: ColumnDefinition<User>[] = [
     isEditable: true,
     isFilterable: true,
     filterType: FilterType.NUMBER,
-    width: '120px',
+    minWidth: '100px',
+    maxWidth: '140px',
   },
   {
     field: 'joinDate',
@@ -403,14 +409,16 @@ const userColumns: ColumnDefinition<User>[] = [
     isSortable: true,
     isFilterable: true,
     filterType: FilterType.DATE,
-    width: '130px',
+    minWidth: '120px',
+    maxWidth: '150px',
   },
   {
     field: 'lastLogin',
     header: 'Last Login',
     type: ColumnType.TEXT,
     isSortable: true,
-    width: '120px',
+    minWidth: '110px',
+    maxWidth: '140px',
   },
 ];
 

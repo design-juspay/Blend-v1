@@ -21,8 +21,10 @@ export type ColumnDefinition<T extends Record<string, unknown>> = {
   header: string;
   /** Column type for filtering and display - must be a valid ColumnType */
   type: ColumnType;
-  /** Width of the column - must be a valid CSS width string */
-  width?: string;
+  /** Minimum width of the column - must be a valid CSS width string */
+  minWidth?: string;
+  /** Maximum width of the column - must be a valid CSS width string */
+  maxWidth?: string;
   /** Whether column is sortable */
   isSortable?: boolean;
   /** Whether column is initially visible */

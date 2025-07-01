@@ -2,9 +2,9 @@ import { useState, useEffect, useMemo, forwardRef } from 'react';
 import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from './types';
 import  { TableTokenType } from './dataTable.tokens';
 import {
-  sortData, searchData, applyColumnFilters, getDefaultColumnWidth, 
+  sortData, searchData, applyColumnFilters,
   updateColumnFilter, exportSelectedRowsToCSV, getSelectedRowCount,
-  createSearchConfig, clearAllFiltersAndSearch
+  createSearchConfig, clearAllFiltersAndSearch, getColumnStyles
 } from './utils';
 import DataTableHeader from './DataTableHeader';
 import TableHeader from './TableHeader';
@@ -256,8 +256,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     setSelectAll(false);
   };
 
-  const getColumnWidth = (column: ColumnDefinition<T>) => {
-    return getDefaultColumnWidth(column);
+  const getColumnWidth = (column: ColumnDefinition<T>): React.CSSProperties => {
+    return getColumnStyles(column);
   };
 
   const handleEditRow = (rowId: unknown) => {
@@ -355,6 +355,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         borderRadius: tableToken.dataTable.borderRadius,
         border: tableToken.dataTable.border,
         maxHeight: tableToken.dataTable.maxHeight,
+        minHeight: tableToken.dataTable.minHeight,
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
@@ -381,7 +382,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
             borderCollapse: tableToken.dataTable.table.borderCollapse,
             borderSpacing: tableToken.dataTable.table.borderSpacing,
             position: tableToken.dataTable.table.position,
-            minWidth: tableToken.dataTable.table.minWidth,
           }}>
             <TableHeader
               visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
@@ -396,7 +396,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               onSelectAll={handleSelectAll}
               onColumnChange={(columns) => setVisibleColumns(columns as ColumnDefinition<T>[])}
               onColumnFilter={handleColumnFilter}
-              getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => string}
+              getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
             />
             <TableBodyComponent
               currentData={currentData}
@@ -417,7 +417,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               onCancelEdit={handleCancelEdit}
               onRowExpand={handleRowExpand}
               onFieldChange={handleFieldChange}
-              getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => string}
+              getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
               onRowClick={onRowClick as ((row: Record<string, unknown>, index: number) => void) | undefined}
             />
           </table>
