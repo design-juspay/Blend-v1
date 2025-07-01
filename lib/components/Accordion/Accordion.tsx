@@ -10,11 +10,11 @@ const StyledAccordionRoot = styled(RadixAccordion.Root)<{
   $accordionType: AccordionType 
   $AccordionToken: AccordionTokenType
 }>((props) => ({
-  width: props.$AccordionToken.width,
-  display: props.$AccordionToken.display,
-  flexDirection: props.$AccordionToken.flexDirection,
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
   gap: props.$AccordionToken.gap[props.$accordionType],
-  borderRadius: props.$AccordionToken.containerBorderRadius[props.$accordionType],
+  borderRadius: props.$AccordionToken.borderRadius[props.$accordionType],
 }));
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
