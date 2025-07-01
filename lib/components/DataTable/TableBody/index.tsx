@@ -84,7 +84,12 @@ const ExpandButton = styled.button`
               >
                 {enableRowExpansion && (
                   <StyledTableCell width="50px" style={{ minWidth: `${FOUNDATION_THEME.unit[52]}`, maxWidth: `${FOUNDATION_THEME.unit[52]}` }}>
-                    <Block display='flex' alignItems='center' justifyContent='center'>
+                    <Block 
+                      display='flex' 
+                      alignItems='center' 
+                      justifyContent='center'
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       {canExpand ? (
                         <ExpandButton
                           onClick={() => onRowExpand(row[idField])}
@@ -104,7 +109,13 @@ const ExpandButton = styled.button`
                 )}
 
                 <StyledTableCell>
-                  <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
+                  <Block 
+                    display='flex' 
+                    alignItems='center' 
+                    justifyContent='center' 
+                    width={FOUNDATION_THEME.unit[40]}
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Checkbox
                       checked={!!selectedRows[rowId]}
                       onCheckedChange={() => onRowSelect(row[idField])}
@@ -133,21 +144,27 @@ const ExpandButton = styled.button`
 
                 {enableInlineEdit && (
                   <StyledTableCell style={{ minWidth: '100px', maxWidth: '100px' }}>
-                    <Block display='flex' alignItems='center' justifyContent='center' gap={FOUNDATION_THEME.unit[4]}>
+                    <Block 
+                      display='flex' 
+                      alignItems='center' 
+                      justifyContent='center' 
+                      gap={FOUNDATION_THEME.unit[4]}
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       {isEditing ? (
                         <>
                           <ButtonV2
                             onClick={() => onSaveRow(row[idField])}
                             title="Save"
                             buttonType={ButtonTypeV2.SECONDARY}
-                            leadingIcon={<Save />}
+                            leadingIcon={<Save size={16} />}
                             size={ButtonSizeV2.SMALL}
                           />
                           <ButtonV2
                             onClick={() => onCancelEdit(row[idField])}
                             title="Cancel"
                             buttonType={ButtonTypeV2.SECONDARY}
-                            leadingIcon={<X />}
+                            leadingIcon={<X size={16} />}
                             size={ButtonSizeV2.SMALL}
                           />
                         </>
@@ -156,7 +173,7 @@ const ExpandButton = styled.button`
                           onClick={() => onEditRow(row[idField])}
                           title="Edit"
                           buttonType={ButtonTypeV2.SECONDARY}
-                          leadingIcon={<Edit />}
+                          leadingIcon={<Edit size={16} />}
                           size={ButtonSizeV2.SMALL}
                         />
                       )}
