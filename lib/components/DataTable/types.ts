@@ -201,6 +201,8 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onRowCancel?: (rowId: unknown) => void;
   /** Callback when row expansion changes */
   onRowExpansionChange?: (rowId: unknown, isExpanded: boolean, rowData: T) => void;
+  /** Callback when row is clicked */
+  onRowClick?: (row: T, index: number) => void;
   /** Optional additional class name */
   className?: string;
   /** Custom slot on the left side of the toolbar */
