@@ -102,7 +102,7 @@ const AccordionDemo: React.FC = () => {
           <AccordionItem
             value="multi-1"
             title="Product Features"
-            leftSlot={<Settings className="icon-default" />}
+            rightSlot={<Settings className="icon-default" />}
             chevronPosition={AccordionChevronPosition.LEFT}
           >
             <p className="text-content">
