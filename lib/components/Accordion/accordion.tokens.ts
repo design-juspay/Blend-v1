@@ -42,11 +42,6 @@ export type AccordionTokenType = {
         };
       };
     };
-    content: {
-      padding: {
-        [key in AccordionType]: CSSObject["padding"];
-      };
-    };
     separator: {
       color: {
         [key in AccordionType]: CSSObject["color"];
@@ -111,12 +106,6 @@ export const getAccordionToken = (foundationToken: FoundationTokenType): Accordi
             default: foundationToken.colors.gray[600],
             disabled: foundationToken.colors.gray[300],
           },
-        },
-      },
-      content: {
-        padding: {
-          [AccordionType.BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[16]}`,
-          [AccordionType.NO_BORDER]: `${foundationToken.unit[16]} ${foundationToken.unit[12]}`,
         },
       },
       separator: {

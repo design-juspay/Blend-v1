@@ -276,7 +276,7 @@ const AccordionItem = forwardRef<
           {accordionType === AccordionType.BORDER && (
             <StyledSeparator $accordionType={accordionType} $accordionToken={accordionToken} />
           )}
-          <Block padding={accordionToken.item.content.padding[accordionType]}>
+          <Block>
             {children}
           </Block>
         </StyledAccordionContent>
