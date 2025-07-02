@@ -64,6 +64,7 @@ import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
 const ContentWrapper = styled(Block)`
   height: 100vh;
   overflow-y: auto;
+  padding: 32px;
 
   &::-webkit-scrollbar {
     display: none;

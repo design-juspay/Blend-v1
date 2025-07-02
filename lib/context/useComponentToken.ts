@@ -24,9 +24,6 @@ import { TableTokenType } from "../components/DataTable/dataTable.tokens";
 import { CalendarTokenType } from "../components/DateRangePicker/dateRangePicker.tokens";
 import { AccordionTokenType } from "../components/Accordion/accordion.tokens";
 
-// DONT CHANGE TYPES FOR NOW, SIMPLY KEEP ADDING
-// TYPES FOR RETURNS
-// WE WILL ADAPT TO BETTER TYPES LATER
 export const useComponentToken = (
   component: keyof ComponentTokenType
 ):
@@ -52,7 +49,7 @@ export const useComponentToken = (
   | MenuTokensType
   | MultiSelectTokensType
   | TableTokenType
-  | CalendarTokenType 
+  | CalendarTokenType
   | AccordionTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
@@ -94,13 +91,17 @@ export const useComponentToken = (
       return componentTokens.MENU;
     case "MULTI_SELECT":
       return componentTokens.MULTI_SELECT;
-    case "TABLE": 
+    case "TABLE":
       return componentTokens.TABLE;
     case "CALENDAR":
       return componentTokens.CALENDAR;
     case "ACCORDION":
       return componentTokens.ACCORDION;
-      default:
+    case "UNIT_INPUT":
+      return componentTokens.UNIT_INPUT;
+    case "MULTI_VALUE_INPUT":
+      return componentTokens.MULTI_VALUE_INPUT;
+    default:
       throw new Error(`Unknown component token: ${component}`);
   }
 };
