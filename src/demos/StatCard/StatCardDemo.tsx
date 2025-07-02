@@ -24,7 +24,7 @@ const StatCardDemo: React.FC = () => {
   const [showActionIcon, setShowActionIcon] = useState(true);
   const [progressValue, setProgressValue] = useState(73);
   const [showHelpIcon, setShowHelpIcon] = useState(false);
-  const [useTrendingUp, setUseTrendingUp] = useState(true);
+  const [trendDirection, setTrendDirection] = useState<"up" | "down" | "mountain">("up");
 
   // const lineChartData = Array.from({ length: 30 }, (_, i) => ({
   //   value: 20 + (i * 2) + Math.floor(Math.random() * 5),
@@ -49,6 +49,22 @@ const StatCardDemo: React.FC = () => {
     label: `2025-05-${i + 1}`,
     date: `05/${i + 1}`,
   }));
+
+  // Mountain/curve data: 0 -> peak -> 0
+  const lineChartDataMountain = Array.from({ length: 30 }, (_, i) => {
+    let value = 0;
+    if (i >= 6 && i <= 24) {
+      // Create a bell curve/mountain shape between index 6-24
+      const progress = (i - 6) / (24 - 6); // 0 to 1
+      const bellCurve = Math.sin(progress * Math.PI); // Creates smooth curve
+      value = Math.round(bellCurve * 80); // Peak at 80
+    }
+    return {
+      value,
+      label: `2025-05-${i + 1}`,
+      date: `05/${i + 1}`,
+    };
+  });
 
   const barChartData = Array.from({ length: 20 }, (_, i) => ({
     value: 20 + Math.floor(Math.random() * 10),
@@ -124,12 +140,13 @@ const StatCardDemo: React.FC = () => {
           <div className="control-group">
             <label>Trend Direction</label>
             <select
-              value={useTrendingUp ? "up" : "down"}
-              onChange={(e) => setUseTrendingUp(e.target.value === "up")}
+              value={trendDirection}
+              onChange={(e) => setTrendDirection(e.target.value as "up" | "down" | "mountain")}
               className="control-select"
             >
               <option value="up">Trending Up (Green)</option>
               <option value="down">Trending Down (Red)</option>
+              <option value="mountain">Mountain Curve (0→Peak→0)</option>
             </select>
           </div>
         )}
@@ -212,7 +229,9 @@ const StatCardDemo: React.FC = () => {
               variant === StatCardVariant.LINE ||
               variant === StatCardVariant.BAR
                 ? variant === StatCardVariant.LINE
-                  ? useTrendingUp ? lineChartData : lineChartDataDecreasing
+                  ? trendDirection === "up" ? lineChartData 
+                    : trendDirection === "down" ? lineChartDataDecreasing
+                    : lineChartDataMountain
                   : barChartData
                 : undefined
             }
@@ -295,6 +314,21 @@ const StatCardDemo: React.FC = () => {
             change={{ type: ChangeType.INCREASE, value: 5.2 }}
             progressValue={73}
             titleIcon={<Activity size={20} />}
+          />
+        </div>
+
+        <div className="preset-item">
+          <p className="preset-label">Mountain Curve (0→Peak→0)</p>
+          <StatCard
+            variant={StatCardVariant.LINE}
+            title="Campaign Activity"
+            value="80"
+            change={{ type: ChangeType.INCREASE, value: 0 }}
+            chartData={lineChartDataMountain}
+            subtitle="Campaign lifecycle"
+            titleIcon={<BarChart2 size={20} />}
+            actionIcon={<ArrowUpRight size={20} />}
+            helpIconText="Shows mountain curve pattern: starts at 0, peaks, returns to 0"
           />
         </div>
 

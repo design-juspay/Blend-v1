@@ -351,7 +351,7 @@ const StatCard = ({
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={indexedChartData}
-                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+                margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
               >
                 <XAxis dataKey="date" hide />
                 <YAxis hide />
