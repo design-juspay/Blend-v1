@@ -19,15 +19,33 @@ const StatCardDemo: React.FC = () => {
   );
   const [showChange, setShowChange] = useState(true);
   const [changeType, setChangeType] = useState<ChangeType>(ChangeType.INCREASE);
-  const [changeValue, setChangeValue] = useState(12.5);
+  const [changeValue, setChangeValue] = useState(-12.5);
   const [showIcon, setShowIcon] = useState(true);
   const [showActionIcon, setShowActionIcon] = useState(true);
   const [progressValue, setProgressValue] = useState(73);
   const [showHelpIcon, setShowHelpIcon] = useState(false);
+  const [useTrendingUp, setUseTrendingUp] = useState(true);
 
-  // Generate sample chart data
+  // const lineChartData = Array.from({ length: 30 }, (_, i) => ({
+  //   value: 20 + (i * 2) + Math.floor(Math.random() * 5),
+  //   label: `2025-05-${i + 1}`,
+  //   date: `05/${i + 1}`,
+  // }));
+
   const lineChartData = Array.from({ length: 30 }, (_, i) => ({
     value: 20 + Math.floor(Math.random() * 30),
+    label: `2025-05-${i + 1}`,
+    date: `05/${i + 1}`,
+  }));
+
+  const lineChartDataDecreasing = Array.from({ length: 30 }, (_, i) => ({
+    value: 80 - (i * 2) + Math.floor(Math.random() * 5), 
+    label: `2025-05-${i + 1}`,
+    date: `05/${i + 1}`,
+  }));
+
+  const lineChartDataFlat = Array.from({ length: 30 }, (_, i) => ({
+    value: 50, // All values the same (delta 0)
     label: `2025-05-${i + 1}`,
     date: `05/${i + 1}`,
   }));
@@ -80,7 +98,7 @@ const StatCardDemo: React.FC = () => {
             value={changeValue}
             onChange={(e) => setChangeValue(Number(e.target.value))}
             disabled={!showChange}
-            min={0}
+            min={-100}
             max={100}
             step={0.1}
             className="control-input"
@@ -99,6 +117,20 @@ const StatCardDemo: React.FC = () => {
               step={1}
               className="control-input"
             />
+          </div>
+        )}
+
+        {(variant === StatCardVariant.LINE) && (
+          <div className="control-group">
+            <label>Trend Direction</label>
+            <select
+              value={useTrendingUp ? "up" : "down"}
+              onChange={(e) => setUseTrendingUp(e.target.value === "up")}
+              className="control-select"
+            >
+              <option value="up">Trending Up (Green)</option>
+              <option value="down">Trending Down (Red)</option>
+            </select>
           </div>
         )}
 
@@ -141,6 +173,7 @@ const StatCardDemo: React.FC = () => {
               />
               <span>Show Help Icon</span>
             </label>
+
           </div>
         </div>
       </div>
@@ -179,7 +212,7 @@ const StatCardDemo: React.FC = () => {
               variant === StatCardVariant.LINE ||
               variant === StatCardVariant.BAR
                 ? variant === StatCardVariant.LINE
-                  ? lineChartData
+                  ? useTrendingUp ? lineChartData : lineChartDataDecreasing
                   : barChartData
                 : undefined
             }
@@ -202,7 +235,7 @@ const StatCardDemo: React.FC = () => {
       <h3 className="presets-title">Preset Examples</h3>
       <div className="presets-grid">
         <div className="preset-item">
-          <p className="preset-label">Number Variant</p>
+          <p className="preset-label">Number Variant (+12.50%)</p>
           <StatCard
             variant={StatCardVariant.NUMBER}
             title="Total Revenue"
@@ -215,7 +248,7 @@ const StatCardDemo: React.FC = () => {
         </div>
 
         <div className="preset-item">
-          <p className="preset-label">Line Chart Variant</p>
+          <p className="preset-label">Line Chart - Increasing Trend (+8.20%)</p>
           <StatCard
             variant={StatCardVariant.LINE}
             title="Daily Active Users"
@@ -228,12 +261,25 @@ const StatCardDemo: React.FC = () => {
         </div>
 
         <div className="preset-item">
-          <p className="preset-label">Bar Chart Variant</p>
+          <p className="preset-label">Line Chart - Decreasing Trend (-15.30%)</p>
+          <StatCard
+            variant={StatCardVariant.LINE}
+            title="Server Errors"
+            value="127"
+            change={{ type: ChangeType.DECREASE, value: -15.3 }}
+            chartData={lineChartDataDecreasing}
+            titleIcon={<Activity size={20} />}
+            actionIcon={<ArrowUpRight size={20} />}
+          />
+        </div>
+
+        <div className="preset-item">
+          <p className="preset-label">Bar Chart Variant (-3.70%)</p>
           <StatCard
             variant={StatCardVariant.BAR}
             title="Transactions"
             value="12,543"
-            change={{ type: ChangeType.DECREASE, value: 3.7 }}
+            change={{ type: ChangeType.DECREASE, value: -3.7 }}
             chartData={barChartData}
             titleIcon={<BarChart2 size={20} />}
             actionIcon={<ArrowUpRight size={20} />}
@@ -241,7 +287,7 @@ const StatCardDemo: React.FC = () => {
         </div>
 
         <div className="preset-item">
-          <p className="preset-label">Progress Bar Variant</p>
+          <p className="preset-label">Progress Bar Variant (+5.20%)</p>
           <StatCard
             variant={StatCardVariant.PROGRESS_BAR}
             title="Payment Methods"
@@ -249,6 +295,20 @@ const StatCardDemo: React.FC = () => {
             change={{ type: ChangeType.INCREASE, value: 5.2 }}
             progressValue={73}
             titleIcon={<Activity size={20} />}
+          />
+        </div>
+
+        <div className="preset-item">
+          <p className="preset-label">No Change Data (User Controlled)</p>
+          <StatCard
+            variant={StatCardVariant.LINE}
+            title="Stable Metrics"
+            value="1,250"
+            chartData={lineChartDataFlat}
+            subtitle="No change data provided"
+            titleIcon={<Activity size={20} />}
+            actionIcon={<ArrowUpRight size={20} />}
+            helpIconText="Example showing no change prop - users control when to show/hide delta"
           />
         </div>
       </div>
