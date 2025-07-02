@@ -22,7 +22,7 @@ const StatCard = ({
   title,
   value,
   change,
-  subtitle = "Last 7 days",
+  subtitle,
   variant,
   chartData,
   progressValue,
