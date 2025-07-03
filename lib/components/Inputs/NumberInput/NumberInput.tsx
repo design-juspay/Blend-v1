@@ -103,7 +103,6 @@ const NumberInput = ({
           ></Block>
           <PrimitiveButton
             onClick={() =>
-              onChange &&
               onChange({
                 target: { value: String(value + (step ?? 1)) },
               } as React.ChangeEvent<HTMLInputElement>)
@@ -126,7 +125,6 @@ const NumberInput = ({
           </PrimitiveButton>
           <PrimitiveButton
             onClick={() =>
-              onChange &&
               onChange({
                 target: { value: String(value - (step ?? 1)) },
               } as React.ChangeEvent<HTMLInputElement>)
