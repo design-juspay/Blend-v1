@@ -170,14 +170,6 @@ const InputDemo: React.FC = () => {
             Dropdown Value: {dropdownValue}
           </p>
           <DropdownInput
-            slot={
-              <Tag
-                size={TagSize.XS}
-                text="Global Search"
-                color={TagColor.PURPLE}
-                shape={TagShape.ROUNDED}
-              />
-            }
             size={inputSize}
             label="Dropdown Input"
             sublabel="This is a sublabel to help user."
@@ -268,7 +260,7 @@ const InputDemo: React.FC = () => {
           <OTPInput
             form="otp1"
             value={otp1}
-            onChange={(e) => setOtp1(e)}
+            onChange={(e) => setOtp1(e as string)}
             label="OTP"
             sublabel="optional"
             required
