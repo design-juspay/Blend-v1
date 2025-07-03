@@ -26,6 +26,7 @@ const NumberInput = ({
   label = "Number Input",
   hintText,
   name,
+  ...rest
 }: NumberInputProps) => {
   const numberInputTokens = useComponentToken(
     "NUMBER_INPUT"
@@ -77,6 +78,7 @@ const NumberInput = ({
             border: numberInputTokens.input.border.disabled,
             cursor: "not-allowed",
           }}
+          {...rest}
         />
         <Block
           display="flex"
@@ -101,6 +103,7 @@ const NumberInput = ({
           ></Block>
           <PrimitiveButton
             onClick={() =>
+              onChange &&
               onChange({
                 target: { value: String(value + (step ?? 1)) },
               } as React.ChangeEvent<HTMLInputElement>)
@@ -123,6 +126,7 @@ const NumberInput = ({
           </PrimitiveButton>
           <PrimitiveButton
             onClick={() =>
+              onChange &&
               onChange({
                 target: { value: String(value - (step ?? 1)) },
               } as React.ChangeEvent<HTMLInputElement>)

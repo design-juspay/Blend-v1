@@ -36,8 +36,7 @@ const InputDemo: React.FC = () => {
     TextInputSize.MEDIUM
   );
   const [otp1, setOtp1] = useState("");
-  const [selectedInput, setSelectedInput] =
-    useState<string>("dropdown");
+  const [selectedInput, setSelectedInput] = useState<string>("dropdown");
   const [tags, setTags] = useState<string[]>([
     "Tag 1",
     "Tag 2",
@@ -254,7 +253,7 @@ const InputDemo: React.FC = () => {
             errorMessage="This is an error message."
             placeholder="Enter your number"
             max={100}
-            step={5}
+            step={1}
             size={
               inputSize === TextInputSize.MEDIUM
                 ? NumberInputSize.MEDIUM
