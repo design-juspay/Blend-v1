@@ -20,6 +20,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
   isEditing,
   currentValue,
   width,
+  frozenStyles,
   onFieldChange,
 }, ref) => {
   const tableToken = useComponentToken("TABLE") as TableTokenType;
@@ -83,8 +84,9 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
       $hasCustomContent={!!column.renderCell || (isEditing && column.isEditable)}
       style={{ 
         ...width,
+        ...frozenStyles,
         verticalAlign: 'middle',
-        position: 'relative'
+        position: frozenStyles?.position || 'relative'
       }}
     >
       <Block style={{ 

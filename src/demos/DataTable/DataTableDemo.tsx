@@ -103,7 +103,9 @@ const DataTableDemo = () => {
     const columns: ColumnDefinition<UserRow>[] = [
       { 
         field: 'name',
-        header: 'Name',
+        header: 'User Profile',
+        headerSubtext: 'Name & Join Date',
+        frozen: true,
         type: ColumnType.AVATAR,
         renderCell: (value) => {
           const avatarData = value as AvatarData;
@@ -125,7 +127,9 @@ const DataTableDemo = () => {
       },
       { 
         field: 'email',
-        header: 'Email',
+        header: 'Contact Info',
+        headerSubtext: 'Email Address',
+        frozen: true,
         type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
@@ -136,7 +140,8 @@ const DataTableDemo = () => {
       },
       { 
         field: 'role',
-        header: 'Role',
+        header: 'Access Level',
+        headerSubtext: 'User Role & Permissions',
         type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
@@ -192,7 +197,8 @@ const DataTableDemo = () => {
       },
       {
         field: 'status',
-        header: 'Status',
+        header: 'Account Status',
+        headerSubtext: 'Current State',
         type: ColumnType.TAG,
         renderCell: (value) => {
           const tagData = value as TagData;
@@ -748,7 +754,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features flexible column widths with min/max constraints and automatic text truncation. Try clicking on any row, using column header filters, and advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features frozen columns (User Profile & Contact Info), headerSubtext, flexible column widths with min/max constraints and automatic text truncation. Try scrolling horizontally to see frozen columns in action, clicking on any row, using column header filters, and advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}

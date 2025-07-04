@@ -19,6 +19,8 @@ export type ColumnDefinition<T extends Record<string, unknown>> = {
   field: keyof T;
   /** Header text to display - must be a string */
   header: string;
+  /** Optional subtext to display below or alongside the header */
+  headerSubtext?: string;
   /** Column type for filtering and display - must be a valid ColumnType */
   type: ColumnType;
   /** Minimum width of the column - must be a valid CSS width string */
@@ -39,6 +41,8 @@ export type ColumnDefinition<T extends Record<string, unknown>> = {
   filterType?: FilterType;
   /** Filter options for select/multiselect filters */
   filterOptions?: FilterOption[];
+  /** Whether column should be frozen (pinned) during horizontal scrolling */
+  frozen?: boolean;
   /** Custom classes to apply to the column - must be a string */
   className?: string;
   /** Custom render function for display mode */
