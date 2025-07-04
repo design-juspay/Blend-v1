@@ -83,7 +83,15 @@ const ExpandButton = styled.button`
                 onClick={() => onRowClick && onRowClick(row, index)}
               >
                 {enableRowExpansion && (
-                  <StyledTableCell width="50px" style={{ minWidth: `${FOUNDATION_THEME.unit[52]}`, maxWidth: `${FOUNDATION_THEME.unit[52]}` }}>
+                  <StyledTableCell width="50px" style={{ 
+                    minWidth: `${FOUNDATION_THEME.unit[52]}`, 
+                    maxWidth: `${FOUNDATION_THEME.unit[52]}`,
+                    position: 'sticky',
+                    left: '0px',
+                    zIndex: 10,
+                    backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
+                    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                  }}>
                     <Block 
                       display='flex' 
                       alignItems='center' 
@@ -108,7 +116,13 @@ const ExpandButton = styled.button`
                   </StyledTableCell>
                 )}
 
-                <StyledTableCell>
+                <StyledTableCell style={{
+                  position: 'sticky',
+                  left: enableRowExpansion ? '50px' : '0px',
+                  zIndex: 10,
+                  backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
+                  borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                }}>
                   <Block 
                     display='flex' 
                     alignItems='center' 
@@ -125,9 +139,35 @@ const ExpandButton = styled.button`
                   </Block>
                 </StyledTableCell>
 
-                {visibleColumns.map((column, index) => {
-                  const columnStyles = getColumnWidth(column, index);
+                {visibleColumns.map((column, colIndex) => {
+                  const columnStyles = getColumnWidth(column, colIndex);
                   const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
+                  
+                  // Calculate frozen column positioning for body cells
+                  const getFrozenBodyStyles = () => {
+                    if (!column.frozen) return {};
+                    
+                    // Calculate the accumulated width of frozen columns before this one
+                    let leftOffset = 60; // Start after checkbox column
+                    if (enableRowExpansion) leftOffset += 50; // Add expansion column width
+                    
+                    for (let i = 0; i < colIndex; i++) {
+                      const prevColumn = visibleColumns[i];
+                      if (prevColumn.frozen) {
+                        const prevStyles = getColumnWidth(prevColumn, i);
+                        const width = prevStyles.width || prevColumn.minWidth || '120px';
+                        leftOffset += parseInt(String(width).replace('px', '')) || 120;
+                      }
+                    }
+                    
+                    return {
+                      position: 'sticky' as const,
+                      left: `${leftOffset}px`,
+                      zIndex: 10,
+                      backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
+                      borderRight: `2px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                    };
+                  };
                   
                   return (
                     <TableCell
@@ -137,6 +177,7 @@ const ExpandButton = styled.button`
                       isEditing={isEditing}
                       currentValue={currentValue}
                       width={columnStyles}
+                      frozenStyles={getFrozenBodyStyles()}
                       onFieldChange={(value) => onFieldChange(row[idField], column.field, value)}
                     />
                   );

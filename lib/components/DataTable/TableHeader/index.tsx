@@ -372,7 +372,12 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            position: 'sticky',
+            left: '0px',
+            zIndex: 11,
+            backgroundColor: tableToken.dataTable.table.header.backgroundColor,
+            borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
           }}>
             <Block display='flex' alignItems='center' justifyContent='center'>
             </Block>
@@ -387,8 +392,13 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
-          boxSizing: 'border-box'
-                   }}>
+          boxSizing: 'border-box',
+          position: 'sticky',
+          left: enableRowExpansion ? '50px' : '0px',
+          zIndex: 11,
+          backgroundColor: tableToken.dataTable.table.header.backgroundColor,
+          borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+        }}>
             <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
               <Checkbox
                 checked={selectAll}
@@ -403,13 +413,38 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
           const isEditing = editingField === String(column.field);
           const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
           
+          const getFrozenStyles = () => {
+            if (!column.frozen) return {};
+            
+            let leftOffset = 60;
+            if (enableRowExpansion) leftOffset += 50;
+            
+            for (let i = 0; i < index; i++) {
+              const prevColumn = localColumns[i];
+              if (prevColumn.frozen) {
+                const prevStyles = getColumnWidth(prevColumn, i);
+                const width = prevStyles.width || prevColumn.minWidth || '120px';
+                leftOffset += parseInt(String(width).replace('px', '')) || 120;
+              }
+            }
+            
+            return {
+              position: 'sticky' as const,
+              left: `${leftOffset}px`,
+              zIndex: 11,
+              backgroundColor: tableToken.dataTable.table.header.backgroundColor,
+              borderRight: `2px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            };
+          };
+          
           return (
             <th
               key={String(column.field)}
               style={{ 
                 ...tableToken.dataTable.table.header.cell,
                 ...(column.isSortable && tableToken.dataTable.table.header.sortable),
-                ...columnStyles
+                ...columnStyles,
+                ...getFrozenStyles()
               }}
             >
               <Block
@@ -450,32 +485,63 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                   ) : (
                     <Block
                       display='flex'
-                      alignItems='center'
+                      alignItems='flex-start'
                       minWidth={0}
                       flexGrow={1}
                       position='relative'
+                      gap='4px'
                     >
-                      <PrimitiveText
-                        title={column.header}
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          minWidth: 0,
-                          flex: 1,
-                          display: 'block',
-                          cursor: 'default'
-                        }}
+                      <Block
+                        display='flex'
+                        flexDirection='column'
+                        alignItems='flex-start'
+                        minWidth={0}
+                        flexGrow={1}
                       >
-                        {column.header}
-                      </PrimitiveText>
+                        <PrimitiveText
+                          title={column.header}
+                          style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            minWidth: 0,
+                            width: '100%',
+                            display: 'block',
+                            cursor: 'default',
+                            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
+                            fontWeight: FOUNDATION_THEME.font.weight[600],
+                            lineHeight: 1.2
+                          }}
+                        >
+                          {column.header}
+                        </PrimitiveText>
+                        {column.headerSubtext && (
+                          <PrimitiveText
+                            title={column.headerSubtext}
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              minWidth: 0,
+                              width: '100%',
+                              display: 'block',
+                              cursor: 'default',
+                              fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
+                              color: FOUNDATION_THEME.colors.gray[500],
+                              lineHeight: 1.2,
+                              marginTop: '2px'
+                            }}
+                          >
+                            {column.headerSubtext}
+                          </PrimitiveText>
+                        )}
+                      </Block>
                       {enableInlineEdit && (
                         <Block
                           as='span'
                           className="edit-icon-wrapper"
                           display='flex'
                           alignItems='center'
-                          marginLeft='4px'
                           opacity={hoveredField === String(column.field) ? 1 : 0}
                           transition='opacity 0.2s'
                           zIndex={2}
