@@ -1,5 +1,5 @@
 import { forwardRef, useState, useRef, useEffect } from 'react';
-import { MoreVertical, Edit2, ArrowUp, ArrowDown } from 'lucide-react';
+import { ChevronsUpDown, Edit2, ArrowUp, ArrowDown } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableHeaderProps } from './types';
 import { FilterType, ColumnDefinition } from '../types';
@@ -20,7 +20,7 @@ import  { TableTokenType } from '../dataTable.tokens';
 
 import { useComponentToken } from '../../../context/useComponentToken';
 
-const MoreIcon = styled(MoreVertical)`
+const FilterIcon = styled(ChevronsUpDown)`
   cursor: pointer;
   color: ${FOUNDATION_THEME.colors.gray[400]};
   transition: color 0.2s ease;
@@ -602,7 +602,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Popover
-                      trigger={<MoreIcon size={16} />}
+                      trigger={<FilterIcon size={16} />}
                       maxWidth={220}
                       minWidth={220}
                       zIndex={1000}
