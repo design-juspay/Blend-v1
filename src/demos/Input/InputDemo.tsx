@@ -36,8 +36,7 @@ const InputDemo: React.FC = () => {
     TextInputSize.MEDIUM
   );
   const [otp1, setOtp1] = useState("");
-  const [selectedInput, setSelectedInput] =
-    useState<string>("dropdown");
+  const [selectedInput, setSelectedInput] = useState<string>("dropdown");
   const [tags, setTags] = useState<string[]>([
     "Tag 1",
     "Tag 2",
@@ -171,14 +170,6 @@ const InputDemo: React.FC = () => {
             Dropdown Value: {dropdownValue}
           </p>
           <DropdownInput
-            slot={
-              <Tag
-                size={TagSize.XS}
-                text="Global Search"
-                color={TagColor.PURPLE}
-                shape={TagShape.ROUNDED}
-              />
-            }
             size={inputSize}
             label="Dropdown Input"
             sublabel="This is a sublabel to help user."
@@ -254,7 +245,7 @@ const InputDemo: React.FC = () => {
             errorMessage="This is an error message."
             placeholder="Enter your number"
             max={100}
-            step={5}
+            step={1}
             size={
               inputSize === TextInputSize.MEDIUM
                 ? NumberInputSize.MEDIUM
@@ -269,7 +260,7 @@ const InputDemo: React.FC = () => {
           <OTPInput
             form="otp1"
             value={otp1}
-            onChange={(e) => setOtp1(e)}
+            onChange={(e) => setOtp1(e as string)}
             label="OTP"
             sublabel="optional"
             required
