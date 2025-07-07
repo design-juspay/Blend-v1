@@ -181,20 +181,24 @@ const UnitInput = ({
           paddingBottom={paddingY}
           required={required}
           borderRadius={unitInputTokens.input.borderRadius}
-          boxShadow={unitInputTokens.input.boxShadow}
+          boxShadow={unitInputTokens.input.boxShadow.default}
           border={unitInputTokens.input.border[error ? "error" : "default"]}
           outline="none"
           width={"100%"}
           _hover={{
-            border: unitInputTokens.input.border.hover,
+            border: unitInputTokens.input.border[error ? "error" : "hover"],
           }}
           color={unitInputTokens.input.color[disabled ? "disabled" : "default"]}
           _focusVisible={{
-            border: unitInputTokens.input.border.focus,
+            border: unitInputTokens.input.border[error ? "error" : "focus"],
+            boxShadow:
+              unitInputTokens.input.boxShadow[error ? "error" : "focus"],
             outline: "none !important",
           }}
           _focus={{
-            border: unitInputTokens.input.border.focus,
+            border: unitInputTokens.input.border[error ? "error" : "focus"],
+            boxShadow:
+              unitInputTokens.input.boxShadow[error ? "error" : "focus"],
             outline: "none !important",
           }}
           disabled={disabled}

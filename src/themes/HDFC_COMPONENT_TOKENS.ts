@@ -39,7 +39,13 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
         default: FOUNDATION_THEME.colors.gray[0],
         disabled: FOUNDATION_THEME.colors.gray[50],
       },
-      boxShadow: FOUNDATION_THEME.shadows.sm,
+      boxShadow: {
+        default: FOUNDATION_THEME.shadows.sm,
+        hover: FOUNDATION_THEME.shadows.sm,
+        focus: FOUNDATION_THEME.shadows.focusPrimary,
+        error: FOUNDATION_THEME.shadows.focusError,
+        disabled: FOUNDATION_THEME.shadows.sm,
+      },
     },
   },
   TEXT_INPUT: {
@@ -82,7 +88,13 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
         focus: FOUNDATION_THEME.colors.gray[0],
         error: FOUNDATION_THEME.colors.gray[0],
       },
-      boxShadow: FOUNDATION_THEME.shadows.sm,
+      boxShadow: {
+        default: FOUNDATION_THEME.shadows.sm,
+        hover: FOUNDATION_THEME.shadows.sm,
+        focus: FOUNDATION_THEME.shadows.focusPrimary,
+        error: FOUNDATION_THEME.shadows.focusError,
+        disabled: FOUNDATION_THEME.shadows.sm,
+      },
     },
   },
   TEXT_AREA: {
@@ -90,7 +102,13 @@ export const HDFC_COMPONENT_TOKENS: ComponentTokenType = {
     paddingX: FOUNDATION_THEME.unit[14],
     paddingY: FOUNDATION_THEME.unit[10],
     borderRadius: FOUNDATION_THEME.unit[8],
-    boxShadow: FOUNDATION_THEME.shadows.sm,
+    boxShadow: {
+      default: FOUNDATION_THEME.shadows.sm,
+      hover: FOUNDATION_THEME.shadows.sm,
+      focus: FOUNDATION_THEME.shadows.focusPrimary,
+      error: FOUNDATION_THEME.shadows.focusError,
+      disabled: FOUNDATION_THEME.shadows.sm,
+    },
     outline: {
       default: "none",
       hover: "none",
