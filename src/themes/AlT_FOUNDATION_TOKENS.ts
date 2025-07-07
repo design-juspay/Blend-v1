@@ -9,6 +9,8 @@ const ALT_FOUNDATION_TOKENS: FoundationTokenType = {
     xl: "0px 20px 25px -5px rgba(0, 0, 0, 0.1)",
     "2xl": "0px 25px 50px -12px rgba(0, 0, 0, 0.15)",
     full: "0px 50px 100px -20px rgba(0, 0, 0, 0.18)",
+    focusPrimary: "0px 0px 0px 2px rgba(255, 0, 119, 0.2)",
+    focusError: "0px 0px 0px 2px rgba(255, 11, 15, 0.2)",
   },
   border: {
     width: {
@@ -290,6 +292,5 @@ const ALT_FOUNDATION_TOKENS: FoundationTokenType = {
     },
   },
 };
-
 
 export default ALT_FOUNDATION_TOKENS;
