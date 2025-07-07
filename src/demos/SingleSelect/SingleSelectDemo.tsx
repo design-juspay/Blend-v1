@@ -13,47 +13,26 @@ import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagSize, TagShape } from '../../../lib/components/Tags/types';
 import {
   User,
-  Shield,
-  CreditCard,
   Settings,
   Bell,
-  Lock,
   Globe,
   Briefcase,
   Users,
   Mail,
-  Calendar,
   MapPin,
-  Star,
-  Heart,
-  Bookmark,
-  Camera,
-  Music,
-  Film,
-  Gamepad,
   Code,
-  Database,
   Server,
-  Cloud,
   Smartphone,
-  Laptop,
+
   Monitor,
-  Coffee,
-  Pizza,
-  Car,
-  Plane,
-  Home,
-  Building,
+
   RefreshCw,
   Trash2,
-  Edit3,
-  Plus,
-  CheckCircle,
-  AlertCircle,
+
+
   Search,
   Filter,
-  SortAsc,
-  ChevronDown,
+
 } from 'lucide-react';
 
 const SingleSelectDemo = () => {
