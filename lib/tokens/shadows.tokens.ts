@@ -8,6 +8,8 @@ export type ShadowTokensType = Readonly<{
   xl: CSSObject["boxShadow"];
   "2xl": CSSObject["boxShadow"];
   full: CSSObject["boxShadow"];
+  focusPrimary: CSSObject["boxShadow"];
+  focusError: CSSObject["boxShadow"];
   [key: string]: CSSObject["boxShadow"];
 }>;
 
@@ -20,6 +22,7 @@ const shadowTokens: ShadowTokensType = {
   "2xl": "0px 12px 24px 4px rgba(5, 5, 6, 0.07)",
   full: "0px 24px 48px 8px rgba(5, 5, 6, 0.07)",
   focusPrimary: "0px 0px 0px 3px #EFF6FF",
+  focusError: "0px 0px 0px 3px #FFC9C9",
 };
 
 export default shadowTokens;
