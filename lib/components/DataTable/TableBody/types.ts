@@ -11,6 +11,7 @@ export type TableBodyProps<T extends Record<string, unknown>> = {
   enableInlineEdit?: boolean;
   enableColumnManager?: boolean;
   enableRowExpansion?: boolean;
+  columnFreeze?: number;
   renderExpandedRow?: (expandedData: {
     row: T;
     index: number;

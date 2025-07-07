@@ -9,6 +9,7 @@ export type TableHeaderProps<T extends Record<string, unknown>> = {
   enableRowExpansion?: boolean;
   data?: T[];
   columnFilters?: ColumnFilter[];
+  columnFreeze?: number;
   onSort: (field: keyof T) => void;
   onSelectAll: (checked: boolean | 'indeterminate') => void;
   onColumnChange: (columns: ColumnDefinition<T>[]) => void;

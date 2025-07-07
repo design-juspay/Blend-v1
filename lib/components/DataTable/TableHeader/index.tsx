@@ -3,20 +3,19 @@ import { MoreVertical, Edit2, ArrowUp, ArrowDown } from 'lucide-react';
 import { styled } from 'styled-components';
 import { TableHeaderProps } from './types';
 import { FilterType, ColumnDefinition } from '../types';
-import { Checkbox } from '../../../main';
-import { CheckboxSize } from '../../Checkbox/types';
+
 import { ColumnManager } from '../ColumnManager';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
 import { FOUNDATION_THEME } from '../../../tokens';
 import { Popover } from '../../Popover';
-import { PopoverSize } from '../../Popover/types';
 import { ColumnType, getColumnTypeConfig } from '../columnTypes';
 import { getUniqueColumnValues } from '../utils';
 import { SearchInput } from '../../Inputs/SearchInput';
-import MultiSelectMenu from '../../MultiSelect/MultiSelectMenu';
-import SingleSelectMenu from '../../SingleSelect/SingleSelectMenu';
+import { Checkbox } from '../../Checkbox';
+import { CheckboxSize } from '../../Checkbox/types';
 import { SelectMenuGroupType } from '../../Select/types';
+import { MultiSelectMenuGroupType } from '../../MultiSelect/types';
 import  { TableTokenType } from '../dataTable.tokens';
 
 import { useComponentToken } from '../../../context/useComponentToken';
@@ -48,6 +47,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   enableColumnManager = true,
   enableRowExpansion = false,
   data,
+  columnFreeze = 0,
   onSort,
   onSelectAll,
   onColumnChange,
@@ -60,7 +60,6 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   const [localColumns, setLocalColumns] = useState(visibleColumns);
   const [columnSearchValues, setColumnSearchValues] = useState<Record<string, string>>({});
   const [columnSelectedValues, setColumnSelectedValues] = useState<Record<string, string[]>>({});
-  const [selectMenuStates, setSelectMenuStates] = useState<Record<string, boolean>>({});
   const editableRef = useRef<HTMLDivElement>(null);
   const tableToken = useComponentToken("TABLE") as TableTokenType;
 
@@ -130,7 +129,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
     }));
   };
 
-  const getMenuItems = (column: ColumnDefinition<Record<string, unknown>>): SelectMenuGroupType[] => {
+  const getSelectMenuItems = (column: ColumnDefinition<Record<string, unknown>>): SelectMenuGroupType[] => {
     const filterOptions = getFilterOptions(column);
     return [
       {
@@ -145,16 +144,30 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
     ];
   };
 
+  const getMultiSelectMenuItems = (column: ColumnDefinition<Record<string, unknown>>): MultiSelectMenuGroupType[] => {
+    const filterOptions = getFilterOptions(column);
+    return [
+      {
+        groupLabel: `${column.header} Options`,
+        items: filterOptions.map((option) => ({
+          label: option.label,
+          value: option.value,
+        })),
+        showSeparator: false
+      }
+    ];
+  };
+
   const renderColumnFilter = (column: ColumnDefinition<Record<string, unknown>>) => {
     const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
     const fieldKey = String(column.field);
 
     if (!columnConfig.supportsFiltering) {
       return (
-        <Block padding={FOUNDATION_THEME.unit[12]}>
+        <Block>
           <PrimitiveText style={{ 
-            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-            color: FOUNDATION_THEME.colors.gray[500]
+            fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+            color: tableToken.dataTable.table.header.filter.groupLabelColor
           }}>
             No filters available for this column
           </PrimitiveText>
@@ -163,86 +176,65 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
     }
 
     return (
-      <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[8]} minWidth="250px" padding={FOUNDATION_THEME.unit[4]}>
+      <Block display="flex" flexDirection="column">
 
         {columnConfig.supportsSorting && (
-          <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[4]}>
+          <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap}>
             <Block
               display="flex"
               alignItems="center"
-              gap={FOUNDATION_THEME.unit[8]}
-              padding={FOUNDATION_THEME.unit[8]}
-              borderRadius={FOUNDATION_THEME.border.radius[4]}
-              cursor="pointer"
+              gap={tableToken.dataTable.table.header.filter.itemGap}
+              padding={tableToken.dataTable.table.header.filter.sortOption.padding}
+              borderRadius={tableToken.dataTable.table.header.filter.sortOption.borderRadius}
+              cursor="pointer" 
+              backgroundColor={tableToken.dataTable.table.header.filter.backgroundColor}
               _hover={{
-                backgroundColor: FOUNDATION_THEME.colors.gray[50]
+                backgroundColor: tableToken.dataTable.table.header.filter.sortOption.hoverBackground
               }}
               onClick={() => {
                 handleSort(fieldKey);
               }}
             >
-              <ArrowUp size={16} color={FOUNDATION_THEME.colors.gray[600]} />
-              <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+              <ArrowUp size={16} color={tableToken.dataTable.table.header.filter.sortOption.iconColor} />
+              <PrimitiveText style={{ 
+                fontSize: tableToken.dataTable.table.header.filter.sortOption.fontSize, 
+                color: tableToken.dataTable.table.header.filter.sortOption.textColor,
+                fontWeight: tableToken.dataTable.table.header.filter.sortOption.fontWeight
+              }}>
                 Sort Ascending
               </PrimitiveText>
             </Block>
             <Block
               display="flex"
               alignItems="center"
-              gap={FOUNDATION_THEME.unit[8]}
-              padding={FOUNDATION_THEME.unit[8]}
-              borderRadius={FOUNDATION_THEME.border.radius[4]}
+              gap={tableToken.dataTable.table.header.filter.itemGap}
+              padding={tableToken.dataTable.table.header.filter.sortOption.padding}
+              borderRadius={tableToken.dataTable.table.header.filter.sortOption.borderRadius}
               cursor="pointer"
               _hover={{
-                backgroundColor: FOUNDATION_THEME.colors.gray[50]
+                backgroundColor: tableToken.dataTable.table.header.filter.sortOption.hoverBackground
               }}
               onClick={() => {
                 handleSort(fieldKey);
               }}
             >
-              <ArrowDown size={16} color={FOUNDATION_THEME.colors.gray[600]} />
-              <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
+              <ArrowDown size={16} color={tableToken.dataTable.table.header.filter.sortOption.iconColor} />
+              <PrimitiveText style={{ 
+                fontSize: tableToken.dataTable.table.header.filter.sortOption.fontSize, 
+                color: tableToken.dataTable.table.header.filter.sortOption.textColor,
+                fontWeight: tableToken.dataTable.table.header.filter.sortOption.fontWeight
+              }}>
                 Sort Descending
               </PrimitiveText>
             </Block>
           </Block>
         )}
 
-        {/* Filter Section */}
         <Block 
-          height="1px" 
-          backgroundColor={FOUNDATION_THEME.colors.gray[200]} 
-          marginY={FOUNDATION_THEME.unit[8]}
+          height={tableToken.dataTable.table.header.filter.separatorHeight}
+          backgroundColor={tableToken.dataTable.table.header.filter.separatorColor}
         />
 
-        <Block display="flex" alignItems="center" justifyContent="space-between">
-          <PrimitiveText style={{ 
-            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize, 
-            fontWeight: FOUNDATION_THEME.font.weight[600] 
-          }}>
-            Filter {column.header}
-          </PrimitiveText>
-          {((columnSearchValues[fieldKey] && columnSearchValues[fieldKey] !== '') || 
-            (columnSelectedValues[fieldKey] && columnSelectedValues[fieldKey].length > 0)) && (
-            <PrimitiveText
-              onClick={() => {
-                setColumnSearchValues(prev => ({ ...prev, [fieldKey]: '' }));
-                setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: [] }));
-                onColumnFilter?.(column.field, FilterType.TEXT, '', 'equals');
-              }}
-              style={{
-                fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
-                color: FOUNDATION_THEME.colors.primary[600],
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
-            >
-              Clear
-            </PrimitiveText>
-          )}
-        </Block>
-
-        {/* Search Filter */}
         {columnConfig.filterComponent === 'search' && (
           <SearchInput
             placeholder={`Search ${column.header}...`}
@@ -256,101 +248,120 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         )}
 
         {columnConfig.filterComponent === 'select' && (
-          <SingleSelectMenu
-            items={getMenuItems(column)}
-            selected={columnSelectedValues[fieldKey]?.[0] || ''}
-            onSelect={(value) => {
-              setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: [value] }));
-              onColumnFilter?.(column.field, FilterType.SELECT, value, 'equals');
-            }}
-            open={selectMenuStates[`${fieldKey}_single`] || false}
-            onOpenChange={(open) => {
-              setSelectMenuStates(prev => ({ ...prev, [`${fieldKey}_single`]: open }));
-            }}
-            enableSearch={true}
-            trigger={
-              <Block
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                padding={`${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[12]}`}
-                border={`1px solid ${FOUNDATION_THEME.colors.gray[300]}`}
-                borderRadius={FOUNDATION_THEME.border.radius[8]}
-                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-                cursor="pointer"
-                _hover={{
-                  backgroundColor: FOUNDATION_THEME.colors.gray[25]
-                }}
-              >
-                <PrimitiveText style={{
-                  fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                  color: columnSelectedValues[fieldKey]?.[0] ? FOUNDATION_THEME.colors.gray[700] : FOUNDATION_THEME.colors.gray[400]
-                }}>
-                  {columnSelectedValues[fieldKey]?.[0] || 'Select option...'}
-                </PrimitiveText>
-                <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
-                  ▼
-                </PrimitiveText>
+          <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap} maxHeight={tableToken.dataTable.table.header.filter.maxHeight} overflowY={tableToken.dataTable.table.header.filter.overflowY}>
+            {getSelectMenuItems(column).map((group, groupIndex) => (
+              <Block key={groupIndex}>
+                {group.groupLabel && (
+                  <PrimitiveText style={{
+                    fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+                    fontWeight: tableToken.dataTable.table.header.filter.groupLabelFontWeight,
+                    color: tableToken.dataTable.table.header.filter.groupLabelColor,
+                    padding: tableToken.dataTable.table.header.filter.groupLabelPadding,
+                    textTransform: tableToken.dataTable.table.header.filter.groupLabelTextTransform
+                  }}>
+                    {group.groupLabel}
+                  </PrimitiveText>
+                )}
+                {group.items.map((item) => {
+                  const isSelected = columnSelectedValues[fieldKey]?.[0] === item.value;
+                  return (
+                    <Block
+                      key={item.value}
+                      display="flex"
+                      alignItems="center"
+                      padding={tableToken.dataTable.table.header.filter.itemPadding}
+                      borderRadius={tableToken.dataTable.table.header.filter.itemBorderRadius}
+                      cursor="pointer"
+                      backgroundColor={isSelected ? tableToken.dataTable.table.header.filter.selectedBackground : 'transparent'}
+                      _hover={{
+                        backgroundColor: tableToken.dataTable.table.header.filter.hoverBackground
+                      }}
+                      onClick={() => {
+                        setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: [item.value] }));
+                        onColumnFilter?.(column.field, FilterType.SELECT, item.value, 'equals');
+                      }}
+                    >
+                      <PrimitiveText style={{
+                        fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
+                        color: isSelected ? tableToken.dataTable.table.header.filter.selectedTextColor : tableToken.dataTable.table.header.filter.normalTextColor,
+                        fontWeight: isSelected ? tableToken.dataTable.table.header.filter.selectedFontWeight : tableToken.dataTable.table.header.filter.normalFontWeight
+                      }}>
+                        {item.label}
+                      </PrimitiveText>
+                    </Block>
+                  );
+                })}
               </Block>
-            }
-          />
+            ))}
+          </Block>
         )}
 
         {columnConfig.filterComponent === 'multiselect' && (
-          <MultiSelectMenu
-            items={getMenuItems(column)}
-            selected={columnSelectedValues[fieldKey] || []}
-            onSelect={(value) => {
-              const currentSelected = columnSelectedValues[fieldKey] || [];
-              let newSelected = [...currentSelected];
-              if (newSelected.includes(value)) {
-                newSelected = newSelected.filter(v => v !== value);
-              } else {
-                newSelected.push(value);
-              }
-              setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: newSelected }));
-              onColumnFilter?.(column.field, FilterType.MULTISELECT, newSelected, 'equals');
-            }}
-            open={selectMenuStates[`${fieldKey}_multi`] || false}
-            onOpenChange={(open) => {
-              setSelectMenuStates(prev => ({ ...prev, [`${fieldKey}_multi`]: open }));
-            }}
-            trigger={
-              <Block
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                padding={`${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[12]}`}
-                border={`1px solid ${FOUNDATION_THEME.colors.gray[300]}`}
-                borderRadius={FOUNDATION_THEME.border.radius[8]}
-                backgroundColor={FOUNDATION_THEME.colors.gray[0]}
-                cursor="pointer"
-                _hover={{
-                  backgroundColor: FOUNDATION_THEME.colors.gray[25]
-                }}
-              >
-                <PrimitiveText style={{
-                  fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                  color: (columnSelectedValues[fieldKey]?.length || 0) > 0 ? FOUNDATION_THEME.colors.gray[700] : FOUNDATION_THEME.colors.gray[400]
-                }}>
-                  {(columnSelectedValues[fieldKey]?.length || 0) > 0 ? 
-                    `${columnSelectedValues[fieldKey]?.length} selected` :
-                    'Select options...'
-                  }
-                </PrimitiveText>
-                <PrimitiveText style={{ fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize }}>
-                  ▼
-                </PrimitiveText>
+          <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap} maxHeight={tableToken.dataTable.table.header.filter.maxHeight} overflowY={tableToken.dataTable.table.header.filter.overflowY}>
+            {getMultiSelectMenuItems(column).map((group, groupIndex) => (
+              <Block key={groupIndex}>
+                {group.groupLabel && (
+                  <PrimitiveText style={{
+                    fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+                    fontWeight: tableToken.dataTable.table.header.filter.groupLabelFontWeight,
+                    color: tableToken.dataTable.table.header.filter.groupLabelColor,
+                    padding: tableToken.dataTable.table.header.filter.groupLabelPadding,
+                    textTransform: tableToken.dataTable.table.header.filter.groupLabelTextTransform
+                  }}>
+                    {group.groupLabel}
+                  </PrimitiveText>
+                )}
+                {group.items.map((item) => {
+                  const isSelected = (columnSelectedValues[fieldKey] || []).includes(item.value);
+                  return (
+                    <Block
+                      key={item.value}
+                      display="flex"
+                      alignItems="center"
+                      gap={tableToken.dataTable.table.header.filter.itemGap}
+                      padding={tableToken.dataTable.table.header.filter.itemPadding}
+                      borderRadius={tableToken.dataTable.table.header.filter.itemBorderRadius}
+                      cursor="pointer"
+                      backgroundColor={isSelected ? tableToken.dataTable.table.header.filter.selectedBackground : 'transparent'}
+                      _hover={{
+                        backgroundColor: tableToken.dataTable.table.header.filter.hoverBackground
+                      }}
+                      onClick={() => {
+                        const currentSelected = columnSelectedValues[fieldKey] || [];
+                        let newSelected = [...currentSelected];
+                        if (newSelected.includes(item.value)) {
+                          newSelected = newSelected.filter(v => v !== item.value);
+                        } else {
+                          newSelected.push(item.value);
+                        }
+                        setColumnSelectedValues(prev => ({ ...prev, [fieldKey]: newSelected }));
+                        onColumnFilter?.(column.field, FilterType.MULTISELECT, newSelected, 'equals');
+                      }}
+                    >
+                      <Checkbox
+                        checked={isSelected}
+                        size={CheckboxSize.SMALL}
+                      />
+                      <PrimitiveText style={{
+                        fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
+                        color: isSelected ? tableToken.dataTable.table.header.filter.selectedTextColor : tableToken.dataTable.table.header.filter.normalTextColor,
+                        fontWeight: isSelected ? tableToken.dataTable.table.header.filter.selectedFontWeight : tableToken.dataTable.table.header.filter.normalFontWeight
+                      }}>
+                        {item.label}
+                      </PrimitiveText>
+                    </Block>
+                  );
+                })}
               </Block>
-            }
-          />
+            ))}
+          </Block>
         )}
 
         {(columnConfig.filterComponent === 'dateRange' || columnConfig.filterComponent === 'numberRange') && (
-          <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[4]}>
+          <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap}>
             <PrimitiveText style={{ 
-              fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
-              color: FOUNDATION_THEME.colors.gray[600]
+              fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+              color: tableToken.dataTable.table.header.filter.groupLabelColor
             }}>
               {columnConfig.filterComponent === 'dateRange' ? 'Date range filtering coming soon...' : 'Number range filtering coming soon...'}
             </PrimitiveText>
@@ -361,7 +372,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   };
 
   return (
-    <thead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 10, backgroundColor: tableToken.dataTable.table.header.backgroundColor, borderBottom: tableToken.dataTable.table.header.borderBottom, height: tableToken.dataTable.table.header.height }}>
+    <thead ref={ref} style={{ position: 'sticky', top: 0, zIndex: 60, backgroundColor: tableToken.dataTable.table.header.backgroundColor, borderBottom: tableToken.dataTable.table.header.borderBottom, height: tableToken.dataTable.table.header.height }}>
       <tr style={{ height: tableToken.dataTable.table.header.height, ...tableToken.dataTable.table.header.row }}>
         {enableRowExpansion && (
           <th style={{ 
@@ -373,11 +384,13 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             boxSizing: 'border-box',
-            position: 'sticky',
-            left: '0px',
-            zIndex: 11,
-            backgroundColor: tableToken.dataTable.table.header.backgroundColor,
-            borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            ...(columnFreeze > 0 && {
+              position: 'sticky',
+              left: '0px',
+              zIndex: 50,
+              backgroundColor: tableToken.dataTable.table.header.backgroundColor,
+              borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+            }),
           }}>
             <Block display='flex' alignItems='center' justifyContent='center'>
             </Block>
@@ -393,11 +406,13 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           boxSizing: 'border-box',
-          position: 'sticky',
-          left: enableRowExpansion ? '50px' : '0px',
-          zIndex: 11,
-          backgroundColor: tableToken.dataTable.table.header.backgroundColor,
-          borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+          ...(columnFreeze > 0 && {
+            position: 'sticky',
+            left: enableRowExpansion ? '50px' : '0px',
+            zIndex: 50,
+            backgroundColor: tableToken.dataTable.table.header.backgroundColor,
+            borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+          }),
         }}>
             <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
               <Checkbox
@@ -413,27 +428,44 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
           const isEditing = editingField === String(column.field);
           const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
           
+          const getPopoverAlignment = (): "start" | "center" | "end" => {
+            if (index === 0) return "start";
+            if (index === localColumns.length - 1) return "end";
+            return "center";
+          };
+
           const getFrozenStyles = () => {
-            if (!column.frozen) return {};
+            if (index >= columnFreeze) return {};
             
             let leftOffset = 60;
             if (enableRowExpansion) leftOffset += 50;
             
             for (let i = 0; i < index; i++) {
               const prevColumn = localColumns[i];
-              if (prevColumn.frozen) {
+              let columnWidth = 120;
+              
+              if (prevColumn.minWidth) {
+                columnWidth = parseInt(prevColumn.minWidth.replace(/px|%|em|rem/g, '')) || 120;
+              } else if (prevColumn.maxWidth) {
+                columnWidth = parseInt(prevColumn.maxWidth.replace(/px|%|em|rem/g, '')) || 120;
+              } else {
                 const prevStyles = getColumnWidth(prevColumn, i);
-                const width = prevStyles.width || prevColumn.minWidth || '120px';
-                leftOffset += parseInt(String(width).replace('px', '')) || 120;
+                if (prevStyles.width) {
+                  columnWidth = parseInt(String(prevStyles.width).replace(/px|%|em|rem/g, '')) || 120;
+                } else if (prevStyles.minWidth) {
+                  columnWidth = parseInt(String(prevStyles.minWidth).replace(/px|%|em|rem/g, '')) || 120;
+                }
               }
+              
+              leftOffset += columnWidth;
             }
             
             return {
               position: 'sticky' as const,
               left: `${leftOffset}px`,
-              zIndex: 11,
+              zIndex: 50,
               backgroundColor: tableToken.dataTable.table.header.backgroundColor,
-              borderRight: `2px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+              borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
             };
           };
           
@@ -483,14 +515,13 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                       {column.header}
                     </Block>
                   ) : (
-                    <Block
-                      display='flex'
-                      alignItems='flex-start'
-                      minWidth={0}
-                      flexGrow={1}
-                      position='relative'
-                      gap='4px'
-                    >
+                                          <Block
+                        display='flex'
+                        minWidth={0}
+                        flexGrow={1}
+                        position='relative'
+                        gap={tableToken.dataTable.table.header.filter.gap}
+                      >
                       <Block
                         display='flex'
                         flexDirection='column'
@@ -508,8 +539,8 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                             width: '100%',
                             display: 'block',
                             cursor: 'default',
-                            fontSize: FOUNDATION_THEME.font.size.body.sm.fontSize,
-                            fontWeight: FOUNDATION_THEME.font.weight[600],
+                            fontSize: tableToken.dataTable.table.header.cell.fontSize || FOUNDATION_THEME.font.size.body.sm.fontSize,
+                            fontWeight: tableToken.dataTable.table.header.cell.fontWeight || FOUNDATION_THEME.font.weight[600],
                             lineHeight: 1.2
                           }}
                         >
@@ -526,8 +557,8 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                               width: '100%',
                               display: 'block',
                               cursor: 'default',
-                              fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,
-                              color: FOUNDATION_THEME.colors.gray[500],
+                              fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+                              color: tableToken.dataTable.table.header.filter.groupLabelColor,
                               lineHeight: 1.2,
                               marginTop: '2px'
                             }}
@@ -572,8 +603,12 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                   >
                     <Popover
                       trigger={<MoreIcon size={16} />}
-                      heading={`${column.header} Options`}
-                      size={PopoverSize.SMALL}
+                      maxWidth={220}
+                      minWidth={220}
+                      zIndex={1000}
+                      side="bottom"
+                      align={getPopoverAlignment()}
+                      sideOffset={20}
                     >
                       {renderColumnFilter(column)}
                     </Popover>

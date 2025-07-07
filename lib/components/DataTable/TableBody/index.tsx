@@ -22,6 +22,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
   enableInlineEdit = false,
   enableColumnManager = true,
   enableRowExpansion = false,
+  columnFreeze = 0,
   renderExpandedRow,
   isRowExpandable,
   onRowSelect,
@@ -86,11 +87,13 @@ const ExpandButton = styled.button`
                   <StyledTableCell width="50px" style={{ 
                     minWidth: `${FOUNDATION_THEME.unit[52]}`, 
                     maxWidth: `${FOUNDATION_THEME.unit[52]}`,
-                    position: 'sticky',
-                    left: '0px',
-                    zIndex: 10,
-                    backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
-                    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                    ...(columnFreeze > 0 && {
+                      position: 'sticky',
+                      left: '0px',
+                      zIndex: 40,
+                      backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
+                      borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                    }),
                   }}>
                     <Block 
                       display='flex' 
@@ -117,11 +120,13 @@ const ExpandButton = styled.button`
                 )}
 
                 <StyledTableCell style={{
-                  position: 'sticky',
-                  left: enableRowExpansion ? '50px' : '0px',
-                  zIndex: 10,
-                  backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
-                  borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                  ...(columnFreeze > 0 && {
+                    position: 'sticky',
+                    left: enableRowExpansion ? '50px' : '0px',
+                    zIndex: 40,
+                    backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
+                    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                  }),
                 }}>
                   <Block 
                     display='flex' 
@@ -144,28 +149,37 @@ const ExpandButton = styled.button`
                   const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
                   
                   // Calculate frozen column positioning for body cells
-                  const getFrozenBodyStyles = () => {
-                    if (!column.frozen) return {};
+                  const getFrozenBodyStyles = () => {                    if (colIndex >= columnFreeze) return {};
                     
-                    // Calculate the accumulated width of frozen columns before this one
-                    let leftOffset = 60; // Start after checkbox column
-                    if (enableRowExpansion) leftOffset += 50; // Add expansion column width
+                    let leftOffset = 60;
+                    if (enableRowExpansion) leftOffset += 50;
                     
                     for (let i = 0; i < colIndex; i++) {
                       const prevColumn = visibleColumns[i];
-                      if (prevColumn.frozen) {
+                      let columnWidth = 120;
+                      
+                      if (prevColumn.minWidth) {
+                        columnWidth = parseInt(prevColumn.minWidth.replace(/px|%|em|rem/g, '')) || 120;
+                      } else if (prevColumn.maxWidth) {
+                        columnWidth = parseInt(prevColumn.maxWidth.replace(/px|%|em|rem/g, '')) || 120;
+                      } else {
                         const prevStyles = getColumnWidth(prevColumn, i);
-                        const width = prevStyles.width || prevColumn.minWidth || '120px';
-                        leftOffset += parseInt(String(width).replace('px', '')) || 120;
+                        if (prevStyles.width) {
+                          columnWidth = parseInt(String(prevStyles.width).replace(/px|%|em|rem/g, '')) || 120;
+                        } else if (prevStyles.minWidth) {
+                          columnWidth = parseInt(String(prevStyles.minWidth).replace(/px|%|em|rem/g, '')) || 120;
+                        }
                       }
+                      
+                      leftOffset += columnWidth;
                     }
                     
                     return {
                       position: 'sticky' as const,
                       left: `${leftOffset}px`,
-                      zIndex: 10,
+                      zIndex: 40,
                       backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
-                      borderRight: `2px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                      borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
                     };
                   };
                   
@@ -184,7 +198,7 @@ const ExpandButton = styled.button`
                 })}
 
                 {enableInlineEdit && (
-                  <StyledTableCell style={{ minWidth: '100px', maxWidth: '100px' }}>
+                  <StyledTableCell>
                     <Block 
                       display='flex' 
                       alignItems='center' 

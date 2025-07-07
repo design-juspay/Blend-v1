@@ -1,4 +1,3 @@
-import { FOUNDATION_THEME } from "../../tokens";
 import { CSSObject } from "styled-components";
 import { FoundationTokenType } from "../../tokens/theme.token";
 
@@ -56,10 +55,50 @@ export type TableTokenType = {
         borderBottom: CSSObject["borderBottom"];
         height: CSSObject["height"];
         row: CSSObject;
-        cell: CSSObject;
+        cell: CSSObject & {
+          width?: CSSObject["width"];
+          fontSize?: CSSObject["fontSize"];
+          fontWeight?: CSSObject["fontWeight"];
+        };
         sortable: {
           cursor: CSSObject["cursor"];
           userSelect: CSSObject["userSelect"];
+        };
+        filter: {
+          backgroundColor: CSSObject["backgroundColor"];
+          borderRadius: CSSObject["borderRadius"];
+          border: CSSObject["border"];
+          cursor: CSSObject["cursor"];
+          textColor: CSSObject["color"];
+          maxHeight: CSSObject["maxHeight"];
+          overflowY: CSSObject["overflowY"];
+          gap: CSSObject["gap"];
+          sortOption: {
+            padding: CSSObject["padding"];
+            borderRadius: CSSObject["borderRadius"];
+            hoverBackground: CSSObject["backgroundColor"];
+            iconColor: CSSObject["color"];
+            textColor: CSSObject["color"];
+            fontSize: CSSObject["fontSize"];
+            fontWeight: CSSObject["fontWeight"];
+          };
+          selectedBackground: CSSObject["backgroundColor"];
+          hoverBackground: CSSObject["backgroundColor"];
+          selectedTextColor: CSSObject["color"];
+          normalTextColor: CSSObject["color"];
+          selectedFontWeight: CSSObject["fontWeight"];
+          normalFontWeight: CSSObject["fontWeight"];
+          itemPadding: CSSObject["padding"];
+          itemGap: CSSObject["gap"];
+          itemBorderRadius: CSSObject["borderRadius"];
+          itemFontSize: CSSObject["fontSize"];
+          groupLabelFontSize: CSSObject["fontSize"];
+          groupLabelFontWeight: CSSObject["fontWeight"];
+          groupLabelColor: CSSObject["color"];
+          groupLabelPadding: CSSObject["padding"];
+          groupLabelTextTransform: CSSObject["textTransform"];
+          separatorHeight: CSSObject["height"];
+          separatorColor: CSSObject["backgroundColor"];
         };
       };
       body: {
@@ -159,15 +198,15 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
         maxWidth: "70%",
       },
       headerSlot1: {
-        maxHeight: `${foundationToken.unit[36]}`,
+        maxHeight: foundationToken.unit[36],
         flexShrink: 0,
       },
       headerSlot2: {
-        maxHeight: `${foundationToken.unit[36]}`,
+        maxHeight: foundationToken.unit[36],
         flexShrink: 0,
       },
       headerSlot3: {
-        maxHeight: `${foundationToken.unit[36]}`,
+        maxHeight: foundationToken.unit[36],
         flexShrink: 0,
       },
     },
@@ -181,16 +220,16 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 1000,
-          backgroundColor: FOUNDATION_THEME.colors.gray[0],
-          color: FOUNDATION_THEME.colors.gray[700],
-          borderRadius: `${FOUNDATION_THEME.border.radius[12]}`,
-          padding: `${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[16]}`,
-          boxShadow: FOUNDATION_THEME.shadows.lg,
+          backgroundColor: foundationToken.colors.gray[0],
+          color: foundationToken.colors.gray[700],
+          borderRadius: foundationToken.border.radius[12],
+          padding: `${foundationToken.unit[8]} ${foundationToken.unit[16]}`,
+          boxShadow: foundationToken.shadows.lg,
           display: 'flex',
           alignItems: 'center',
-          gap: FOUNDATION_THEME.unit[12],
+          gap: foundationToken.unit[12],
           minWidth: '320px',
-          border: `${FOUNDATION_THEME.border.width[1]} solid ${FOUNDATION_THEME.colors.gray[200]}`,
+          border: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
           selectText: {
             fontSize: foundationToken.font.size.body.sm.fontSize,
             fontWeight: foundationToken.font.weight[500],
@@ -214,16 +253,54 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
               backgroundColor: foundationToken.colors.gray[50],
             },
           },
-          cell:{
-            padding: `${foundationToken.unit[4]} ${foundationToken.unit[8]}`,
-            textAlign: "left",
-            fontWeight: foundationToken.font.weight[500],
-            color: foundationToken.colors.gray[400],
-            fontSize: `${foundationToken.font.size.body.sm.fontSize}px`,
-          },
+                  cell:{
+          padding: `${foundationToken.unit[4]} ${foundationToken.unit[8]}`,
+          textAlign: "left",
+          fontWeight: foundationToken.font.weight[500],
+          color: foundationToken.colors.gray[400],
+          fontSize: foundationToken.font.size.body.sm.fontSize,
+          width: foundationToken.unit[40],
+        },
           sortable: {
             cursor: "pointer",
             userSelect: "none",
+          },
+          filter: {
+            backgroundColor: foundationToken.colors.gray[25],
+            borderRadius: foundationToken.border.radius[4],
+            border: `1px solid ${foundationToken.colors.gray[150]}`,
+            cursor: "pointer",
+            textColor: foundationToken.colors.gray[600],
+            maxHeight: "200px",
+            overflowY: "auto",
+            gap: foundationToken.unit[4],
+            sortOption: {
+              padding: foundationToken.unit[8],
+              borderRadius: foundationToken.border.radius[4],
+              hoverBackground: foundationToken.colors.gray[50],
+              iconColor: foundationToken.colors.gray[900],
+              textColor: foundationToken.colors.gray[600],
+              fontSize: foundationToken.font.size.body.md.fontSize,
+              fontWeight: foundationToken.font.weight[400],
+            },
+            // Non-primary selected states (using gray colors)
+            selectedBackground: foundationToken.colors.gray[100],
+            hoverBackground: foundationToken.colors.gray[50],
+            selectedTextColor: foundationToken.colors.gray[800],
+            normalTextColor: foundationToken.colors.gray[700],
+            selectedFontWeight: foundationToken.font.weight[600],
+            normalFontWeight: foundationToken.font.weight[400],
+            itemPadding: `${foundationToken.unit[8]} ${foundationToken.unit[12]}`,
+            itemGap: foundationToken.unit[8],
+            itemBorderRadius: foundationToken.border.radius[4],
+            itemFontSize: foundationToken.font.size.body.sm.fontSize,
+            groupLabelFontSize: foundationToken.font.size.body.xs.fontSize,
+            groupLabelFontWeight: foundationToken.font.weight[600],
+            groupLabelColor: foundationToken.colors.gray[500],
+            groupLabelPadding: `${foundationToken.unit[4]} 0`,
+            groupLabelTextTransform: 'uppercase',
+            separatorHeight: "1px",
+            separatorColor: foundationToken.colors.gray[200],
           },
         },
         body: {
@@ -241,26 +318,26 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
             padding: `${foundationToken.unit[4]} ${foundationToken.unit[8]}`,
             fontWeight: foundationToken.font.weight[500],
             color: foundationToken.colors.gray[400],
-            fontSize: `${foundationToken.font.size.body.sm.fontSize}px`,
+            fontSize: foundationToken.font.size.body.sm.fontSize,
             borderTop: `1px solid ${foundationToken.colors.gray[150]}`,
             expandable: {
-              padding: `${foundationToken.unit[16]}`,
+              padding: foundationToken.unit[16],
               borderTop: `1px solid ${foundationToken.colors.gray[150]}`,
               expandButton: {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: `${foundationToken.unit[32]}`,
-                height: `${foundationToken.unit[32]}`,
-                borderRadius: `${FOUNDATION_THEME.border.radius[4]}`,
+                width: foundationToken.unit[32],
+                height: foundationToken.unit[32],
+                borderRadius: foundationToken.border.radius[4],
                 backgroundColor: "transparent",
                 cursor: "pointer",
                 transition: "background-color 0.2s",
-                color: FOUNDATION_THEME.colors.gray[500],
+                color: foundationToken.colors.gray[500],
                 border: "none",
                 "&:hover": {
-                  backgroundColor: FOUNDATION_THEME.colors.gray[100],
-                  color: FOUNDATION_THEME.colors.gray[700],
+                  backgroundColor: foundationToken.colors.gray[100],
+                  color: foundationToken.colors.gray[700],
                 },
               }
             }
@@ -280,7 +357,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           flexShrink: 0,
           pagination: {
             pageText:{
-              fontSize: `${foundationToken.font.size.body.md.fontSize}px`,
+              fontSize: foundationToken.font.size.body.md.fontSize,
               color: foundationToken.colors.gray[600],
             },
             pageSizeSelector: {
@@ -294,7 +371,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
               background: "none",
               cursor: "pointer",
               color: foundationToken.colors.gray[600],
-              fontSize: `${foundationToken.font.size.body.md.fontSize}px`,
+              fontSize: foundationToken.font.size.body.md.fontSize,
               hoverColor: foundationToken.colors.gray[50],
             },
             pageNavigation: {

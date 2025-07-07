@@ -160,6 +160,8 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   advancedFilterComponent?: React.ComponentType<AdvancedFilterProps>;
   /** Current filters for advanced filter */
   advancedFilters?: unknown[];
+  /** Number of data columns to freeze from the left (excluding checkbox/expansion columns) */
+  columnFreeze?: number;
   /** Whether search is handled server-side (disables local search) */
   serverSideSearch?: boolean;
   /** Whether filtering is handled server-side (disables local filtering) */

@@ -14,6 +14,7 @@ const DataTableDemo = () => {
     const [isServerSideMode, setIsServerSideMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [autoSwitchToApi, setAutoSwitchToApi] = useState(true); 
+    const [columnFreeze, setColumnFreeze] = useState(2); 
 
     // Generate larger dataset for server-side demo
     const generateLargeDataset = (count: number) => {
@@ -105,7 +106,6 @@ const DataTableDemo = () => {
         field: 'name',
         header: 'User Profile',
         headerSubtext: 'Name & Join Date',
-        frozen: true,
         type: ColumnType.AVATAR,
         renderCell: (value) => {
           const avatarData = value as AvatarData;
@@ -129,7 +129,6 @@ const DataTableDemo = () => {
         field: 'email',
         header: 'Contact Info',
         headerSubtext: 'Email Address',
-        frozen: true,
         type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
@@ -692,9 +691,37 @@ const DataTableDemo = () => {
                   ? `🚀 Server-side mode: Simulating 3,000 records with API calls for search/filter. Currently showing ${data.length} records.`
                   : `💻 Local mode: All operations handled client-side with ${data.length} records. Both column filters and advanced filters work locally.`
                 }
+                <span style={{ marginLeft: '8px' }}>
+                  {columnFreeze > 0 ? (
+                    <>📌 Currently freezing the first {columnFreeze} data column{columnFreeze !== 1 ? 's' : ''} + checkbox/expansion columns.</>
+                  ) : (
+                    <>🔄 All columns are scrollable (no columns frozen).</>
+                  )}
+                </span>
               </p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+                <label htmlFor="column-freeze">Freeze Columns:</label>
+                <select
+                  id="column-freeze"
+                  value={columnFreeze}
+                  onChange={(e) => setColumnFreeze(parseInt(e.target.value))}
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    border: '1px solid #d1d5db',
+                    fontSize: '14px'
+                  }}
+                >
+                  <option value={0}>None</option>
+                  <option value={1}>First 1</option>
+                  <option value={2}>First 2</option>
+                  <option value={3}>First 3</option>
+                  <option value={4}>First 4</option>
+                  <option value={5}>First 5</option>
+                </select>
+              </div>
               <Button
                 buttonType={autoSwitchToApi ? ButtonType.PRIMARY : ButtonType.SECONDARY}
                 leadingIcon={Zap}
@@ -714,6 +741,20 @@ const DataTableDemo = () => {
                 Switch to {isServerSideMode ? 'Local' : 'Server-Side'}
               </Button>
             </div>
+          </div>
+          
+          {/* Column freeze explanation */}
+          <div style={{ 
+            marginTop: '12px', 
+            padding: '12px', 
+            backgroundColor: '#f0f9ff', 
+            borderRadius: '6px',
+            fontSize: '12px'
+          }}>
+            <strong>📌 Column Freeze:</strong> Use the dropdown above to freeze the first N data columns. 
+            When set to 0 (None), ALL columns scroll including checkbox/expansion columns. 
+            When set to 1+, the checkbox/expansion columns become sticky along with the first N data columns. 
+            Try changing between "None" and "First 2" then scroll horizontally to see the difference!
           </div>
           
           {/* Auto-switch explanation */}
@@ -754,7 +795,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features frozen columns (User Profile & Contact Info), headerSubtext, flexible column widths with min/max constraints and automatic text truncation. Try scrolling horizontally to see frozen columns in action, clicking on any row, using column header filters, and advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. Try changing the column freeze setting above, scrolling horizontally to see the effect, clicking on any row, using column header filters, and advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}
@@ -762,6 +803,7 @@ const DataTableDemo = () => {
           enableAdvancedFilter
           advancedFilterComponent={AdvancedFilterComponent}
           advancedFilters={serverState.filters}
+          columnFreeze={columnFreeze}
           enableInlineEdit
           enableRowExpansion
           renderExpandedRow={renderExpandedRow}

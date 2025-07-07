@@ -29,6 +29,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     enableAdvancedFilter = false,
     advancedFilterComponent,
     advancedFilters = [],
+    columnFreeze = 0,
     serverSideSearch = false,
     serverSideFiltering = false,
     serverSidePagination = false,
@@ -371,11 +372,16 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
         <Block style={{
           flex: 1,
-          overflowX: 'auto',
-          overflowY: 'auto',
-          scrollBehavior: 'smooth',
-          WebkitOverflowScrolling: 'touch',
+          position: 'relative',
         }}>
+          <Block style={{
+            overflowX: 'auto',
+            overflowY: 'auto',
+            scrollBehavior: 'smooth',
+            WebkitOverflowScrolling: 'touch',
+            height: '100%',
+            position: 'relative',
+          }}>
           <table style={{
             width: tableToken.dataTable.table.width,
             tableLayout: tableToken.dataTable.table.tableLayout,
@@ -397,6 +403,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               onColumnChange={(columns) => setVisibleColumns(columns as ColumnDefinition<T>[])}
               onColumnFilter={handleColumnFilter}
               getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
+              columnFreeze={columnFreeze}
             />
             <TableBodyComponent
               currentData={currentData}
@@ -409,6 +416,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               enableInlineEdit={enableInlineEdit}
               enableColumnManager={enableColumnManager}
               enableRowExpansion={enableRowExpansion}
+              columnFreeze={columnFreeze}
               renderExpandedRow={renderExpandedRow as ((expandedData: { row: Record<string, unknown>; index: number; isExpanded: boolean; toggleExpansion: () => void; }) => React.ReactNode) | undefined}
               isRowExpandable={isRowExpandable as ((row: Record<string, unknown>, index: number) => boolean) | undefined}
               onRowSelect={handleRowSelect}
@@ -421,6 +429,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               onRowClick={onRowClick as ((row: Record<string, unknown>, index: number) => void) | undefined}
             />
           </table>
+          </Block>
         </Block>
         
         <TableFooter
