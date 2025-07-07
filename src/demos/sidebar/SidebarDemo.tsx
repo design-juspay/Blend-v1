@@ -53,6 +53,8 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
+import SingleSelectDemo from "../SingleSelect/SingleSelectDemo";
+import MultiSelectDemo from "../MultiSelect/MultiSelectDemo";
 import { SingleSelect, ThemeProvider } from "../../../lib/main";
 import {
   SelectMenuAlignment,
@@ -93,6 +95,7 @@ const SidebarDemo = () => {
     | "fonts"
     | "datePicker"
     | "selectors"
+    | "singleSelect"
     | "buttonGroups"
     | "avatars"
     | "menu"
@@ -106,7 +109,8 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
-  >("dataTable");
+    | "multiSelect"
+    >("dataTable");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
@@ -250,8 +254,12 @@ const SidebarDemo = () => {
         return <InputDemo />;
       case "dataTable":
         return <DataTableDemo />;
+      case "singleSelect":
+        return <SingleSelectDemo />;
       case "popover":
         return <PopoverDemo />;
+      case "multiSelect":
+        return <MultiSelectDemo />;
       default:
         return null;
     }
@@ -458,6 +466,16 @@ const SidebarDemo = () => {
           label: "Switch",
           leftSlot: <Square style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("switch"),
+        },
+        {
+          label: "Single Select",
+          leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("singleSelect"),
+        },
+        {
+          label: "Multi Select",
+          leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("multiSelect"),
         },
         {
           label: "Selectors",
