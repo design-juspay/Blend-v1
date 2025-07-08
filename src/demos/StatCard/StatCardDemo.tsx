@@ -24,7 +24,9 @@ const StatCardDemo: React.FC = () => {
   const [showActionIcon, setShowActionIcon] = useState(true);
   const [progressValue, setProgressValue] = useState(73);
   const [showHelpIcon, setShowHelpIcon] = useState(false);
-  const [trendDirection, setTrendDirection] = useState<"up" | "down" | "mountain">("up");
+  const [trendDirection, setTrendDirection] = useState<
+    "up" | "down" | "mountain"
+  >("up");
 
   // const lineChartData = Array.from({ length: 30 }, (_, i) => ({
   //   value: 20 + (i * 2) + Math.floor(Math.random() * 5),
@@ -39,7 +41,7 @@ const StatCardDemo: React.FC = () => {
   }));
 
   const lineChartDataDecreasing = Array.from({ length: 30 }, (_, i) => ({
-    value: 80 - (i * 2) + Math.floor(Math.random() * 5), 
+    value: 80 - i * 2 + Math.floor(Math.random() * 5),
     label: `2025-05-${i + 1}`,
     date: `05/${i + 1}`,
   }));
@@ -136,12 +138,14 @@ const StatCardDemo: React.FC = () => {
           </div>
         )}
 
-        {(variant === StatCardVariant.LINE) && (
+        {variant === StatCardVariant.LINE && (
           <div className="control-group">
             <label>Trend Direction</label>
             <select
               value={trendDirection}
-              onChange={(e) => setTrendDirection(e.target.value as "up" | "down" | "mountain")}
+              onChange={(e) =>
+                setTrendDirection(e.target.value as "up" | "down" | "mountain")
+              }
               className="control-select"
             >
               <option value="up">Trending Up (Green)</option>
@@ -190,7 +194,6 @@ const StatCardDemo: React.FC = () => {
               />
               <span>Show Help Icon</span>
             </label>
-
           </div>
         </div>
       </div>
@@ -229,8 +232,10 @@ const StatCardDemo: React.FC = () => {
               variant === StatCardVariant.LINE ||
               variant === StatCardVariant.BAR
                 ? variant === StatCardVariant.LINE
-                  ? trendDirection === "up" ? lineChartData 
-                    : trendDirection === "down" ? lineChartDataDecreasing
+                  ? trendDirection === "up"
+                    ? lineChartData
+                    : trendDirection === "down"
+                    ? lineChartDataDecreasing
                     : lineChartDataMountain
                   : barChartData
                 : undefined
@@ -280,7 +285,9 @@ const StatCardDemo: React.FC = () => {
         </div>
 
         <div className="preset-item">
-          <p className="preset-label">Line Chart - Decreasing Trend (-15.30%)</p>
+          <p className="preset-label">
+            Line Chart - Decreasing Trend (-15.30%)
+          </p>
           <StatCard
             variant={StatCardVariant.LINE}
             title="Server Errors"
