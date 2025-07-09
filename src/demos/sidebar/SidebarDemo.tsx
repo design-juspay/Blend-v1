@@ -55,13 +55,15 @@ import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
 import SingleSelectDemo from "../SingleSelect/SingleSelectDemo";
 import MultiSelectDemo from "../MultiSelect/MultiSelectDemo";
-import { SingleSelect, ThemeProvider } from "../../../lib/main";
+import { SingleSelect } from "../../../lib/components/SingleSelect";
+import { ThemeProvider } from "../../../lib/context";
 import {
   SelectMenuAlignment,
   SelectMenuVariant,
 } from "../../../lib/components/Select";
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
+import SliderDemo from "../Slider/SliderDemo";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -110,6 +112,7 @@ const SidebarDemo = () => {
     | "popover"
     | "theme"
     | "multiSelect"
+    | "slider"
     >("dataTable");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
@@ -260,6 +263,8 @@ const SidebarDemo = () => {
         return <PopoverDemo />;
       case "multiSelect":
         return <MultiSelectDemo />;
+      case "slider":
+        return <SliderDemo />;
       default:
         return null;
     }
@@ -481,6 +486,11 @@ const SidebarDemo = () => {
           label: "Selectors",
           leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("selectors"),
+        },
+        {
+          label: "Slider",
+          leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("slider"),
         },
       ],
     },
