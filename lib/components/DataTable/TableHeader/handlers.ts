@@ -10,6 +10,13 @@ export type FilterState = {
   columnSelectedValues: Record<string, string[]>;
 };
 
+export type ColumnFilterHandler = (
+  field: string, 
+  filterType: FilterType, 
+  value: string | string[], 
+  operator?: "endsWith" | "startsWith" | "equals" | "contains" | "gt" | "lt" | "gte" | "lte"
+) => void;
+
 export type SortHandlers = {
   handleSort: (field: string) => void;
   handleSortAscending: (field: string) => void;
@@ -18,8 +25,8 @@ export type SortHandlers = {
 
 export type FilterHandlers = {
   handleSearchChange: (fieldKey: string, value: string) => void; // Updates search state only
-  handleSelectFilter: (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: Function) => void;
-  handleMultiSelectFilter: (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: Function) => void;
+  handleSelectFilter: (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: ColumnFilterHandler) => void;
+  handleMultiSelectFilter: (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: ColumnFilterHandler) => void;
 };
 
 export const createSortHandlers = (
@@ -83,7 +90,7 @@ export const createFilterHandlers = (
     }));
   };
 
-  const handleSelectFilter = (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: Function) => {
+  const handleSelectFilter = (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: ColumnFilterHandler) => {
     setFilterState(prev => ({
       ...prev,
       columnSelectedValues: { ...prev.columnSelectedValues, [fieldKey]: [value] }
@@ -91,7 +98,7 @@ export const createFilterHandlers = (
     onColumnFilter?.(column.field, FilterType.SELECT, value, 'equals');
   };
 
-  const handleMultiSelectFilter = (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: Function) => {
+  const handleMultiSelectFilter = (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: ColumnFilterHandler) => {
     setFilterState(prev => {
       const currentSelected = prev.columnSelectedValues[fieldKey] || [];
       let newSelected = [...currentSelected];

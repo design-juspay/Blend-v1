@@ -1,10 +1,35 @@
+import React from "react";
 import { FOUNDATION_THEME } from "../../tokens";
 import { SliderVariant, SliderSize, SliderValueType, SliderValueFormatConfig } from "./types";
+
+type SliderCSSProperties = React.CSSProperties & {
+  '&:hover'?: {
+    boxShadow?: string;
+  };
+  '&:focus'?: {
+    outline?: string;
+    boxShadow?: string;
+  };
+  '&:active'?: {
+    cursor?: string;
+  };
+  '&:disabled'?: {
+    cursor?: string;
+    opacity?: string | number;
+  };
+}
+
+interface SliderTokenStyles {
+  root: SliderCSSProperties;
+  track: SliderCSSProperties;
+  range: SliderCSSProperties;
+  thumb: SliderCSSProperties;
+}
 
 export const getSliderTokenStyles = (
   variant: SliderVariant,
   size: SliderSize
-) => {
+): SliderTokenStyles => {
   // Size-based dimensions
   const sizeTokens = {
     [SliderSize.SMALL]: {
@@ -231,7 +256,7 @@ export const createSliderRange = (
  */
 export const getSliderLabelStyles = (
   position: "top" | "bottom" | "inline" = "top"
-) => {
+): SliderCSSProperties => {
   const baseStyles = {
     position: 'absolute' as const,
     fontSize: FOUNDATION_THEME.font.size.body.xs.fontSize,

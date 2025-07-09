@@ -150,7 +150,24 @@ const StyledValueLabel = styled.div<{
 }>`
   ${({ $position }) => {
     const styles = getSliderLabelStyles($position);
-    return styles;
+    return css`
+      position: ${styles.position};
+      font-size: ${styles.fontSize};
+      color: ${styles.color};
+      font-weight: ${styles.fontWeight};
+      white-space: ${styles.whiteSpace};
+      pointer-events: ${styles.pointerEvents};
+      transform: ${styles.transform};
+      ${styles.bottom && `bottom: ${styles.bottom};`}
+      ${styles.marginBottom && `margin-bottom: ${styles.marginBottom};`}
+      ${styles.top && `top: ${styles.top};`}
+      ${styles.marginTop && `margin-top: ${styles.marginTop};`}
+      ${styles.backgroundColor && `background-color: ${styles.backgroundColor};`}
+      ${styles.padding && `padding: ${styles.padding};`}
+      ${styles.borderRadius && `border-radius: ${styles.borderRadius};`}
+      ${styles.boxShadow && `box-shadow: ${styles.boxShadow};`}
+      ${styles.border && `border: ${styles.border};`}
+    `;
   }}
 `;
 

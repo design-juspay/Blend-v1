@@ -8,7 +8,7 @@ import { CheckboxSize } from '../../Checkbox/types';
 import { ColumnDefinition } from '../types';
 import { ColumnType, getColumnTypeConfig } from '../columnTypes';
 import { TableTokenType } from '../dataTable.tokens';
-import { SortHandlers, FilterHandlers, FilterState } from './handlers';
+import { SortHandlers, FilterHandlers, FilterState, ColumnFilterHandler } from './handlers';
 import { getSelectMenuItems, getMultiSelectMenuItems, filterItemsBySearch } from './utils';
 import { FOUNDATION_THEME } from '../../../tokens';
 
@@ -19,7 +19,7 @@ type FilterComponentsProps = {
   sortHandlers: SortHandlers;
   filterHandlers: FilterHandlers;
   filterState: FilterState;
-  onColumnFilter?: Function;
+  onColumnFilter?: ColumnFilterHandler;
 };
 
 export const SortOptions: React.FC<{
@@ -111,7 +111,7 @@ export const SingleSelectItems: React.FC<{
   filterHandlers: FilterHandlers;
   filterState: FilterState;
   data?: Record<string, unknown>[];
-  onColumnFilter?: Function;
+  onColumnFilter?: ColumnFilterHandler;
 }> = ({ column, fieldKey, tableToken, filterHandlers, filterState, data, onColumnFilter }) => {
   const menuItems = getSelectMenuItems(column, data);
   
@@ -167,7 +167,7 @@ export const MultiSelectItems: React.FC<{
   filterHandlers: FilterHandlers;
   filterState: FilterState;
   data?: Record<string, unknown>[];
-  onColumnFilter?: Function;
+  onColumnFilter?: ColumnFilterHandler;
 }> = ({ column, fieldKey, tableToken, filterHandlers, filterState, data, onColumnFilter }) => {
   const menuItems = getMultiSelectMenuItems(column, data);
   
