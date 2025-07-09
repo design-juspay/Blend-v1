@@ -1,4 +1,4 @@
-import { ColumnDefinition, ColumnFilter, FilterType } from '../types';
+import { ColumnDefinition, FilterType } from '../types';
 
 export type TableHeaderProps<T extends Record<string, unknown>> = {
   visibleColumns: ColumnDefinition<T>[];
@@ -8,7 +8,6 @@ export type TableHeaderProps<T extends Record<string, unknown>> = {
   enableColumnManager?: boolean;
   enableRowExpansion?: boolean;
   data?: T[];
-  columnFilters?: ColumnFilter[];
   columnFreeze?: number;
   onSort: (field: keyof T) => void;
   onSelectAll: (checked: boolean | 'indeterminate') => void;

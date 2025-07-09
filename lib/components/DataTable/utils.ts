@@ -38,13 +38,63 @@ export const searchData = <T extends Record<string, unknown>>(
       const cellValue = row[fieldStr as keyof T];
       if (cellValue == null) return false;
       
-      const valueStr = searchConfig.caseSensitive 
-        ? String(cellValue)
-        : String(cellValue).toLowerCase();
-        
-      return valueStr.includes(query);
+      const searchableText = extractSearchableText(cellValue, searchConfig.caseSensitive || false);
+      
+      return searchableText.includes(query);
     });
   });
+};
+
+const extractSearchableText = (value: unknown, caseSensitive: boolean): string => {
+  if (value == null) return '';
+  
+  if (typeof value === 'object' && value !== null && 'text' in value) {
+    const tagData = value as TagData;
+    const text = tagData.text || '';
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  if (typeof value === 'object' && value !== null && 'label' in value) {
+    const avatarData = value as AvatarData;
+    const text = [avatarData.label, avatarData.sublabel].filter(Boolean).join(' ');
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  if (typeof value === 'object' && value !== null && 'values' in value) {
+    const multiSelectData = value as MultiSelectData;
+    const allValues = [
+      ...(multiSelectData.values || []),
+      ...(multiSelectData.labels || [])
+    ];
+    const text = allValues.join(' ');
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  if (typeof value === 'object' && value !== null && 'value' in value) {
+    const selectData = value as SelectData;
+    const text = [selectData.value, selectData.label].filter(Boolean).join(' ');
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  if (typeof value === 'object' && value !== null && 'date' in value) {
+    const dateData = value as DateData;
+    const text = String(dateData.date);
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  if (typeof value === 'object' && value !== null && 'startDate' in value && 'endDate' in value) {
+    const dateRangeData = value as DateRangeData;
+    const text = `${dateRangeData.startDate} ${dateRangeData.endDate}`;
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  if (Array.isArray(value)) {
+    const text = value.map(item => String(item)).join(' ');
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
+  const text = String(value);
+  return caseSensitive ? text : text.toLowerCase();
 };
 
 export const applyColumnFilters = <T extends Record<string, unknown>>(
@@ -71,8 +121,22 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
           return String(cellValue) === String(filterValue);
         
         case FilterType.MULTISELECT: {
-            const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-            return filterValues.some(val => String(cellValue) === String(val));
+          const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+          
+          if (typeof cellValue === 'object' && cellValue !== null && 'values' in cellValue) {
+            const multiSelectData = cellValue as MultiSelectData;
+            return filterValues.some(filterVal => 
+              multiSelectData.values.some(val => String(val) === String(filterVal))
+            );
+          }
+          
+          if (Array.isArray(cellValue)) {
+            return filterValues.some(filterVal => 
+              cellValue.some(val => String(val) === String(filterVal))
+            );
+          }
+          
+          return filterValues.some(val => String(cellValue) === String(val));
         }
           
         
@@ -159,7 +223,28 @@ export const getUniqueColumnValues = <T extends Record<string, unknown>>(
   data.forEach(row => {
     const value = row[field];
     if (value != null) {
-      uniqueValues.add(String(value));
+      if (typeof value === 'object' && value !== null && 'values' in value) {
+        const multiSelectData = value as MultiSelectData;
+        multiSelectData.values.forEach(val => uniqueValues.add(String(val)));
+      }
+      else if (Array.isArray(value)) {
+        value.forEach(val => uniqueValues.add(String(val)));
+      }
+      else if (typeof value === 'object' && value !== null && 'text' in value) {
+        const tagData = value as TagData;
+        uniqueValues.add(String(tagData.text));
+      }
+      else if (typeof value === 'object' && value !== null && 'label' in value) {
+        const avatarData = value as AvatarData;
+        uniqueValues.add(String(avatarData.label));
+      }
+      else if (typeof value === 'object' && value !== null && 'value' in value) {
+        const selectData = value as SelectData;
+        uniqueValues.add(String(selectData.value));
+      }
+      else {
+        uniqueValues.add(String(value));
+      }
     }
   });
   

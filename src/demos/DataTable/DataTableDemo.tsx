@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { ColumnDefinition, SortDirection, FilterType, SearchConfig, ColumnFilter } from '../../../lib/components/DataTable/types';
+import { ColumnDefinition, SortDirection, SearchConfig, ColumnFilter } from '../../../lib/components/DataTable/types';
 import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
 import { RefreshCw, Plus, CircleX, Server, Database, Zap } from 'lucide-react';
-import { ColumnType, AvatarData, TagData } from '../../../lib/components/DataTable/columnTypes';
+import { ColumnType, AvatarData, TagData, MultiSelectData } from '../../../lib/components/DataTable/columnTypes';
 import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
 
 const DataTableDemo = () => {
@@ -66,7 +66,37 @@ const DataTableDemo = () => {
             'anna@example.com', 'john@example.com', 'mary@example.com'
           ][index % 12],
           role: ['Admin', 'User', 'Manager', 'Editor', 'Viewer', 'Moderator'][index % 6],
-          department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'][index % 6]
+          department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'][index % 6],
+          permissions: {
+            values: [
+              ['read', 'write'],
+              ['read', 'write', 'delete'],
+              ['read'],
+              ['read', 'write', 'admin'],
+              ['read', 'write'],
+              ['read'],
+              ['read', 'write', 'delete', 'admin'],
+              ['read', 'write'],
+              ['read', 'write', 'delete'],
+              ['read'],
+              ['read', 'write'],
+              ['read', 'write', 'admin']
+            ][index % 12],
+            labels: [
+              ['Read', 'Write'],
+              ['Read', 'Write', 'Delete'],
+              ['Read'],
+              ['Read', 'Write', 'Admin'],
+              ['Read', 'Write'],
+              ['Read'],
+              ['Read', 'Write', 'Delete', 'Admin'],
+              ['Read', 'Write'],
+              ['Read', 'Write', 'Delete'],
+              ['Read'],
+              ['Read', 'Write'],
+              ['Read', 'Write', 'Admin']
+            ][index % 12]
+          } as MultiSelectData
         };
       });
     };
@@ -99,6 +129,8 @@ const DataTableDemo = () => {
       contact: string;
       status: TagData;
       department: string;
+      skills: MultiSelectData;
+      permissions: MultiSelectData;
     } & Record<string, unknown>;
     
     const columns: ColumnDefinition<UserRow>[] = [
@@ -120,8 +152,6 @@ const DataTableDemo = () => {
           );
         },
         isSortable: true,
-        isFilterable: true,
-        filterType: FilterType.TEXT,
         minWidth: '220px',
         maxWidth: '320px'
       },
@@ -132,8 +162,6 @@ const DataTableDemo = () => {
         type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.TEXT,
         minWidth: '180px',
         maxWidth: '250px'
       },
@@ -144,8 +172,6 @@ const DataTableDemo = () => {
         type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
         filterOptions: [
           { id: 'admin', label: 'Admin', value: 'Admin' },
           { id: 'user', label: 'User', value: 'User' },
@@ -163,8 +189,6 @@ const DataTableDemo = () => {
         type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
         filterOptions: [
           { id: 'engineering', label: 'Engineering', value: 'Engineering' },
           { id: 'marketing', label: 'Marketing', value: 'Marketing' },
@@ -182,8 +206,6 @@ const DataTableDemo = () => {
         type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
         filterOptions: [
           { id: 'gateway-a', label: 'Gateway A', value: 'Gateway A' },
           { id: 'gateway-b', label: 'Gateway B', value: 'Gateway B' },
@@ -226,8 +248,6 @@ const DataTableDemo = () => {
           );
         },
         isSortable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
         filterOptions: [
           { id: 'active', label: 'Active', value: 'Active' },
           { id: 'inactive', label: 'Inactive', value: 'Inactive' },
@@ -236,6 +256,52 @@ const DataTableDemo = () => {
         ],
         minWidth: '100px',
         maxWidth: '140px'
+      },
+      {
+        field: 'permissions',
+        header: 'User Permissions',
+        headerSubtext: 'Access Rights',
+        type: ColumnType.MULTISELECT,
+        renderCell: (value) => {
+          const permissionsData = value as MultiSelectData;
+          const getPermissionColor = (permission: string): TagColor => {
+            switch (permission.toLowerCase()) {
+              case 'admin':
+                return TagColor.ERROR;
+              case 'write':
+                return TagColor.WARNING;
+              case 'delete':
+                return TagColor.ERROR;
+              case 'read':
+                return TagColor.SUCCESS;
+              default:
+                return TagColor.NEUTRAL;
+            }
+          };
+
+          return (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+              {permissionsData.values.map((permission, index) => (
+                <Tag
+                  key={index}
+                  text={permissionsData.labels?.[index] || permission}
+                  variant={TagVariant.SUBTLE}
+                  color={getPermissionColor(permission)}
+                  size={TagSize.SM}
+                />
+              ))}
+            </div>
+          );
+        },
+        isSortable: false,
+        filterOptions: [
+          { id: 'read', label: 'Read', value: 'read' },
+          { id: 'write', label: 'Write', value: 'write' },
+          { id: 'delete', label: 'Delete', value: 'delete' },
+          { id: 'admin', label: 'Admin', value: 'admin' },
+        ],
+        minWidth: '140px',
+        maxWidth: '200px'
       },
     ];
     
@@ -698,6 +764,9 @@ const DataTableDemo = () => {
                     <>🔄 All columns are scrollable (no columns frozen).</>
                   )}
                 </span>
+                <span style={{ marginLeft: '8px' }}>
+                  🏷️ Search functionality available only in dropdown menus for select/multiselect/tag columns like skills, roles, and status.
+                </span>
               </p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -795,7 +864,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. Try changing the column freeze setting above, scrolling horizontally to see the effect, clicking on any row, using column header filters, and advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. Try clicking column headers to see type-specific filters, searching within dropdown menus for skills/roles, changing column freeze settings, scrolling horizontally, clicking on any row, and using advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}

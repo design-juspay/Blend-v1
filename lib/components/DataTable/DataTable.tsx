@@ -397,7 +397,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               enableColumnManager={enableColumnManager}
               enableRowExpansion={enableRowExpansion}
               data={data}
-              columnFilters={columnFilters}
               onSort={handleSort}
               onSelectAll={handleSelectAll}
               onColumnChange={(columns) => setVisibleColumns(columns as ColumnDefinition<T>[])}

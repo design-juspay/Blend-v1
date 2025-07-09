@@ -153,18 +153,16 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
         type,
         filterType: FilterType.TEXT,
         supportsSorting: true,
-        supportsFiltering: true,
-        enableSearch: true,
-        filterComponent: 'search'
+        supportsFiltering: false,
+        enableSearch: false
       };
     case ColumnType.NUMBER:
       return {
         type,
         filterType: FilterType.NUMBER,
         supportsSorting: true,
-        supportsFiltering: true,
-        enableSearch: true,
-        filterComponent: 'search'
+        supportsFiltering: false,
+        enableSearch: false
       };
     case ColumnType.SELECT:
       return {
@@ -189,9 +187,8 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
         type,
         filterType: FilterType.TEXT,
         supportsSorting: true,
-        supportsFiltering: true,
-        enableSearch: true,
-        filterComponent: 'search'
+        supportsFiltering: false,
+        enableSearch: false
       };
     case ColumnType.TAG:
       return {
@@ -233,9 +230,8 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
         type: ColumnType.TEXT,
         filterType: FilterType.TEXT,
         supportsSorting: true,
-        supportsFiltering: true,
-        enableSearch: true,
-        filterComponent: 'search'
+        supportsFiltering: false,
+        enableSearch: false
       };
   }
 }; 
