@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Edit, Save, X, ChevronRight, ChevronDown } from 'lucide-react';
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { TableBodyProps } from './types';
 import TableCell from '../TableCell';
 import Block from '../../Primitives/Block/Block';
@@ -33,6 +33,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
   onFieldChange,
   onRowClick,
   getColumnWidth,
+  getRowStyle,
 }, ref) => {
   const getColSpan = () => {
     let colSpan = visibleColumns.length + 1;
@@ -44,15 +45,50 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
 
   const tableToken = useComponentToken("TABLE") as TableTokenType;
 
-const TableRow = styled.tr<{ isClickable?: boolean }>`
-  ${tableToken.dataTable.table.body.row}`;
+const TableRow = styled.tr<{ 
+  isClickable?: boolean; 
+  customBackgroundColor?: string;
+  hasCustomBackground?: boolean;
+}>`
+  ${tableToken.dataTable.table.body.row}
+  ${props => props.customBackgroundColor && css`
+    background-color: ${props.customBackgroundColor} !important;
+  `}
+  
+  ${props => props.isClickable && css`
+    cursor: pointer;
+  `}
+  
+  ${props => !props.hasCustomBackground && css`
+    &:hover {
+      background-color: ${FOUNDATION_THEME.colors.gray[100] } !important;
+      
+      td {
+        background-color: ${FOUNDATION_THEME.colors.gray[100]} !important;
+      }
+    }
+  `}
+`;
 
-const StyledTableCell = styled.td<{ width?: string }>`
+const StyledTableCell = styled.td<{ 
+  width?: string;
+  customBackgroundColor?: string;
+  hasCustomBackground?: boolean;
+}>`
   ${tableToken.dataTable.table.body.cell}
   ${props => props.width && `width: ${props.width};`}
+  ${props => props.customBackgroundColor && css`
+    background-color: ${props.customBackgroundColor} !important;
+  `}
   overflow: hidden;
   box-sizing: border-box;
   max-width: 0;
+  
+  ${props => !props.hasCustomBackground && css`
+    tr:hover & {
+      background-color: ${FOUNDATION_THEME.colors.gray[100]} !important;
+    }
+  `}
 `;
 
 const EmptyStateCell = styled.td`
@@ -68,6 +104,8 @@ const ExpandButton = styled.button`
   ${tableToken.dataTable.table.body.cell.expandable.expandButton}
 `;
 
+
+
   return (
     <tbody ref={ref}>
       {currentData.length > 0 ? (
@@ -77,24 +115,39 @@ const ExpandButton = styled.button`
           const isExpanded = expandedRows[rowId];
           const canExpand = isRowExpandable ? isRowExpandable(row, index) : true;
           
+          const rowStyling = getRowStyle ? getRowStyle(row, index) : {};
+          const hasCustomBackground = !!rowStyling.backgroundColor;
+          
           return (
             <React.Fragment key={rowId}>
               <TableRow 
                 isClickable={!!onRowClick}
+                customBackgroundColor={rowStyling.backgroundColor}
+                hasCustomBackground={hasCustomBackground}
                 onClick={() => onRowClick && onRowClick(row, index)}
+                style={{
+                  // Apply other styles but not backgroundColor to avoid conflicts
+                  ...Object.fromEntries(
+                    Object.entries(rowStyling).filter(([key]) => key !== 'backgroundColor')
+                  ),
+                }}
               >
                 {enableRowExpansion && (
-                  <StyledTableCell width="50px" style={{ 
-                    minWidth: `${FOUNDATION_THEME.unit[52]}`, 
-                    maxWidth: `${FOUNDATION_THEME.unit[52]}`,
-                    ...(columnFreeze > 0 && {
-                      position: 'sticky',
-                      left: '0px',
-                      zIndex: 40,
-                      backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
-                      borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-                    }),
-                  }}>
+                  <StyledTableCell 
+                    width="50px" 
+                    customBackgroundColor={rowStyling.backgroundColor}
+                    hasCustomBackground={hasCustomBackground}
+                    style={{ 
+                      minWidth: `${FOUNDATION_THEME.unit[52]}`, 
+                      maxWidth: `${FOUNDATION_THEME.unit[52]}`,
+                      ...(columnFreeze > 0 && {
+                        position: 'sticky',
+                        left: '0px',
+                        zIndex: 40,
+                        borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                      }),
+                    }}
+                  >
                     <Block 
                       display='flex' 
                       alignItems='center' 
@@ -119,15 +172,18 @@ const ExpandButton = styled.button`
                   </StyledTableCell>
                 )}
 
-                <StyledTableCell style={{
-                  ...(columnFreeze > 0 && {
-                    position: 'sticky',
-                    left: enableRowExpansion ? '50px' : '0px',
-                    zIndex: 40,
-                    backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
-                    borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-                  }),
-                }}>
+                <StyledTableCell 
+                  customBackgroundColor={rowStyling.backgroundColor}
+                  hasCustomBackground={hasCustomBackground}
+                  style={{
+                    ...(columnFreeze > 0 && {
+                      position: 'sticky',
+                      left: enableRowExpansion ? '50px' : '0px',
+                      zIndex: 40,
+                      borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                    }),
+                  }}
+                >
                   <Block 
                     display='flex' 
                     alignItems='center' 
@@ -149,7 +205,8 @@ const ExpandButton = styled.button`
                   const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
                   
                   // Calculate frozen column positioning for body cells
-                  const getFrozenBodyStyles = () => {                    if (colIndex >= columnFreeze) return {};
+                  const getFrozenBodyStyles = () => {
+                    if (colIndex >= columnFreeze) return {};
                     
                     let leftOffset = 60;
                     if (enableRowExpansion) leftOffset += 50;
@@ -178,7 +235,6 @@ const ExpandButton = styled.button`
                       position: 'sticky' as const,
                       left: `${leftOffset}px`,
                       zIndex: 40,
-                      backgroundColor: tableToken.dataTable.table.body.backgroundColor || '#ffffff',
                       borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
                     };
                   };
@@ -199,7 +255,10 @@ const ExpandButton = styled.button`
                 })}
 
                 {enableInlineEdit && (
-                  <StyledTableCell>
+                  <StyledTableCell
+                    customBackgroundColor={rowStyling.backgroundColor}
+                    hasCustomBackground={hasCustomBackground}
+                  >
                     <Block 
                       display='flex' 
                       alignItems='center' 
@@ -238,7 +297,12 @@ const ExpandButton = styled.button`
                 )}
 
                 {enableColumnManager && (
-                  <StyledTableCell width="50px" style={{ minWidth: '50px', maxWidth: '50px' }} />
+                  <StyledTableCell 
+                    width="50px" 
+                    customBackgroundColor={rowStyling.backgroundColor}
+                    hasCustomBackground={hasCustomBackground}
+                    style={{ minWidth: '50px', maxWidth: '50px' }} 
+                  />
                 )}
               </TableRow>
 
@@ -253,10 +317,10 @@ const ExpandButton = styled.button`
                     })}
                   </ExpandedCell>
                 </TableRow>
-                              )}
+              )}
             </React.Fragment>
-            );
-          })
+          );
+        })
       ) : (
         <TableRow isClickable={false}>
           <EmptyStateCell colSpan={getColSpan()}>

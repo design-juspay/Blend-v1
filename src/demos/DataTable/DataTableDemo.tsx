@@ -707,6 +707,100 @@ const DataTableDemo = () => {
       console.log('Adding new user...');
     };
 
+    /**
+     * ✨ HOW TO USE getRowStyle - COMPREHENSIVE EXAMPLES ✨
+     * 
+     * The getRowStyle function allows you to apply dynamic styling to table rows
+     * based on any condition or data value. Here are common patterns:
+     * 
+     * 1. STATUS-BASED STYLING (Priority approach):
+     *    - Check critical status first (e.g., suspended, error, failed)
+     *    - Then check important status (e.g., admin, premium, vip)
+     *    - Finally check general conditions (e.g., new, pending)
+     * 
+     * 2. NUMERIC VALUE CONDITIONS:
+     *    - if (userData.salary > 100000) return { backgroundColor: '#f0fdf4' };
+     *    - if (userData.score < 50) return { backgroundColor: '#fef2f2' };
+     *    - if (userData.age >= 65) return { backgroundColor: '#fef3c7' };
+     * 
+     * 3. DATE-BASED CONDITIONS:
+     *    - const joinDate = new Date(userData.joinDate);
+     *    - const monthsAgo = (Date.now() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+     *    - if (monthsAgo < 3) return { backgroundColor: '#f0fdf4' }; // New users
+     * 
+     * 4. ARRAY/LIST CONDITIONS:
+     *    - if (userData.permissions.includes('admin')) return { backgroundColor: '#f0f9ff' };
+     *    - if (userData.tags.length > 5) return { backgroundColor: '#fef3c7' };
+     * 
+     * 5. MULTIPLE FIELD CONDITIONS:
+     *    - if (userData.role === 'Manager' && userData.department === 'Sales') 
+     *        return { backgroundColor: '#f3e8ff' };
+     * 
+     * 6. STYLING OPTIONS YOU CAN APPLY:
+     *    - backgroundColor: '#fef2f2' (row background color)
+     *    - borderLeft: '4px solid #dc2626' (left border for emphasis)
+     *    - color: '#7f1d1d' (text color)
+     *    - fontWeight: '500' (text weight)
+     *    - boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' (subtle shadow)
+     *    - opacity: '0.7' (transparency)
+     *    - textDecoration: 'line-through' (strikethrough for disabled items)
+     * 
+     * 7. HOVER BEHAVIOR:
+     *    - Hover effects only apply to rows WITHOUT custom background colors
+     *    - Rows with custom background colors maintain their color on hover
+     *    - Default rows (no custom styling) show hover effects normally
+     *    - This preserves the visual intention of your custom colors
+     * 
+     * 8. PERFORMANCE TIP:
+     *    - Return early for high-priority conditions (like critical errors)
+     *    - Use priority-based approach instead of complex nested conditions
+     */
+
+    // Example: How to apply row colors based on data conditions (delta values)
+    // Users can implement their own logic here based on any row data
+    const getRowStyle = (row: Record<string, unknown>, index: number): React.CSSProperties => {
+      const userData = row as UserRow;
+      const statusText = (userData.status as TagColumnProps).text;
+      
+      // Priority 1: Critical status - Suspended users (highest priority)
+      if (statusText === 'Suspended') {
+        return {
+          backgroundColor: '#fef2f2', // Light red background
+          borderLeft: '4px solid #dc2626', // Red left border for emphasis
+          color: '#7f1d1d', // Darker red text for better contrast
+        };
+      }
+      
+      // Priority 2: Administrative roles - Admin users  
+      if (userData.role === 'Admin') {
+        return {
+          backgroundColor: '#f0f9ff', // Light blue background
+          borderLeft: '4px solid #2563eb', // Blue left border
+          fontWeight: '500', // Slightly bolder text for admins
+        };
+      }
+      
+      // Priority 3: Recently joined users - New members (2023+)
+      const joinYear = parseInt(userData.joinDate.split(' ')[1] || '2020');
+      if (joinYear >= 2023) {
+        return {
+          backgroundColor: '#f0fdf4', // Light green background
+          borderLeft: '4px solid #16a34a', // Green left border
+          // Could add: boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' for subtle elevation
+        };
+      }
+      
+      // Priority 4: Alternating row colors for better readability
+      if (index % 2 === 0) {
+        return {
+          backgroundColor: '#fafafa', // Very light gray for even rows
+        };
+      }
+      
+      // Default: No special styling
+      return {};
+    };
+
     // Handle row click
     const handleRowClick = (row: Record<string, unknown>, index: number) => {
       const userData = row as UserRow;
@@ -852,7 +946,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. Try clicking column headers to see type-specific filters, searching within dropdown menus for skills/roles, changing column freeze settings, scrolling horizontally, clicking on any row, and using advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, clickable rows, and dynamic row styling. Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. 🎨 Smart Row Styling: Red = Suspended users (priority 1), Blue = Admin users (priority 2), Green = Recently joined 2023+ (priority 3), Light gray = Even rows (priority 4). Colors apply to entire row including frozen columns! ✨ Smart Hover Behavior: Rows with custom colors maintain their color on hover (preserving your styling intention), while default rows show normal hover effects. Try clicking column headers to see type-specific filters, searching within dropdown menus for skills/roles, changing column freeze settings, scrolling horizontally, clicking on any row, hovering over rows with and without custom colors to see the smart hover behavior, and using advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}
@@ -919,6 +1013,7 @@ const DataTableDemo = () => {
               </Button>
             </div>
           }
+          getRowStyle={getRowStyle}
         />
       </div>
     );

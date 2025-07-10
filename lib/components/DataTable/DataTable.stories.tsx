@@ -1398,4 +1398,96 @@ Empty states occur when:
       },
     },
   },
+};
+
+  const WithRowStylingComponent = (args: typeof WithRowStyling.args) => {
+    // Example: How to implement dynamic row styling based on data values
+    const getRowStyle = (row: Record<string, unknown>, index: number): React.CSSProperties => {
+    const user = row as User;
+    const statusData = user.status as TagData;
+    
+    // High priority: Suspended users
+    if (statusData.text === 'Suspended') {
+      return {
+        backgroundColor: '#fef2f2',
+        borderLeft: '4px solid #dc2626',
+      };
+    }
+    
+    // Admin users
+    if (user.role === 'Admin') {
+      return {
+        backgroundColor: '#f0f9ff',
+        borderLeft: '4px solid #2563eb',
+      };
+    }
+    
+    // High salary (above 100k)
+    if (user.salary > 100000) {
+      return {
+        backgroundColor: '#f0fdf4',
+        borderLeft: '3px solid #16a34a',
+      };
+    }
+    
+    return index % 2 === 0 ? { backgroundColor: '#fafafa' } : {};
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px' }}>
+        <h4>🎨 Row Styling Legend:</h4>
+        <p><span style={{ color: '#dc2626' }}>■</span> Red = Suspended users</p>
+        <p><span style={{ color: '#2563eb' }}>■</span> Blue = Admin users</p>
+        <p><span style={{ color: '#16a34a' }}>■</span> Green = High salary ($100k+)</p>
+        <p>Gray = Alternating rows</p>
+      </div>
+      <DataTable
+        {...args}
+        data={sampleUsers as Record<string, unknown>[]}
+        columns={userColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+        idField="id"
+        getRowStyle={getRowStyle}
+      />
+    </div>
+  );
+};
+
+export const WithRowStyling: Story = {
+  render: WithRowStylingComponent,
+  args: {
+    data: sampleUsers,
+    columns: userColumns as unknown as ColumnDefinition<Record<string, unknown>>[],
+    idField: 'id',
+    title: 'Employee Directory with Dynamic Styling',
+    description: 'Complete row styling based on data conditions: suspended users (red), admins (blue), high earners (green). Colors apply to entire row including frozen columns. Smart hover behavior: rows with custom colors maintain their color on hover, while default rows show normal hover effects.',
+    isHoverable: true,
+    enableSearch: true,
+    enableFiltering: true,
+    enableColumnManager: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+### DataTable with Complete Row Styling
+
+Dynamic row styling based on data conditions with complete row coverage:
+- **getRowStyle**: Function that returns CSS styles for each row
+- **Complete row styling**: Colors apply to entire row including frozen columns
+- **Conditional styling**: Different colors based on user status, role, and salary
+- **Visual hierarchy**: Priority-based styling system
+- **Smart hover behavior**: Rows with custom colors maintain their color on hover (preserving your styling intention), while default rows show normal hover effects
+
+Row styling conditions:
+1. Suspended users - Red background (highest priority)
+2. Admin users - Blue background  
+3. High salary users ($100k+) - Green background
+4. Default - Alternating gray/white rows
+
+The styling automatically applies to all columns including frozen columns (checkbox, expansion, and frozen data columns), ensuring a consistent visual experience across the entire row width. Hover over different rows to see how the smart hover behavior preserves custom colors while still providing hover feedback for default rows.
+        `,
+      },
+    },
+  },
 }; 

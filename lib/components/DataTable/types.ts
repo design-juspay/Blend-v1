@@ -216,4 +216,6 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onRowExpansionChange?: (rowId: unknown, isExpanded: boolean, rowData: T) => void;
   
   bulkActions?: BulkAction[];
+  
+  getRowStyle?: (row: T, index: number) => React.CSSProperties;
 }

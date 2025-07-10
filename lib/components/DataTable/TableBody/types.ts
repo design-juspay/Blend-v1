@@ -27,4 +27,5 @@ export type TableBodyProps<T extends Record<string, unknown>> = {
   onFieldChange: (rowId: unknown, field: keyof T, value: unknown) => void;
   onRowClick?: (row: T, index: number) => void;
   getColumnWidth: (column: ColumnDefinition<T>, index: number) => React.CSSProperties;
+  getRowStyle?: (row: T, index: number) => React.CSSProperties;
 }; 

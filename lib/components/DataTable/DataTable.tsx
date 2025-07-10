@@ -61,7 +61,8 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     headerSlot1,
     headerSlot2,
     headerSlot3,
-    bulkActions
+    bulkActions,
+    getRowStyle,
   }: DataTableProps<T>,
   ref: React.Ref<HTMLDivElement>
 ) => {
@@ -447,6 +448,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
               onFieldChange={handleFieldChange}
               getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
               onRowClick={onRowClick as ((row: Record<string, unknown>, index: number) => void) | undefined}
+              getRowStyle={getRowStyle as ((row: Record<string, unknown>, index: number) => React.CSSProperties) | undefined}
             />
           </table>
           </Block>
