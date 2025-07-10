@@ -62,6 +62,7 @@ export const Tooltip = ({
                 color={tooltipTokens.color}
                 fontSize={tooltipTokens.fontSize[size]}
                 fontWeight={tooltipTokens.fontWeight[size]}
+                lineHeight={tooltipTokens.lineHeight[size]}
               >
                 {content}
               </PrimitiveText>
