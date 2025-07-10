@@ -1104,17 +1104,15 @@ export const WithCustomHeaderSlots: Story = {
       </Button>
     ),
     headerSlot2: (
-      <Button
-        buttonType={ButtonType.SECONDARY}
-        leadingIcon={Download}
-        size={ButtonSize.SMALL}
-        onClick={() => console.log('Export clicked')}
-      >
-        Export All
-      </Button>
-    ),
-    headerSlot3: (
       <div style={{ display: 'flex', gap: '8px' }}>
+        <Button
+          buttonType={ButtonType.SECONDARY}
+          leadingIcon={Download}
+          size={ButtonSize.SMALL}
+          onClick={() => console.log('Export clicked')}
+        >
+          Export All
+        </Button>
         <Button
           buttonType={ButtonType.SECONDARY}
           leadingIcon={Settings}
@@ -1142,8 +1140,7 @@ export const WithCustomHeaderSlots: Story = {
 
 This story demonstrates custom header slots:
 - **headerSlot1**: Left side of the toolbar (Refresh button)
-- **headerSlot2**: Center of the toolbar (Export button)
-- **headerSlot3**: Right side of the toolbar (Settings and Add buttons)
+- **headerSlot2**: Right side of the toolbar (Export, Settings and Add buttons)
 - **Flexible content**: Any React component can be placed in header slots
 - **Responsive layout**: Slots adapt to available space
 

@@ -5,7 +5,7 @@ import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
-import { RefreshCw, Plus, CircleX, Server, Database, Zap } from 'lucide-react';
+import { RefreshCw, CircleX, Server, Database, Zap } from 'lucide-react';
 import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
 
 const DataTableDemo = () => {
@@ -13,7 +13,10 @@ const DataTableDemo = () => {
     const [isServerSideMode, setIsServerSideMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [autoSwitchToApi, setAutoSwitchToApi] = useState(true); 
-    const [columnFreeze, setColumnFreeze] = useState(2); 
+    const [columnFreeze, setColumnFreeze] = useState(2);
+    const [enableRowSelection, setEnableRowSelection] = useState(true);
+    const [enableColumnManager, setEnableColumnManager] = useState(true);
+    const [enableRowExpansion] = useState(true); // Always enabled for demo 
 
     // Define strict user row type matching column requirements
     type UserRow = {
@@ -31,6 +34,8 @@ const DataTableDemo = () => {
         values: string[];
         labels: string[];
       };
+      revenue: string;
+      growthRate: string;
     };
 
     // Generate larger dataset for server-side demo
@@ -116,7 +121,17 @@ const DataTableDemo = () => {
               ['Read', 'Write'],
               ['Read', 'Write', 'Admin']
             ][index % 12]
-          }
+          },
+          revenue: [
+            '$12,500.00', '€8,750.50', '£15,200.75', '$22,100.25', '₹350,000.00',
+            '$9,800.99', '€14,600.33', '£7,450.80', '$31,200.00', '₹275,500.75',
+            '$18,900.15', '€11,300.90', '£25,750.60', '$6,850.45', '₹425,000.25'
+          ][index % 15],
+          growthRate: [
+            '12.5%', '8.7%', '15.2%', '22.1%', '5.8%',
+            '9.3%', '14.6%', '7.4%', '31.2%', '18.9%',
+            '11.3%', '25.7%', '6.8%', '19.5%', '13.4%'
+          ][index % 15]
         };
       });
     };
@@ -256,6 +271,26 @@ const DataTableDemo = () => {
 
         minWidth: '140px',
         maxWidth: '200px'
+      },
+      { 
+        field: 'revenue',
+        header: 'Revenue',
+        headerSubtext: 'Monthly Revenue',
+        type: ColumnType.NUMBER,
+        isSortable: true,
+        isEditable: true,
+        minWidth: '120px',
+        maxWidth: '160px'
+      },
+      { 
+        field: 'growthRate',
+        header: 'Growth Rate',
+        headerSubtext: 'Monthly Growth %',
+        type: ColumnType.NUMBER,
+        isSortable: true,
+        isEditable: true,
+        minWidth: '120px',
+        maxWidth: '160px'
       },
     ];
     
@@ -668,10 +703,6 @@ const DataTableDemo = () => {
       }
       console.log('Data refreshed');
     };
-  
-    const handleAddUser = () => {
-      console.log('Adding new user...');
-    };
 
     /**
      * ✨ HOW TO USE getRowStyle - COMPREHENSIVE EXAMPLES ✨
@@ -818,26 +849,50 @@ const DataTableDemo = () => {
               </p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
-                <label htmlFor="column-freeze">Freeze Columns:</label>
-                <select
-                  id="column-freeze"
-                  value={columnFreeze}
-                  onChange={(e) => setColumnFreeze(parseInt(e.target.value))}
-                  style={{
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    border: '1px solid #d1d5db',
-                    fontSize: '14px'
-                  }}
-                >
-                  <option value={0}>None</option>
-                  <option value={1}>First 1</option>
-                  <option value={2}>First 2</option>
-                  <option value={3}>First 3</option>
-                  <option value={4}>First 4</option>
-                  <option value={5}>First 5</option>
-                </select>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label htmlFor="column-freeze">Freeze Columns:</label>
+                  <select
+                    id="column-freeze"
+                    value={columnFreeze}
+                    onChange={(e) => setColumnFreeze(parseInt(e.target.value))}
+                    style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      border: '1px solid #d1d5db',
+                      fontSize: '14px'
+                    }}
+                  >
+                    <option value={0}>None</option>
+                    <option value={1}>First 1</option>
+                    <option value={2}>First 2</option>
+                    <option value={3}>First 3</option>
+                    <option value={4}>First 4</option>
+                    <option value={5}>First 5</option>
+                  </select>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={enableRowSelection}
+                      onChange={(e) => setEnableRowSelection(e.target.checked)}
+                      style={{ marginRight: '4px' }}
+                    />
+                    Row Selection
+                  </label>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={enableColumnManager}
+                      onChange={(e) => setEnableColumnManager(e.target.checked)}
+                      style={{ marginRight: '4px' }}
+                    />
+                    Column Manager
+                  </label>
+                </div>
               </div>
               <Button
                 buttonType={autoSwitchToApi ? ButtonType.PRIMARY : ButtonType.SECONDARY}
@@ -912,7 +967,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, clickable rows, and dynamic row styling. Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. 🔧 AUTO FILTER OPTIONS: All filter options are now automatically extracted from data with smart deduplication! Department is MULTISELECT - select multiple departments to filter! Role & Gateway are SELECT - choose one option to filter! Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. 🎨 Smart Row Styling: Red = Suspended users (priority 1), Blue = Admin users (priority 2), Green = Recently joined 2023+ (priority 3), Light gray = Even rows (priority 4). Colors apply to entire row including frozen columns! ✨ Smart Hover Behavior: Rows with custom colors maintain their color on hover (preserving your styling intention), while default rows show normal hover effects. 📋 Enhanced Empty State: When no data matches filters, shows centered "No data available" message instead of empty table rows. 🚀 Robust System: Handles any data structure automatically - just set column type to SELECT/MULTISELECT and the system extracts unique values! Try clicking column headers to see type-specific filters, selecting multiple departments in the Department filter, selecting single roles/gateways, searching within dropdown menus for skills/roles, changing column freeze settings, scrolling horizontally, clicking on any row, hovering over rows with and without custom colors to see the smart hover behavior, and using advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, clickable rows, and dynamic row styling. 🎛️ NEW SYSTEM COLUMN CONTROLS: Toggle Row Selection checkbox column and Column Manager dropdown on/off using the controls above! Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + ${enableRowSelection ? 'checkbox' : 'no checkbox'}${enableRowExpansion ? ' + expansion' : ''}${enableColumnManager ? ' + manager' : ''} columns)` : '(currently all columns scrollable)'} with improved border styling - only the rightmost frozen column shows a border separator! Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. ⚙️ FORMATTING TOGGLE: Click the Settings icon to toggle between formatted numbers (with currency symbols $, €, £, ₹ and percentage % symbols) and raw numbers (clean numeric values only). This affects both the table view AND CSV exports! 🔧 AUTO FILTER OPTIONS: All filter options are now automatically extracted from data with smart deduplication! Department is MULTISELECT - select multiple departments to filter! Role & Gateway are SELECT - choose one option to filter! 🎨 Smart Row Styling: Red = Suspended users (priority 1), Blue = Admin users (priority 2), Green = Recently joined 2023+ (priority 3), Light gray = Even rows (priority 4). Colors apply to entire row including frozen columns! ✨ Enhanced Features: Improved column padding (16px), better z-index layering for frozen columns, smart hover behavior, enhanced empty state, and robust data handling. Try toggling system columns on/off, changing column freeze settings, clicking the Settings icon for number formatting, selecting filters, scrolling horizontally to see improved frozen column borders, clicking rows, and using advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}
@@ -923,6 +978,8 @@ const DataTableDemo = () => {
           columnFreeze={columnFreeze}
           enableInlineEdit
           enableRowExpansion
+          enableRowSelection={enableRowSelection}
+          enableColumnManager={enableColumnManager}
           renderExpandedRow={renderExpandedRow}
           isRowExpandable={isRowExpandable}
           serverSideSearch={isServerSideMode}
@@ -966,18 +1023,6 @@ const DataTableDemo = () => {
             >
               Action
             </Button>
-          }
-          headerSlot3={
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <Button
-                buttonType={ButtonType.PRIMARY}
-                leadingIcon={Plus}
-                size={ButtonSize.SMALL}
-                onClick={handleAddUser}
-              >
-                Add User
-              </Button>
-            </div>
           }
           getRowStyle={getRowStyle}
         />

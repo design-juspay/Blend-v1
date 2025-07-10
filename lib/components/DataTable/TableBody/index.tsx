@@ -22,6 +22,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
   enableInlineEdit = false,
   enableColumnManager = true,
   enableRowExpansion = false,
+  enableRowSelection = true,
   columnFreeze = 0,
   renderExpandedRow,
   isRowExpandable,
@@ -34,9 +35,11 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
   onRowClick,
   getColumnWidth,
   getRowStyle,
+  getDisplayValue,
 }, ref) => {
   const getColSpan = () => {
-    let colSpan = visibleColumns.length + 1;
+    let colSpan = visibleColumns.length;
+    if (enableRowSelection) colSpan += 1;
     if (enableRowExpansion) colSpan += 1;
     if (enableInlineEdit) colSpan += 1;
     if (enableColumnManager) colSpan += 1;
@@ -139,8 +142,8 @@ const ExpandButton = styled.button`
                       ...(columnFreeze > 0 && {
                         position: 'sticky',
                         left: '0px',
-                        zIndex: 40,
-                        borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                        zIndex: 45,
+                        backgroundColor: rowStyling.backgroundColor,
                       }),
                     }}
                   >
@@ -168,44 +171,46 @@ const ExpandButton = styled.button`
                   </StyledTableCell>
                 )}
 
-                <StyledTableCell 
-                  customBackgroundColor={rowStyling.backgroundColor}
-                  hasCustomBackground={hasCustomBackground}
-                  style={{
-                    ...(columnFreeze > 0 && {
-                      position: 'sticky',
-                      left: enableRowExpansion ? '50px' : '0px',
-                      zIndex: 40,
-                      borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-                    }),
-                  }}
-                >
-                  <Block 
-                    display='flex' 
-                    alignItems='center' 
-                    justifyContent='center' 
-                    width={FOUNDATION_THEME.unit[40]}
-                    onClick={(e) => e.stopPropagation()}
+                {enableRowSelection && (
+                  <StyledTableCell 
+                    customBackgroundColor={rowStyling.backgroundColor}
+                    hasCustomBackground={hasCustomBackground}
+                    style={{
+                      ...(columnFreeze > 0 && {
+                        position: 'sticky',
+                        left: enableRowExpansion ? '50px' : '0px',
+                        zIndex: 45,
+                        backgroundColor: rowStyling.backgroundColor,
+                      }),
+                    }}
                   >
-                    <Checkbox
-                      checked={!!selectedRows[rowId]}
-                      onCheckedChange={() => onRowSelect(row[idField])}
-                      size={CheckboxSize.MEDIUM}
-                      disabled={isEditing}
-                    />
-                  </Block>
-                </StyledTableCell>
+                    <Block 
+                      display='flex' 
+                      alignItems='center' 
+                      justifyContent='center' 
+                      width={FOUNDATION_THEME.unit[40]}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Checkbox
+                        checked={!!selectedRows[rowId]}
+                        onCheckedChange={() => onRowSelect(row[idField])}
+                        size={CheckboxSize.MEDIUM}
+                        disabled={isEditing}
+                      />
+                    </Block>
+                  </StyledTableCell>
+                )}
 
                 {visibleColumns.map((column, colIndex) => {
                   const columnStyles = getColumnWidth(column, colIndex);
                   const currentValue = isEditing ? editValues[rowId]?.[column.field] : row[column.field];
                   
-                  // Calculate frozen column positioning for body cells
                   const getFrozenBodyStyles = () => {
-                    if (colIndex >= columnFreeze) return {};
+                    if (colIndex >= columnFreeze) return { padding: '0 16px' };
                     
-                    let leftOffset = 60;
+                    let leftOffset = 0;
                     if (enableRowExpansion) leftOffset += 50;
+                    if (enableRowSelection) leftOffset += 60;
                     
                     for (let i = 0; i < colIndex; i++) {
                       const prevColumn = visibleColumns[i];
@@ -227,11 +232,16 @@ const ExpandButton = styled.button`
                       leftOffset += columnWidth;
                     }
                     
+                    const isLastFrozenColumn = colIndex === columnFreeze - 1;
+                    
                     return {
                       position: 'sticky' as const,
                       left: `${leftOffset}px`,
-                      zIndex: 40,
-                      borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                      zIndex: 44,
+                      backgroundColor: rowStyling.backgroundColor,
+                      ...(isLastFrozenColumn && {
+                        borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                      }),
                     };
                   };
                   
@@ -246,6 +256,7 @@ const ExpandButton = styled.button`
                       width={columnStyles}
                       frozenStyles={getFrozenBodyStyles()}
                       onFieldChange={(value) => onFieldChange(row[idField], column.field, value)}
+                      getDisplayValue={getDisplayValue}
                     />
                   );
                 })}

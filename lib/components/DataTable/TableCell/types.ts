@@ -9,4 +9,5 @@ export type TableCellProps<T extends Record<string, unknown>> = {
   width: React.CSSProperties;
   frozenStyles?: React.CSSProperties;
   onFieldChange: (value: unknown) => void;
+  getDisplayValue?: (value: unknown, column: ColumnDefinition<T>) => unknown;
 }; 

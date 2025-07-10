@@ -50,6 +50,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
   enableInlineEdit = false,
   enableColumnManager = true,
   enableRowExpansion = false,
+  enableRowSelection = true,
   data,
   columnFreeze = 0,
   onSort,
@@ -153,40 +154,37 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
             ...(columnFreeze > 0 && {
               position: 'sticky',
               left: '0px',
-              zIndex: 50,
+              zIndex: 55,
               backgroundColor: tableToken.dataTable.table.header.backgroundColor,
-              borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
             }),
           }}>
             <Block display='flex' alignItems='center' justifyContent='center' />
           </th>
         )}
         
-        <th style={{ 
-          ...tableToken.dataTable.table.header.cell,
-          width: '60px', 
-          minWidth: '60px', 
-          maxWidth: '60px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          boxSizing: 'border-box',
-          ...(columnFreeze > 0 && {
-            position: 'sticky',
-            left: enableRowExpansion ? '50px' : '0px',
-            zIndex: 50,
-            backgroundColor: tableToken.dataTable.table.header.backgroundColor,
-            borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-          }),
-        }}>
-          <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
-            <Checkbox
-              checked={selectAll}
-              onCheckedChange={onSelectAll}
-              size={CheckboxSize.MEDIUM}
-            />
-          </Block>
-        </th>
+        {enableRowSelection && (
+          <th style={{ 
+            ...tableToken.dataTable.table.header.cell,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            boxSizing: 'border-box',
+            ...(columnFreeze > 0 && {
+              position: 'sticky',
+              left: enableRowExpansion ? '50px' : '0px',
+              zIndex: 55,
+              backgroundColor: tableToken.dataTable.table.header.backgroundColor,
+            }),
+          }}>
+            <Block display='flex' alignItems='center' justifyContent='center' width={FOUNDATION_THEME.unit[40]}>
+              <Checkbox
+                checked={selectAll}
+                onCheckedChange={onSelectAll}
+                size={CheckboxSize.MEDIUM}
+              />
+            </Block>
+          </th>
+        )}
 
         {localColumns.map((column, index) => {
           const columnStyles = getColumnWidth(column, index);
@@ -197,6 +195,7 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
             index,
             columnFreeze,
             enableRowExpansion,
+            enableRowSelection,
             localColumns,
             getColumnWidth,
             tableToken.dataTable.table.header.backgroundColor || '#ffffff'

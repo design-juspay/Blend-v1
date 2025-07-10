@@ -7,6 +7,7 @@ export type TableHeaderProps<T extends Record<string, unknown>> = {
   enableInlineEdit?: boolean;
   enableColumnManager?: boolean;
   enableRowExpansion?: boolean;
+  enableRowSelection?: boolean;
   data?: T[];
   columnFreeze?: number;
   onSort: (field: keyof T) => void;

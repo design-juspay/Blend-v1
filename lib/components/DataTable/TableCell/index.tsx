@@ -23,8 +23,14 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
   width,
   frozenStyles,
   onFieldChange,
+  getDisplayValue,
 }, ref) => {
   const tableToken = useComponentToken("TABLE") as TableTokenType;
+
+  // Apply formatting if getDisplayValue is provided and we're not editing
+  const displayValue = (!isEditing && getDisplayValue) 
+    ? getDisplayValue(currentValue, column) 
+    : currentValue;
 
   const renderContent = () => {
     if (isEditing && column.isEditable) {
@@ -49,7 +55,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
     if (column.renderCell) {
       return (
         <Block style={{ width: '100%' }}>
-          {(column.renderCell as (value: unknown, row: unknown, index: number) => React.ReactNode)(currentValue, row, rowIndex)}
+          {(column.renderCell as (value: unknown, row: unknown, index: number) => React.ReactNode)(displayValue, row, rowIndex)}
         </Block>
       );
     }
@@ -64,7 +70,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
           lineHeight: '1.5',
           cursor: 'default'
         }}
-        title={currentValue != null ? String(currentValue) : ''}
+        title={displayValue != null ? String(displayValue) : ''}
       >
         <span style={{
           display: 'block',
@@ -72,7 +78,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
         }}>
-          {currentValue != null ? String(currentValue) : ''}
+          {displayValue != null ? String(displayValue) : ''}
         </span>
       </Block>
     );

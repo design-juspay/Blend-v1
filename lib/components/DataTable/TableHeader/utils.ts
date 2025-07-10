@@ -102,14 +102,17 @@ export const getFrozenColumnStyles = (
   index: number,
   columnFreeze: number,
   enableRowExpansion: boolean,
+  enableRowSelection: boolean,
   visibleColumns: ColumnDefinition<Record<string, unknown>>[],
   getColumnWidth: (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties,
   backgroundColor: string
 ) => {
-  if (index >= columnFreeze) return {};
+  if (index >= columnFreeze) return { padding: '0 16px' };
   
-  let leftOffset = 60;
+  // Calculate left offset based on system columns
+  let leftOffset = 0;
   if (enableRowExpansion) leftOffset += 50;
+  if (enableRowSelection) leftOffset += 60;
   
   for (let i = 0; i < index; i++) {
     const prevColumn = visibleColumns[i];
@@ -131,11 +134,16 @@ export const getFrozenColumnStyles = (
     leftOffset += columnWidth;
   }
   
+  const isLastFrozenColumn = index === columnFreeze - 1;
+  
   return {
     position: 'sticky' as const,
     left: `${leftOffset}px`,
-    zIndex: 50,
+    zIndex: 54,
     backgroundColor,
-    borderRight: `1px solid ${foundationToken.colors.gray[200]}`,
+    padding: `0 ${foundationToken.spacing[16]}`,
+    ...(isLastFrozenColumn && {
+      borderRight: `1px solid ${foundationToken.colors.gray[200]}`,
+    }),
   };
 }; 

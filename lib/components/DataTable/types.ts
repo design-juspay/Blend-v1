@@ -198,7 +198,6 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   showToolbar?: boolean;
   headerSlot1?: ReactNode;
   headerSlot2?: ReactNode;
-  headerSlot3?: ReactNode;
   
   enableInlineEdit?: boolean;
   onRowSave?: (rowId: unknown, updatedRow: T) => void;
@@ -214,6 +213,8 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   }) => ReactNode;
   isRowExpandable?: (row: T, index: number) => boolean;
   onRowExpansionChange?: (rowId: unknown, isExpanded: boolean, rowData: T) => void;
+  
+  enableRowSelection?: boolean;
   
   bulkActions?: BulkAction[];
   

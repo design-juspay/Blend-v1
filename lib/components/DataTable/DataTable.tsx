@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, forwardRef } from 'react';
-import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType } from './types';
+import { DataTableProps, SortDirection, SortConfig, ColumnDefinition, SearchConfig, ColumnFilter, FilterType, ColumnType } from './types';
 import  { TableTokenType } from './dataTable.tokens';
 import {
   sortData, searchData, applyColumnFilters,
@@ -14,6 +14,9 @@ import BulkActionBar from './TableBody/BulkActionBar';
 import Block from '../Primitives/Block/Block';
 import Button from '../Button/Button';
 import { ButtonSize, ButtonType } from '../Button/types';
+import { Settings, Check } from 'lucide-react';
+import Menu from '../Menu/Menu';
+import { MenuV2GroupType, MenuAlignment } from '../Menu/types';
 
 import { useComponentToken } from '../../context/useComponentToken';
 
@@ -40,6 +43,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     showToolbar = true,
     enableInlineEdit = false,
     enableRowExpansion = false,
+    enableRowSelection = true,
     renderExpandedRow,
     isRowExpandable,
     pagination = {
@@ -60,7 +64,6 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onRowClick,
     headerSlot1,
     headerSlot2,
-    headerSlot3,
     bulkActions,
     getRowStyle,
   }: DataTableProps<T>,
@@ -84,8 +87,53 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const [editValues, setEditValues] = useState<Record<string, T>>({});
 
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  
+  // Formatting state
+  const [isFormatEnabled, setIsFormatEnabled] = useState<boolean>(true);
 
   const totalRows = pagination?.totalRows || data.length;
+
+  const formatOptions: MenuV2GroupType[] = [
+    {
+      items: [
+        {
+          label: "Format",
+          slot3: isFormatEnabled ? <Check size={16} /> : null,
+          onClick: () => setIsFormatEnabled(!isFormatEnabled)
+        }
+      ],
+      showSeparator: false
+    }
+  ];
+
+  const removeNumberFormatting = (value: unknown): string => {
+    if (value == null) return '';
+    
+    const stringValue = String(value);
+    
+    let cleaned = stringValue.replace(/[$€£¥₹₽₪₩₦₡₵₸₴₺₻₼₽¢]/g, '');
+    
+    cleaned = cleaned.replace(/%/g, '');
+    
+    cleaned = cleaned.replace(/,/g, '');
+    
+    cleaned = cleaned.trim();
+    
+    const numericValue = parseFloat(cleaned);
+    if (!isNaN(numericValue)) {
+      return numericValue.toString();
+    }
+    
+    return stringValue;
+  };
+
+  const getDisplayValue = (value: unknown, column: ColumnDefinition<T>): unknown => {
+    if (!isFormatEnabled && (column.type === ColumnType.NUMBER || 
+        (typeof value === 'string' && /[$€£¥₹₽₪₩₦₡₵₸₴₺₻₼₽¢%,\d]/.test(value)))) {
+      return removeNumberFormatting(value);
+    }
+    return value;
+  };
 
   const processedData = useMemo(() => {
     let result = [...data];
@@ -170,8 +218,22 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const exportToCSV = () => {
     try {
+      // Apply formatting to data before export if format is disabled
+      const dataForExport = isFormatEnabled ? processedData : processedData.map(row => {
+        const formattedRow = { ...row } as Record<string, unknown>;
+        visibleColumns.forEach(column => {
+          const fieldKey = String(column.field);
+          if (column.type === ColumnType.NUMBER || 
+              (typeof formattedRow[fieldKey] === 'string' && 
+               /[$€£¥₹₽₪₩₦₡₵₸₴₺₻₼₽¢%,\d]/.test(formattedRow[fieldKey]))) {
+            formattedRow[fieldKey] = removeNumberFormatting(formattedRow[fieldKey]);
+          }
+        });
+        return formattedRow as T;
+      });
+
       exportSelectedRowsToCSV(
-        processedData,
+        dataForExport,
         selectedRows,
         visibleColumns,
         String(idField),
@@ -369,9 +431,27 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         onSearch={handleSearch}
         onAdvancedFiltersChange={onAdvancedFiltersChange}
         onClearAllFilters={clearAllFilters}
-        headerSlot1={headerSlot1}
-        headerSlot2={headerSlot2}
-        headerSlot3={headerSlot3}
+        headerSlot1={
+          <>
+            <Menu
+              items={formatOptions}
+              alignment={MenuAlignment.END}
+              sideOffset={8}
+              alignOffset={-20}
+              trigger={
+                <Button
+                  buttonType={ButtonType.SECONDARY}
+                  leadingIcon={Settings}
+                  size={ButtonSize.SMALL}
+                >
+                  Settings
+                </Button>
+              }
+            />
+          </>
+        }
+        headerSlot2={headerSlot1}
+        headerSlot3={headerSlot2}
       />
 
       <Block style={{
@@ -397,62 +477,65 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
           position: 'relative',
         }}>
           {currentData.length > 0 ? (
-            <Block style={{
-              overflowX: 'auto',
-              overflowY: 'auto',
-              scrollBehavior: 'smooth',
-              WebkitOverflowScrolling: 'touch',
-              height: '100%',
-              position: 'relative',
-            }}>
-            <table style={{
-              width: tableToken.dataTable.table.width,
-              tableLayout: tableToken.dataTable.table.tableLayout,
-              borderCollapse: tableToken.dataTable.table.borderCollapse,
-              borderSpacing: tableToken.dataTable.table.borderSpacing,
-              position: tableToken.dataTable.table.position,
-            }}>
-              <TableHeader
-                visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
-                initialColumns={initialColumns as ColumnDefinition<Record<string, unknown>>[]}
-                selectAll={selectAll}
-                enableInlineEdit={enableInlineEdit}
-                enableColumnManager={enableColumnManager}
-                enableRowExpansion={enableRowExpansion}
-                data={data}
-                onSort={handleSort}
-                onSelectAll={handleSelectAll}
-                onColumnChange={(columns) => setVisibleColumns(columns as ColumnDefinition<T>[])}
-                onColumnFilter={handleColumnFilter}
-                getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
-                columnFreeze={columnFreeze}
-              />
-              <TableBodyComponent
-                currentData={currentData}
-                visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
+          <Block style={{
+            overflowX: 'auto',
+            overflowY: 'auto',
+            scrollBehavior: 'smooth',
+            WebkitOverflowScrolling: 'touch',
+            height: '100%',
+            position: 'relative',
+          }}>
+          <table style={{
+            width: tableToken.dataTable.table.width,
+            tableLayout: tableToken.dataTable.table.tableLayout,
+            borderCollapse: tableToken.dataTable.table.borderCollapse,
+            borderSpacing: tableToken.dataTable.table.borderSpacing,
+            position: tableToken.dataTable.table.position,
+          }}>
+            <TableHeader
+              visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
+              initialColumns={initialColumns as ColumnDefinition<Record<string, unknown>>[]}
+              selectAll={selectAll}
+              enableInlineEdit={enableInlineEdit}
+              enableColumnManager={enableColumnManager}
+              enableRowExpansion={enableRowExpansion}
+              enableRowSelection={enableRowSelection}
+              data={data}
+              onSort={handleSort}
+              onSelectAll={handleSelectAll}
+              onColumnChange={(columns) => setVisibleColumns(columns as ColumnDefinition<T>[])}
+              onColumnFilter={handleColumnFilter}
+              getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
+              columnFreeze={columnFreeze}
+            />
+            <TableBodyComponent
+              currentData={currentData}
+              visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
                 idField={String(idField)}
-                selectedRows={selectedRows}
-                editingRows={editingRows}
-                editValues={editValues}
-                expandedRows={expandedRows}
-                enableInlineEdit={enableInlineEdit}
-                enableColumnManager={enableColumnManager}
-                enableRowExpansion={enableRowExpansion}
-                columnFreeze={columnFreeze}
-                renderExpandedRow={renderExpandedRow as ((expandedData: { row: Record<string, unknown>; index: number; isExpanded: boolean; toggleExpansion: () => void; }) => React.ReactNode) | undefined}
-                isRowExpandable={isRowExpandable as ((row: Record<string, unknown>, index: number) => boolean) | undefined}
-                onRowSelect={handleRowSelect}
-                onEditRow={handleEditRow}
-                onSaveRow={handleSaveRow}
-                onCancelEdit={handleCancelEdit}
-                onRowExpand={handleRowExpand}
-                onFieldChange={handleFieldChange}
-                getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
-                onRowClick={onRowClick as ((row: Record<string, unknown>, index: number) => void) | undefined}
+              selectedRows={selectedRows}
+              editingRows={editingRows}
+              editValues={editValues}
+              expandedRows={expandedRows}
+              enableInlineEdit={enableInlineEdit}
+              enableColumnManager={enableColumnManager}
+              enableRowExpansion={enableRowExpansion}
+              enableRowSelection={enableRowSelection}
+              columnFreeze={columnFreeze}
+              renderExpandedRow={renderExpandedRow as ((expandedData: { row: Record<string, unknown>; index: number; isExpanded: boolean; toggleExpansion: () => void; }) => React.ReactNode) | undefined}
+              isRowExpandable={isRowExpandable as ((row: Record<string, unknown>, index: number) => boolean) | undefined}
+              onRowSelect={handleRowSelect}
+              onEditRow={handleEditRow}
+              onSaveRow={handleSaveRow}
+              onCancelEdit={handleCancelEdit}
+              onRowExpand={handleRowExpand}
+              onFieldChange={handleFieldChange}
+              getColumnWidth={getColumnWidth as (column: ColumnDefinition<Record<string, unknown>>, index: number) => React.CSSProperties}
+              onRowClick={onRowClick as ((row: Record<string, unknown>, index: number) => void) | undefined}
                 getRowStyle={getRowStyle as ((row: Record<string, unknown>, index: number) => React.CSSProperties) | undefined}
-              />
-            </table>
-            </Block>
+                getDisplayValue={(value: unknown, column: ColumnDefinition<Record<string, unknown>>) => getDisplayValue(value, column as ColumnDefinition<T>)}
+            />
+          </table>
+          </Block>
           ) : (
             <Block 
               display="flex" 
