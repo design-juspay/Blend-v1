@@ -1,16 +1,4 @@
-import { FilterType } from './types';
-
-export enum ColumnType {
-  TEXT = 'text',
-  NUMBER = 'number',
-  SELECT = 'select',
-  MULTISELECT = 'multiselect',
-  DATE = 'date',
-  DATE_RANGE = 'date_range',
-  AVATAR = 'avatar',
-  TAG = 'tag',
-  CUSTOM = 'custom'
-}
+import { FilterType, ColumnType } from './types';
 
 export type ColumnFilterOption = {
   id: string;
@@ -64,6 +52,9 @@ export type ColumnDataTypeMap = {
   [ColumnType.AVATAR]: AvatarData;
   [ColumnType.TAG]: TagData;
   [ColumnType.CUSTOM]: unknown;
+  [ColumnType.PROGRESS]: number;
+  [ColumnType.DROPDOWN]: string;
+  [ColumnType.REACT_ELEMENT]: unknown;
 };
 
 export type GetColumnDataType<T extends ColumnType> = ColumnDataTypeMap[T];
@@ -132,6 +123,18 @@ export const validateColumnData = {
   },
   
   [ColumnType.CUSTOM]: (_data: unknown): _data is unknown => {
+    return true;
+  },
+
+  [ColumnType.PROGRESS]: (data: unknown): data is number => {
+    return typeof data === 'number' && data >= 0 && data <= 100;
+  },
+
+  [ColumnType.DROPDOWN]: (data: unknown): data is string => {
+    return typeof data === 'string';
+  },
+
+  [ColumnType.REACT_ELEMENT]: (_data: unknown): _data is unknown => {
     return true;
   }
 };
@@ -217,11 +220,36 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
         enableSearch: false,
         filterComponent: 'dateRange'
       };
+    case ColumnType.PROGRESS:
+      return {
+        type,
+        filterType: FilterType.NUMBER,
+        supportsSorting: true,
+        supportsFiltering: false,
+        enableSearch: false
+      };
+    case ColumnType.DROPDOWN:
+      return {
+        type,
+        filterType: FilterType.SELECT,
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'select'
+      };
+    case ColumnType.REACT_ELEMENT:
+      return {
+        type,
+        filterType: FilterType.TEXT,
+        supportsSorting: false,
+        supportsFiltering: false,
+        enableSearch: false
+      };
     case ColumnType.CUSTOM:
       return {
         type,
         filterType: FilterType.TEXT,
-        supportsSorting: true,
+        supportsSorting: false,
         supportsFiltering: false,
         enableSearch: false
       };
@@ -233,5 +261,36 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
         supportsFiltering: false,
         enableSearch: false
       };
+  }
+}; 
+
+export const getExpectedTypeDescription = (type: ColumnType): string => {
+  switch (type) {
+    case ColumnType.TEXT:
+      return 'string or number';
+    case ColumnType.NUMBER:
+      return 'number';
+    case ColumnType.SELECT:
+      return 'string or SelectData object';
+    case ColumnType.MULTISELECT:
+      return 'string array or MultiSelectData object';
+    case ColumnType.DATE:
+      return 'Date, string, or DateData object';
+    case ColumnType.DATE_RANGE:
+      return 'DateRangeData object';
+    case ColumnType.AVATAR:
+      return 'AvatarData object with label';
+    case ColumnType.TAG:
+      return 'TagData object with text';
+    case ColumnType.PROGRESS:
+      return 'number (0-100)';
+    case ColumnType.DROPDOWN:
+      return 'string';
+    case ColumnType.REACT_ELEMENT:
+      return 'any React element';
+    case ColumnType.CUSTOM:
+      return 'any value';
+    default:
+      return 'unknown';
   }
 }; 

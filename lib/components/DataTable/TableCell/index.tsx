@@ -17,6 +17,7 @@ const StyledTableCell = styled.td<{ width?: React.CSSProperties; $hasCustomConte
 const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string, unknown>>>(({
   column,
   row,
+  rowIndex,
   isEditing,
   currentValue,
   width,
@@ -48,7 +49,7 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
     if (column.renderCell) {
       return (
         <Block style={{ width: '100%' }}>
-          {column.renderCell(currentValue, row)}
+          {(column.renderCell as (value: unknown, row: unknown, index: number) => React.ReactNode)(currentValue, row, rowIndex)}
         </Block>
       );
     }

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { ColumnDefinition, SortDirection, SearchConfig, ColumnFilter } from '../../../lib/components/DataTable/types';
+import { ColumnDefinition, SortDirection, SearchConfig, ColumnFilter, ColumnType, AvatarColumnProps, TagColumnProps } from '../../../lib/components/DataTable/types';
 import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
 import { RefreshCw, Plus, CircleX, Server, Database, Zap } from 'lucide-react';
-import { ColumnType, AvatarData, TagData, MultiSelectData } from '../../../lib/components/DataTable/columnTypes';
 import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
 
 const DataTableDemo = () => {
@@ -16,8 +15,26 @@ const DataTableDemo = () => {
     const [autoSwitchToApi, setAutoSwitchToApi] = useState(true); 
     const [columnFreeze, setColumnFreeze] = useState(2); 
 
+    // Define strict user row type matching column requirements
+    type UserRow = {
+      id: number;
+      name: AvatarColumnProps;
+      joinDate: string;
+      email: string;
+      role: string;
+      number: string;
+      gateway: string;
+      contact: string;
+      status: TagColumnProps;
+      department: string;
+      permissions: {
+        values: string[];
+        labels: string[];
+      };
+    };
+
     // Generate larger dataset for server-side demo
-    const generateLargeDataset = (count: number) => {
+    const generateLargeDataset = (count: number): UserRow[] => {
       const names = [
         'Jesse Leos', 'Jane Smith', 'Robert Johnson', 'Lisa Brown', 'David Miller',
         'Emma Wilson', 'Michael Clark', 'Sarah Davis', 'James Taylor', 'Anna White',
@@ -41,7 +58,7 @@ const DataTableDemo = () => {
               'May 2020', 'December 2021', 'March 2022', 'August 2023', 'November 2019'
             ][index % 15],
             imageUrl: `https://randomuser.me/api/portraits/${index % 2 ? 'men' : 'women'}/${index % 70}.jpg`
-          } as AvatarData,
+          } as AvatarColumnProps,
           joinDate: [
             'August 2014', 'September 2015', 'March 2016', 'November 2017', 'July 2018',
             'January 2019', 'April 2020', 'June 2021', 'October 2022', 'February 2023',
@@ -56,9 +73,12 @@ const DataTableDemo = () => {
           ][index % 15],
           status: {
             text: userStatus,
-            color: userStatus === 'Active' ? 'success' : userStatus === 'Inactive' ? 'error' : userStatus === 'Pending' ? 'warning' : 'neutral',
-            variant: 'subtle'
-          } as TagData,
+            variant: 'subtle' as const,
+            color: userStatus === 'Active' ? 'success' as const : 
+                   userStatus === 'Inactive' ? 'error' as const : 
+                   userStatus === 'Pending' ? 'warning' as const : 'neutral' as const,
+            size: 'sm' as const
+          } as TagColumnProps,
           email: [
             'jesse@example.com', 'jane@example.com', 'robert@example.com',
             'lisa@example.com', 'david@example.com', 'emma@example.com',
@@ -96,7 +116,7 @@ const DataTableDemo = () => {
               ['Read', 'Write'],
               ['Read', 'Write', 'Admin']
             ][index % 12]
-          } as MultiSelectData
+          }
         };
       });
     };
@@ -117,40 +137,23 @@ const DataTableDemo = () => {
       pageSize: 10,
       totalRecords: 3000
     });
-
-    type UserRow = {
-      id: number;
-      name: AvatarData;
-      joinDate: string;
-      email: string;
-      role: string;
-      number: string;
-      gateway: string;
-      contact: string;
-      status: TagData;
-      department: string;
-      skills: MultiSelectData;
-      permissions: MultiSelectData;
-    } & Record<string, unknown>;
     
+    // Strict column definitions using the new typing system
     const columns: ColumnDefinition<UserRow>[] = [
       { 
         field: 'name',
         header: 'User Profile',
         headerSubtext: 'Name & Join Date',
         type: ColumnType.AVATAR,
-        renderCell: (value) => {
-          const avatarData = value as AvatarData;
-          return (
-            <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
-              <Avatar src={avatarData.imageUrl} alt={avatarData.label} />
-              <div>
-                <div style={{ fontWeight: 500, fontSize: '14px' }}>{avatarData.label}</div>
-                <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {avatarData.sublabel}</div>
-              </div>
+        renderCell: (value: AvatarColumnProps) => (
+          <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
+            <Avatar src={value.imageUrl} alt={value.label} />
+            <div>
+              <div style={{ fontWeight: 500, fontSize: '14px' }}>{value.label}</div>
+              <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {value.sublabel}</div>
             </div>
-          );
-        },
+          </div>
+        ),
         isSortable: true,
         minWidth: '220px',
         maxWidth: '320px'
@@ -169,7 +172,7 @@ const DataTableDemo = () => {
         field: 'role',
         header: 'Access Level',
         headerSubtext: 'User Role & Permissions',
-        type: ColumnType.SELECT,
+        type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
         filterOptions: [
@@ -186,7 +189,7 @@ const DataTableDemo = () => {
       { 
         field: 'department',
         header: 'Department',
-        type: ColumnType.SELECT,
+        type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
         filterOptions: [
@@ -203,7 +206,7 @@ const DataTableDemo = () => {
       { 
         field: 'gateway',
         header: 'Gateway',
-        type: ColumnType.SELECT,
+        type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
         filterOptions: [
@@ -221,32 +224,17 @@ const DataTableDemo = () => {
         header: 'Account Status',
         headerSubtext: 'Current State',
         type: ColumnType.TAG,
-        renderCell: (value) => {
-          const tagData = value as TagData;
-          const getStatusColor = (status: string): TagColor => {
-            switch (status) {
-              case 'Active':
-                return TagColor.SUCCESS;
-              case 'Inactive':
-                return TagColor.ERROR;
-              case 'Pending':
-                return TagColor.WARNING;
-              case 'Suspended':
-                return TagColor.NEUTRAL;
-              default:
-                return TagColor.NEUTRAL;
-            }
-          };
-
-          return (
-            <Tag
-              text={tagData.text}
-              variant={TagVariant.SUBTLE}
-              color={getStatusColor(tagData.text)}
-              size={TagSize.SM}
-            />
-          );
-        },
+        renderCell: (value: TagColumnProps) => (
+          <Tag
+            text={value.text}
+            variant={TagVariant.SUBTLE}
+            color={value.color === 'success' ? TagColor.SUCCESS :
+                   value.color === 'error' ? TagColor.ERROR :
+                   value.color === 'warning' ? TagColor.WARNING :
+                   TagColor.NEUTRAL}
+            size={TagSize.SM}
+          />
+        ),
         isSortable: true,
         filterOptions: [
           { id: 'active', label: 'Active', value: 'Active' },
@@ -261,9 +249,10 @@ const DataTableDemo = () => {
         field: 'permissions',
         header: 'User Permissions',
         headerSubtext: 'Access Rights',
-        type: ColumnType.MULTISELECT,
-        renderCell: (value) => {
-          const permissionsData = value as MultiSelectData;
+        type: ColumnType.REACT_ELEMENT,
+        isSortable: false, // Required for REACT_ELEMENT type
+        renderCell: (value: unknown) => {
+          const permissionsData = value as { values: string[]; labels: string[] };
           const getPermissionColor = (permission: string): TagColor => {
             switch (permission.toLowerCase()) {
               case 'admin':
@@ -293,7 +282,6 @@ const DataTableDemo = () => {
             </div>
           );
         },
-        isSortable: false,
         filterOptions: [
           { id: 'read', label: 'Read', value: 'read' },
           { id: 'write', label: 'Write', value: 'write' },
@@ -336,9 +324,9 @@ const DataTableDemo = () => {
              let cellValue = (row as Record<string, unknown>)[filter.field as string];
              
              if (filter.field === 'name' && cellValue && typeof cellValue === 'object') {
-               cellValue = (cellValue as AvatarData).label;
+               cellValue = (cellValue as AvatarColumnProps).label;
              } else if (filter.field === 'status' && cellValue && typeof cellValue === 'object') {
-               cellValue = (cellValue as TagData).text;
+               cellValue = (cellValue as TagColumnProps).text;
              }
              
              const cellValueStr = String(cellValue).toLowerCase();
@@ -524,7 +512,7 @@ const DataTableDemo = () => {
 
     const isRowExpandable = (row: Record<string, unknown>) => {
       const userRow = row as UserRow;
-      const statusText = (userRow.status as TagData).text;
+      const statusText = (userRow.status as TagColumnProps).text;
       return statusText === 'Active' || userRow.role === 'Admin';
     };
 
@@ -537,7 +525,7 @@ const DataTableDemo = () => {
       const userRow = row as UserRow;
       
       const getActivityData = (user: UserRow) => {
-        const statusText = (user.status as TagData).text;
+        const statusText = (user.status as TagColumnProps).text;
         const activities = [
           `Last login: ${statusText === 'Active' ? '2 hours ago' : '1 week ago'}`,
           `Profile updated: ${user.role === 'Admin' ? '1 day ago' : '3 days ago'}`,
@@ -562,10 +550,10 @@ const DataTableDemo = () => {
       return (
         <div style={{ 
           padding: '20px', 
-          backgroundColor: (userRow.status as TagData).text === 'Active' ? '#f0f9ff' : '#fef2f2',
+          backgroundColor: (userRow.status as TagColumnProps).text === 'Active' ? '#f0f9ff' : '#fef2f2',
           borderRadius: '8px',
           margin: '8px 0',
-          border: `1px solid ${(userRow.status as TagData).text === 'Active' ? '#bfdbfe' : '#fecaca'}`
+          border: `1px solid ${(userRow.status as TagColumnProps).text === 'Active' ? '#bfdbfe' : '#fecaca'}`
         }}>
           <div style={{ 
             display: 'flex', 
@@ -579,7 +567,7 @@ const DataTableDemo = () => {
               fontWeight: 600,
               color: '#1f2937'
             }}>
-              Detailed Profile: {(userRow.name as AvatarData).label} (Row #{index + 1})
+              Detailed Profile: {(userRow.name as AvatarColumnProps).label} (Row #{index + 1})
             </h4>
             <button
               onClick={toggleExpansion}
@@ -619,11 +607,11 @@ const DataTableDemo = () => {
                 <div><strong>Department:</strong> {userRow.department}</div>
                 <div><strong>Status:</strong> 
                   <span style={{ 
-                    color: (userRow.status as TagData).text === 'Active' ? '#059669' : '#dc2626',
+                    color: (userRow.status as TagColumnProps).text === 'Active' ? '#059669' : '#dc2626',
                     fontWeight: 'bold',
                     marginLeft: '4px'
                   }}>
-                    {(userRow.status as TagData).text}
+                    {(userRow.status as TagColumnProps).text}
                   </span>
                 </div>
               </div>
@@ -722,7 +710,7 @@ const DataTableDemo = () => {
     // Handle row click
     const handleRowClick = (row: Record<string, unknown>, index: number) => {
       const userData = row as UserRow;
-      const userName = (userData.name as AvatarData).label;
+      const userName = (userData.name as AvatarColumnProps).label;
       console.log(`🖱️ Row clicked:`, { 
         user: userName, 
         email: userData.email, 

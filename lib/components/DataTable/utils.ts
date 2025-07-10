@@ -1,5 +1,5 @@
-import { SortDirection, SortConfig, ColumnFilter, SearchConfig, FilterType, ColumnDefinition } from './types';
-import { ColumnType, validateColumnData, AvatarData, TagData, SelectData, MultiSelectData, DateData, DateRangeData } from './columnTypes';
+import { SortDirection, SortConfig, ColumnFilter, SearchConfig, FilterType, ColumnDefinition, ColumnType } from './types';
+import { validateColumnData, AvatarData, TagData, SelectData, MultiSelectData, DateData, DateRangeData } from './columnTypes';
 
 export const filterData = <T extends Record<string, unknown>>(
   data: T[],
@@ -141,10 +141,10 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
           
         
         case FilterType.NUMBER:
-          return applyNumberFilter(cellValue, filterValue as number, operator);
+          return applyNumberFilter(cellValue, parseFloat(String(filterValue)), operator);
         
         case FilterType.DATE:
-          return applyDateFilter(cellValue, filterValue as Date, operator);
+          return applyDateFilter(cellValue, new Date(String(filterValue)), operator);
         
         default:
           return true;
@@ -251,9 +251,83 @@ export const getUniqueColumnValues = <T extends Record<string, unknown>>(
   return Array.from(uniqueValues).sort();
 };
 
+const extractSortableValue = (value: unknown, columnType?: ColumnType): string | number => {
+  if (value == null) return '';
+  
+  switch (columnType) {
+    case ColumnType.AVATAR:
+      if (typeof value === 'object' && value !== null && 'label' in value) {
+        const avatarData = value as AvatarData;
+        return String(avatarData.label).toLowerCase();
+      }
+      break;
+      
+    case ColumnType.TAG:
+      if (typeof value === 'object' && value !== null && 'text' in value) {
+        const tagData = value as TagData;
+        return String(tagData.text).toLowerCase();
+      }
+      if (Array.isArray(value) && value.length > 0) {
+        const firstTag = value[0];
+        if (typeof firstTag === 'object' && firstTag !== null && 'text' in firstTag) {
+          return String((firstTag as TagData).text).toLowerCase();
+        }
+        return String(firstTag).toLowerCase();
+      }
+      break;
+      
+    case ColumnType.SELECT:
+      if (typeof value === 'object' && value !== null && 'value' in value) {
+        const selectData = value as SelectData;
+        return String(selectData.value).toLowerCase();
+      }
+      break;
+      
+    case ColumnType.MULTISELECT:
+      if (typeof value === 'object' && value !== null && 'values' in value) {
+        const multiSelectData = value as MultiSelectData;
+        return multiSelectData.values.length > 0 ? String(multiSelectData.values[0]).toLowerCase() : '';
+      }
+      if (Array.isArray(value) && value.length > 0) {
+        return String(value[0]).toLowerCase();
+      }
+      break;
+      
+    case ColumnType.DATE:
+    case ColumnType.DATE_RANGE: {
+      if (typeof value === 'object' && value !== null && 'date' in value) {
+        const dateData = value as DateData;
+        return new Date(dateData.date).getTime();
+      }
+      if (typeof value === 'object' && value !== null && 'startDate' in value) {
+        const dateRangeData = value as DateRangeData;
+        return new Date(dateRangeData.startDate).getTime();
+      }
+      if (typeof value === 'string') {
+        const dateTime = new Date(value).getTime();
+        return isNaN(dateTime) ? value.toLowerCase() : dateTime;
+      }
+      break;
+    }
+      
+    case ColumnType.NUMBER: {
+      if (typeof value === 'number') return value;
+      const numValue = parseFloat(String(value));
+      return isNaN(numValue) ? 0 : numValue;
+    }
+      
+    case ColumnType.TEXT:
+    default:
+      return String(value).toLowerCase();
+  }
+  
+  return String(value).toLowerCase();
+};
+
 export const sortData = <T extends Record<string, unknown>>(
   data: T[],
-  sortConfig: SortConfig
+  sortConfig: SortConfig,
+  columns?: ColumnDefinition<T>[]
 ): T[] => {
   return [...data].sort((a, b) => {
     const aValue = a[sortConfig.field];
@@ -263,12 +337,22 @@ export const sortData = <T extends Record<string, unknown>>(
     if (aValue == null) return 1;
     if (bValue == null) return -1;
 
-    const aCompare = typeof aValue === 'number' ? aValue : String(aValue).toLowerCase();
-    const bCompare = typeof bValue === 'number' ? bValue : String(bValue).toLowerCase();
+    const column = columns?.find(col => String(col.field) === sortConfig.field);
+    const columnType = column?.type;
+
+    const aCompare = extractSortableValue(aValue, columnType);
+    const bCompare = extractSortableValue(bValue, columnType);
 
     let result = 0;
-    if (aCompare < bCompare) result = -1;
-    else if (aCompare > bCompare) result = 1;
+    
+    if (typeof aCompare === 'number' && typeof bCompare === 'number') {
+      result = aCompare - bCompare;
+    } else {
+      const aStr = String(aCompare);
+      const bStr = String(bCompare);
+      if (aStr < bStr) result = -1;
+      else if (aStr > bStr) result = 1;
+    }
 
     return sortConfig.direction === SortDirection.ASCENDING ? result : -result;
   });
@@ -345,23 +429,23 @@ export const formatDate = (dateString: string): string => {
 };
 
 
-export const updateColumnFilter = <T extends Record<string, unknown>>(
+export const updateColumnFilter = (
   currentFilters: ColumnFilter[],
-  field: keyof T,
+  field: keyof Record<string, unknown>,
   type: FilterType,
   value: string | string[],
-  operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte'
+  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' = 'contains'
 ): ColumnFilter[] => {
-  const existingFilterIndex = currentFilters.findIndex(f => f.field === field);
   const newFilters = [...currentFilters];
+  const existingFilterIndex = newFilters.findIndex(filter => filter.field === field);
 
   if (existingFilterIndex >= 0) {
-    if (!value || (Array.isArray(value) && value.length === 0)) {
+    if (value === '' || (Array.isArray(value) && value.length === 0)) {
       newFilters.splice(existingFilterIndex, 1);
     } else {
       newFilters[existingFilterIndex] = { field: String(field), type, value, operator };
     }
-  } else if (value && (!Array.isArray(value) || value.length > 0)) {
+  } else if (value !== '' && (!Array.isArray(value) || value.length > 0)) {
     newFilters.push({ field: String(field), type, value, operator });
   }
 

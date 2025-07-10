@@ -21,7 +21,8 @@ import {
 } from './handlers';
 import { getPopoverAlignment, getFrozenColumnStyles } from './utils';
 import { ColumnFilter } from './FilterComponents';
-import { ColumnType, getColumnTypeConfig } from '../columnTypes';
+import { ColumnType } from '../types';
+import { getColumnTypeConfig } from '../columnTypes';
 
 const FilterIcon = styled(ChevronsUpDown)`
   cursor: pointer;

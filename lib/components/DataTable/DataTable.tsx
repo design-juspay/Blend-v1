@@ -12,6 +12,8 @@ import TableBodyComponent from './TableBody';
 import TableFooter from './TableFooter';
 import BulkActionBar from './TableBody/BulkActionBar';
 import Block from '../Primitives/Block/Block';
+import Button from '../Button/Button';
+import { ButtonSize, ButtonType } from '../Button/types';
 
 import { useComponentToken } from '../../context/useComponentToken';
 
@@ -100,7 +102,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
 
     if (sortConfig && sortConfig.field) {
-      result = sortData(result, sortConfig);
+      result = sortData(result, sortConfig, visibleColumns);
     }
 
     return result;
@@ -171,7 +173,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
         processedData,
         selectedRows,
         visibleColumns,
-        idField,
+        String(idField),
         `${title || 'data'}-export-${new Date().toISOString().split('T')[0]}.csv`
       );
     } catch (error) {
@@ -255,6 +257,25 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
   const handleDeselectAll = () => {
     setSelectedRows({});
     setSelectAll(false);
+  };
+
+  const renderBulkActions = () => {
+    if (!bulkActions?.length) return null;
+    
+    const selectedRowIds = Object.entries(selectedRows)
+      .filter(([, selected]) => selected)
+      .map(([rowId]) => rowId);
+
+    return bulkActions.map(action => (
+      <Button
+        key={action.id}
+        buttonType={action.variant === 'danger' ? ButtonType.DANGER : action.variant === 'primary' ? ButtonType.PRIMARY : ButtonType.SECONDARY}
+        size={ButtonSize.SMALL}
+        onClick={() => action.onClick(selectedRowIds)}
+      >
+        {action.label}
+      </Button>
+    ));
   };
 
   const getColumnWidth = (column: ColumnDefinition<T>): React.CSSProperties => {
@@ -367,7 +388,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
           selectedCount={selectedCount}
           onExport={exportToCSV}
           onDeselectAll={handleDeselectAll}
-          customActions={bulkActions}
+          customActions={renderBulkActions()}
         />
 
         <Block style={{
@@ -407,7 +428,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
             <TableBodyComponent
               currentData={currentData}
               visibleColumns={visibleColumns as ColumnDefinition<Record<string, unknown>>[]}
-              idField={idField}
+              idField={String(idField)}
               selectedRows={selectedRows}
               editingRows={editingRows}
               editValues={editValues}

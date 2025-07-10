@@ -188,6 +188,7 @@ const ExpandButton = styled.button`
                       key={`${rowId}-${String(column.field)}`}
                       column={column}
                       row={isEditing ? editValues[rowId] : row}
+                      rowIndex={index}
                       isEditing={isEditing}
                       currentValue={currentValue}
                       width={columnStyles}

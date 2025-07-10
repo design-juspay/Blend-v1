@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import DataTable from './DataTable';
 import { ColumnDefinition, FilterType, SearchConfig, ColumnFilter } from './types';
-import { ColumnType, AvatarData, TagData } from './columnTypes';
+import { ColumnType } from './types';
+import { AvatarData, TagData } from './columnTypes';
 import { Avatar } from '../Avatar';
 import Tag from '../Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../Tags/types';
@@ -282,7 +283,7 @@ const userColumns: ColumnDefinition<User>[] = [
     field: 'name',
     header: 'Employee',
     type: ColumnType.AVATAR,
-    renderCell: (value) => {
+    renderCell: (value: unknown) => {
       const avatarData = value as AvatarData;
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -295,7 +296,6 @@ const userColumns: ColumnDefinition<User>[] = [
       );
     },
     isSortable: true,
-    isFilterable: true,
     filterType: FilterType.TEXT,
     minWidth: '220px',
     maxWidth: '300px',
@@ -306,7 +306,6 @@ const userColumns: ColumnDefinition<User>[] = [
     type: ColumnType.TEXT,
     isSortable: true,
     isEditable: true,
-    isFilterable: true,
     filterType: FilterType.TEXT,
     minWidth: '180px',
     maxWidth: '250px',
@@ -317,7 +316,6 @@ const userColumns: ColumnDefinition<User>[] = [
     type: ColumnType.SELECT,
     isSortable: true,
     isEditable: true,
-    isFilterable: true,
     filterType: FilterType.SELECT,
     filterOptions: [
       { id: 'admin', label: 'Admin', value: 'Admin' },
@@ -335,7 +333,6 @@ const userColumns: ColumnDefinition<User>[] = [
     type: ColumnType.SELECT,
     isSortable: true,
     isEditable: true,
-    isFilterable: true,
     filterType: FilterType.SELECT,
     filterOptions: [
       { id: 'engineering', label: 'Engineering', value: 'Engineering' },
@@ -352,7 +349,7 @@ const userColumns: ColumnDefinition<User>[] = [
     field: 'status',
     header: 'Status',
     type: ColumnType.TAG,
-    renderCell: (value) => {
+    renderCell: (value: unknown) => {
       const tagData = value as TagData;
       const getStatusColor = (status: string): TagColor => {
         switch (status) {
@@ -374,7 +371,6 @@ const userColumns: ColumnDefinition<User>[] = [
       );
     },
     isSortable: true,
-    isFilterable: true,
     filterType: FilterType.SELECT,
     filterOptions: [
       { id: 'active', label: 'Active', value: 'Active' },
@@ -389,7 +385,7 @@ const userColumns: ColumnDefinition<User>[] = [
     field: 'salary',
     header: 'Salary',
     type: ColumnType.NUMBER,
-    renderCell: (value) => {
+    renderCell: (value: unknown) => {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -397,7 +393,6 @@ const userColumns: ColumnDefinition<User>[] = [
     },
     isSortable: true,
     isEditable: true,
-    isFilterable: true,
     filterType: FilterType.NUMBER,
     minWidth: '100px',
     maxWidth: '140px',
@@ -407,7 +402,6 @@ const userColumns: ColumnDefinition<User>[] = [
     header: 'Join Date',
     type: ColumnType.DATE,
     isSortable: true,
-    isFilterable: true,
     filterType: FilterType.DATE,
     minWidth: '120px',
     maxWidth: '150px',
