@@ -171,6 +171,14 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
         case FilterType.NUMBER:
           return applyNumberFilter(cellValue, parseFloat(String(filterValue)), operator);
         
+        case FilterType.SLIDER: {
+          if (typeof filterValue === 'object' && filterValue !== null && 'min' in filterValue && 'max' in filterValue) {
+            const rangeFilter = filterValue as { min: number; max: number };
+            return applySliderFilter(cellValue, rangeFilter);
+          }
+          return true;
+        }
+        
         case FilterType.DATE:
           return applyDateFilter(cellValue, new Date(String(filterValue)), operator);
         
@@ -179,6 +187,13 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
       }
     });
   });
+};
+
+const applySliderFilter = (cellValue: unknown, filterValue: { min: number; max: number }): boolean => {
+  const cellNum = typeof cellValue === 'number' ? cellValue : parseFloat(String(cellValue));
+  if (isNaN(cellNum)) return false;
+
+  return cellNum >= filterValue.min && cellNum <= filterValue.max;
 };
 
 const applyTextFilter = (cellValue: unknown, filterValue: string, operator: string): boolean => {
@@ -529,19 +544,26 @@ export const updateColumnFilter = (
   currentFilters: ColumnFilter[],
   field: keyof Record<string, unknown>,
   type: FilterType,
-  value: string | string[],
-  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' = 'contains'
+  value: string | string[] | { min: number; max: number },
+  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' | 'range' = 'contains'
 ): ColumnFilter[] => {
   const newFilters = [...currentFilters];
   const existingFilterIndex = newFilters.findIndex(filter => filter.field === field);
 
+  const isEmptyValue = () => {
+    if (typeof value === 'object' && value !== null && 'min' in value && 'max' in value) {
+      return false; // Range values are never considered empty
+    }
+    return value === '' || (Array.isArray(value) && value.length === 0);
+  };
+
   if (existingFilterIndex >= 0) {
-    if (value === '' || (Array.isArray(value) && value.length === 0)) {
+    if (isEmptyValue()) {
       newFilters.splice(existingFilterIndex, 1);
     } else {
       newFilters[existingFilterIndex] = { field: String(field), type, value, operator };
     }
-  } else if (value !== '' && (!Array.isArray(value) || value.length > 0)) {
+  } else if (!isEmptyValue()) {
     newFilters.push({ field: String(field), type, value, operator });
   }
 

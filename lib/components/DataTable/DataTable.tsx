@@ -288,7 +288,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     }
   };
 
-  const handleColumnFilter = (field: string, type: FilterType, value: string | string[], operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' = 'contains') => {
+  const handleColumnFilter = (field: string, type: FilterType, value: string | string[] | { min: number; max: number }, operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' | 'range' = 'contains') => {
     const updatedFilters = updateColumnFilter(columnFilters, field as keyof Record<string, unknown>, type, value, operator);
     
     setColumnFilters(updatedFilters);

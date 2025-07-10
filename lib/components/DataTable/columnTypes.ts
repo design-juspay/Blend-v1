@@ -51,6 +51,7 @@ export type ColumnDataTypeMap = {
   [ColumnType.DATE_RANGE]: DateRangeData;
   [ColumnType.AVATAR]: AvatarData;
   [ColumnType.TAG]: TagData;
+  [ColumnType.SLIDER]: number;
   [ColumnType.CUSTOM]: unknown;
   [ColumnType.PROGRESS]: number;
   [ColumnType.DROPDOWN]: string;
@@ -122,6 +123,10 @@ export const validateColumnData = {
     return false;
   },
   
+  [ColumnType.SLIDER]: (data: unknown): data is number => {
+    return typeof data === 'number' && !isNaN(data);
+  },
+
   [ColumnType.CUSTOM]: (_data: unknown): _data is unknown => {
     return true;
   },
@@ -146,7 +151,7 @@ export type ColumnTypeConfig = {
   supportsSorting: boolean;
   supportsFiltering: boolean;
   enableSearch?: boolean;
-  filterComponent?: 'search' | 'select' | 'multiselect' | 'dateRange' | 'numberRange';
+  filterComponent?: 'search' | 'select' | 'multiselect' | 'dateRange' | 'numberRange' | 'slider';
 }
 
 export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
@@ -237,6 +242,15 @@ export const getColumnTypeConfig = (type: ColumnType): ColumnTypeConfig => {
         enableSearch: false,
         filterComponent: 'select'
       };
+    case ColumnType.SLIDER:
+      return {
+        type,
+        filterType: FilterType.SLIDER,
+        supportsSorting: true,
+        supportsFiltering: true,
+        enableSearch: false,
+        filterComponent: 'slider'
+      };
     case ColumnType.REACT_ELEMENT:
       return {
         type,
@@ -286,6 +300,8 @@ export const getExpectedTypeDescription = (type: ColumnType): string => {
       return 'number (0-100)';
     case ColumnType.DROPDOWN:
       return 'string';
+    case ColumnType.SLIDER:
+      return 'number (for slider range filtering)';
     case ColumnType.REACT_ELEMENT:
       return 'any React element';
     case ColumnType.CUSTOM:

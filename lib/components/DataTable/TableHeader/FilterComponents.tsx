@@ -5,7 +5,9 @@ import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
 import { SearchInput } from '../../Inputs/SearchInput';
 import { Checkbox } from '../../Checkbox';
 import { CheckboxSize } from '../../Checkbox/types';
-import { ColumnDefinition, ColumnType } from '../types';
+import Slider from '../../Slider/Slider';
+import { SliderSize, SliderValueType } from '../../Slider/types';
+import { ColumnDefinition, ColumnType, FilterType } from '../types';
 import { getColumnTypeConfig } from '../columnTypes';
 import { TableTokenType } from '../dataTable.tokens';
 import { SortHandlers, FilterHandlers, FilterState, ColumnFilterHandler } from './handlers';
@@ -122,7 +124,8 @@ export const SingleSelectItems: React.FC<{
       {menuItems.map((group) =>
         filterItemsBySearch(group.items, filterState.columnSearchValues[fieldKey] || '')
           .map((item) => {
-            const isSelected = filterState.columnSelectedValues[fieldKey]?.[0] === item.value;
+            const selectedValues = filterState.columnSelectedValues[fieldKey];
+            const isSelected = Array.isArray(selectedValues) && selectedValues[0] === item.value;
             return (
               <Block
                 key={item.value}
@@ -181,7 +184,8 @@ export const MultiSelectItems: React.FC<{
       {menuItems.map((group) =>
         filterItemsBySearch(group.items, filterState.columnSearchValues[fieldKey] || '')
           .map((item) => {
-            const isSelected = (filterState.columnSelectedValues[fieldKey] || []).includes(item.value);
+            const selectedValues = filterState.columnSelectedValues[fieldKey];
+            const isSelected = Array.isArray(selectedValues) && selectedValues.includes(item.value);
             return (
               <Block
                 key={item.value}
@@ -216,6 +220,137 @@ export const MultiSelectItems: React.FC<{
             );
           })
       )}
+    </Block>
+  );
+};
+
+export const SliderFilter: React.FC<{
+  column: ColumnDefinition<Record<string, unknown>>;
+  fieldKey: string;
+  tableToken: TableTokenType;
+  filterHandlers: FilterHandlers;
+  filterState: FilterState;
+  data?: Record<string, unknown>[];
+  onColumnFilter?: ColumnFilterHandler;
+}> = ({ column, fieldKey, tableToken, filterState, data, onColumnFilter }) => {
+  // Get slider configuration from column or calculate from data
+  const sliderColumn = column as ColumnDefinition<Record<string, unknown>> & { sliderConfig?: { min: number; max: number; step?: number; valueType?: string; prefix?: string; suffix?: string; decimalPlaces?: number } };
+  const sliderConfig = sliderColumn.sliderConfig;
+  
+  if (!sliderConfig) {
+    return (
+      <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap} padding={`${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[8]}`}>
+        <PrimitiveText style={{
+          fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+          color: tableToken.dataTable.table.header.filter.groupLabelColor
+        }}>
+          Slider configuration missing
+        </PrimitiveText>
+      </Block>
+    );
+  }
+
+  // Calculate min/max from data if not provided in config
+  const dataValues = data?.map(row => {
+    const value = row[column.field];
+    return typeof value === 'number' ? value : parseFloat(String(value)) || 0;
+  }).filter(val => !isNaN(val)) || [];
+  
+  const dataMin = dataValues.length > 0 ? Math.min(...dataValues) : 0;
+  const dataMax = dataValues.length > 0 ? Math.max(...dataValues) : 100;
+  
+  const min = sliderConfig.min ?? dataMin;
+  const max = sliderConfig.max ?? dataMax;
+  const step = sliderConfig.step ?? 1;
+  
+  // Get current filter values or use full range as default
+  const currentFilter = filterState.columnSelectedValues[fieldKey];
+  const isRangeFilter = currentFilter && typeof currentFilter === 'object' && 'min' in currentFilter && 'max' in currentFilter;
+  const currentMin = isRangeFilter ? currentFilter.min : min;
+  const currentMax = isRangeFilter ? currentFilter.max : max;
+  
+  const handleSliderChange = (values: number[]) => {
+    const [newMin, newMax] = values;
+    const filterValue = { min: newMin, max: newMax };
+    
+    console.log('Slider changed:', { fieldKey, values, filterValue });
+    
+    // Update filter state and call onColumnFilter
+    if (onColumnFilter) {
+      onColumnFilter(fieldKey, FilterType.SLIDER, filterValue, 'range');
+    }
+  };
+
+  const getValueType = (): SliderValueType => {
+    switch (sliderConfig.valueType) {
+      case 'percentage':
+        return SliderValueType.PERCENTAGE;
+      case 'decimal':
+        return SliderValueType.DECIMAL;
+      default:
+        return SliderValueType.NUMBER;
+    }
+  };
+
+  return (
+    <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap} padding={`${FOUNDATION_THEME.unit[8]} ${FOUNDATION_THEME.unit[8]}`}>
+      <PrimitiveText style={{
+        fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
+        color: tableToken.dataTable.table.header.filter.groupLabelColor,
+        fontWeight: tableToken.dataTable.table.header.filter.groupLabelFontWeight,
+        textTransform: tableToken.dataTable.table.header.filter.groupLabelTextTransform,
+        marginBottom: FOUNDATION_THEME.unit[8]
+      }}>
+        Filter by Range
+      </PrimitiveText>
+      
+      <Block display="flex" flexDirection="column" gap={FOUNDATION_THEME.unit[8]}>
+        <Block display="flex" justifyContent="space-between" alignItems="center">
+          <PrimitiveText style={{
+            fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
+            color: tableToken.dataTable.table.header.filter.normalTextColor
+          }}>
+            {sliderConfig.prefix || ''}{currentMin}{sliderConfig.suffix || ''}
+          </PrimitiveText>
+          <PrimitiveText style={{
+            fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
+            color: tableToken.dataTable.table.header.filter.normalTextColor
+          }}>
+            {sliderConfig.prefix || ''}{currentMax}{sliderConfig.suffix || ''}
+          </PrimitiveText>
+        </Block>
+        
+        <Slider
+          size={SliderSize.SMALL}
+          min={min}
+          max={max}
+          step={step}
+          value={[currentMin, currentMax]}
+          onValueChange={handleSliderChange}
+          valueFormat={{
+            type: getValueType(),
+            decimalPlaces: sliderConfig.decimalPlaces || 0,
+            prefix: sliderConfig.prefix || '',
+            suffix: sliderConfig.suffix || ''
+          }}
+          showValueLabels={false}
+        />
+        
+        <Block display="flex" justifyContent="space-between" alignItems="center">
+          <PrimitiveText style={{
+            fontSize: '11px',
+            color: tableToken.dataTable.table.header.filter.groupLabelColor
+          }}>
+            {sliderConfig.prefix || ''}{min}{sliderConfig.suffix || ''}
+          </PrimitiveText>
+          <PrimitiveText style={{
+            fontSize: '11px',
+            color: tableToken.dataTable.table.header.filter.groupLabelColor
+          }}>
+            {sliderConfig.prefix || ''}{max}{sliderConfig.suffix || ''}
+          </PrimitiveText>
+        </Block>
+      </Block>
     </Block>
   );
 };
@@ -275,6 +410,18 @@ export const ColumnFilter: React.FC<FilterComponentsProps> = ({
 
       {columnConfig.filterComponent === 'multiselect' && (
         <MultiSelectItems
+          column={column}
+          fieldKey={fieldKey}
+          tableToken={tableToken}
+          filterHandlers={filterHandlers}
+          filterState={filterState}
+          data={data}
+          onColumnFilter={onColumnFilter}
+        />
+      )}
+
+      {columnConfig.filterComponent === 'slider' && (
+        <SliderFilter
           column={column}
           fieldKey={fieldKey}
           tableToken={tableToken}

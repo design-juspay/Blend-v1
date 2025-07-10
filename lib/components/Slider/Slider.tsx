@@ -180,11 +180,12 @@ const Slider = forwardRef<
   value,
   defaultValue,
   valueFormat,
-  showValueLabels,
+  showValueLabels = false,
   labelPosition = "top",
   ...props
 }, ref) => {
   const currentValues = value || defaultValue || [0];
+  const thumbCount = currentValues.length;
   
   return (
     <StyledRoot
@@ -198,15 +199,14 @@ const Slider = forwardRef<
       <StyledTrack $variant={variant} $size={size}>
         <StyledRange $variant={variant} $size={size} />
       </StyledTrack>
-      {showValueLabels && currentValues.map((val: number, index: number) => (
+      {Array.from({ length: thumbCount }, (_, index) => (
         <StyledThumb key={index} $variant={variant} $size={size}>
-          <StyledValueLabel $size={size} $position={labelPosition}>
-            {formatSliderValue(val, valueFormat)}
-          </StyledValueLabel>
+          {showValueLabels && (
+            <StyledValueLabel $size={size} $position={labelPosition}>
+              {formatSliderValue(currentValues[index], valueFormat)}
+            </StyledValueLabel>
+          )}
         </StyledThumb>
-      ))}
-      {!showValueLabels && currentValues.map((_: number, index: number) => (
-        <StyledThumb key={index} $variant={variant} $size={size} />
       ))}
     </StyledRoot>
   );

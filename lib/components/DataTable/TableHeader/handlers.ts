@@ -7,14 +7,14 @@ export type SortState = {
 
 export type FilterState = {
   columnSearchValues: Record<string, string>;
-  columnSelectedValues: Record<string, string[]>;
+  columnSelectedValues: Record<string, string[] | { min: number; max: number }>;
 };
 
 export type ColumnFilterHandler = (
   field: string, 
   filterType: FilterType, 
-  value: string | string[], 
-  operator?: "endsWith" | "startsWith" | "equals" | "contains" | "gt" | "lt" | "gte" | "lte"
+  value: string | string[] | { min: number; max: number }, 
+  operator?: "endsWith" | "startsWith" | "equals" | "contains" | "gt" | "lt" | "gte" | "lte" | "range"
 ) => void;
 
 export type SortHandlers = {
@@ -100,8 +100,10 @@ export const createFilterHandlers = (
 
   const handleMultiSelectFilter = (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: ColumnFilterHandler) => {
     setFilterState(prev => {
-      const currentSelected = prev.columnSelectedValues[fieldKey] || [];
-      let newSelected = [...currentSelected];
+      const currentSelected = prev.columnSelectedValues[fieldKey];
+      // Only handle array values for multiselect
+      const currentArray = Array.isArray(currentSelected) ? currentSelected : [];
+      let newSelected = [...currentArray];
       if (newSelected.includes(value)) {
         newSelected = newSelected.filter(v => v !== value);
       } else {

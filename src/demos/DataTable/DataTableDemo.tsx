@@ -35,6 +35,7 @@ const DataTableDemo = () => {
         labels: string[];
       };
       revenue: string;
+      revenueAmount: number; // New field for slider filtering
       growthRate: string;
     };
 
@@ -126,6 +127,11 @@ const DataTableDemo = () => {
             '$12,500.00', '€8,750.50', '£15,200.75', '$22,100.25', '₹350,000.00',
             '$9,800.99', '€14,600.33', '£7,450.80', '$31,200.00', '₹275,500.75',
             '$18,900.15', '€11,300.90', '£25,750.60', '$6,850.45', '₹425,000.25'
+          ][index % 15],
+          revenueAmount: [
+            12500, 8750.5, 15200.75, 22100.25, 350000,
+            9800.99, 14600.33, 7450.8, 31200, 275500.75,
+            18900.15, 11300.9, 25750.6, 6850.45, 425000.25
           ][index % 15],
           growthRate: [
             '12.5%', '8.7%', '15.2%', '22.1%', '5.8%',
@@ -285,10 +291,10 @@ const DataTableDemo = () => {
       { 
         field: 'revenue',
         header: 'Revenue',
-        headerSubtext: 'Monthly Revenue',
-        type: ColumnType.NUMBER,
+        headerSubtext: 'Monthly Revenue Display',
+        type: ColumnType.TEXT,
         isSortable: true,
-        isEditable: true,
+        isEditable: false,
         minWidth: '120px',
         maxWidth: '160px'
       },
@@ -301,6 +307,37 @@ const DataTableDemo = () => {
         isEditable: true,
         minWidth: '120px',
         maxWidth: '160px'
+      },
+      { 
+        field: 'revenueAmount',
+        header: 'Revenue Filter',
+        headerSubtext: 'Slider Range Filter',
+        type: ColumnType.SLIDER,
+        isSortable: true,
+        isEditable: false,
+        sliderConfig: {
+          min: 0,
+          max: 500000,
+          step: 1000,
+          valueType: 'number',
+          prefix: '$',
+          suffix: '',
+          decimalPlaces: 0
+        },
+        renderCell: (value: unknown) => {
+          const numericValue = typeof value === 'number' ? value : 0;
+          
+          return (
+            <span style={{ 
+              fontWeight: 500,
+              color: numericValue > 200000 ? '#059669' : numericValue > 100000 ? '#d97706' : '#dc2626'
+            }}>
+              ${numericValue.toLocaleString()}
+            </span>
+          );
+        },
+        minWidth: '140px',
+        maxWidth: '180px'
       },
     ];
     

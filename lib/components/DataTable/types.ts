@@ -13,6 +13,7 @@ export enum FilterType {
   MULTISELECT = 'multiselect',
   DATE = 'date',
   BOOLEAN = 'boolean',
+  SLIDER = 'slider',
 }
 
 export enum ColumnType {
@@ -27,6 +28,7 @@ export enum ColumnType {
   MULTISELECT = 'multiselect', 
   DATE = 'date',
   DATE_RANGE = 'date_range',
+  SLIDER = 'slider',
   CUSTOM = 'custom',
 }
 
@@ -59,6 +61,16 @@ export type DropdownColumnProps = {
   options: Array<{ id: string; label: string; value: unknown }>;
   selectedValue?: unknown;
   placeholder?: string;
+}
+
+export type SliderColumnProps = {
+  min: number;
+  max: number;
+  step?: number;
+  valueType?: 'number' | 'percentage' | 'decimal';
+  decimalPlaces?: number;
+  prefix?: string;
+  suffix?: string;
 }
 
 export type FilterOption = {
@@ -124,6 +136,11 @@ export type ColumnDefinition<T> =
       renderCell?: (value: DropdownColumnProps, row: T, index: number) => ReactNode;
     })
   | (BaseColumnDefinition<T> & {
+      type: ColumnType.SLIDER;
+      renderCell?: (value: number, row: T, index: number) => ReactNode;
+      sliderConfig: SliderColumnProps;
+    })
+  | (BaseColumnDefinition<T> & {
       type: ColumnType.REACT_ELEMENT;
       renderCell: (value: unknown, row: T, index: number) => ReactNode;
       isSortable: false; // React elements cannot be sorted
@@ -147,8 +164,8 @@ export type SearchConfig = {
 export type ColumnFilter = {
   field: keyof Record<string, unknown>;
   type: FilterType;
-  value: string | string[];
-  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte';
+  value: string | string[] | { min: number; max: number };
+  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte' | 'range';
 }
 
 export type PaginationConfig = {
