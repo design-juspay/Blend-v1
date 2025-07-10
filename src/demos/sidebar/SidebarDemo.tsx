@@ -332,6 +332,11 @@ const SidebarDemo = () => {
           leftSlot: <Grid style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("breadcrumb"),
         },
+        {
+          label: "Tooltip",
+          leftSlot: <Info style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("tooltips"),
+        }
       ],
     },
     {
