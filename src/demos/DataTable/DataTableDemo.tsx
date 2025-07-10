@@ -172,50 +172,27 @@ const DataTableDemo = () => {
         field: 'role',
         header: 'Access Level',
         headerSubtext: 'User Role & Permissions',
-        type: ColumnType.TEXT,
+        type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        filterOptions: [
-          { id: 'admin', label: 'Admin', value: 'Admin' },
-          { id: 'user', label: 'User', value: 'User' },
-          { id: 'manager', label: 'Manager', value: 'Manager' },
-          { id: 'editor', label: 'Editor', value: 'Editor' },
-          { id: 'viewer', label: 'Viewer', value: 'Viewer' },
-          { id: 'moderator', label: 'Moderator', value: 'Moderator' },
-        ],
         minWidth: '120px',
         maxWidth: '160px'
       },
       { 
         field: 'department',
         header: 'Department',
-        type: ColumnType.TEXT,
+        type: ColumnType.MULTISELECT,
         isSortable: true,
         isEditable: true,
-        filterOptions: [
-          { id: 'engineering', label: 'Engineering', value: 'Engineering' },
-          { id: 'marketing', label: 'Marketing', value: 'Marketing' },
-          { id: 'sales', label: 'Sales', value: 'Sales' },
-          { id: 'hr', label: 'HR', value: 'HR' },
-          { id: 'finance', label: 'Finance', value: 'Finance' },
-          { id: 'operations', label: 'Operations', value: 'Operations' },
-        ],
         minWidth: '130px',
         maxWidth: '180px'
       },
       { 
         field: 'gateway',
         header: 'Gateway',
-        type: ColumnType.TEXT,
+        type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        filterOptions: [
-          { id: 'gateway-a', label: 'Gateway A', value: 'Gateway A' },
-          { id: 'gateway-b', label: 'Gateway B', value: 'Gateway B' },
-          { id: 'gateway-c', label: 'Gateway C', value: 'Gateway C' },
-          { id: 'gateway-d', label: 'Gateway D', value: 'Gateway D' },
-          { id: 'gateway-e', label: 'Gateway E', value: 'Gateway E' },
-        ],
         minWidth: '120px',
         maxWidth: '160px'
       },
@@ -236,12 +213,6 @@ const DataTableDemo = () => {
           />
         ),
         isSortable: true,
-        filterOptions: [
-          { id: 'active', label: 'Active', value: 'Active' },
-          { id: 'inactive', label: 'Inactive', value: 'Inactive' },
-          { id: 'pending', label: 'Pending', value: 'Pending' },
-          { id: 'suspended', label: 'Suspended', value: 'Suspended' },
-        ],
         minWidth: '100px',
         maxWidth: '140px'
       },
@@ -282,12 +253,7 @@ const DataTableDemo = () => {
             </div>
           );
         },
-        filterOptions: [
-          { id: 'read', label: 'Read', value: 'read' },
-          { id: 'write', label: 'Write', value: 'write' },
-          { id: 'delete', label: 'Delete', value: 'delete' },
-          { id: 'admin', label: 'Admin', value: 'admin' },
-        ],
+
         minWidth: '140px',
         maxWidth: '200px'
       },
@@ -946,7 +912,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, clickable rows, and dynamic row styling. Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. 🎨 Smart Row Styling: Red = Suspended users (priority 1), Blue = Admin users (priority 2), Green = Recently joined 2023+ (priority 3), Light gray = Even rows (priority 4). Colors apply to entire row including frozen columns! ✨ Smart Hover Behavior: Rows with custom colors maintain their color on hover (preserving your styling intention), while default rows show normal hover effects. Try clicking column headers to see type-specific filters, searching within dropdown menus for skills/roles, changing column freeze settings, scrolling horizontally, clicking on any row, hovering over rows with and without custom colors to see the smart hover behavior, and using advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, clickable rows, and dynamic row styling. Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. 🔧 AUTO FILTER OPTIONS: All filter options are now automatically extracted from data with smart deduplication! Department is MULTISELECT - select multiple departments to filter! Role & Gateway are SELECT - choose one option to filter! Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + system columns)` : '(currently all columns scrollable)'}, headerSubtext, flexible column widths with min/max constraints and automatic text truncation. 🎨 Smart Row Styling: Red = Suspended users (priority 1), Blue = Admin users (priority 2), Green = Recently joined 2023+ (priority 3), Light gray = Even rows (priority 4). Colors apply to entire row including frozen columns! ✨ Smart Hover Behavior: Rows with custom colors maintain their color on hover (preserving your styling intention), while default rows show normal hover effects. 📋 Enhanced Empty State: When no data matches filters, shows centered "No data available" message instead of empty table rows. 🚀 Robust System: Handles any data structure automatically - just set column type to SELECT/MULTISELECT and the system extracts unique values! Try clicking column headers to see type-specific filters, selecting multiple departments in the Department filter, selecting single roles/gateways, searching within dropdown menus for skills/roles, changing column freeze settings, scrolling horizontally, clicking on any row, hovering over rows with and without custom colors to see the smart hover behavior, and using advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}

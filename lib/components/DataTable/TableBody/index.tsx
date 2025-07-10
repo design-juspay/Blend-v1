@@ -91,10 +91,6 @@ const StyledTableCell = styled.td<{
   `}
 `;
 
-const EmptyStateCell = styled.td`
-  ${tableToken.dataTable.table.body.cell}
-`;
-
 const ExpandedCell = styled.td`
 ${tableToken.dataTable.table.body.cell}
 ${tableToken.dataTable.table.body.cell.expandable}
@@ -321,13 +317,7 @@ const ExpandButton = styled.button`
             </React.Fragment>
           );
         })
-      ) : (
-        <TableRow isClickable={false}>
-          <EmptyStateCell colSpan={getColSpan()}>
-            No data available
-          </EmptyStateCell>
-        </TableRow>
-      )}
+      ) : null}
     </tbody>
   );
 });

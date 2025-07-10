@@ -117,26 +117,54 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
         case FilterType.TEXT:
           return applyTextFilter(cellValue, filterValue as string, operator);
         
-        case FilterType.SELECT:
-          return String(cellValue) === String(filterValue);
+        case FilterType.SELECT: {
+          if (filterValue === '' || filterValue == null) return true;
+          
+          if (typeof cellValue === 'object' && cellValue !== null && 'text' in cellValue) {
+            const tagData = cellValue as TagData;
+            return String(tagData.text).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
+          }
+          
+          if (typeof cellValue === 'object' && cellValue !== null && 'label' in cellValue) {
+            const avatarData = cellValue as AvatarData;
+            return String(avatarData.label).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
+          }
+          
+          if (typeof cellValue === 'object' && cellValue !== null && 'value' in cellValue) {
+            const selectData = cellValue as SelectData;
+            return String(selectData.value).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
+          }
+          
+          return String(cellValue).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
+        }
         
         case FilterType.MULTISELECT: {
           const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
           
+          if (filterValues.length === 0) return true;
+          
           if (typeof cellValue === 'object' && cellValue !== null && 'values' in cellValue) {
             const multiSelectData = cellValue as MultiSelectData;
+            if (!Array.isArray(multiSelectData.values)) return false;
+            
             return filterValues.some(filterVal => 
-              multiSelectData.values.some(val => String(val) === String(filterVal))
+              multiSelectData.values.some(val => 
+                String(val).trim().toLowerCase() === String(filterVal).trim().toLowerCase()
+              )
             );
           }
           
           if (Array.isArray(cellValue)) {
             return filterValues.some(filterVal => 
-              cellValue.some(val => String(val) === String(filterVal))
+              cellValue.some(val => 
+                String(val).trim().toLowerCase() === String(filterVal).trim().toLowerCase()
+              )
             );
           }
           
-          return filterValues.some(val => String(cellValue) === String(val));
+          return filterValues.some(val => 
+            String(cellValue).trim().toLowerCase() === String(val).trim().toLowerCase()
+          );
         }
           
         
@@ -218,37 +246,105 @@ export const getUniqueColumnValues = <T extends Record<string, unknown>>(
   data: T[],
   field: keyof T
 ): string[] => {
+  // Handle edge case: empty data array
+  if (!data || data.length === 0) {
+    return [];
+  }
+
   const uniqueValues = new Set<string>();
-  
+  const normalizedValues = new Map<string, string>(); // normalized -> original mapping
+
+  const addValue = (val: unknown) => {
+    if (val == null || val === '') return;
+    
+    const stringVal = String(val).trim();
+    if (stringVal === '') return;
+    
+    // Create normalized key for deduplication (lowercase, no extra spaces)
+    const normalizedKey = stringVal.toLowerCase().replace(/\s+/g, ' ');
+    
+    // Only add if we haven't seen this normalized value before
+    if (!normalizedValues.has(normalizedKey)) {
+      normalizedValues.set(normalizedKey, stringVal);
+      uniqueValues.add(stringVal);
+    }
+  };
+
   data.forEach(row => {
     const value = row[field];
-    if (value != null) {
+    
+    if (value == null) return;
+
+    try {
+      // Handle MultiSelect data structure: { values: string[], labels?: string[] }
       if (typeof value === 'object' && value !== null && 'values' in value) {
         const multiSelectData = value as MultiSelectData;
-        multiSelectData.values.forEach(val => uniqueValues.add(String(val)));
+        if (Array.isArray(multiSelectData.values)) {
+          multiSelectData.values.forEach(val => addValue(val));
+        }
       }
+      // Handle plain arrays
       else if (Array.isArray(value)) {
-        value.forEach(val => uniqueValues.add(String(val)));
+        value.forEach(val => addValue(val));
       }
+      // Handle Tag data structure: { text: string, color?: string, variant?: string }
       else if (typeof value === 'object' && value !== null && 'text' in value) {
         const tagData = value as TagData;
-        uniqueValues.add(String(tagData.text));
+        addValue(tagData.text);
       }
+      // Handle Avatar data structure: { label: string, sublabel?: string, imageUrl?: string }
       else if (typeof value === 'object' && value !== null && 'label' in value) {
         const avatarData = value as AvatarData;
-        uniqueValues.add(String(avatarData.label));
+        addValue(avatarData.label);
       }
+      // Handle Select data structure: { value: string, label?: string }
       else if (typeof value === 'object' && value !== null && 'value' in value) {
         const selectData = value as SelectData;
-        uniqueValues.add(String(selectData.value));
+        addValue(selectData.value);
       }
+      // Handle nested objects with display properties
+      else if (typeof value === 'object' && value !== null) {
+        // Try common display properties
+        const obj = value as Record<string, unknown>;
+        if ('name' in obj) addValue(obj.name);
+        else if ('title' in obj) addValue(obj.title);
+        else if ('id' in obj) addValue(obj.id);
+        else {
+          // Fallback: stringify the object
+          addValue(JSON.stringify(value));
+        }
+      }
+      // Handle primitive values (string, number, boolean)
       else {
-        uniqueValues.add(String(value));
+        addValue(value);
       }
+    } catch (error) {
+      // Fallback for any unexpected data structures
+      console.warn(`Error processing column value for field "${String(field)}":`, error);
+      addValue(value);
     }
   });
+
+  // Convert to array and sort intelligently
+  const valuesArray = Array.from(uniqueValues);
   
-  return Array.from(uniqueValues).sort();
+  return valuesArray.sort((a, b) => {
+    // Handle numeric sorting if both values are numbers
+    const aNum = parseFloat(a);
+    const bNum = parseFloat(b);
+    
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return aNum - bNum;
+    }
+    
+    // Handle case-insensitive string sorting
+    const aLower = a.toLowerCase();
+    const bLower = b.toLowerCase();
+    
+    if (aLower < bLower) return -1;
+    if (aLower > bLower) return 1;
+    return 0;
+  });
 };
 
 const extractSortableValue = (value: unknown, columnType?: ColumnType): string | number => {

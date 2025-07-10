@@ -8,17 +8,35 @@ export const getFilterOptions = (
   column: ColumnDefinition<Record<string, unknown>>,
   data?: Record<string, unknown>[]
 ) => {
-  if (column.filterOptions) {
+  if (column.filterOptions && column.filterOptions.length > 0) {
     return column.filterOptions;
   }
   
-  if (!data) return [];
-  const uniqueValues = getUniqueColumnValues(data, column.field);
-  return uniqueValues.map((val: unknown) => ({
-    id: String(val),
-    label: String(val),
-    value: String(val)
-  }));
+  if (!data || data.length === 0) {
+    return [];
+  }
+  
+  try {
+    const uniqueValues = getUniqueColumnValues(data, column.field);
+    
+    if (uniqueValues.length === 0) {
+      return [];
+    }
+    
+    return uniqueValues.map((val: string, index: number) => {
+      const normalizedVal = val.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      const uniqueId = normalizedVal ? `${normalizedVal}-${index}` : `option-${index}`;
+      
+      return {
+        id: uniqueId,
+        label: val,
+        value: val
+      };
+    });
+  } catch (error) {
+    console.warn(`Error generating filter options for column "${column.header}":`, error);
+    return [];
+  }
 };
 
 export const getSelectMenuItems = (

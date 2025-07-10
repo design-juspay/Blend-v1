@@ -95,7 +95,7 @@ export const createFilterHandlers = (
       ...prev,
       columnSelectedValues: { ...prev.columnSelectedValues, [fieldKey]: [value] }
     }));
-    onColumnFilter?.(column.field, FilterType.SELECT, value, 'equals');
+    onColumnFilter?.(String(column.field), FilterType.SELECT, value, 'equals');
   };
 
   const handleMultiSelectFilter = (column: ColumnDefinition<Record<string, unknown>>, fieldKey: string, value: string, onColumnFilter?: ColumnFilterHandler) => {
@@ -108,7 +108,7 @@ export const createFilterHandlers = (
         newSelected.push(value);
       }
       
-      onColumnFilter?.(column.field, FilterType.MULTISELECT, newSelected, 'equals');
+      onColumnFilter?.(String(column.field), FilterType.MULTISELECT, newSelected, 'equals');
       
       return {
         ...prev,
