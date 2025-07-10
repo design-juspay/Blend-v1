@@ -4,6 +4,7 @@ import { FoundationTokenType } from "../../tokens/theme.token";
 export type TableTokenType = {
   padding: CSSObject["padding"];
   width: CSSObject["width"];
+  height: CSSObject["height"];
   display: CSSObject["display"];
   flexDirection: CSSObject["flexDirection"];
   position: CSSObject["position"];
@@ -25,7 +26,7 @@ export type TableTokenType = {
     borderRadius: CSSObject["borderRadius"];
     border: CSSObject["border"];
     maxHeight: CSSObject["maxHeight"];
-    minHeight: CSSObject["minHeight"];
+    minHeight?: CSSObject["minHeight"];
     bulkActions: {
       top: CSSObject["top"];
       left: CSSObject["left"];
@@ -174,6 +175,7 @@ export type TableTokenType = {
 export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTokenType => { 
   return {
     width: "100%",
+    height: "calc(100vh - 280px)",
     display: "flex",
     flexDirection: "column",
     padding: foundationToken.unit[2],
@@ -213,8 +215,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
     dataTable: {
         borderRadius: foundationToken.border.radius[8],
         border: `1px solid ${foundationToken.colors.gray[200]}`,
-        maxHeight: "calc(100vh - 250px)",
-        minHeight: "380px",
+        maxHeight: "calc(100vh - 280px)",
       bulkActions: {
           top: '80%',
           left: '50%',
@@ -242,7 +243,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
         borderCollapse: "separate",
         borderSpacing: 0,
         position: "relative",
-        minWidth: "max-content",
+        minWidth: "calc(100vw - 280px)",
         header: {
           backgroundColor: foundationToken.colors.gray[25],
           borderBottom: `1px solid ${foundationToken.colors.gray[150]}`,
@@ -253,8 +254,8 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
               backgroundColor: foundationToken.colors.gray[50],
             },
           },
-                  cell:{
-          padding: `${foundationToken.unit[4]} ${foundationToken.unit[8]}`,
+          cell:{
+          padding: `${foundationToken.unit[4]} ${foundationToken.unit[16]}`,
           textAlign: "left",
           fontWeight: foundationToken.font.weight[500],
           color: foundationToken.colors.gray[400],
@@ -353,7 +354,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           position: "sticky",
           bottom: 0,
           backgroundColor: foundationToken.colors.gray[25],
-          zIndex: 0,
+          zIndex: 50,
           flexShrink: 0,
           pagination: {
             pageText:{

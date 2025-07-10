@@ -139,12 +139,12 @@ const ExpandButton = styled.button`
                     style={{ 
                       minWidth: `${FOUNDATION_THEME.unit[52]}`, 
                       maxWidth: `${FOUNDATION_THEME.unit[52]}`,
-                      ...(columnFreeze > 0 && {
-                        position: 'sticky',
-                        left: '0px',
-                        zIndex: 45,
-                        backgroundColor: rowStyling.backgroundColor,
-                      }),
+                          ...(columnFreeze > 0 && {
+                          position: 'sticky',
+                          left: '0px',
+                          zIndex: 45,
+                          backgroundColor: rowStyling.backgroundColor,
+                        }),
                     }}
                   >
                     <Block 
@@ -171,7 +171,7 @@ const ExpandButton = styled.button`
                   </StyledTableCell>
                 )}
 
-                {enableRowSelection && (
+                                {enableRowSelection && (
                   <StyledTableCell 
                     customBackgroundColor={rowStyling.backgroundColor}
                     hasCustomBackground={hasCustomBackground}
@@ -234,15 +234,15 @@ const ExpandButton = styled.button`
                     
                     const isLastFrozenColumn = colIndex === columnFreeze - 1;
                     
-                    return {
-                      position: 'sticky' as const,
-                      left: `${leftOffset}px`,
-                      zIndex: 44,
-                      backgroundColor: rowStyling.backgroundColor,
-                      ...(isLastFrozenColumn && {
-                        borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
-                      }),
-                    };
+                                          return {
+                        position: 'sticky' as const,
+                        left: `${leftOffset}px`,
+                        zIndex: 44,
+                        backgroundColor: rowStyling.backgroundColor || '#ffffff',
+                        ...(isLastFrozenColumn && {
+                          borderRight: `1px solid ${FOUNDATION_THEME.colors.gray[200]}`,
+                        }),
+                      };
                   };
                   
                   return (

@@ -20,6 +20,7 @@ type FilterComponentsProps = {
   filterHandlers: FilterHandlers;
   filterState: FilterState;
   onColumnFilter?: ColumnFilterHandler;
+  onPopoverClose?: () => void;
 };
 
 export const SortOptions: React.FC<{
@@ -112,7 +113,8 @@ export const SingleSelectItems: React.FC<{
   filterState: FilterState;
   data?: Record<string, unknown>[];
   onColumnFilter?: ColumnFilterHandler;
-}> = ({ column, fieldKey, tableToken, filterHandlers, filterState, data, onColumnFilter }) => {
+  onPopoverClose?: () => void;
+}> = ({ column, fieldKey, tableToken, filterHandlers, filterState, data, onColumnFilter, onPopoverClose }) => {
   const menuItems = getSelectMenuItems(column, data);
   
   return (
@@ -135,7 +137,10 @@ export const SingleSelectItems: React.FC<{
                 _hover={{
                   backgroundColor: tableToken.dataTable.table.header.filter.hoverBackground
                 }}
-                onClick={() => filterHandlers.handleSelectFilter(column, fieldKey, item.value, onColumnFilter)}
+                onClick={() => {
+                  filterHandlers.handleSelectFilter(column, fieldKey, item.value, onColumnFilter);
+                  onPopoverClose?.();
+                }}
               >
                 <PrimitiveText style={{
                   fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
@@ -222,7 +227,8 @@ export const ColumnFilter: React.FC<FilterComponentsProps> = ({
   sortHandlers,
   filterHandlers,
   filterState,
-  onColumnFilter
+  onColumnFilter,
+  onPopoverClose
 }) => {
   const columnConfig = getColumnTypeConfig(column.type || ColumnType.TEXT);
   const fieldKey = String(column.field);
@@ -263,6 +269,7 @@ export const ColumnFilter: React.FC<FilterComponentsProps> = ({
           filterState={filterState}
           data={data}
           onColumnFilter={onColumnFilter}
+          onPopoverClose={onPopoverClose}
         />
       )}
 

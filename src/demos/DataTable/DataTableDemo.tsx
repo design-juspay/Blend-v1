@@ -255,7 +255,17 @@ const DataTableDemo = () => {
           };
 
           return (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+            <div style={{ 
+              display: 'flex', 
+              flexWrap: 'nowrap', 
+              gap: '4px',
+              overflow: 'auto',
+              whiteSpace: 'nowrap',
+              minWidth: '200px',
+              maxWidth: '100%',
+              scrollbarWidth: 'thin',
+              scrollBehavior: 'smooth'
+            }}>
               {permissionsData.values.map((permission, index) => (
                 <Tag
                   key={index}
@@ -269,8 +279,8 @@ const DataTableDemo = () => {
           );
         },
 
-        minWidth: '140px',
-        maxWidth: '200px'
+        minWidth: '200px',
+        maxWidth: '350px'
       },
       { 
         field: 'revenue',

@@ -75,6 +75,8 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
     columnSelectedValues: {}
   });
 
+  const [openPopovers, setOpenPopovers] = useState<Record<string, boolean>>({});
+
   const tableToken = useComponentToken("TABLE") as TableTokenType;
 
   const sortHandlers = createSortHandlers(sortState, setSortState, onSort);
@@ -165,6 +167,9 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         {enableRowSelection && (
           <th style={{ 
             ...tableToken.dataTable.table.header.cell,
+            width: '60px', 
+            minWidth: '60px', 
+            maxWidth: '60px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -341,6 +346,13 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                       side="bottom"
                       align={getPopoverAlignment(index, localColumns.length)}
                       sideOffset={20}
+                      open={openPopovers[String(column.field)] || false}
+                      onOpenChange={(open) => {
+                        setOpenPopovers(prev => ({
+                          ...prev,
+                          [String(column.field)]: open
+                        }));
+                      }}
                     >
                       <ColumnFilter
                         column={column}
@@ -350,6 +362,12 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                         filterHandlers={filterHandlers}
                         filterState={filterState}
                         onColumnFilter={onColumnFilter}
+                        onPopoverClose={() => {
+                          setOpenPopovers(prev => ({
+                            ...prev,
+                            [String(column.field)]: false
+                          }));
+                        }}
                       />
                     </Popover>
                   </Block>
