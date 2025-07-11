@@ -1,8 +1,12 @@
-import styled, { css } from 'styled-components';
-import { SwitchSize } from './types';
-import { FOUNDATION_THEME } from '../../tokens';
+import styled, { css } from "styled-components";
+import { SwitchSize } from "./types";
+import { FOUNDATION_THEME } from "../../tokens";
 import { useComponentToken } from "../../context/useComponentToken";
-import { SwitchTokensType } from './switch.token';
+import { ResponsiveSwitchTokens, SwitchTokensType } from "./switch.token";
+import { useBreakpoints } from "../../hooks/useBreakPoints";
+import { useContext } from "react";
+import ThemeContext from "../../context/ThemeContext";
+import { BreakpointType } from "../../breakpoints/breakPoints";
 
 export const StyledSwitchRoot = styled.button<{
   size: SwitchSize;
@@ -11,39 +15,57 @@ export const StyledSwitchRoot = styled.button<{
   $error?: boolean;
 }>`
   ${({ size, $isDisabled, $isChecked }) => {
-    const tokens = useComponentToken('SWITCH') as SwitchTokensType;
+    const { breakpoints } = useContext(ThemeContext);
+    const { breakPointLabel } = useBreakpoints(breakpoints);
+
+    const allSwitchTokens = useComponentToken(
+      "SWITCH"
+    ) as unknown as ResponsiveSwitchTokens;
+
+    const tokens: SwitchTokensType =
+      allSwitchTokens[breakPointLabel as keyof BreakpointType];
+
     return css`
       position: relative;
       border-radius: ${tokens.borderRadius.base};
       border: none;
       outline: none;
-      cursor: ${$isDisabled ? 'not-allowed' : 'pointer'};
-      transition: background-color ${tokens.transition.duration} ${tokens.transition.easing};
-      
+      cursor: ${$isDisabled ? "not-allowed" : "pointer"};
+      transition: background-color ${tokens.transition.duration}
+        ${tokens.transition.easing};
+
       margin: 0;
-      padding: 0;      
+      padding: 0;
       display: inline-flex;
       align-items: center;
       justify-content: flex-start;
-      
+
       width: ${tokens.width[size]};
       height: ${tokens.height[size]};
-      
+
       background-color: ${$isDisabled
-        ? ($isChecked ? tokens.indicator.active.background.disabled : tokens.indicator.inactive.background.disabled)
-        : ($isChecked ? tokens.indicator.active.background.default : tokens.indicator.inactive.background.default)
-      };
-      
+        ? $isChecked
+          ? tokens.indicator.active.background.disabled
+          : tokens.indicator.inactive.background.disabled
+        : $isChecked
+        ? tokens.indicator.active.background.default
+        : tokens.indicator.inactive.background.default};
+
       /* Improved focus styles for better accessibility */
       &:focus-visible {
-        outline: ${tokens.focus.outline.width} solid ${tokens.focus.outline.color};
+        outline: ${tokens.focus.outline.width} solid
+          ${tokens.focus.outline.color};
         outline-offset: ${tokens.focus.outline.offset};
         box-shadow: ${FOUNDATION_THEME.shadows.sm};
       }
-      
-      ${$isDisabled && css`opacity: 0.7;`}
-      
-      ${!$isDisabled && css`
+
+      ${$isDisabled &&
+      css`
+        opacity: 0.7;
+      `}
+
+      ${!$isDisabled &&
+      css`
         &:hover {
           opacity: 0.9;
         }
@@ -57,21 +79,32 @@ export const StyledSwitchThumb = styled.div<{
   $isChecked: boolean;
 }>`
   ${({ size, $isChecked }) => {
-    const tokens = useComponentToken('SWITCH') as SwitchTokensType;
+    const { breakpoints } = useContext(ThemeContext);
+    const { breakPointLabel } = useBreakpoints(breakpoints);
+
+    const allSwitchTokens = useComponentToken(
+      "SWITCH"
+    ) as unknown as ResponsiveSwitchTokens;
+
+    const tokens: SwitchTokensType =
+      allSwitchTokens[breakPointLabel as keyof BreakpointType];
     return css`
       position: absolute;
       top: ${tokens.thumb.size[size].top};
-      left: ${$isChecked ? `${tokens.thumb.size[size].left}` : '-1px'};
+      left: ${$isChecked ? `${tokens.thumb.size[size].left}` : "-1px"};
       border-radius: ${tokens.borderRadius.thumb};
       background-color: ${tokens.thumb.background};
       border: ${tokens.thumb.border.width} solid ${tokens.thumb.border.color};
       transition: all ${tokens.transition.duration} ${tokens.transition.easing};
-      
+
       width: ${tokens.thumb.size[size].width};
       height: ${tokens.thumb.size[size].height};
-      
-      transform: translateX(${$isChecked ? tokens.thumb.size[size].offset.active : tokens.thumb.size[size].offset.inactive});
+
+      transform: translateX(
+        ${$isChecked
+          ? tokens.thumb.size[size].offset.active
+          : tokens.thumb.size[size].offset.inactive}
+      );
     `;
   }}
 `;
-
