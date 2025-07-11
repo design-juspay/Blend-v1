@@ -40,6 +40,11 @@ const ButtonDemo: React.FC = () => {
             text="Primary Button"
             buttonType={ButtonTypeV2.PRIMARY}
             onClick={handleClick}
+            data-button-for="add"
+            data-value="add"
+            data-button-status="active"
+            data-dynamic-button="false"
+            data-custom-value="add"
           />
           <ButtonV2
             text="Secondary Button"
@@ -138,6 +143,7 @@ const ButtonDemo: React.FC = () => {
                 buttonType={ButtonTypeV2.PRIMARY}
                 subType={ButtonSubTypeV2.ICON_ONLY}
                 leadingIcon={<User size={16} />}
+                size={ButtonSizeV2.LARGE}
                 onClick={handleClick}
               />
             </Tooltip>
