@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useContext } from "react";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import Block from "../Primitives/Block/Block";
 import {
@@ -7,10 +7,13 @@ import {
   ButtonSubTypeV2,
   ButtonTypeV2,
 } from "./types";
-import { ButtonTokensType } from "./button.tokens";
+import { ButtonTokensType, ResponsiveButtonTokens } from "./button.tokens";
 import Text from "../Text/Text";
 import { useComponentToken } from "../../context/useComponentToken";
 import { LoaderCircle } from "lucide-react";
+import ThemeContext from "../../context/ThemeContext";
+import { useBreakpoints } from "../../hooks/useBreakPoints";
+import { BreakpointType } from "../../breakpoints/breakPoints";
 
 const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
   (
@@ -31,7 +34,17 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
     },
     ref
   ) => {
-    const buttonTokens = useComponentToken("BUTTON") as ButtonTokensType;
+    const allButtonTokens = useComponentToken(
+      "BUTTON"
+    ) as ResponsiveButtonTokens;
+
+    console.log({ htmlProps });
+
+    const { breakpoints } = useContext(ThemeContext);
+    const { breakPointLabel } = useBreakpoints(breakpoints);
+    const buttonTokens: ButtonTokensType =
+      allButtonTokens[breakPointLabel as keyof BreakpointType];
+
     const getBorderRadius = () => {
       const variantBorderRadius =
         buttonTokens.borderRadius[buttonType][subType].default;
@@ -101,7 +114,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
         ) : (
           <>
             {leadingIcon && (
-              <Block as="span" contentCentered>
+              <Block as="span" contentCentered data-button-right-slot>
                 {leadingIcon}
               </Block>
             )}
@@ -113,12 +126,13 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
                 }}
                 as="span"
                 color="inherit"
+                data-button-text={text}
               >
                 {text}
               </Text>
             )}
             {trailingIcon && (
-              <Block as="span" contentCentered>
+              <Block as="span" contentCentered data-button-right-slot>
                 {trailingIcon}
               </Block>
             )}

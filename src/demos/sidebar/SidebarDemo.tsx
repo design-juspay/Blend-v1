@@ -60,6 +60,7 @@ import {
 } from "../../../lib/components/Select";
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
+import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -133,12 +134,18 @@ const SidebarDemo = () => {
     };
   }, []);
 
+  const breakpoints = {
+    sm: 480,
+    lg: 1440,
+  };
+
   const themeProps =
     theme === "EULER"
       ? {}
       : {
           foundationTokens: ALT_FOUNDATION_TOKENS,
-          // componentTokens: HDFC_COMPONENT_TOKENS,
+          componentTokens: HDFC_COMPONENT_TOKENS,
+          breakpoints: breakpoints,
         };
 
   const topbar = (
