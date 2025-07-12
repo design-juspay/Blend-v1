@@ -64,6 +64,7 @@ import {
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
 import SliderDemo from "../Slider/SliderDemo";
+import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
 
 const ContentWrapper = styled(Block)`
   height: 100vh;
@@ -140,12 +141,18 @@ const SidebarDemo = () => {
     };
   }, []);
 
+  const breakpoints = {
+    sm: 480,
+    lg: 1440,
+  };
+
   const themeProps =
     theme === "EULER"
       ? {}
       : {
           foundationTokens: ALT_FOUNDATION_TOKENS,
-          // componentTokens: HDFC_COMPONENT_TOKENS,
+          componentTokens: HDFC_COMPONENT_TOKENS,
+          breakpoints: breakpoints,
         };
 
   const topbar = (
@@ -345,6 +352,11 @@ const SidebarDemo = () => {
           leftSlot: <Grid style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("breadcrumb"),
         },
+        {
+          label: "Tooltip",
+          leftSlot: <Info style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("tooltips"),
+        }
       ],
     },
     {

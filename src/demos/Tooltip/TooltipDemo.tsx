@@ -350,6 +350,57 @@ const TooltipDemo: React.FC = () => {
 
       <Block marginTop={40}>
         <Text variant="heading.md" color={foundationToken.colors.gray[700]}>
+          Real-world Example: No Style Inheritance
+        </Text>
+        <Text variant="body.md" color={foundationToken.colors.gray[600]}>
+          This example shows that tooltip text doesn't inherit parent styling (like bold text)
+        </Text>
+        <Block marginBottom={24} />
+
+        <Block
+          display="flex"
+          alignItems="center"
+          padding={16}
+          backgroundColor={foundationToken.colors.gray[50]}
+          borderRadius={8}
+          border={`1px solid ${foundationToken.colors.gray[200]}`}
+          gap={16}
+          style={{ 
+            fontWeight: 'bold', 
+            fontSize: '18px',
+            color: foundationToken.colors.gray[800]
+          }}
+        >
+          <Text 
+            variant="heading.md" 
+            color={foundationToken.colors.gray[800]}
+            style={{ fontWeight: 'bold' }}
+          >
+            Priority Rules Configuration
+          </Text>
+          
+          <Tooltip content="No corporates available. Please add a corporate to proceed">
+            <div>
+              <Button
+                text="Add Threshold Rule"
+                buttonType={ButtonType.PRIMARY}
+                size={ButtonSize.SMALL}
+                leadingIcon={Settings}
+                disabled={false}
+              />
+            </div>
+          </Tooltip>
+        </Block>
+
+        <Block marginTop={16}>
+          <Text variant="body.sm" color={foundationToken.colors.gray[500]}>
+             Notice: The tooltip text appears with normal weight (not bold) despite being inside a bold parent container
+          </Text>
+        </Block>
+      </Block>
+
+      <Block marginTop={40}>
+        <Text variant="heading.md" color={foundationToken.colors.gray[700]}>
           Tooltip Gallery
         </Text>
         <Text variant="body.md" color={foundationToken.colors.gray[600]}>
@@ -396,7 +447,7 @@ const TooltipDemo: React.FC = () => {
               <Settings size={20} color={foundationToken.colors.gray[700]} />
             </IconWrapper>
           </Tooltip>
-        </Block>
+                </Block>
       </Block>
     </Container>
   );

@@ -14,7 +14,7 @@ import { TooltipTokensType } from "../components/Tooltip/tooltip.tokens";
 import { UnitInputTokensType } from "../components/Inputs/UnitInput/unitInput.tokens";
 import { MultiValueInputTokensType } from "../components/Inputs/MultiValueInput/multiValueInput.tokens";
 import { DropdownInputTokensType } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
-import { ButtonTokensType } from "../components/ButtonV2/button.tokens";
+import { ResponsiveButtonTokens } from "../components/ButtonV2/button.tokens";
 import { ModalTokensType } from "../components/Modal/modal.tokens";
 import { BreadcrumbTokenType } from "../components/Breadcrumb/breadcrumb.tokens";
 import { PopoverTokenType } from "../components/Popover/popover.tokens";
@@ -43,16 +43,16 @@ export const useComponentToken = (
   | TabsTokensType
   | TooltipTokensType
   | DropdownInputTokensType
-  | ButtonTokensType
+  | ResponsiveButtonTokens
   | ModalTokensType
   | BreadcrumbTokenType
   | PopoverTokenType
   | MenuTokensType
   | MultiSelectTokensType
   | TableTokenType
-  | CalendarTokenType 
-  | AccordionTokenType 
-  | StatCardTokenType=> {
+  | CalendarTokenType
+  | AccordionTokenType
+  | StatCardTokenType => {
   const { componentTokens } = useTheme();
   switch (component) {
     case "TOOLTIP":
