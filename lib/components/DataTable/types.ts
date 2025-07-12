@@ -61,6 +61,13 @@ export type DropdownColumnProps = {
   options: Array<{ id: string; label: string; value: unknown }>;
   selectedValue?: unknown;
   placeholder?: string;
+  onSelect?: (value: unknown) => void;
+}
+
+export type DateColumnProps = {
+  date: Date | string;
+  format?: string;
+  showTime?: boolean;
 }
 
 export type SliderColumnProps = {
@@ -134,6 +141,13 @@ export type ColumnDefinition<T> =
   | (BaseColumnDefinition<T> & {
       type: ColumnType.DROPDOWN;
       renderCell?: (value: DropdownColumnProps, row: T, index: number) => ReactNode;
+      dropdownOptions?: Array<{ id: string; label: string; value: unknown }>;
+    })
+  | (BaseColumnDefinition<T> & {
+      type: ColumnType.DATE;
+      renderCell?: (value: DateColumnProps, row: T, index: number) => ReactNode;
+      dateFormat?: string;
+      showTime?: boolean;
     })
   | (BaseColumnDefinition<T> & {
       type: ColumnType.SLIDER;
@@ -146,7 +160,7 @@ export type ColumnDefinition<T> =
       isSortable: false; // React elements cannot be sorted
     })
   | (BaseColumnDefinition<T> & {
-      type: ColumnType.SELECT | ColumnType.MULTISELECT | ColumnType.DATE | ColumnType.DATE_RANGE | ColumnType.CUSTOM;
+      type: ColumnType.SELECT | ColumnType.MULTISELECT | ColumnType.DATE_RANGE | ColumnType.CUSTOM;
       renderCell?: (value: unknown, row: T, index?: number) => ReactNode;
     });
 
@@ -220,6 +234,7 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   onRowSave?: (rowId: unknown, updatedRow: T) => void;
   onRowCancel?: (rowId: unknown) => void;
   onRowClick?: (row: T, index: number) => void;
+  onFieldChange?: (rowId: unknown, fieldName: keyof T, value: unknown) => void;
   
   enableRowExpansion?: boolean;
   renderExpandedRow?: (expandedData: { 

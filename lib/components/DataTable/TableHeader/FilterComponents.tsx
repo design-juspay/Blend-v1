@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUp, ArrowDown, Search } from 'lucide-react';
 import Block from '../../Primitives/Block/Block';
 import PrimitiveText from '../../Primitives/PrimitiveText/PrimitiveText';
@@ -233,9 +233,58 @@ export const SliderFilter: React.FC<{
   data?: Record<string, unknown>[];
   onColumnFilter?: ColumnFilterHandler;
 }> = ({ column, fieldKey, tableToken, filterState, data, onColumnFilter }) => {
-  // Get slider configuration from column or calculate from data
   const sliderColumn = column as ColumnDefinition<Record<string, unknown>> & { sliderConfig?: { min: number; max: number; step?: number; valueType?: string; prefix?: string; suffix?: string; decimalPlaces?: number } };
   const sliderConfig = sliderColumn.sliderConfig;
+  
+  // Move all hooks to the top level
+  const dataValues = data?.map(row => {
+    const value = row[column.field];
+    return typeof value === 'number' ? value : parseFloat(String(value)) || 0;
+  }).filter(val => !isNaN(val)) || [];
+  
+  const dataMin = dataValues.length > 0 ? Math.min(...dataValues) : 0;
+  const dataMax = dataValues.length > 0 ? Math.max(...dataValues) : 100;
+  
+  const min = sliderConfig?.min ?? dataMin;
+  const max = sliderConfig?.max ?? dataMax;
+  const step = sliderConfig?.step ?? 1;
+  
+  const currentFilter = filterState.columnSelectedValues[fieldKey];
+  const isRangeFilter = currentFilter && typeof currentFilter === 'object' && 'min' in currentFilter && 'max' in currentFilter;
+  
+  const currentMin = isRangeFilter && typeof currentFilter.min === 'number' ? currentFilter.min : min;
+  const currentMax = isRangeFilter && typeof currentFilter.max === 'number' ? currentFilter.max : max;
+  
+  const validCurrentMin = Math.max(min, Math.min(max, currentMin));
+  const validCurrentMax = Math.max(min, Math.min(max, currentMax));
+  
+  const [localValue, setLocalValue] = useState<[number, number]>([validCurrentMin, validCurrentMax]);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  
+  useEffect(() => {
+    setLocalValue([validCurrentMin, validCurrentMax]);
+  }, [validCurrentMin, validCurrentMax]);
+  
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
+  
+  const debouncedFilterUpdate = (values: [number, number]) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    
+    debounceRef.current = setTimeout(() => {
+      const filterValue = { min: values[0], max: values[1] };
+      if (onColumnFilter) {
+        onColumnFilter(fieldKey, FilterType.SLIDER, filterValue, 'range');
+      }
+    }, 300);
+  };
   
   if (!sliderConfig) {
     return (
@@ -249,36 +298,14 @@ export const SliderFilter: React.FC<{
       </Block>
     );
   }
-
-  // Calculate min/max from data if not provided in config
-  const dataValues = data?.map(row => {
-    const value = row[column.field];
-    return typeof value === 'number' ? value : parseFloat(String(value)) || 0;
-  }).filter(val => !isNaN(val)) || [];
-  
-  const dataMin = dataValues.length > 0 ? Math.min(...dataValues) : 0;
-  const dataMax = dataValues.length > 0 ? Math.max(...dataValues) : 100;
-  
-  const min = sliderConfig.min ?? dataMin;
-  const max = sliderConfig.max ?? dataMax;
-  const step = sliderConfig.step ?? 1;
-  
-  // Get current filter values or use full range as default
-  const currentFilter = filterState.columnSelectedValues[fieldKey];
-  const isRangeFilter = currentFilter && typeof currentFilter === 'object' && 'min' in currentFilter && 'max' in currentFilter;
-  const currentMin = isRangeFilter ? currentFilter.min : min;
-  const currentMax = isRangeFilter ? currentFilter.max : max;
   
   const handleSliderChange = (values: number[]) => {
     const [newMin, newMax] = values;
-    const filterValue = { min: newMin, max: newMax };
+    const newValue: [number, number] = [newMin, newMax];
     
-    console.log('Slider changed:', { fieldKey, values, filterValue });
+    setLocalValue(newValue);
     
-    // Update filter state and call onColumnFilter
-    if (onColumnFilter) {
-      onColumnFilter(fieldKey, FilterType.SLIDER, filterValue, 'range');
-    }
+    debouncedFilterUpdate(newValue);
   };
 
   const getValueType = (): SliderValueType => {
@@ -310,13 +337,13 @@ export const SliderFilter: React.FC<{
             fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
             color: tableToken.dataTable.table.header.filter.normalTextColor
           }}>
-            {sliderConfig.prefix || ''}{currentMin}{sliderConfig.suffix || ''}
+            {sliderConfig.prefix || ''}{localValue[0]}{sliderConfig.suffix || ''}
           </PrimitiveText>
           <PrimitiveText style={{
             fontSize: tableToken.dataTable.table.header.filter.itemFontSize,
             color: tableToken.dataTable.table.header.filter.normalTextColor
           }}>
-            {sliderConfig.prefix || ''}{currentMax}{sliderConfig.suffix || ''}
+            {sliderConfig.prefix || ''}{localValue[1]}{sliderConfig.suffix || ''}
           </PrimitiveText>
         </Block>
         
@@ -325,7 +352,7 @@ export const SliderFilter: React.FC<{
           min={min}
           max={max}
           step={step}
-          value={[currentMin, currentMax]}
+          value={localValue}
           onValueChange={handleSliderChange}
           valueFormat={{
             type: getValueType(),
@@ -430,17 +457,6 @@ export const ColumnFilter: React.FC<FilterComponentsProps> = ({
           data={data}
           onColumnFilter={onColumnFilter}
         />
-      )}
-
-      {(columnConfig.filterComponent === 'dateRange' || columnConfig.filterComponent === 'numberRange') && (
-        <Block display="flex" flexDirection="column" gap={tableToken.dataTable.table.header.filter.gap} padding={`${FOUNDATION_THEME.unit[0]} ${FOUNDATION_THEME.unit[8]}`}>
-          <PrimitiveText style={{
-            fontSize: tableToken.dataTable.table.header.filter.groupLabelFontSize,
-            color: tableToken.dataTable.table.header.filter.groupLabelColor
-          }}>
-            {columnConfig.filterComponent === 'dateRange' ? 'Date range filtering coming soon...' : 'Number range filtering coming soon...'}
-          </PrimitiveText>
-        </Block>
       )}
     </Block>
   );

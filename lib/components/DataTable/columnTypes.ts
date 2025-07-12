@@ -6,6 +6,12 @@ export type ColumnFilterOption = {
   value: string;
 }
 
+export type DropdownData = {
+  options: Array<{ id: string; label: string; value: unknown }>;
+  selectedValue?: unknown;
+  placeholder?: string;
+}
+
 export type AvatarData = {
   label: string;
   sublabel?: string;
@@ -54,7 +60,7 @@ export type ColumnDataTypeMap = {
   [ColumnType.SLIDER]: number;
   [ColumnType.CUSTOM]: unknown;
   [ColumnType.PROGRESS]: number;
-  [ColumnType.DROPDOWN]: string;
+  [ColumnType.DROPDOWN]: DropdownData;
   [ColumnType.REACT_ELEMENT]: unknown;
 };
 
@@ -135,8 +141,16 @@ export const validateColumnData = {
     return typeof data === 'number' && data >= 0 && data <= 100;
   },
 
-  [ColumnType.DROPDOWN]: (data: unknown): data is string => {
-    return typeof data === 'string';
+  [ColumnType.DROPDOWN]: (data: unknown): data is DropdownData => {
+    if (typeof data === 'object' && data !== null) {
+      const dropdownData = data as Record<string, unknown>;
+      return Array.isArray(dropdownData.options) && 
+             dropdownData.options.every(option => 
+               typeof option === 'object' && option !== null &&
+               'id' in option && 'label' in option && 'value' in option
+             );
+    }
+    return false;
   },
 
   [ColumnType.REACT_ELEMENT]: (_data: unknown): _data is unknown => {
@@ -299,7 +313,7 @@ export const getExpectedTypeDescription = (type: ColumnType): string => {
     case ColumnType.PROGRESS:
       return 'number (0-100)';
     case ColumnType.DROPDOWN:
-      return 'string';
+      return 'DropdownData object with options array';
     case ColumnType.SLIDER:
       return 'number (for slider range filtering)';
     case ColumnType.REACT_ELEMENT:

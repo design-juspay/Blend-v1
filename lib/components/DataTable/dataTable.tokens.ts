@@ -318,7 +318,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           cell:{
             padding: `${foundationToken.unit[4]} ${foundationToken.unit[16]}`,
             fontWeight: foundationToken.font.weight[500],
-            color: foundationToken.colors.gray[400],
+            color: foundationToken.colors.gray[700],
             fontSize: foundationToken.font.size.body.sm.fontSize,
             borderTop: `1px solid ${foundationToken.colors.gray[150]}`,
             expandable: {

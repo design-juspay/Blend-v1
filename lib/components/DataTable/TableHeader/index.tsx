@@ -380,6 +380,9 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         {enableInlineEdit && (
           <th style={{ 
             ...tableToken.dataTable.table.header.cell,
+            width: '120px',
+            minWidth: '120px',
+            maxWidth: '120px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -396,7 +399,12 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         {enableColumnManager && (
           <th style={{ 
             ...tableToken.dataTable.table.header.cell,
+            width: '50px',
+            minWidth: '50px',
+            maxWidth: '50px',
             overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
             boxSizing: 'border-box'
           }}>
             <Block position='relative'>

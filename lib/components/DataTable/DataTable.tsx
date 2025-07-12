@@ -63,6 +63,7 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
     onRowCancel,
     onRowExpansionChange,
     onRowClick,
+    onFieldChange,
     headerSlot1,
     headerSlot2,
     bulkActions,
@@ -219,14 +220,13 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const exportToCSV = () => {
     try {
-      // Apply formatting to data before export if format is disabled
       const dataForExport = isFormatEnabled ? processedData : processedData.map(row => {
         const formattedRow = { ...row } as Record<string, unknown>;
         visibleColumns.forEach(column => {
           const fieldKey = String(column.field);
           if (column.type === ColumnType.NUMBER || 
               (typeof formattedRow[fieldKey] === 'string' && 
-               /[$€£¥₹₽₪₩₦₡₵₸₴₺₻₼₽¢%,\d]/.test(formattedRow[fieldKey]))) {
+               /^[$€£¥₹₽₪₩₦₡₵₸₴₺₻₼₽¢%,\d.\s]+$/.test(formattedRow[fieldKey]))) {
             formattedRow[fieldKey] = removeNumberFormatting(formattedRow[fieldKey]);
           }
         });
@@ -384,13 +384,20 @@ const DataTable = forwardRef(<T extends Record<string, unknown>>(
 
   const handleFieldChange = (rowId: unknown, field: keyof T, value: unknown) => {
     const rowIdStr = String(rowId);
-    setEditValues(prev => ({
-      ...prev,
-      [rowIdStr]: {
-        ...prev[rowIdStr],
-        [field]: value
+    
+    if (enableInlineEdit) {
+      setEditValues(prev => ({
+        ...prev,
+        [rowIdStr]: {
+          ...prev[rowIdStr],
+          [field]: value
+        }
+      }));
+    } else {
+      if (onFieldChange) {
+        onFieldChange(rowId, field, value);
       }
-    }));
+    }
   };
 
   const handleRowExpand = (rowId: unknown) => {

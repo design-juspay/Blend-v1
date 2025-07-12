@@ -76,6 +76,13 @@ const extractSearchableText = (value: unknown, caseSensitive: boolean): string =
     return caseSensitive ? text : text.toLowerCase();
   }
   
+  if (typeof value === 'object' && value !== null && 'selectedValue' in value) {
+    const dropdownData = value as { selectedValue: unknown; options?: Array<{ label: string; value: unknown }> };
+    const selectedOption = dropdownData.options?.find(opt => opt.value === dropdownData.selectedValue);
+    const text = selectedOption ? selectedOption.label : String(dropdownData.selectedValue);
+    return caseSensitive ? text : text.toLowerCase();
+  }
+  
   if (typeof value === 'object' && value !== null && 'date' in value) {
     const dateData = value as DateData;
     const text = String(dateData.date);
@@ -133,6 +140,12 @@ export const applyColumnFilters = <T extends Record<string, unknown>>(
           if (typeof cellValue === 'object' && cellValue !== null && 'value' in cellValue) {
             const selectData = cellValue as SelectData;
             return String(selectData.value).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
+          }
+          
+          // Handle dropdown data structure
+          if (typeof cellValue === 'object' && cellValue !== null && 'selectedValue' in cellValue) {
+            const dropdownData = cellValue as { selectedValue: unknown; options?: Array<{ label: string; value: unknown }> };
+            return String(dropdownData.selectedValue).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
           }
           
           return String(cellValue).trim().toLowerCase() === String(filterValue).trim().toLowerCase();
@@ -317,15 +330,23 @@ export const getUniqueColumnValues = <T extends Record<string, unknown>>(
         const selectData = value as SelectData;
         addValue(selectData.value);
       }
-      // Handle nested objects with display properties
+        else if (typeof value === 'object' && value !== null && 'selectedValue' in value) {
+          const dropdownData = value as { selectedValue: unknown; options?: Array<{ label: string; value: unknown }> };
+          addValue(dropdownData.selectedValue);
+          if (dropdownData.options) {
+            dropdownData.options.forEach(option => addValue(option.value));
+          }
+        }
+      else if (typeof value === 'object' && value !== null && 'date' in value) {
+        const dateData = value as { date: Date | string };
+        addValue(new Date(dateData.date).toLocaleDateString());
+      }
       else if (typeof value === 'object' && value !== null) {
-        // Try common display properties
         const obj = value as Record<string, unknown>;
         if ('name' in obj) addValue(obj.name);
         else if ('title' in obj) addValue(obj.title);
         else if ('id' in obj) addValue(obj.id);
         else {
-          // Fallback: stringify the object
           addValue(JSON.stringify(value));
         }
       }
@@ -404,12 +425,27 @@ const extractSortableValue = (value: unknown, columnType?: ColumnType): string |
       }
       break;
       
-    case ColumnType.DATE:
-    case ColumnType.DATE_RANGE: {
+    case ColumnType.DROPDOWN:
+      if (typeof value === 'object' && value !== null && 'selectedValue' in value) {
+        const dropdownData = value as { selectedValue: unknown };
+        return String(dropdownData.selectedValue).toLowerCase();
+      }
+      return String(value).toLowerCase();
+      break;
+      
+    case ColumnType.DATE: {
       if (typeof value === 'object' && value !== null && 'date' in value) {
         const dateData = value as DateData;
         return new Date(dateData.date).getTime();
       }
+      if (typeof value === 'string') {
+        const dateTime = new Date(value).getTime();
+        return isNaN(dateTime) ? value.toLowerCase() : dateTime;
+      }
+      break;
+    }
+    
+    case ColumnType.DATE_RANGE: {
       if (typeof value === 'object' && value !== null && 'startDate' in value) {
         const dateRangeData = value as DateRangeData;
         return new Date(dateRangeData.startDate).getTime();
@@ -500,9 +536,12 @@ export const getDefaultColumnWidth = <T extends Record<string, unknown>>(
       return { minWidth: '120px', maxWidth: '180px' };
     case ColumnType.MULTISELECT:
       return { minWidth: '150px', maxWidth: '220px' };
+    case ColumnType.DROPDOWN:
+      return { minWidth: '140px', maxWidth: '200px' };
     case ColumnType.DATE:
-    case ColumnType.DATE_RANGE:
       return { minWidth: '120px', maxWidth: '160px' };
+    case ColumnType.DATE_RANGE:
+      return { minWidth: '160px', maxWidth: '220px' };
     case ColumnType.NUMBER:
       return { minWidth: '80px', maxWidth: '120px' };
     case ColumnType.TEXT:
@@ -570,6 +609,121 @@ export const updateColumnFilter = (
   return newFilters;
 };
 
+const getExportValue = <T extends Record<string, unknown>>(
+  value: unknown, 
+  column: ColumnDefinition<T>
+): string => {
+  if (value == null) return '';
+  
+  if (typeof value === 'boolean') {
+    return value ? 'Yes' : 'No';
+  }
+  
+  switch (column.type) {
+    case ColumnType.DROPDOWN: {
+      if (typeof value === 'object' && value !== null && 'selectedValue' in value) {
+        const dropdownData = value as { selectedValue: unknown; options?: Array<{ label: string; value: unknown }> };
+        const selectedOption = dropdownData.options?.find(opt => opt.value === dropdownData.selectedValue);
+        return selectedOption ? selectedOption.label : String(dropdownData.selectedValue);
+      }
+      return String(value);
+    }
+    
+    case ColumnType.DATE: {
+      if (typeof value === 'object' && value !== null && 'date' in value) {
+        const dateData = value as { date: Date | string; format?: string; showTime?: boolean };
+        const date = new Date(dateData.date);
+        if (isNaN(date.getTime())) return 'Invalid Date';
+        
+        const options: Intl.DateTimeFormatOptions = {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit'
+        };
+        
+        if (dateData.showTime) {
+          options.hour = '2-digit';
+          options.minute = '2-digit';
+        }
+        
+        return new Intl.DateTimeFormat('en-US', options).format(date);
+      }
+      if (value instanceof Date) {
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit'
+        }).format(value);
+      }
+      if (typeof value === 'string') {
+        const date = new Date(value);
+        if (!isNaN(date.getTime())) {
+          return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit'
+          }).format(date);
+        }
+      }
+      return String(value);
+    }
+    
+    case ColumnType.AVATAR: {
+      if (typeof value === 'object' && value !== null && 'label' in value) {
+        const avatarData = value as { label: string; sublabel?: string };
+        return avatarData.sublabel ? `${avatarData.label} (${avatarData.sublabel})` : avatarData.label;
+      }
+      return String(value);
+    }
+    
+    case ColumnType.TAG: {
+      if (typeof value === 'object' && value !== null && 'text' in value) {
+        const tagData = value as { text: string };
+        return tagData.text;
+      }
+      return String(value);
+    }
+    
+    case ColumnType.SELECT: {
+      if (typeof value === 'object' && value !== null && 'value' in value) {
+        const selectData = value as { value: string; label?: string };
+        return selectData.label || selectData.value;
+      }
+      return String(value);
+    }
+    
+    case ColumnType.MULTISELECT: {
+      if (typeof value === 'object' && value !== null && 'values' in value) {
+        const multiSelectData = value as { values: string[]; labels?: string[] };
+        return multiSelectData.labels?.join(', ') || multiSelectData.values.join(', ');
+      }
+      if (Array.isArray(value)) {
+        return value.join(', ');
+      }
+      return String(value);
+    }
+    
+    case ColumnType.DATE_RANGE: {
+      if (typeof value === 'object' && value !== null && 'startDate' in value && 'endDate' in value) {
+        const dateRangeData = value as { startDate: Date | string; endDate: Date | string };
+        const startDate = new Date(dateRangeData.startDate);
+        const endDate = new Date(dateRangeData.endDate);
+        const format = (date: Date) => new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit'
+        }).format(date);
+        
+        return `${format(startDate)} - ${format(endDate)}`;
+      }
+      return String(value);
+    }
+    
+    default:
+      return String(value);
+  }
+};
+
 export const generateCSVContent = <T extends Record<string, unknown>>(
   data: T[],
   columns: ColumnDefinition<T>[]
@@ -584,11 +738,13 @@ export const generateCSVContent = <T extends Record<string, unknown>>(
   let csvContent = headers.join(',') + '\n';
   
   data.forEach(row => {
-    const rowData = fields.map(field => {
+    const rowData = fields.map((field, index) => {
       const value = row[field];
+      const column = columns[index];
+      
       if (value != null) {
-        const stringValue = String(value);
-        const escapedValue = stringValue.replace(/"/g, '""');
+        const exportValue = getExportValue(value, column);
+        const escapedValue = exportValue.replace(/"/g, '""');
         return `"${escapedValue}"`;
       }
       return '';

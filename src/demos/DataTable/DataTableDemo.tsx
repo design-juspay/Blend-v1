@@ -1,12 +1,339 @@
 import { useState, useEffect } from 'react';
-import { ColumnDefinition, SortDirection, SearchConfig, ColumnFilter, ColumnType, AvatarColumnProps, TagColumnProps } from '../../../lib/components/DataTable/types';
+import { ColumnDefinition, SortDirection, SearchConfig, ColumnFilter, ColumnType, AvatarColumnProps, TagColumnProps, DropdownColumnProps, DateColumnProps } from '../../../lib/components/DataTable/types';
 import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
-import { RefreshCw, CircleX, Server, Database, Zap } from 'lucide-react';
+import { RefreshCw, CircleX, Server, Database, Zap, Calendar, Package } from 'lucide-react';
 import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
+
+const SimpleDataTableExample = () => {
+  type ProductRow = {
+    id: number;
+    name: string;
+    category: DropdownColumnProps;
+    price: number;
+    launchDate: DateColumnProps;
+    status: string;
+    inStock: boolean;
+  };
+
+  const productData: ProductRow[] = [
+    {
+      id: 1,
+      name: 'MacBook Pro',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop' },
+          { id: 'desktop', label: 'Desktop', value: 'desktop' },
+          { id: 'tablet', label: 'Tablet', value: 'tablet' },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+        ],
+        selectedValue: 'laptop',
+        placeholder: 'Select category...'
+      },
+      price: 2499.99,
+      launchDate: {
+        date: '2023-10-30',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    },
+    {
+      id: 2,
+      name: 'iPhone 15 Pro',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop' },
+          { id: 'desktop', label: 'Desktop', value: 'desktop' },
+          { id: 'tablet', label: 'Tablet', value: 'tablet' },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+        ],
+        selectedValue: 'smartphone',
+        placeholder: 'Select category...'
+      },
+      price: 1199.99,
+      launchDate: {
+        date: '2023-09-22',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    },
+    {
+      id: 3,
+      name: 'iPad Air',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop' },
+          { id: 'desktop', label: 'Desktop', value: 'desktop' },
+          { id: 'tablet', label: 'Tablet', value: 'tablet' },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+        ],
+        selectedValue: 'tablet',
+        placeholder: 'Select category...'
+      },
+      price: 799.99,
+      launchDate: {
+        date: '2023-08-15',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Discontinued',
+      inStock: false
+    },
+    {
+      id: 4,
+      name: 'Mac Studio',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop' },
+          { id: 'desktop', label: 'Desktop', value: 'desktop' },
+          { id: 'tablet', label: 'Tablet', value: 'tablet' },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+        ],
+        selectedValue: 'desktop',
+        placeholder: 'Select category...'
+      },
+      price: 3999.99,
+      launchDate: {
+        date: '2023-06-05',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    },
+    {
+      id: 5,
+      name: 'Apple Watch Series 9',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop' },
+          { id: 'desktop', label: 'Desktop', value: 'desktop' },
+          { id: 'tablet', label: 'Tablet', value: 'tablet' },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' },
+          { id: 'wearable', label: 'Wearable', value: 'wearable' }
+        ],
+        selectedValue: 'wearable',
+        placeholder: 'Select category...'
+      },
+      price: 599.99,
+      launchDate: {
+        date: '2023-09-22',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    }
+  ];
+
+  const productColumns: ColumnDefinition<ProductRow>[] = [
+    {
+      field: 'name',
+      header: 'Product Name',
+      type: ColumnType.TEXT,
+      isSortable: true,
+      isEditable: true,
+      minWidth: '200px',
+      maxWidth: '300px'
+    },
+    {
+      field: 'category',
+      header: 'Category',
+      headerSubtext: 'Product Category',
+      type: ColumnType.DROPDOWN,
+      isSortable: true,
+      isEditable: false,
+      minWidth: '150px',
+      maxWidth: '200px'
+    },
+    {
+      field: 'price',
+      header: 'Price',
+      type: ColumnType.NUMBER,
+      isSortable: true,
+      isEditable: true,
+      renderCell: (value: number) => (
+        <span style={{ 
+          fontWeight: 500,
+          color: value > 2000 ? '#dc2626' : value > 1000 ? '#d97706' : '#16a34a'
+        }}>
+          ${value.toLocaleString()}
+        </span>
+      ),
+      minWidth: '100px',
+      maxWidth: '150px'
+    },
+    {
+      field: 'launchDate',
+      header: 'Launch Date',
+      headerSubtext: 'Product Launch',
+      type: ColumnType.DATE,
+      isSortable: true,
+      isEditable: false,
+      minWidth: '140px',
+      maxWidth: '180px'
+    },
+    {
+      field: 'status',
+      header: 'Status',
+      type: ColumnType.TEXT,
+      isSortable: true,
+      isEditable: true,
+      renderCell: (value: string) => (
+        <Tag
+          text={value}
+          variant={TagVariant.SUBTLE}
+          color={value === 'Active' ? TagColor.SUCCESS : TagColor.ERROR}
+          size={TagSize.SM}
+        />
+      ),
+      minWidth: '120px',
+      maxWidth: '150px'
+    },
+    {
+      field: 'inStock',
+      header: 'In Stock',
+      type: ColumnType.TEXT,
+      isSortable: true,
+      isEditable: true,
+      renderCell: (value: unknown) => {
+        const boolValue = value as boolean;
+        return (
+          <span style={{ 
+            color: boolValue ? '#16a34a' : '#dc2626',
+            fontWeight: 500
+          }}>
+            {boolValue ? '✓ Yes' : '✗ No'}
+          </span>
+        );
+      },
+      minWidth: '100px',
+      maxWidth: '120px'
+    }
+  ];
+
+  const [productTableData, setProductTableData] = useState(productData);
+
+  const handleProductSave = (rowId: unknown, updatedRow: Record<string, unknown>) => {
+    console.log('🔄 handleProductSave called:', { rowId, updatedRow });
+    
+    setProductTableData(prevData => 
+      prevData.map(row => {
+        if (row.id === rowId) {
+          // Handle dropdown data updates properly
+          const updated = { ...row } as Record<string, unknown>;
+          Object.keys(updatedRow).forEach(key => {
+            if (key === 'category' && typeof updatedRow[key] === 'object') {
+              // For dropdown columns, update the entire dropdown data object
+              updated[key] = updatedRow[key] as DropdownColumnProps;
+              console.log('📝 Updated dropdown data:', updated[key]);
+            } else {
+              updated[key] = updatedRow[key];
+            }
+          });
+          return updated as ProductRow;
+        }
+        return row;
+      })
+    );
+    
+    console.log('✅ Product saved successfully:', { rowId, updatedRow });
+  };
+
+  const handleProductCancel = (rowId: unknown) => {
+    console.log('Product edit cancelled:', rowId);
+  };
+
+  const handleFieldChange = (rowId: unknown, fieldName: string, value: unknown) => {
+    console.log('🔄 Field change:', { rowId, fieldName, value });
+    
+    // Update data immediately when inline editing is disabled
+    setProductTableData(prevData => 
+      prevData.map(row => {
+        if (row.id === rowId) {
+          const updated = { ...row };
+          if (fieldName === 'category' && typeof value === 'object') {
+            updated.category = value as DropdownColumnProps;
+          } else {
+            (updated as Record<string, unknown>)[fieldName] = value;
+          }
+          return updated;
+        }
+        return row;
+      })
+    );
+  };
+
+  return (
+    <div style={{ marginTop: '40px' }}>
+      <div style={{ 
+        marginBottom: '20px', 
+        padding: '16px', 
+        backgroundColor: '#f0fdf4', 
+        borderRadius: '8px',
+        border: '1px solid #bbf7d0'
+      }}>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 600, color: '#15803d' }}>
+          📦 Product Inventory - Simple DataTable Example
+        </h3>
+        <p style={{ margin: 0, fontSize: '14px', color: '#166534' }}>
+          🎯 <strong>NEW COLUMN TYPES DEMO:</strong> This table showcases <strong>DROPDOWN</strong> and <strong>DATE</strong> column types! 
+          The Category column is a dropdown menu using the Menu component - click on any category to see the dropdown options. 
+          The Launch Date column displays formatted dates. Both columns support sorting and can be used for filtering. 
+          Try editing the rows to see how dropdown selections work in edit mode. 
+          This is a simpler example focused on the new column types without the complexity of the main user management table above.
+        </p>
+      </div>
+
+      <DataTable
+        data={productTableData}
+        columns={productColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+        idField="id"
+        title="Product Inventory"
+        description="Simple product management table demonstrating DROPDOWN and DATE column types with inline editing capabilities. Click on category dropdowns to see the Menu component in action!"
+        enableSearch={true}
+        enableFiltering={true}
+        enableAdvancedFilter={false}
+        enableInlineEdit={false}
+        enableRowExpansion={false}
+        enableRowSelection={true}
+        enableColumnManager={false}
+        columnFreeze={0}
+        pagination={{
+          currentPage: 1,
+          pageSize: 10,
+          totalRows: productTableData.length,
+          pageSizeOptions: [5, 10, 20],
+        }}
+        onRowSave={handleProductSave}
+        onRowCancel={handleProductCancel}
+        onFieldChange={handleFieldChange}
+        headerSlot1={
+          <Button
+            buttonType={ButtonType.SECONDARY}
+            leadingIcon={Package}
+            size={ButtonSize.SMALL}
+            onClick={() => console.log('Product action clicked')}
+          >
+            Manage Products
+          </Button>
+        }
+        headerSlot2={
+          <Button
+            buttonType={ButtonType.SECONDARY}
+            leadingIcon={Calendar}
+            size={ButtonSize.SMALL}
+            onClick={() => console.log('Calendar action clicked')}
+          >
+            Schedule
+          </Button>
+        }
+      />
+    </div>
+  );
+};
 
 const DataTableDemo = () => {
     // Demo mode toggle
@@ -1073,6 +1400,8 @@ const DataTableDemo = () => {
           }
           getRowStyle={getRowStyle}
         />
+        
+        <SimpleDataTableExample />
       </div>
     );
   };
