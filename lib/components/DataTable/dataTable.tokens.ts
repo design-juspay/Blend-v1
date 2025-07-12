@@ -186,8 +186,8 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
       alignItems: "flex-start",
       marginBottom: foundationToken.unit[16],
       gap: foundationToken.unit[20],
-      maxWidth: "100vw",
-      overflowX: "auto",
+      maxWidth: "100%",
+      overflowX: "hidden",
       title: {
         fontSize: foundationToken.font.size.heading.md.fontSize,
         fontWeight: 600,
