@@ -1,16 +1,19 @@
-import React, { forwardRef, useState } from 'react';
-import { SwitchGroupProps } from './types';
-import { 
+import React, { forwardRef, useContext, useState } from "react";
+import { SwitchGroupProps } from "./types";
+import {
   isSwitchElement,
   createSwitchGroupChangeHandler,
-  getSwitchTextProps
-} from './utils';
-import Block from '../Primitives/Block/Block';
-import PrimitiveText from '../Primitives/PrimitiveText/PrimitiveText';
-import { Switch } from './Switch';
+  getSwitchTextProps,
+} from "./utils";
+import Block from "../Primitives/Block/Block";
+import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
+import { Switch } from "./Switch";
 import { useComponentToken } from "../../context/useComponentToken";
-import { SwitchTokensType } from './switch.token';
-import { SwitchSize } from './types';
+import { ResponsiveSwitchTokens, SwitchTokensType } from "./switch.token";
+import { SwitchSize } from "./types";
+import ThemeContext from "../../context/ThemeContext";
+import { useBreakpoints } from "../../hooks/useBreakPoints";
+import { BreakpointType } from "../../breakpoints/breakPoints";
 
 const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
   (
@@ -26,8 +29,17 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
     },
     ref
   ) => {
-    const tokens = useComponentToken('SWITCH') as SwitchTokensType;
-    const [internalValues, setInternalValues] = useState<string[]>(defaultValue);
+    const { breakpoints } = useContext(ThemeContext);
+    const { breakPointLabel } = useBreakpoints(breakpoints);
+
+    const allSwitchTokens = useComponentToken(
+      "SWITCH"
+    ) as unknown as ResponsiveSwitchTokens;
+
+    const tokens: SwitchTokensType =
+      allSwitchTokens[breakPointLabel as keyof BreakpointType];
+    const [internalValues, setInternalValues] =
+      useState<string[]>(defaultValue);
 
     const isControlled = controlledValue !== undefined;
     const values = isControlled ? controlledValue : internalValues;
@@ -39,7 +51,7 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
       onChange
     );
 
-    const enhancedChildren = React.Children.map(children, child => {
+    const enhancedChildren = React.Children.map(children, (child) => {
       if (!React.isValidElement(child)) return child;
 
       if (isSwitchElement(child, Switch)) {
@@ -51,7 +63,7 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
           checked: values.includes(childValue),
           onChange: (checked: boolean) => {
             handleGroupChange(checked, childValue);
-            
+
             // Call original onChange if it exists
             child.props.onChange?.(checked);
           },
@@ -64,19 +76,15 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
     });
 
     return (
-      <Block 
-        ref={ref} 
-        role="group" 
+      <Block
+        ref={ref}
+        role="group"
         id={id}
         display="flex"
         flexDirection="column"
         gap={tokens.gap}
       >
-        {label && (
-          <GroupLabel tokens={tokens}>
-            {label}
-          </GroupLabel>
-        )}
+        {label && <GroupLabel tokens={tokens}>{label}</GroupLabel>}
         <Block display="flex" flexDirection="column" gap={tokens.gap}>
           {enhancedChildren}
         </Block>
@@ -93,7 +101,7 @@ const GroupLabel: React.FC<{
   tokens: SwitchTokensType;
 }> = ({ children, tokens }) => {
   const textProps = getSwitchTextProps(tokens, SwitchSize.MEDIUM, false, false);
-  
+
   return (
     <PrimitiveText
       as="label"
@@ -107,6 +115,6 @@ const GroupLabel: React.FC<{
   );
 };
 
-SwitchGroup.displayName = 'SwitchGroup';
+SwitchGroup.displayName = "SwitchGroup";
 
 export default SwitchGroup;

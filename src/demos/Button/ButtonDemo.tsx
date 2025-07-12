@@ -45,6 +45,7 @@ const ButtonDemo: React.FC = () => {
             data-button-status="active"
             data-dynamic-button="false"
             data-custom-value="add"
+            data-batch-value="add"
           />
           <ButtonV2
             text="Secondary Button"

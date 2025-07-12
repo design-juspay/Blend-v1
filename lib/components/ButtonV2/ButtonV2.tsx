@@ -34,14 +34,13 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
     },
     ref
   ) => {
+    const { breakpoints } = useContext(ThemeContext);
+    const { breakPointLabel } = useBreakpoints(breakpoints);
+
     const allButtonTokens = useComponentToken(
       "BUTTON"
     ) as ResponsiveButtonTokens;
 
-    console.log({ htmlProps });
-
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
     const buttonTokens: ButtonTokensType =
       allButtonTokens[breakPointLabel as keyof BreakpointType];
 
@@ -114,7 +113,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
         ) : (
           <>
             {leadingIcon && (
-              <Block as="span" contentCentered data-button-right-slot>
+              <Block as="span" contentCentered data-button-left-slot>
                 {leadingIcon}
               </Block>
             )}

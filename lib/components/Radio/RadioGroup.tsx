@@ -1,22 +1,33 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useContext } from "react";
 import { RadioGroupProps } from "./types";
-import { 
-  isRadioElement, 
-  shouldRadioBeChecked, 
-  createGroupChangeHandler, 
+import {
+  isRadioElement,
+  shouldRadioBeChecked,
+  createGroupChangeHandler,
   isValidRadioValue,
-  getRadioTextProps
+  getRadioTextProps,
 } from "./utils";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import Radio from "./Radio";
-import { RadioTokensType } from "./radio.token";
+import { RadioTokensType, ResponsiveRadioTokens } from "./radio.token";
 import { useComponentToken } from "../../context/useComponentToken";
 import { RadioSize } from "./types";
+import ThemeContext from "../../context/ThemeContext";
+import { useBreakpoints } from "../../hooks/useBreakPoints";
+import { BreakpointType } from "../../breakpoints/breakPoints";
 
 const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   ({ children, label, name, value, defaultValue, onChange, disabled }, ref) => {
-    const radioTokens = useComponentToken("RADIO") as RadioTokensType;
+    const { breakpoints } = useContext(ThemeContext);
+    const { breakPointLabel } = useBreakpoints(breakpoints);
+
+    const allRadioTokens = useComponentToken(
+      "RADIO"
+    ) as unknown as ResponsiveRadioTokens;
+
+    const radioTokens: RadioTokensType =
+      allRadioTokens[breakPointLabel as keyof BreakpointType];
     const handleGroupChange = createGroupChangeHandler(onChange);
 
     const enhancedChildren = React.Children.map(children, (child) => {
@@ -26,7 +37,7 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
 
       const childValue = child.props.value;
       if (!isValidRadioValue(childValue)) {
-        console.warn('RadioGroup: Radio child must have a string value prop');
+        console.warn("RadioGroup: Radio child must have a string value prop");
         return null;
       }
 
@@ -45,12 +56,13 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     });
 
     return (
-      <Block ref={ref} display="flex" flexDirection="column" gap={radioTokens.groupGap}>
-        {label && (
-          <GroupLabel radioTokens={radioTokens}>
-            {label}
-          </GroupLabel>
-        )}
+      <Block
+        ref={ref}
+        display="flex"
+        flexDirection="column"
+        gap={radioTokens.groupGap}
+      >
+        {label && <GroupLabel radioTokens={radioTokens}>{label}</GroupLabel>}
         <Block display="flex" flexDirection="column" gap={radioTokens.groupGap}>
           {enhancedChildren}
         </Block>
@@ -63,8 +75,13 @@ const GroupLabel: React.FC<{
   children: React.ReactNode;
   radioTokens: RadioTokensType;
 }> = ({ children, radioTokens }) => {
-  const textProps = getRadioTextProps(radioTokens, RadioSize.MEDIUM, false, false);
-  
+  const textProps = getRadioTextProps(
+    radioTokens,
+    RadioSize.MEDIUM,
+    false,
+    false
+  );
+
   return (
     <PrimitiveText
       as="label"
