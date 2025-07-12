@@ -399,9 +399,6 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
         {enableColumnManager && (
           <th style={{ 
             ...tableToken.dataTable.table.header.cell,
-            width: '50px',
-            minWidth: '50px',
-            maxWidth: '50px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
