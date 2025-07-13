@@ -5,7 +5,7 @@ import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
-import { RefreshCw, CircleX, Server, Database, Zap, Calendar, Package } from 'lucide-react';
+import { RefreshCw, CircleX, Server, Database, Zap, Calendar, Package, Laptop, Monitor, Tablet, Smartphone, Watch } from 'lucide-react';
 import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
 
 const SimpleDataTableExample = () => {
@@ -18,17 +18,16 @@ const SimpleDataTableExample = () => {
     status: string;
     inStock: boolean;
   };
-
   const productData: ProductRow[] = [
     {
       id: 1,
       name: 'MacBook Pro',
       category: {
         options: [
-          { id: 'laptop', label: 'Laptop', value: 'laptop' },
-          { id: 'desktop', label: 'Desktop', value: 'desktop' },
-          { id: 'tablet', label: 'Tablet', value: 'tablet' },
-          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
         ],
         selectedValue: 'laptop',
         placeholder: 'Select category...'
@@ -46,10 +45,10 @@ const SimpleDataTableExample = () => {
       name: 'iPhone 15 Pro',
       category: {
         options: [
-          { id: 'laptop', label: 'Laptop', value: 'laptop' },
-          { id: 'desktop', label: 'Desktop', value: 'desktop' },
-          { id: 'tablet', label: 'Tablet', value: 'tablet' },
-          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
         ],
         selectedValue: 'smartphone',
         placeholder: 'Select category...'
@@ -67,10 +66,10 @@ const SimpleDataTableExample = () => {
       name: 'iPad Air',
       category: {
         options: [
-          { id: 'laptop', label: 'Laptop', value: 'laptop' },
-          { id: 'desktop', label: 'Desktop', value: 'desktop' },
-          { id: 'tablet', label: 'Tablet', value: 'tablet' },
-          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
         ],
         selectedValue: 'tablet',
         placeholder: 'Select category...'
@@ -88,10 +87,10 @@ const SimpleDataTableExample = () => {
       name: 'Mac Studio',
       category: {
         options: [
-          { id: 'laptop', label: 'Laptop', value: 'laptop' },
-          { id: 'desktop', label: 'Desktop', value: 'desktop' },
-          { id: 'tablet', label: 'Tablet', value: 'tablet' },
-          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' }
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
         ],
         selectedValue: 'desktop',
         placeholder: 'Select category...'
@@ -109,11 +108,11 @@ const SimpleDataTableExample = () => {
       name: 'Apple Watch Series 9',
       category: {
         options: [
-          { id: 'laptop', label: 'Laptop', value: 'laptop' },
-          { id: 'desktop', label: 'Desktop', value: 'desktop' },
-          { id: 'tablet', label: 'Tablet', value: 'tablet' },
-          { id: 'smartphone', label: 'Smartphone', value: 'smartphone' },
-          { id: 'wearable', label: 'Wearable', value: 'wearable' }
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> },
+          { id: 'wearable', label: 'Wearable', value: 'wearable', icon: <Watch size={16} /> }
         ],
         selectedValue: 'wearable',
         placeholder: 'Select category...'
@@ -176,39 +175,11 @@ const SimpleDataTableExample = () => {
       maxWidth: '180px'
     },
     {
-      field: 'status',
-      header: 'Status',
-      type: ColumnType.TEXT,
-      isSortable: true,
-      isEditable: true,
-      renderCell: (value: string) => (
-        <Tag
-          text={value}
-          variant={TagVariant.SUBTLE}
-          color={value === 'Active' ? TagColor.SUCCESS : TagColor.ERROR}
-          size={TagSize.SM}
-        />
-      ),
-      minWidth: '120px',
-      maxWidth: '150px'
-    },
-    {
       field: 'inStock',
       header: 'In Stock',
       type: ColumnType.TEXT,
       isSortable: true,
       isEditable: true,
-      renderCell: (value: unknown) => {
-        const boolValue = value as boolean;
-        return (
-          <span style={{ 
-            color: boolValue ? '#16a34a' : '#dc2626',
-            fontWeight: 500
-          }}>
-            {boolValue ? '✓ Yes' : '✗ No'}
-          </span>
-        );
-      },
       minWidth: '100px',
       maxWidth: '120px'
     }
@@ -280,7 +251,7 @@ const SimpleDataTableExample = () => {
         </h3>
         <p style={{ margin: 0, fontSize: '14px', color: '#166534' }}>
           🎯 <strong>NEW COLUMN TYPES DEMO:</strong> This table showcases <strong>DROPDOWN</strong> and <strong>DATE</strong> column types! 
-          The Category column is a dropdown menu using the Menu component - click on any category to see the dropdown options. 
+          The Category column is a dropdown menu using the SingleSelect component with <strong>icons</strong> - click on any category to see the dropdown options with category icons. 
           The Launch Date column displays formatted dates. Both columns support sorting and can be used for filtering. 
           Try editing the rows to see how dropdown selections work in edit mode. 
           This is a simpler example focused on the new column types without the complexity of the main user management table above.
@@ -292,7 +263,7 @@ const SimpleDataTableExample = () => {
         columns={productColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
         idField="id"
         title="Product Inventory"
-        description="Simple product management table demonstrating DROPDOWN and DATE column types with inline editing capabilities. Click on category dropdowns to see the Menu component in action!"
+        description="Simple product management table demonstrating DROPDOWN and DATE column types with inline editing capabilities. Click on category dropdowns to see the SingleSelect component with icons in action!"
         enableSearch={true}
         enableFiltering={true}
         enableAdvancedFilter={false}
@@ -635,7 +606,7 @@ const DataTableDemo = () => {
         minWidth: '120px',
         maxWidth: '160px'
       },
-      { 
+            { 
         field: 'revenueAmount',
         header: 'Revenue Filter',
         headerSubtext: 'Slider Range Filter',
@@ -650,18 +621,6 @@ const DataTableDemo = () => {
           prefix: '$',
           suffix: '',
           decimalPlaces: 0
-        },
-        renderCell: (value: unknown) => {
-          const numericValue = typeof value === 'number' ? value : 0;
-          
-          return (
-            <span style={{ 
-              fontWeight: 500,
-              color: numericValue > 200000 ? '#059669' : numericValue > 100000 ? '#d97706' : '#dc2626'
-            }}>
-              ${numericValue.toLocaleString()}
-            </span>
-          );
         },
         minWidth: '140px',
         maxWidth: '180px'

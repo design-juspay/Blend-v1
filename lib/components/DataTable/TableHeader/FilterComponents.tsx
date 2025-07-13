@@ -13,6 +13,7 @@ import { TableTokenType } from '../dataTable.tokens';
 import { SortHandlers, FilterHandlers, FilterState, ColumnFilterHandler } from './handlers';
 import { getSelectMenuItems, getMultiSelectMenuItems, filterItemsBySearch } from './utils';
 import { FOUNDATION_THEME } from '../../../tokens';
+import { foundationToken } from '../../../foundationToken';
 
 type FilterComponentsProps = {
   column: ColumnDefinition<Record<string, unknown>>;
@@ -30,14 +31,14 @@ export const SortOptions: React.FC<{
   tableToken: TableTokenType;
   sortHandlers: SortHandlers;
 }> = ({ fieldKey, tableToken, sortHandlers }) => (
-  <>
+  <Block display="flex" flexDirection="column" paddingBottom={foundationToken.spacing[2]} > 
     <Block
       display="flex"
       alignItems="center"
       gap={tableToken.dataTable.table.header.filter.itemGap}
       padding={tableToken.dataTable.table.header.filter.sortOption.padding}
       borderRadius={tableToken.dataTable.table.header.filter.sortOption.borderRadius}
-      cursor="pointer"
+      cursor="pointer" 
       backgroundColor="transparent"
       _hover={{
         backgroundColor: tableToken.dataTable.table.header.filter.sortOption.hoverBackground
@@ -77,7 +78,7 @@ export const SortOptions: React.FC<{
         Sort Descending
       </PrimitiveText>
     </Block>
-  </>
+  </Block>
 );
 
 export const DropdownSearchSection: React.FC<{
@@ -120,7 +121,7 @@ export const SingleSelectItems: React.FC<{
   const menuItems = getSelectMenuItems(column, data);
   
   return (
-    <Block display="flex" flexDirection="column" maxHeight={tableToken.dataTable.table.header.filter.maxHeight} overflowY={tableToken.dataTable.table.header.filter.overflowY}>
+    <Block display="flex" flexDirection="column" maxHeight={tableToken.dataTable.table.header.filter.maxHeight} overflowY={tableToken.dataTable.table.header.filter.overflowY} marginTop={FOUNDATION_THEME.unit[2]}>
       {menuItems.map((group) =>
         filterItemsBySearch(group.items, filterState.columnSearchValues[fieldKey] || '')
           .map((item) => {
@@ -180,7 +181,7 @@ export const MultiSelectItems: React.FC<{
   const menuItems = getMultiSelectMenuItems(column, data);
   
   return (
-    <Block display="flex" flexDirection="column" maxHeight={tableToken.dataTable.table.header.filter.maxHeight} overflowY={tableToken.dataTable.table.header.filter.overflowY}>
+    <Block display="flex" flexDirection="column" maxHeight={tableToken.dataTable.table.header.filter.maxHeight} overflowY={tableToken.dataTable.table.header.filter.overflowY} marginTop={FOUNDATION_THEME.unit[2]}>
       {menuItems.map((group) =>
         filterItemsBySearch(group.items, filterState.columnSearchValues[fieldKey] || '')
           .map((item) => {
@@ -236,7 +237,6 @@ export const SliderFilter: React.FC<{
   const sliderColumn = column as ColumnDefinition<Record<string, unknown>> & { sliderConfig?: { min: number; max: number; step?: number; valueType?: string; prefix?: string; suffix?: string; decimalPlaces?: number } };
   const sliderConfig = sliderColumn.sliderConfig;
   
-  // Move all hooks to the top level
   const dataValues = data?.map(row => {
     const value = row[column.field];
     return typeof value === 'number' ? value : parseFloat(String(value)) || 0;

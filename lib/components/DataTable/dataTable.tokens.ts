@@ -43,6 +43,7 @@ export type TableTokenType = {
       minWidth: CSSObject["minWidth"];
       border: CSSObject["border"];
       selectText: CSSObject;
+      height: CSSObject["height"];
     };
     table:{
       width: CSSObject["width"];
@@ -224,7 +225,8 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           backgroundColor: foundationToken.colors.gray[0],
           color: foundationToken.colors.gray[700],
           borderRadius: foundationToken.border.radius[12],
-          padding: `${foundationToken.unit[8]} ${foundationToken.unit[16]}`,
+          padding: `${foundationToken.unit[10]} ${foundationToken.unit[16]}`,
+          height: foundationToken.unit[56],
           boxShadow: foundationToken.shadows.lg,
           display: 'flex',
           alignItems: 'center',
@@ -232,9 +234,10 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           minWidth: '320px',
           border: `${foundationToken.border.width[1]} solid ${foundationToken.colors.gray[200]}`,
           selectText: {
-            fontSize: foundationToken.font.size.body.sm.fontSize,
-            fontWeight: foundationToken.font.weight[500],
+            fontSize: foundationToken.font.size.body.md.fontSize,
+            fontWeight: foundationToken.font.weight[600],
             flex: 1,
+            color: foundationToken.colors.gray[500],
           },
       },
       table:{
@@ -257,7 +260,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
           cell:{
           padding: `${foundationToken.unit[4]} ${foundationToken.unit[16]}`,
           textAlign: "left",
-          fontWeight: foundationToken.font.weight[500],
+          fontWeight: foundationToken.font.weight[600],
           color: foundationToken.colors.gray[400],
           fontSize: foundationToken.font.size.body.sm.fontSize,
           width: foundationToken.unit[40],
@@ -294,10 +297,10 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
             itemPadding: `${foundationToken.unit[8]} ${foundationToken.unit[12]}`,
             itemGap: foundationToken.unit[8],
             itemBorderRadius: foundationToken.border.radius[4],
-            itemFontSize: foundationToken.font.size.body.sm.fontSize,
+            itemFontSize: foundationToken.font.size.body.md.fontSize,
             groupLabelFontSize: foundationToken.font.size.body.xs.fontSize,
             groupLabelFontWeight: foundationToken.font.weight[600],
-            groupLabelColor: foundationToken.colors.gray[500],
+            groupLabelColor: foundationToken.colors.gray[400],
             groupLabelPadding: `${foundationToken.unit[4]} 0`,
             groupLabelTextTransform: 'uppercase',
             separatorHeight: "1px",
@@ -319,7 +322,7 @@ export const getTableToken = (foundationToken:  FoundationTokenType )  : TableTo
             padding: `${foundationToken.unit[4]} ${foundationToken.unit[16]}`,
             fontWeight: foundationToken.font.weight[500],
             color: foundationToken.colors.gray[700],
-            fontSize: foundationToken.font.size.body.sm.fontSize,
+            fontSize: foundationToken.font.size.body.md.fontSize,
             borderTop: `1px solid ${foundationToken.colors.gray[150]}`,
             expandable: {
               padding: foundationToken.unit[16],

@@ -58,7 +58,12 @@ export type ProgressColumnProps = {
 }
 
 export type DropdownColumnProps = {
-  options: Array<{ id: string; label: string; value: unknown }>;
+  options: Array<{ 
+    id: string; 
+    label: string; 
+    value: unknown; 
+    icon?: React.ReactNode;
+  }>;
   selectedValue?: unknown;
   placeholder?: string;
   onSelect?: (value: unknown) => void;

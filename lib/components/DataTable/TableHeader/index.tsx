@@ -36,10 +36,10 @@ const FilterIcon = styled(ChevronsUpDown)`
 
 const EditIcon = styled(Edit2)`
   cursor: pointer;
-  color: ${FOUNDATION_THEME.colors.gray[500]};
+  color: ${FOUNDATION_THEME.colors.gray[400]};
   
   &:hover {
-    color: ${FOUNDATION_THEME.colors.primary[600]};
+    color: ${FOUNDATION_THEME.colors.gray[600]};
   }
 `;
 
@@ -276,8 +276,8 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps<Record<
                             width: '100%',
                             display: 'block',
                             cursor: 'default',
-                            fontSize: tableToken.dataTable.table.header.cell.fontSize || FOUNDATION_THEME.font.size.body.sm.fontSize,
-                            fontWeight: tableToken.dataTable.table.header.cell.fontWeight || FOUNDATION_THEME.font.weight[600],
+                            fontSize: tableToken.dataTable.table.header.cell.fontSize,
+                            fontWeight: tableToken.dataTable.table.header.cell.fontWeight,
                             lineHeight: 1.2
                           }}
                         >

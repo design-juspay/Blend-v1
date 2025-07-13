@@ -6,8 +6,9 @@ import TableCell from '../TableCell';
 import Block from '../../Primitives/Block/Block';
 import { FOUNDATION_THEME } from '../../../tokens';
 
-import { ButtonV2, ButtonTypeV2, ButtonSizeV2, Checkbox, CheckboxSize } from '../../../main';
+import { ButtonV2, ButtonTypeV2, ButtonSizeV2, Checkbox, CheckboxSize, TableTokenType } from '../../../main';
 import { foundationToken } from '../../../foundationToken';
+import { useComponentToken } from '../../../context/useComponentToken';
 
 const TableRow = styled.tr<{ 
   $isClickable?: boolean; 
@@ -84,11 +85,7 @@ const ExpandButton = styled.button`
     background-color: ${FOUNDATION_THEME.colors.gray[100]};
     color: ${FOUNDATION_THEME.colors.gray[800]};
   }
-  
-  &:focus {
-    outline: 2px solid ${FOUNDATION_THEME.colors.primary[500]};
-    outline-offset: 2px;
-  }
+
 `;
 
 const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<string, unknown>>>(({
@@ -125,6 +122,8 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
     if (enableColumnManager) span += 1;
     return span;
   }, [visibleColumns.length, enableRowSelection, enableRowExpansion, enableInlineEdit, enableColumnManager]);
+
+  const tableToken = useComponentToken("TABLE") as TableTokenType;
 
   return (
     <tbody ref={ref}>
@@ -164,6 +163,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
                           left: '0px',
                           zIndex: 45,
                           backgroundColor: rowStyling.backgroundColor || foundationToken.colors.gray[0],
+                          fontSize: tableToken.dataTable.table.body.cell.fontSize,
                         }),
                     }}
                   >
@@ -191,7 +191,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
                   </StyledTableCell>
                 )}
 
-                                {enableRowSelection && (
+                {enableRowSelection && (
                   <StyledTableCell 
                     $customBackgroundColor={rowStyling.backgroundColor}
                     $hasCustomBackground={hasCustomBackground}
@@ -201,6 +201,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
                         left: enableRowExpansion ? '50px' : '0px',
                         zIndex: 45,
                         backgroundColor: rowStyling.backgroundColor || foundationToken.colors.gray[0],
+                        fontSize: tableToken.dataTable.table.body.cell.fontSize,
                       }),
                     }}
                   >
@@ -210,6 +211,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
                       justifyContent='center' 
                       width={FOUNDATION_THEME.unit[40]}
                       onClick={(e) => e.stopPropagation()}
+                      padding={`${FOUNDATION_THEME.unit[7]} ${FOUNDATION_THEME.unit[4]}`}
                     >
                       <Checkbox
                         checked={!!selectedRows[rowId]}
@@ -291,7 +293,8 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
                       maxWidth: '120px',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
+                      whiteSpace: 'nowrap',
+                      fontSize: tableToken.dataTable.table.body.cell.fontSize,
                     }}
                   >
                     <Block 
@@ -336,7 +339,7 @@ const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps<Record<stri
                     $width="50px" 
                     $customBackgroundColor={rowStyling.backgroundColor}
                     $hasCustomBackground={hasCustomBackground}
-                    style={{ minWidth: '50px', maxWidth: '50px' }} 
+                    style={{ minWidth: '50px', maxWidth: '50px', fontSize: tableToken.dataTable.table.body.cell.fontSize }} 
                   />
                 )}
               </TableRow>
