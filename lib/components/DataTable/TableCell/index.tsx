@@ -101,7 +101,6 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
       const dropdownData = displayValue as DropdownColumnProps;
       if (dropdownData && dropdownData.options) {
         const selectedOption = dropdownData.options.find(opt => opt.value === dropdownData.selectedValue);
-        const displayLabel = selectedOption ? selectedOption.label : (dropdownData.placeholder || 'Select...');
         
         const selectItems: SelectMenuGroupType[] = [{
           items: dropdownData.options.map(option => ({
@@ -126,7 +125,6 @@ const TableCell = forwardRef<HTMLTableCellElement, TableCellProps<Record<string,
                   ...dropdownData,
                   selectedValue: value
                 };
-                console.log('🔄 Dropdown option selected (non-editing):', { value, updatedDropdownData });
                 if (onFieldChange) {
                   onFieldChange(updatedDropdownData);
                 }
