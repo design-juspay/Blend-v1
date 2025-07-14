@@ -1,11 +1,8 @@
 import styled, { css } from "styled-components";
 import { RadioSize } from "./types";
-import { RadioTokensType, ResponsiveRadioTokens } from "./radio.token";
-import { useComponentToken } from "../../context/useComponentToken";
-import { useContext } from "react";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { RadioTokensType } from "./radio.token";
+
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 export const StyledRadioInput = styled.input<{
   size: RadioSize;
@@ -25,15 +22,8 @@ export const StyledRadioInput = styled.input<{
   flex-shrink: 0;
 
   ${({ size, $isChecked, $isDisabled }) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
+    const radioTokens = useResponsiveTokens<RadioTokensType>("RADIO");
 
-    const allRadioTokens = useComponentToken(
-      "RADIO"
-    ) as unknown as ResponsiveRadioTokens;
-
-    const radioTokens: RadioTokensType =
-      allRadioTokens[breakPointLabel as keyof BreakpointType];
     const state = $isDisabled ? "disabled" : "default";
     const indicatorState = $isChecked ? "active" : "inactive";
 

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { RadioProps, RadioSize } from "./types";
 import {
   getRadioDataState,
@@ -11,11 +11,9 @@ import {
 import { StyledRadioInput } from "./StyledRadio";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import { RadioTokensType, ResponsiveRadioTokens } from "./radio.token";
-import { useComponentToken } from "../../context/useComponentToken";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { RadioTokensType } from "./radio.token";
+
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 export const Radio = ({
   id,
@@ -32,15 +30,7 @@ export const Radio = ({
   slot,
   name,
 }: RadioProps) => {
-  const { breakpoints } = useContext(ThemeContext);
-  const { breakPointLabel } = useBreakpoints(breakpoints);
-
-  const allRadioTokens = useComponentToken(
-    "RADIO"
-  ) as unknown as ResponsiveRadioTokens;
-
-  const radioTokens: RadioTokensType =
-    allRadioTokens[breakPointLabel as keyof BreakpointType];
+  const radioTokens = useResponsiveTokens<RadioTokensType>("RADIO");
 
   const generatedId = React.useId();
   const uniqueId = id || generatedId;

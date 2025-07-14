@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Check, Minus } from "lucide-react";
 import { CheckboxProps, CheckboxSize } from "./types";
 import {
@@ -14,11 +14,8 @@ import {
 import { StyledCheckboxRoot, StyledCheckboxIndicator } from "./StyledCheckbox";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import { useComponentToken } from "../../context/useComponentToken";
-import { CheckboxTokensType, ResponsiveCheckboxTokens } from "./checkbox.token";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { CheckboxTokensType } from "./checkbox.token";
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
   (
@@ -38,16 +35,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref
   ) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
-
-    const allCheckboxTokens = useComponentToken(
-      "CHECKBOX"
-    ) as unknown as ResponsiveCheckboxTokens;
-
-    const tokens: CheckboxTokensType =
-      allCheckboxTokens[breakPointLabel as keyof BreakpointType];
-    console.log({ allCheckboxTokens, tokens });
+    const tokens = useResponsiveTokens<CheckboxTokensType>("CHECKBOX");
 
     const generatedId = React.useId();
     const uniqueId = id || generatedId;

@@ -5,12 +5,8 @@ import {
   CheckboxCheckedState,
   CheckboxInteractionState,
 } from "./types";
-import { useComponentToken } from "../../context/useComponentToken"; // Or '../../context/ThemeContext'
-import { CheckboxTokensType, ResponsiveCheckboxTokens } from "./checkbox.token";
-import { useContext } from "react";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { CheckboxTokensType } from "./checkbox.token";
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 const getInteractionState = (
   isDisabled: boolean,
@@ -33,16 +29,7 @@ export const StyledCheckboxRoot = styled(CheckboxPrimitive.Root)<{
   box-sizing: border-box;
 
   ${({ size, $isDisabled, $checked, $error }) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
-
-    const allCheckboxTokens = useComponentToken(
-      "CHECKBOX"
-    ) as unknown as ResponsiveCheckboxTokens;
-
-    const tokens: CheckboxTokensType =
-      allCheckboxTokens[breakPointLabel as keyof BreakpointType];
-    console.log({ allCheckboxTokens, tokens });
+    const tokens = useResponsiveTokens<CheckboxTokensType>("CHECKBOX");
     const currentCheckedState: CheckboxCheckedState =
       $checked === "indeterminate"
         ? "indeterminate"
@@ -107,15 +94,7 @@ export const StyledCheckboxIndicator = styled(CheckboxPrimitive.Indicator)<{
   height: 100%;
 
   ${() => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
-
-    const allCheckboxTokens = useComponentToken(
-      "CHECKBOX"
-    ) as unknown as ResponsiveCheckboxTokens;
-
-    const tokens: CheckboxTokensType =
-      allCheckboxTokens[breakPointLabel as keyof BreakpointType];
+    const tokens = useResponsiveTokens<CheckboxTokensType>("CHECKBOX");
     return css`
       &[data-state="checked"],
       &[data-state="indeterminate"] {

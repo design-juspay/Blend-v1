@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { SwitchGroupProps } from "./types";
 import {
   isSwitchElement,
@@ -8,12 +8,9 @@ import {
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import { Switch } from "./Switch";
-import { useComponentToken } from "../../context/useComponentToken";
-import { ResponsiveSwitchTokens, SwitchTokensType } from "./switch.token";
+import { SwitchTokensType } from "./switch.token";
 import { SwitchSize } from "./types";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
   (
@@ -29,15 +26,8 @@ const SwitchGroup = forwardRef<HTMLDivElement, SwitchGroupProps>(
     },
     ref
   ) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
+    const tokens = useResponsiveTokens<SwitchTokensType>("SWITCH");
 
-    const allSwitchTokens = useComponentToken(
-      "SWITCH"
-    ) as unknown as ResponsiveSwitchTokens;
-
-    const tokens: SwitchTokensType =
-      allSwitchTokens[breakPointLabel as keyof BreakpointType];
     const [internalValues, setInternalValues] =
       useState<string[]>(defaultValue);
 

@@ -1,12 +1,9 @@
 import styled, { css } from "styled-components";
 import { SwitchSize } from "./types";
 import { FOUNDATION_THEME } from "../../tokens";
-import { useComponentToken } from "../../context/useComponentToken";
-import { ResponsiveSwitchTokens, SwitchTokensType } from "./switch.token";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { useContext } from "react";
-import ThemeContext from "../../context/ThemeContext";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { SwitchTokensType } from "./switch.token";
+
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 export const StyledSwitchRoot = styled.button<{
   size: SwitchSize;
@@ -15,15 +12,7 @@ export const StyledSwitchRoot = styled.button<{
   $error?: boolean;
 }>`
   ${({ size, $isDisabled, $isChecked }) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
-
-    const allSwitchTokens = useComponentToken(
-      "SWITCH"
-    ) as unknown as ResponsiveSwitchTokens;
-
-    const tokens: SwitchTokensType =
-      allSwitchTokens[breakPointLabel as keyof BreakpointType];
+    const tokens = useResponsiveTokens<SwitchTokensType>("SWITCH");
 
     return css`
       position: relative;
@@ -79,15 +68,8 @@ export const StyledSwitchThumb = styled.div<{
   $isChecked: boolean;
 }>`
   ${({ size, $isChecked }) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
+    const tokens = useResponsiveTokens<SwitchTokensType>("SWITCH");
 
-    const allSwitchTokens = useComponentToken(
-      "SWITCH"
-    ) as unknown as ResponsiveSwitchTokens;
-
-    const tokens: SwitchTokensType =
-      allSwitchTokens[breakPointLabel as keyof BreakpointType];
     return css`
       position: absolute;
       top: ${tokens.thumb.size[size].top};

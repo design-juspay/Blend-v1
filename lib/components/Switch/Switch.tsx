@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { SwitchProps, SwitchSize } from "./types";
 import {
   getSwitchDataState,
@@ -11,11 +11,9 @@ import {
 import { StyledSwitchRoot, StyledSwitchThumb } from "./StyledSwitch";
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
-import { useComponentToken } from "../../context/useComponentToken";
-import { ResponsiveSwitchTokens, SwitchTokensType } from "./switch.token";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { SwitchTokensType } from "./switch.token";
+
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 export const Switch = ({
   id,
@@ -32,15 +30,7 @@ export const Switch = ({
   name,
   value,
 }: SwitchProps) => {
-  const { breakpoints } = useContext(ThemeContext);
-  const { breakPointLabel } = useBreakpoints(breakpoints);
-
-  const allSwitchTokens = useComponentToken(
-    "SWITCH"
-  ) as unknown as ResponsiveSwitchTokens;
-
-  const tokens: SwitchTokensType =
-    allSwitchTokens[breakPointLabel as keyof BreakpointType];
+  const tokens = useResponsiveTokens<SwitchTokensType>("SWITCH");
 
   const generatedId = React.useId();
   const uniqueId = id || generatedId;

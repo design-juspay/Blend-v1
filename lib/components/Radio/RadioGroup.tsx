@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext } from "react";
+import React, { forwardRef } from "react";
 import { RadioGroupProps } from "./types";
 import {
   isRadioElement,
@@ -10,24 +10,14 @@ import {
 import Block from "../Primitives/Block/Block";
 import PrimitiveText from "../Primitives/PrimitiveText/PrimitiveText";
 import Radio from "./Radio";
-import { RadioTokensType, ResponsiveRadioTokens } from "./radio.token";
-import { useComponentToken } from "../../context/useComponentToken";
+import { RadioTokensType } from "./radio.token";
 import { RadioSize } from "./types";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   ({ children, label, name, value, defaultValue, onChange, disabled }, ref) => {
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
+    const radioTokens = useResponsiveTokens<RadioTokensType>("RADIO");
 
-    const allRadioTokens = useComponentToken(
-      "RADIO"
-    ) as unknown as ResponsiveRadioTokens;
-
-    const radioTokens: RadioTokensType =
-      allRadioTokens[breakPointLabel as keyof BreakpointType];
     const handleGroupChange = createGroupChangeHandler(onChange);
 
     const enhancedChildren = React.Children.map(children, (child) => {
