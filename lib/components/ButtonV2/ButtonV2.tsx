@@ -1,4 +1,4 @@
-import { forwardRef, useContext } from "react";
+import { forwardRef } from "react";
 import PrimitiveButton from "../Primitives/PrimitiveButton/PrimitiveButton";
 import Block from "../Primitives/Block/Block";
 import {
@@ -7,13 +7,10 @@ import {
   ButtonSubTypeV2,
   ButtonTypeV2,
 } from "./types";
-import { ButtonTokensType, ResponsiveButtonTokens } from "./button.tokens";
+import { ButtonTokensType } from "./button.tokens";
 import Text from "../Text/Text";
-import { useComponentToken } from "../../context/useComponentToken";
 import { LoaderCircle } from "lucide-react";
-import ThemeContext from "../../context/ThemeContext";
-import { useBreakpoints } from "../../hooks/useBreakPoints";
-import { BreakpointType } from "../../breakpoints/breakPoints";
+import { useResponsiveTokens } from "../../hooks/useResponsiveTokens";
 
 const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
   (
@@ -34,16 +31,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
     },
     ref
   ) => {
-    const allButtonTokens = useComponentToken(
-      "BUTTON"
-    ) as ResponsiveButtonTokens;
-
-    console.log({ htmlProps });
-
-    const { breakpoints } = useContext(ThemeContext);
-    const { breakPointLabel } = useBreakpoints(breakpoints);
-    const buttonTokens: ButtonTokensType =
-      allButtonTokens[breakPointLabel as keyof BreakpointType];
+    const buttonTokens = useResponsiveTokens<ButtonTokensType>("BUTTON");
 
     const getBorderRadius = () => {
       const variantBorderRadius =
@@ -114,7 +102,7 @@ const ButtonV2 = forwardRef<HTMLButtonElement, ButtonV2Props>(
         ) : (
           <>
             {leadingIcon && (
-              <Block as="span" contentCentered data-button-right-slot>
+              <Block as="span" contentCentered data-button-left-slot>
                 {leadingIcon}
               </Block>
             )}
