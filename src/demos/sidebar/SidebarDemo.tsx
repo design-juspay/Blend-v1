@@ -53,13 +53,17 @@ import CheckboxDemo from "../Checkbox/CheckboxDemo";
 import SwitchDemo from "../Switch/SwitchDemo";
 import AvatarGroupDemo from "../AvatarGroup/AvatarGroupDemo";
 import SnackbarDemo from "../Snackbar/SnackbarDemo";
-import { SingleSelect, ThemeProvider } from "../../../lib/main";
+import SingleSelectDemo from "../SingleSelect/SingleSelectDemo";
+import MultiSelectDemo from "../MultiSelect/MultiSelectDemo";
+import { SingleSelect } from "../../../lib/components/SingleSelect";
+import { ThemeProvider } from "../../../lib/context";
 import {
   SelectMenuAlignment,
   SelectMenuVariant,
 } from "../../../lib/components/Select";
 import styled from "styled-components";
 import ALT_FOUNDATION_TOKENS from "../../themes/AlT_FOUNDATION_TOKENS";
+import SliderDemo from "../Slider/SliderDemo";
 import HDFC_COMPONENT_TOKENS from "../../themes/HDFC_COMPONENT_TOKENS";
 
 const ContentWrapper = styled(Block)`
@@ -94,6 +98,7 @@ const SidebarDemo = () => {
     | "fonts"
     | "datePicker"
     | "selectors"
+    | "singleSelect"
     | "buttonGroups"
     | "avatars"
     | "menu"
@@ -107,7 +112,9 @@ const SidebarDemo = () => {
     | "colorPalette"
     | "popover"
     | "theme"
-  >("statCard");
+    | "multiSelect"
+    | "slider"
+    >("dataTable");
 
   const [activeTenant, setActiveTenant] = useState<string>("Juspay");
   const [activeMerchant, setActiveMerchant] = useState<string | undefined>(
@@ -257,8 +264,14 @@ const SidebarDemo = () => {
         return <InputDemo />;
       case "dataTable":
         return <DataTableDemo />;
+      case "singleSelect":
+        return <SingleSelectDemo />;
       case "popover":
         return <PopoverDemo />;
+      case "multiSelect":
+        return <MultiSelectDemo />;
+      case "slider":
+        return <SliderDemo />;
       default:
         return null;
     }
@@ -472,9 +485,24 @@ const SidebarDemo = () => {
           onClick: () => setActiveComponent("switch"),
         },
         {
+          label: "Single Select",
+          leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("singleSelect"),
+        },
+        {
+          label: "Multi Select",
+          leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("multiSelect"),
+        },
+        {
           label: "Selectors",
           leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
           onClick: () => setActiveComponent("selectors"),
+        },
+        {
+          label: "Slider",
+          leftSlot: <ListFilter style={{ width: "16px", height: "16px" }} />,
+          onClick: () => setActiveComponent("slider"),
         },
       ],
     },

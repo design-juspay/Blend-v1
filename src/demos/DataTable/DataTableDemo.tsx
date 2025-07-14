@@ -1,22 +1,344 @@
 import { useState, useEffect } from 'react';
-import { ColumnDefinition, SortDirection, FilterType, SearchConfig, ColumnFilter } from '../../../lib/components/DataTable/types';
+import { ColumnDefinition, SortDirection, SearchConfig, ColumnFilter, ColumnType, AvatarColumnProps, TagColumnProps, DropdownColumnProps, DateColumnProps } from '../../../lib/components/DataTable/types';
 import DataTable from '../../../lib/components/DataTable/DataTable';
 import { Avatar } from '../../../lib/components/Avatar';
 import Tag from '../../../lib/components/Tags/Tags';
 import { TagColor, TagVariant, TagSize } from '../../../lib/components/Tags/types';
 import { Button, ButtonType, ButtonSize } from '../../../lib/main';
-import { RefreshCw, Plus, CircleX, Server, Database, Zap } from 'lucide-react';
-import { ColumnType, AvatarData, TagData } from '../../../lib/components/DataTable/columnTypes';
+import { RefreshCw, CircleX, Server, Database, Zap, Calendar, Package, Laptop, Monitor, Tablet, Smartphone, Watch } from 'lucide-react';
 import AdvancedFilterComponent, { FilterRule } from './AdvancedFilterComponent';
+
+const SimpleDataTableExample = () => {
+  type ProductRow = {
+    id: number;
+    name: string;
+    category: DropdownColumnProps;
+    price: number;
+    launchDate: DateColumnProps;
+    status: string;
+    inStock: boolean;
+  };
+  const productData: ProductRow[] = [
+    {
+      id: 1,
+      name: 'MacBook Pro',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
+        ],
+        selectedValue: 'laptop',
+        placeholder: 'Select category...'
+      },
+      price: 2499.99,
+      launchDate: {
+        date: '2023-10-30',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    },
+    {
+      id: 2,
+      name: 'iPhone 15 Pro',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
+        ],
+        selectedValue: 'smartphone',
+        placeholder: 'Select category...'
+      },
+      price: 1199.99,
+      launchDate: {
+        date: '2023-09-22',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    },
+    {
+      id: 3,
+      name: 'iPad Air',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
+        ],
+        selectedValue: 'tablet',
+        placeholder: 'Select category...'
+      },
+      price: 799.99,
+      launchDate: {
+        date: '2023-08-15',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Discontinued',
+      inStock: false
+    },
+    {
+      id: 4,
+      name: 'Mac Studio',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> }
+        ],
+        selectedValue: 'desktop',
+        placeholder: 'Select category...'
+      },
+      price: 3999.99,
+      launchDate: {
+        date: '2023-06-05',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    },
+    {
+      id: 5,
+      name: 'Apple Watch Series 9',
+      category: {
+        options: [
+          { id: 'laptop', label: 'Laptop', value: 'laptop', icon: <Laptop size={16} /> },
+          { id: 'desktop', label: 'Desktop', value: 'desktop', icon: <Monitor size={16} /> },
+          { id: 'tablet', label: 'Tablet', value: 'tablet', icon: <Tablet size={16} /> },
+          { id: 'smartphone', label: 'Smartphone', value: 'smartphone', icon: <Smartphone size={16} /> },
+          { id: 'wearable', label: 'Wearable', value: 'wearable', icon: <Watch size={16} /> }
+        ],
+        selectedValue: 'wearable',
+        placeholder: 'Select category...'
+      },
+      price: 599.99,
+      launchDate: {
+        date: '2023-09-22',
+        format: 'MMM dd, yyyy'
+      },
+      status: 'Active',
+      inStock: true
+    }
+  ];
+
+  const productColumns: ColumnDefinition<ProductRow>[] = [
+    {
+      field: 'name',
+      header: 'Product Name',
+      type: ColumnType.TEXT,
+      isSortable: true,
+      isEditable: true,
+      minWidth: '200px',
+      maxWidth: '300px'
+    },
+    {
+      field: 'category',
+      header: 'Category',
+      headerSubtext: 'Product Category',
+      type: ColumnType.DROPDOWN,
+      isSortable: true,
+      isEditable: false,
+      minWidth: '150px',
+      maxWidth: '200px'
+    },
+    {
+      field: 'price',
+      header: 'Price',
+      type: ColumnType.NUMBER,
+      isSortable: true,
+      isEditable: true,
+      renderCell: (value: number) => (
+        <span style={{ 
+          fontWeight: 500,
+          color: value > 2000 ? '#dc2626' : value > 1000 ? '#d97706' : '#16a34a'
+        }}>
+          ${value.toLocaleString()}
+        </span>
+      ),
+      minWidth: '100px',
+      maxWidth: '150px'
+    },
+    {
+      field: 'launchDate',
+      header: 'Launch Date',
+      headerSubtext: 'Product Launch',
+      type: ColumnType.DATE,
+      isSortable: true,
+      isEditable: false,
+      minWidth: '140px',
+      maxWidth: '180px'
+    },
+    {
+      field: 'inStock',
+      header: 'In Stock',
+      type: ColumnType.TEXT,
+      isSortable: true,
+      isEditable: true,
+      minWidth: '100px',
+      maxWidth: '120px'
+    }
+  ];
+
+  const [productTableData, setProductTableData] = useState(productData);
+
+  const handleProductSave = (rowId: unknown, updatedRow: Record<string, unknown>) => {
+    console.log('🔄 handleProductSave called:', { rowId, updatedRow });
+    
+    setProductTableData(prevData => 
+      prevData.map(row => {
+        if (row.id === rowId) {
+          // Handle dropdown data updates properly
+          const updated = { ...row } as Record<string, unknown>;
+          Object.keys(updatedRow).forEach(key => {
+            if (key === 'category' && typeof updatedRow[key] === 'object') {
+              // For dropdown columns, update the entire dropdown data object
+              updated[key] = updatedRow[key] as DropdownColumnProps;
+              console.log('📝 Updated dropdown data:', updated[key]);
+            } else {
+              updated[key] = updatedRow[key];
+            }
+          });
+          return updated as ProductRow;
+        }
+        return row;
+      })
+    );
+    
+    console.log('✅ Product saved successfully:', { rowId, updatedRow });
+  };
+
+  const handleProductCancel = (rowId: unknown) => {
+    console.log('Product edit cancelled:', rowId);
+  };
+
+  const handleFieldChange = (rowId: unknown, fieldName: string, value: unknown) => {
+    console.log('🔄 Field change:', { rowId, fieldName, value });
+    
+    // Update data immediately when inline editing is disabled
+    setProductTableData(prevData => 
+      prevData.map(row => {
+        if (row.id === rowId) {
+          const updated = { ...row };
+          if (fieldName === 'category' && typeof value === 'object') {
+            updated.category = value as DropdownColumnProps;
+          } else {
+            (updated as Record<string, unknown>)[fieldName] = value;
+          }
+          return updated;
+        }
+        return row;
+      })
+    );
+  };
+
+  return (
+    <div style={{ marginTop: '40px' }}>
+      <div style={{ 
+        marginBottom: '20px', 
+        padding: '16px', 
+        backgroundColor: '#f0fdf4', 
+        borderRadius: '8px',
+        border: '1px solid #bbf7d0'
+      }}>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 600, color: '#15803d' }}>
+          📦 Product Inventory - Simple DataTable Example
+        </h3>
+        <p style={{ margin: 0, fontSize: '14px', color: '#166534' }}>
+          🎯 <strong>NEW COLUMN TYPES DEMO:</strong> This table showcases <strong>DROPDOWN</strong> and <strong>DATE</strong> column types! 
+          The Category column is a dropdown menu using the SingleSelect component with <strong>icons</strong> - click on any category to see the dropdown options with category icons. 
+          The Launch Date column displays formatted dates. Both columns support sorting and can be used for filtering. 
+          Try editing the rows to see how dropdown selections work in edit mode. 
+          This is a simpler example focused on the new column types without the complexity of the main user management table above.
+        </p>
+      </div>
+
+      <DataTable
+        data={productTableData}
+        columns={productColumns as unknown as ColumnDefinition<Record<string, unknown>>[]}
+        idField="id"
+        title="Product Inventory"
+        description="Simple product management table demonstrating DROPDOWN and DATE column types with inline editing capabilities. Click on category dropdowns to see the SingleSelect component with icons in action!"
+        enableSearch={true}
+        enableFiltering={true}
+        enableAdvancedFilter={false}
+        enableInlineEdit={false}
+        enableRowExpansion={false}
+        enableRowSelection={true}
+        enableColumnManager={false}
+        columnFreeze={0}
+        pagination={{
+          currentPage: 1,
+          pageSize: 10,
+          totalRows: productTableData.length,
+          pageSizeOptions: [5, 10, 20],
+        }}
+        onRowSave={handleProductSave}
+        onRowCancel={handleProductCancel}
+        onFieldChange={handleFieldChange}
+        headerSlot1={
+          <Button
+            buttonType={ButtonType.SECONDARY}
+            leadingIcon={Package}
+            size={ButtonSize.SMALL}
+            onClick={() => console.log('Product action clicked')}
+          >
+            Manage Products
+          </Button>
+        }
+        headerSlot2={
+          <Button
+            buttonType={ButtonType.SECONDARY}
+            leadingIcon={Calendar}
+            size={ButtonSize.SMALL}
+            onClick={() => console.log('Calendar action clicked')}
+          >
+            Schedule
+          </Button>
+        }
+      />
+    </div>
+  );
+};
 
 const DataTableDemo = () => {
     // Demo mode toggle
     const [isServerSideMode, setIsServerSideMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [autoSwitchToApi, setAutoSwitchToApi] = useState(true); 
+    const [columnFreeze, setColumnFreeze] = useState(2);
+    const [enableRowSelection, setEnableRowSelection] = useState(true);
+    const [enableColumnManager, setEnableColumnManager] = useState(true);
+    const [enableRowExpansion] = useState(true); // Always enabled for demo 
+
+    // Define strict user row type matching column requirements
+    type UserRow = {
+      id: number;
+      name: AvatarColumnProps;
+      joinDate: string;
+      email: string;
+      role: string;
+      number: string;
+      gateway: string;
+      contact: string;
+      status: TagColumnProps;
+      department: string;
+      permissions: {
+        values: string[];
+        labels: string[];
+      };
+      revenue: string;
+      revenueAmount: number; // New field for slider filtering
+      growthRate: string;
+    };
 
     // Generate larger dataset for server-side demo
-    const generateLargeDataset = (count: number) => {
+    const generateLargeDataset = (count: number): UserRow[] => {
       const names = [
         'Jesse Leos', 'Jane Smith', 'Robert Johnson', 'Lisa Brown', 'David Miller',
         'Emma Wilson', 'Michael Clark', 'Sarah Davis', 'James Taylor', 'Anna White',
@@ -40,7 +362,7 @@ const DataTableDemo = () => {
               'May 2020', 'December 2021', 'March 2022', 'August 2023', 'November 2019'
             ][index % 15],
             imageUrl: `https://randomuser.me/api/portraits/${index % 2 ? 'men' : 'women'}/${index % 70}.jpg`
-          } as AvatarData,
+          } as AvatarColumnProps,
           joinDate: [
             'August 2014', 'September 2015', 'March 2016', 'November 2017', 'July 2018',
             'January 2019', 'April 2020', 'June 2021', 'October 2022', 'February 2023',
@@ -55,9 +377,12 @@ const DataTableDemo = () => {
           ][index % 15],
           status: {
             text: userStatus,
-            color: userStatus === 'Active' ? 'success' : userStatus === 'Inactive' ? 'error' : userStatus === 'Pending' ? 'warning' : 'neutral',
-            variant: 'subtle'
-          } as TagData,
+            variant: 'subtle' as const,
+            color: userStatus === 'Active' ? 'success' as const : 
+                   userStatus === 'Inactive' ? 'error' as const : 
+                   userStatus === 'Pending' ? 'warning' as const : 'neutral' as const,
+            size: 'sm' as const
+          } as TagColumnProps,
           email: [
             'jesse@example.com', 'jane@example.com', 'robert@example.com',
             'lisa@example.com', 'david@example.com', 'emma@example.com',
@@ -65,7 +390,52 @@ const DataTableDemo = () => {
             'anna@example.com', 'john@example.com', 'mary@example.com'
           ][index % 12],
           role: ['Admin', 'User', 'Manager', 'Editor', 'Viewer', 'Moderator'][index % 6],
-          department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'][index % 6]
+          department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations'][index % 6],
+          permissions: {
+            values: [
+              ['read', 'write'],
+              ['read', 'write', 'delete'],
+              ['read'],
+              ['read', 'write', 'admin'],
+              ['read', 'write'],
+              ['read'],
+              ['read', 'write', 'delete', 'admin'],
+              ['read', 'write'],
+              ['read', 'write', 'delete'],
+              ['read'],
+              ['read', 'write'],
+              ['read', 'write', 'admin']
+            ][index % 12],
+            labels: [
+              ['Read', 'Write'],
+              ['Read', 'Write', 'Delete'],
+              ['Read'],
+              ['Read', 'Write', 'Admin'],
+              ['Read', 'Write'],
+              ['Read'],
+              ['Read', 'Write', 'Delete', 'Admin'],
+              ['Read', 'Write'],
+              ['Read', 'Write', 'Delete'],
+              ['Read'],
+              ['Read', 'Write'],
+              ['Read', 'Write', 'Admin']
+            ][index % 12]
+          },
+          revenue: [
+            '$12,500.00', '€8,750.50', '£15,200.75', '$22,100.25', '₹350,000.00',
+            '$9,800.99', '€14,600.33', '£7,450.80', '$31,200.00', '₹275,500.75',
+            '$18,900.15', '€11,300.90', '£25,750.60', '$6,850.45', '₹425,000.25'
+          ][index % 15],
+          revenueAmount: [
+            12500, 8750.5, 15200.75, 22100.25, 350000,
+            9800.99, 14600.33, 7450.8, 31200, 275500.75,
+            18900.15, 11300.9, 25750.6, 6850.45, 425000.25
+          ][index % 15],
+          growthRate: [
+            '12.5%', '8.7%', '15.2%', '22.1%', '5.8%',
+            '9.3%', '14.6%', '7.4%', '31.2%', '18.9%',
+            '11.3%', '25.7%', '6.8%', '19.5%', '13.4%'
+          ][index % 15]
         };
       });
     };
@@ -86,89 +456,53 @@ const DataTableDemo = () => {
       pageSize: 10,
       totalRecords: 3000
     });
-
-    type UserRow = {
-      id: number;
-      name: AvatarData;
-      joinDate: string;
-      email: string;
-      role: string;
-      number: string;
-      gateway: string;
-      contact: string;
-      status: TagData;
-      department: string;
-    } & Record<string, unknown>;
     
+    // Strict column definitions using the new typing system
     const columns: ColumnDefinition<UserRow>[] = [
       { 
         field: 'name',
-        header: 'Name',
+        header: 'User Profile',
+        headerSubtext: 'Name & Join Date',
         type: ColumnType.AVATAR,
-        renderCell: (value) => {
-          const avatarData = value as AvatarData;
-          return (
-            <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
-              <Avatar src={avatarData.imageUrl} alt={avatarData.label} />
-              <div>
-                <div style={{ fontWeight: 500, fontSize: '14px' }}>{avatarData.label}</div>
-                <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {avatarData.sublabel}</div>
-              </div>
+        renderCell: (value: AvatarColumnProps) => (
+          <div style={{ display: 'flex', width: '100%', gap: '12px', alignItems: 'center' }}>
+            <Avatar src={value.imageUrl} alt={value.label} />
+            <div>
+              <div style={{ fontWeight: 500, fontSize: '14px' }}>{value.label}</div>
+              <div style={{ fontSize: '12px', color: '#6b7280' }}>Joined in {value.sublabel}</div>
             </div>
-          );
-        },
+          </div>
+        ),
         isSortable: true,
-        isFilterable: true,
-        filterType: FilterType.TEXT,
         minWidth: '220px',
         maxWidth: '320px'
       },
       { 
         field: 'email',
-        header: 'Email',
+        header: 'Contact Info',
+        headerSubtext: 'Email Address',
         type: ColumnType.TEXT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.TEXT,
         minWidth: '180px',
         maxWidth: '250px'
       },
       { 
         field: 'role',
-        header: 'Role',
+        header: 'Access Level',
+        headerSubtext: 'User Role & Permissions',
         type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
-        filterOptions: [
-          { id: 'admin', label: 'Admin', value: 'Admin' },
-          { id: 'user', label: 'User', value: 'User' },
-          { id: 'manager', label: 'Manager', value: 'Manager' },
-          { id: 'editor', label: 'Editor', value: 'Editor' },
-          { id: 'viewer', label: 'Viewer', value: 'Viewer' },
-          { id: 'moderator', label: 'Moderator', value: 'Moderator' },
-        ],
         minWidth: '120px',
         maxWidth: '160px'
       },
       { 
         field: 'department',
         header: 'Department',
-        type: ColumnType.SELECT,
+        type: ColumnType.MULTISELECT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
-        filterOptions: [
-          { id: 'engineering', label: 'Engineering', value: 'Engineering' },
-          { id: 'marketing', label: 'Marketing', value: 'Marketing' },
-          { id: 'sales', label: 'Sales', value: 'Sales' },
-          { id: 'hr', label: 'HR', value: 'HR' },
-          { id: 'finance', label: 'Finance', value: 'Finance' },
-          { id: 'operations', label: 'Operations', value: 'Operations' },
-        ],
         minWidth: '130px',
         maxWidth: '180px'
       },
@@ -178,59 +512,118 @@ const DataTableDemo = () => {
         type: ColumnType.SELECT,
         isSortable: true,
         isEditable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
-        filterOptions: [
-          { id: 'gateway-a', label: 'Gateway A', value: 'Gateway A' },
-          { id: 'gateway-b', label: 'Gateway B', value: 'Gateway B' },
-          { id: 'gateway-c', label: 'Gateway C', value: 'Gateway C' },
-          { id: 'gateway-d', label: 'Gateway D', value: 'Gateway D' },
-          { id: 'gateway-e', label: 'Gateway E', value: 'Gateway E' },
-        ],
         minWidth: '120px',
         maxWidth: '160px'
       },
       {
         field: 'status',
-        header: 'Status',
+        header: 'Account Status',
+        headerSubtext: 'Current State',
         type: ColumnType.TAG,
-        renderCell: (value) => {
-          const tagData = value as TagData;
-          const getStatusColor = (status: string): TagColor => {
-            switch (status) {
-              case 'Active':
-                return TagColor.SUCCESS;
-              case 'Inactive':
+        renderCell: (value: TagColumnProps) => (
+          <Tag
+            text={value.text}
+            variant={TagVariant.SUBTLE}
+            color={value.color === 'success' ? TagColor.SUCCESS :
+                   value.color === 'error' ? TagColor.ERROR :
+                   value.color === 'warning' ? TagColor.WARNING :
+                   TagColor.NEUTRAL}
+            size={TagSize.SM}
+          />
+        ),
+        isSortable: true,
+        minWidth: '100px',
+        maxWidth: '140px'
+      },
+      {
+        field: 'permissions',
+        header: 'User Permissions',
+        headerSubtext: 'Access Rights',
+        type: ColumnType.REACT_ELEMENT,
+        isSortable: false, // Required for REACT_ELEMENT type
+        renderCell: (value: unknown) => {
+          const permissionsData = value as { values: string[]; labels: string[] };
+          const getPermissionColor = (permission: string): TagColor => {
+            switch (permission.toLowerCase()) {
+              case 'admin':
                 return TagColor.ERROR;
-              case 'Pending':
+              case 'write':
                 return TagColor.WARNING;
-              case 'Suspended':
-                return TagColor.NEUTRAL;
+              case 'delete':
+                return TagColor.ERROR;
+              case 'read':
+                return TagColor.SUCCESS;
               default:
                 return TagColor.NEUTRAL;
             }
           };
 
           return (
-            <Tag
-              text={tagData.text}
-              variant={TagVariant.SUBTLE}
-              color={getStatusColor(tagData.text)}
-              size={TagSize.SM}
-            />
+            <div style={{ 
+              display: 'flex', 
+              flexWrap: 'nowrap', 
+              gap: '4px',
+              overflow: 'auto',
+              whiteSpace: 'nowrap',
+              minWidth: '200px',
+              maxWidth: '100%',
+              scrollbarWidth: 'thin',
+              scrollBehavior: 'smooth'
+            }}>
+              {permissionsData.values.map((permission, index) => (
+                <Tag
+                  key={index}
+                  text={permissionsData.labels?.[index] || permission}
+                  variant={TagVariant.SUBTLE}
+                  color={getPermissionColor(permission)}
+                  size={TagSize.SM}
+                />
+              ))}
+            </div>
           );
         },
+
+        minWidth: '200px',
+        maxWidth: '350px'
+      },
+      { 
+        field: 'revenue',
+        header: 'Revenue',
+        headerSubtext: 'Monthly Revenue Display',
+        type: ColumnType.TEXT,
         isSortable: true,
-        isFilterable: true,
-        filterType: FilterType.SELECT,
-        filterOptions: [
-          { id: 'active', label: 'Active', value: 'Active' },
-          { id: 'inactive', label: 'Inactive', value: 'Inactive' },
-          { id: 'pending', label: 'Pending', value: 'Pending' },
-          { id: 'suspended', label: 'Suspended', value: 'Suspended' },
-        ],
-        minWidth: '100px',
-        maxWidth: '140px'
+        isEditable: false,
+        minWidth: '120px',
+        maxWidth: '160px'
+      },
+      { 
+        field: 'growthRate',
+        header: 'Growth Rate',
+        headerSubtext: 'Monthly Growth %',
+        type: ColumnType.NUMBER,
+        isSortable: true,
+        isEditable: true,
+        minWidth: '120px',
+        maxWidth: '160px'
+      },
+            { 
+        field: 'revenueAmount',
+        header: 'Revenue Filter',
+        headerSubtext: 'Slider Range Filter',
+        type: ColumnType.SLIDER,
+        isSortable: true,
+        isEditable: false,
+        sliderConfig: {
+          min: 0,
+          max: 500000,
+          step: 1000,
+          valueType: 'number',
+          prefix: '$',
+          suffix: '',
+          decimalPlaces: 0
+        },
+        minWidth: '140px',
+        maxWidth: '180px'
       },
     ];
     
@@ -265,9 +658,9 @@ const DataTableDemo = () => {
              let cellValue = (row as Record<string, unknown>)[filter.field as string];
              
              if (filter.field === 'name' && cellValue && typeof cellValue === 'object') {
-               cellValue = (cellValue as AvatarData).label;
+               cellValue = (cellValue as AvatarColumnProps).label;
              } else if (filter.field === 'status' && cellValue && typeof cellValue === 'object') {
-               cellValue = (cellValue as TagData).text;
+               cellValue = (cellValue as TagColumnProps).text;
              }
              
              const cellValueStr = String(cellValue).toLowerCase();
@@ -453,7 +846,7 @@ const DataTableDemo = () => {
 
     const isRowExpandable = (row: Record<string, unknown>) => {
       const userRow = row as UserRow;
-      const statusText = (userRow.status as TagData).text;
+      const statusText = (userRow.status as TagColumnProps).text;
       return statusText === 'Active' || userRow.role === 'Admin';
     };
 
@@ -466,7 +859,7 @@ const DataTableDemo = () => {
       const userRow = row as UserRow;
       
       const getActivityData = (user: UserRow) => {
-        const statusText = (user.status as TagData).text;
+        const statusText = (user.status as TagColumnProps).text;
         const activities = [
           `Last login: ${statusText === 'Active' ? '2 hours ago' : '1 week ago'}`,
           `Profile updated: ${user.role === 'Admin' ? '1 day ago' : '3 days ago'}`,
@@ -491,10 +884,10 @@ const DataTableDemo = () => {
       return (
         <div style={{ 
           padding: '20px', 
-          backgroundColor: (userRow.status as TagData).text === 'Active' ? '#f0f9ff' : '#fef2f2',
+          backgroundColor: (userRow.status as TagColumnProps).text === 'Active' ? '#f0f9ff' : '#fef2f2',
           borderRadius: '8px',
           margin: '8px 0',
-          border: `1px solid ${(userRow.status as TagData).text === 'Active' ? '#bfdbfe' : '#fecaca'}`
+          border: `1px solid ${(userRow.status as TagColumnProps).text === 'Active' ? '#bfdbfe' : '#fecaca'}`
         }}>
           <div style={{ 
             display: 'flex', 
@@ -508,7 +901,7 @@ const DataTableDemo = () => {
               fontWeight: 600,
               color: '#1f2937'
             }}>
-              Detailed Profile: {(userRow.name as AvatarData).label} (Row #{index + 1})
+              Detailed Profile: {(userRow.name as AvatarColumnProps).label} (Row #{index + 1})
             </h4>
             <button
               onClick={toggleExpansion}
@@ -548,11 +941,11 @@ const DataTableDemo = () => {
                 <div><strong>Department:</strong> {userRow.department}</div>
                 <div><strong>Status:</strong> 
                   <span style={{ 
-                    color: (userRow.status as TagData).text === 'Active' ? '#059669' : '#dc2626',
+                    color: (userRow.status as TagColumnProps).text === 'Active' ? '#059669' : '#dc2626',
                     fontWeight: 'bold',
                     marginLeft: '4px'
                   }}>
-                    {(userRow.status as TagData).text}
+                    {(userRow.status as TagColumnProps).text}
                   </span>
                 </div>
               </div>
@@ -643,15 +1036,105 @@ const DataTableDemo = () => {
       }
       console.log('Data refreshed');
     };
-  
-    const handleAddUser = () => {
-      console.log('Adding new user...');
+
+    /**
+     * ✨ HOW TO USE getRowStyle - COMPREHENSIVE EXAMPLES ✨
+     * 
+     * The getRowStyle function allows you to apply dynamic styling to table rows
+     * based on any condition or data value. Here are common patterns:
+     * 
+     * 1. STATUS-BASED STYLING (Priority approach):
+     *    - Check critical status first (e.g., suspended, error, failed)
+     *    - Then check important status (e.g., admin, premium, vip)
+     *    - Finally check general conditions (e.g., new, pending)
+     * 
+     * 2. NUMERIC VALUE CONDITIONS:
+     *    - if (userData.salary > 100000) return { backgroundColor: '#f0fdf4' };
+     *    - if (userData.score < 50) return { backgroundColor: '#fef2f2' };
+     *    - if (userData.age >= 65) return { backgroundColor: '#fef3c7' };
+     * 
+     * 3. DATE-BASED CONDITIONS:
+     *    - const joinDate = new Date(userData.joinDate);
+     *    - const monthsAgo = (Date.now() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+     *    - if (monthsAgo < 3) return { backgroundColor: '#f0fdf4' }; // New users
+     * 
+     * 4. ARRAY/LIST CONDITIONS:
+     *    - if (userData.permissions.includes('admin')) return { backgroundColor: '#f0f9ff' };
+     *    - if (userData.tags.length > 5) return { backgroundColor: '#fef3c7' };
+     * 
+     * 5. MULTIPLE FIELD CONDITIONS:
+     *    - if (userData.role === 'Manager' && userData.department === 'Sales') 
+     *        return { backgroundColor: '#f3e8ff' };
+     * 
+     * 6. STYLING OPTIONS YOU CAN APPLY:
+     *    - backgroundColor: '#fef2f2' (row background color)
+     *    - borderLeft: '4px solid #dc2626' (left border for emphasis)
+     *    - color: '#7f1d1d' (text color)
+     *    - fontWeight: '500' (text weight)
+     *    - boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' (subtle shadow)
+     *    - opacity: '0.7' (transparency)
+     *    - textDecoration: 'line-through' (strikethrough for disabled items)
+     * 
+     * 7. HOVER BEHAVIOR:
+     *    - Hover effects only apply to rows WITHOUT custom background colors
+     *    - Rows with custom background colors maintain their color on hover
+     *    - Default rows (no custom styling) show hover effects normally
+     *    - This preserves the visual intention of your custom colors
+     * 
+     * 8. PERFORMANCE TIP:
+     *    - Return early for high-priority conditions (like critical errors)
+     *    - Use priority-based approach instead of complex nested conditions
+     */
+
+    // Example: How to apply row colors based on data conditions (delta values)
+    // Users can implement their own logic here based on any row data
+    const getRowStyle = (row: Record<string, unknown>, index: number): React.CSSProperties => {
+      const userData = row as UserRow;
+      const statusText = (userData.status as TagColumnProps).text;
+      
+      // Priority 1: Critical status - Suspended users (highest priority)
+      if (statusText === 'Suspended') {
+        return {
+          backgroundColor: '#fef2f2', // Light red background
+          borderLeft: '4px solid #dc2626', // Red left border for emphasis
+          color: '#7f1d1d', // Darker red text for better contrast
+        };
+      }
+      
+      // Priority 2: Administrative roles - Admin users  
+      if (userData.role === 'Admin') {
+        return {
+          backgroundColor: '#f0f9ff', // Light blue background
+          borderLeft: '4px solid #2563eb', // Blue left border
+          fontWeight: '500', // Slightly bolder text for admins
+        };
+      }
+      
+      // Priority 3: Recently joined users - New members (2023+)
+      const joinYear = parseInt(userData.joinDate.split(' ')[1] || '2020');
+      if (joinYear >= 2023) {
+        return {
+          backgroundColor: '#f0fdf4', // Light green background
+          borderLeft: '4px solid #16a34a', // Green left border
+          // Could add: boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' for subtle elevation
+        };
+      }
+      
+      // Priority 4: Alternating row colors for better readability
+      if (index % 2 === 0) {
+        return {
+          backgroundColor: '#fafafa', // Very light gray for even rows
+        };
+      }
+      
+      // Default: No special styling
+      return {};
     };
 
     // Handle row click
     const handleRowClick = (row: Record<string, unknown>, index: number) => {
       const userData = row as UserRow;
-      const userName = (userData.name as AvatarData).label;
+      const userName = (userData.name as AvatarColumnProps).label;
       console.log(`🖱️ Row clicked:`, { 
         user: userName, 
         email: userData.email, 
@@ -686,9 +1169,64 @@ const DataTableDemo = () => {
                   ? `🚀 Server-side mode: Simulating 3,000 records with API calls for search/filter. Currently showing ${data.length} records.`
                   : `💻 Local mode: All operations handled client-side with ${data.length} records. Both column filters and advanced filters work locally.`
                 }
+                <span style={{ marginLeft: '8px' }}>
+                  {columnFreeze > 0 ? (
+                    <>📌 Currently freezing the first {columnFreeze} data column{columnFreeze !== 1 ? 's' : ''} + checkbox/expansion columns.</>
+                  ) : (
+                    <>🔄 All columns are scrollable (no columns frozen).</>
+                  )}
+                </span>
+                <span style={{ marginLeft: '8px' }}>
+                  🏷️ Search functionality available only in dropdown menus for select/multiselect/tag columns like skills, roles, and status.
+                </span>
               </p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label htmlFor="column-freeze">Freeze Columns:</label>
+                  <select
+                    id="column-freeze"
+                    value={columnFreeze}
+                    onChange={(e) => setColumnFreeze(parseInt(e.target.value))}
+                    style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      border: '1px solid #d1d5db',
+                      fontSize: '14px'
+                    }}
+                  >
+                    <option value={0}>None</option>
+                    <option value={1}>First 1</option>
+                    <option value={2}>First 2</option>
+                    <option value={3}>First 3</option>
+                    <option value={4}>First 4</option>
+                    <option value={5}>First 5</option>
+                  </select>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={enableRowSelection}
+                      onChange={(e) => setEnableRowSelection(e.target.checked)}
+                      style={{ marginRight: '4px' }}
+                    />
+                    Row Selection
+                  </label>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={enableColumnManager}
+                      onChange={(e) => setEnableColumnManager(e.target.checked)}
+                      style={{ marginRight: '4px' }}
+                    />
+                    Column Manager
+                  </label>
+                </div>
+              </div>
               <Button
                 buttonType={autoSwitchToApi ? ButtonType.PRIMARY : ButtonType.SECONDARY}
                 leadingIcon={Zap}
@@ -708,6 +1246,20 @@ const DataTableDemo = () => {
                 Switch to {isServerSideMode ? 'Local' : 'Server-Side'}
               </Button>
             </div>
+          </div>
+          
+          {/* Column freeze explanation */}
+          <div style={{ 
+            marginTop: '12px', 
+            padding: '12px', 
+            backgroundColor: '#f0f9ff', 
+            borderRadius: '6px',
+            fontSize: '12px'
+          }}>
+            <strong>📌 Column Freeze:</strong> Use the dropdown above to freeze the first N data columns. 
+            When set to 0 (None), ALL columns scroll including checkbox/expansion columns. 
+            When set to 1+, the checkbox/expansion columns become sticky along with the first N data columns. 
+            Try changing between "None" and "First 2" then scroll horizontally to see the difference!
           </div>
           
           {/* Auto-switch explanation */}
@@ -748,7 +1300,7 @@ const DataTableDemo = () => {
           columns={columns as unknown as ColumnDefinition<Record<string, unknown>>[]}
           idField="id"
           title="User Management"
-          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, and clickable rows. Features flexible column widths with min/max constraints and automatic text truncation. Try clicking on any row, using column header filters, and advanced filters!`}
+          description={`Complete overview of system users with ${isServerSideMode ? 'server-side' : 'local'} search, filtering, inline editing, expandable rows, clickable rows, and dynamic row styling. 🎛️ NEW SYSTEM COLUMN CONTROLS: Toggle Row Selection checkbox column and Column Manager dropdown on/off using the controls above! Column freezing ${columnFreeze > 0 ? `(currently freezing ${columnFreeze} data column${columnFreeze !== 1 ? 's' : ''} + ${enableRowSelection ? 'checkbox' : 'no checkbox'}${enableRowExpansion ? ' + expansion' : ''}${enableColumnManager ? ' + manager' : ''} columns)` : '(currently all columns scrollable)'} with improved border styling - only the rightmost frozen column shows a border separator! Features smart filtering based on column types: Avatar/Text/Number columns show only sorting, Select/Multiselect/Tag columns get dropdown filtering with search for menu items. ⚙️ FORMATTING TOGGLE: Click the Settings icon to toggle between formatted numbers (with currency symbols $, €, £, ₹ and percentage % symbols) and raw numbers (clean numeric values only). This affects both the table view AND CSV exports! 🔧 AUTO FILTER OPTIONS: All filter options are now automatically extracted from data with smart deduplication! Department is MULTISELECT - select multiple departments to filter! Role & Gateway are SELECT - choose one option to filter! 🎨 Smart Row Styling: Red = Suspended users (priority 1), Blue = Admin users (priority 2), Green = Recently joined 2023+ (priority 3), Light gray = Even rows (priority 4). Colors apply to entire row including frozen columns! ✨ Enhanced Features: Improved column padding (16px), better z-index layering for frozen columns, smart hover behavior, enhanced empty state, and robust data handling. Try toggling system columns on/off, changing column freeze settings, clicking the Settings icon for number formatting, selecting filters, scrolling horizontally to see improved frozen column borders, clicking rows, and using advanced filters!`}
           isHoverable
           enableSearch
           searchPlaceholder={`Search users... ${isServerSideMode ? '(server-side)' : '(local)'}`}
@@ -756,8 +1308,11 @@ const DataTableDemo = () => {
           enableAdvancedFilter
           advancedFilterComponent={AdvancedFilterComponent}
           advancedFilters={serverState.filters}
+          columnFreeze={columnFreeze}
           enableInlineEdit
           enableRowExpansion
+          enableRowSelection={enableRowSelection}
+          enableColumnManager={enableColumnManager}
           renderExpandedRow={renderExpandedRow}
           isRowExpandable={isRowExpandable}
           serverSideSearch={isServerSideMode}
@@ -802,19 +1357,10 @@ const DataTableDemo = () => {
               Action
             </Button>
           }
-          headerSlot3={
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <Button
-                buttonType={ButtonType.PRIMARY}
-                leadingIcon={Plus}
-                size={ButtonSize.SMALL}
-                onClick={handleAddUser}
-              >
-                Add User
-              </Button>
-            </div>
-          }
+          getRowStyle={getRowStyle}
         />
+        
+        <SimpleDataTableExample />
       </div>
     );
   };
