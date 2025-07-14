@@ -11,11 +11,11 @@ import {
   TextAreaTokensType,
 } from "../components/Inputs/TextArea/textarea.token";
 import {
-  RadioTokensType,
+  ResponsiveRadioTokens,
   getRadioTokens,
 } from "../components/Radio/radio.token";
 import {
-  SwitchTokensType,
+  ResponsiveSwitchTokens,
   getSwitchTokens,
 } from "../components/Switch/switch.token";
 import {
@@ -51,8 +51,8 @@ import {
   getDropdownInputTokens,
 } from "../components/Inputs/DropdownInput/dropdownInput.tokens";
 import {
-  CheckboxTokensType,
   getCheckboxTokens,
+  ResponsiveCheckboxTokens,
 } from "../components/Checkbox/checkbox.token";
 import { TabsTokensType, getTabsTokens } from "../components/Tabs/tabs.token"; // Added TABS
 import {
@@ -98,8 +98,8 @@ export type ComponentTokenType = {
   TAGS?: TagTokensType;
   SEARCH_INPUT?: SearchInputTokensType;
   TEXT_AREA?: TextAreaTokensType;
-  RADIO?: RadioTokensType;
-  SWITCH?: SwitchTokensType;
+  RADIO?: ResponsiveRadioTokens;
+  SWITCH?: ResponsiveSwitchTokens;
   TEXT_INPUT?: TextInputTokensType;
   NUMBER_INPUT?: NumberInputTokensType;
   ALERT?: AlertTokenType;
@@ -108,7 +108,7 @@ export type ComponentTokenType = {
   UNIT_INPUT?: UnitInputTokensType;
   MULTI_VALUE_INPUT?: MultiValueInputTokensType;
   DROPDOWN_INPUT?: DropdownInputTokensType;
-  CHECKBOX?: CheckboxTokensType;
+  CHECKBOX?: ResponsiveCheckboxTokens;
   TABS?: TabsTokensType;
   BUTTON?: ResponsiveButtonTokens;
   MODAL?: ModalTokensType;
